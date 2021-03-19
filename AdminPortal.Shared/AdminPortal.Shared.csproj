@@ -5,8 +5,4 @@
     <RootNamespace>TKW.AdminPortal.Shared</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
