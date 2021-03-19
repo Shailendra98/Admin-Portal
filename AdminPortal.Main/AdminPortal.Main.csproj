@@ -392,8 +392,8 @@
     <Folder Include="wwwroot\scripts\bootstrap5.0.0\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="TKW.ApplicationCore" Version="1.1.0" />
-    <PackageReference Include="TKW.Infrastructure" Version="1.1.0" />
+    <PackageReference Include="TKW.ApplicationCore" Version="1.1.1" />
+    <PackageReference Include="TKW.Infrastructure" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdminPortal.Components\AdminPortal.Components.csproj" />
