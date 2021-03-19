@@ -1,0 +1,502 @@
+﻿@model TKW.ApplicationCore.Contexts.PurchaseContext.DTOs.RequestFullModel
+@using TKW.AdminPortal.Constants
+@using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
+@using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@inject TKW.ApplicationCore.Identity.IAppUserService user
+@using TKW.AdminPortal.ViewModels
+@{
+    List<RequestTimelineModel> timeline = new List<RequestTimelineModel>();
+    var firstSchedule = Model.Schedules.OrderBy(m => m.Time).FirstOrDefault();
+    if (firstSchedule != null && firstSchedule.Time.HasValue && firstSchedule.Time.Value.Subtract(Model.SubmissionTime).Minutes <= 0)
+    {
+        timeline.Add(new RequestTimelineModel
+        {
+            Id = firstSchedule.Id,
+            Time = Model.SubmissionTime,
+            Type = RequestTimelineTypes.SubmissionAndSchedule,
+            IconClass = "fa-plus"
+        });
+    }
+    else
+    {
+        timeline.Add(new RequestTimelineModel
+        {
+            Time = Model.SubmissionTime,
+            Type = RequestTimelineTypes.Submission,
+            IconClass = "fa-plus"
+        });
+        firstSchedule = null;
+    }
+    foreach (var s in Model.Schedules.Where(m => m.Id != firstSchedule?.Id))
+    {
+        timeline.Add(new RequestTimelineModel
+        {
+            Id = s.Id,
+            Time = s.Time,
+            Type = RequestTimelineTypes.Schedule,
+            IconClass = "fa-clock-o"
+        });
+    }
+    foreach (var a in Model.Assignments)
+    {
+        timeline.Add(new RequestTimelineModel
+        {
+            Id = a.Id,
+            Time = a.Time,
+            Type = RequestTimelineTypes.Assignment,
+            IconClass = "fa-user-plus text-warning"
+
+        });
+    }
+    if (Model.Completion != null)
+    {
+        timeline.Add(new RequestTimelineModel
+        {
+            Time = Model.Completion.Time,
+            Type = RequestTimelineTypes.Handle,
+            IconClass = "fa-check text-success"
+        });
+        if (Model.Completion.PaymentTransactions != null)
+        {
+            foreach (var p in Model.Completion.PaymentTransactions)
+            {
+                timeline.Add(new RequestTimelineModel
+                {
+                    Id = p.Id,
+                    Time = p.Time,
+                    Type = RequestTimelineTypes.Payment,
+                    IconClass = "fa-money text-success"
+
+                });
+            }
+        }
+    }
+    else if (Model.Cancellation != null)
+    {
+        timeline.Add(new RequestTimelineModel
+        {
+            Time = Model.Cancellation.Time,
+            Type = RequestTimelineTypes.Cancellation,
+            IconClass = "fa-close text-danger"
+        });
+    }
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="hpanel m-b-sm">
+            <div class="panel-body">
+                <div class="d-flex">
+                    <div>
+                        <img class="rounded-circle" height="50" src="@urlGenerator.ProfilePic(Model.Seller.PictureName,UserPicSize.x80)" />
+                    </div>
+                    <div class="flex-grow-1 p-l-xs">
+                        <b>@Model.Seller.Name</b>
+                        <div class="pt-2">
+                            @Model.Seller.MobileNo
+                        </div>
+                    </div>
+                    <div>
+                        <div class="float-end pb-2"><b>Id:</b> @Model.Id</div>
+                        <div class="pt-2">
+                            <span style="font-size:85%;" class="badge float-end rounded-1 @(Model.Status.Id==RequestStatus.Submitted.Id || Model.Status.Id==RequestStatus.Rescheduled.Id ?"h-bg-yellow"
+        : Model.Status.Id==RequestStatus.Assigned.Id?"badge-warning"
+        :Model.Status.Id==RequestStatus.Cancelled.Id?"badge-danger":Model.Status.Id==RequestStatus.Completed.Id? "badge-success":"badge-info")">@Model.Status.Status</span>
+    </div>
+</div>
+</div>
+</div>
+</div>
+@if (Model.Address?.AddressLine != null)
+{
+    <div class="hpanel m-b-sm">
+        <div class="panel-heading">Address</div>
+        <div class="panel-body p-sm">
+            <address class="m-b-none" type="@Model.Address.TypeName" addressline="@Model.Address.AddressLine" city="@Model.Address.CityName" locality="@Model.Address.LocalityName" pincode="@Model.Address.Pincode" state="@Model.Address.StateName" name="@Model.Address.Name" mobile-no="@Model.Address.MobileNo"></address>
+            @if (Model.PickupManager != null)
+            {
+                <div class="p-t-xs">
+                    <b>Pickup Manager</b>: @Model.PickupManager.Name @(user.Current.Role == ApplicationCore.Enums.UserRole.Admin ? "(" + Model.Franchise.Name + ")" : "")
+                </div>
+            }
+        </div>
+    </div>
+}
+<div class="hpanel m-b-sm">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            @if (Model.Completion != null)
+            {
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Billed Items</button>
+            }
+            <button class="nav-link @(Model.Completion != null? "":"active")" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="true">Quoted Items</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        @if (Model.Completion != null)
+        {
+        <div class="tab-pane active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <table class="panel-body table table-hover table-borderless">
+                <thead class="border-bottom">
+                    <tr><th>Name</th><th>Quantity</th><th>Rate</th><th class="text-right">Amount</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model.Completion.Items)
+                    {
+                        <tr class="border-bottom">
+                            <td>@m.Material.Name</td>
+                            <td>@m.Quantity.GetValueOrDefault(0).ToString("0.00") @m.Material.UnitName</td>
+                            <td>₹ @m.Rate.GetValueOrDefault(0).ToString("0.00") / @m.Material.UnitName</td>
+                            <td class="text-right">₹ @(((m.Quantity ?? 0) * (m.Rate ?? 0)).ToString("0.00"))</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr><td colspan="3" class="text-right"><b>Total Amount</b>:</td><td class="text-right">₹ @Model.Completion.TotalAmount.ToString("0.00")</td></tr>
+                </tfoot>
+            </table>
+        </div>
+        }
+    <div class="tab-pane @(Model.Completion != null? "":"active")" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <table class="panel-body table table-hover table-borderless">
+            @if (Model.Items != null && Model.Items.Count > 0)
+            {
+                <thead class="border-bottom">
+                    <tr><th colspan="3">Name</th><th>Rate Quoted</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model.Items)
+                    {
+                        <tr class="border-bottom">
+                            <td colspan="3">@m.Material.Name</td>
+                            @if (!m.Rate.HasValue)
+                            {
+                                <td>N/A</td>
+                            }
+                            else
+                            {
+                                <td>₹ @m.Rate.Value.ToString("0.00") / @m.Material.UnitName</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr class="border-bottom">
+                        <td colspan="4" class="text-center border-0">
+                            <em>No item quoted</em>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+            @if (Model.PaymentMethod != null)
+            {
+                <tfoot>
+                    <tr>
+                        <td class="text-right" colspan="3"><b>Payment preference</b>:</td>
+                        <td>@Model.PaymentMethod.Name</td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    </div>
+        </div>
+</div>
+@if ((user.Current.Role == ApplicationCore.Enums.UserRole.Admin || user.Current.Role == ApplicationCore.Enums.UserRole.TeleCaller) && new List<int> { RequestStatus.Assigned.Id, RequestStatus.Submitted.Id, RequestStatus.Rescheduled.Id }.Contains(Model.Status.Id))
+{
+    <div class="hpanel m-b-sm">
+        <table class="table panel-body">
+            <tr>
+                <td class="no-borders"><b>Pickup code:</b></td>
+                <td class="text-right no-borders">@Model.Code</td>
+            </tr>
+        </table>
+    </div>
+}
+@if (Model.Completion != null)
+{
+    <div class="text-center">
+        <a target="_blank" href="@Url.Page("/Invoice",new { Model.Id })" class="btn btn-sm btn-primary btn-outline">Print invoice</a>
+    </div>
+}
+@*@if (Model.Items != null && Model.Items.Count() > 0)
+    {
+        <div class="hpanel m-b-sm">
+            <div class="panel-heading">Materials</div>
+            <table class="panel-body table table-hover table-responsive">
+                @if (Model.Completion != null)
+                {
+                    <thead>
+                        <tr><th>Name</th><th>Quantity</th><th>Rate</th><th>Amount</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.Items.Where(m=>m.Quantity!=null))
+                        {
+                            <tr>
+                                <td>@m.Material.Name</td>
+                                <td>@m.Quantity.GetValueOrDefault(0).ToString("0.00") @m.Material.UnitName</td>
+                                <td>₹ @m.Rate.GetValueOrDefault(0).ToString("0.00") / @m.Material.UnitName</td>
+                                <td>₹ @(((m.Quantity ?? 0) * (m.Rate ?? 0)).ToString("0.00"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr><td colspan="3" class="text-right"><b>Total Amount</b>:</td><td>₹ @Model.Completion.TotalAmount.ToString("0.00")</td></tr>
+                    </tfoot>
+                }
+                else
+                {
+                    <thead>
+                        <tr><th>Name</th><th>Rate</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.Items)
+                        {
+                            <tr>
+                                <td>@m.Material.Name</td>
+                                @if (!m.Rate.HasValue)
+                                {
+                                    <td>N/A</td>
+                                }
+                                else
+                                {
+                                    <td>₹ @m.Rate.Value.ToString("G29") / @m.Material.UnitName</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+        </div>
+    }*@
+@*@if (Model.PaymentMethod != null)
+    {
+        <div class="hpanel m-b-sm">
+            <table class="table">
+                <tr>
+                    <td class="no-borders"><b>Payment preference</b></td>
+                    <td class="text-right no-borders">@Model.PaymentMethod.Name</td>
+                </tr>
+            </table>
+        </div>
+    }*@
+@if (Model.PictureNames != null && Model.PictureNames.Count() > 0)
+{
+    <div class="hpanel m-b-sm">
+        <div class="panel-heading">Pictures</div>
+        <div class="panel-body">
+            <div id="links">
+                @foreach (string picture in Model.PictureNames)
+                {
+                    <a href="@urlGenerator.RequestPic(picture)" data-gallery>
+                        <img src="@urlGenerator.RequestPic(picture)" height="70">
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+@if (Model.RatingAndFeedbacks != null)
+{
+    <div class="hpanel m-b-sm">
+        <div class="panel-heading">Rating and Feedback</div>
+        <div class="panel-body p-sm">
+            <div class="row">
+                @if (Model.RatingAndFeedbacks.SellerRating != null)
+                {
+                    var labelClass = Model.RatingAndFeedbacks.SellerRating > 3 ? "label-success" : Model.RatingAndFeedbacks.SellerRating < 3 ? "label-danger" : "label-info";
+
+                    <div class="col-sm-6">
+                        <h5>Seller Rating</h5>
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.SellerRating >= i ? "fa-star":"fa-star-o")"></i>
+                        }
+
+                        @if (Model.RatingAndFeedbacks.SellerFeedbacks != null && Model.RatingAndFeedbacks.SellerFeedbacks.Count > 0)
+                        {
+                            <div class="p-t-xs p-b-xs">
+                                @foreach (var f in Model.RatingAndFeedbacks.SellerFeedbacks)
+                                {
+                                    <span class="label @labelClass">@f.Name</span>
+                                }
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.SellerRemark))
+                        {
+                            <blockquote class="small m-b-none">@Model.RatingAndFeedbacks.SellerRemark</blockquote>
+                        }
+                    </div>
+                }
+                @if (Model.RatingAndFeedbacks.PickupBoy != null)
+                {
+                    var labelClass = Model.RatingAndFeedbacks.PickupBoyRating > 3 ? "label-success" : Model.RatingAndFeedbacks.PickupBoyRating < 3 ? "label-danger" : "label-info";
+                    <div class="col-sm-6">
+                        <h5>Pickup Boy's Rating<br /><small>@(Model.RatingAndFeedbacks.PickupBoy != null ? "(by " + Model.RatingAndFeedbacks.PickupBoy.Name + ")" : "")</small></h5>
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.PickupBoyRating >= i ? "fa-star":"fa-star-o")"></i>
+                        }
+                        @if (Model.RatingAndFeedbacks.PickupBoyFeedbacks != null && Model.RatingAndFeedbacks.PickupBoyFeedbacks.Count > 0)
+                        {
+                            <div class="p-t-xs p-b-xs">
+                                @foreach (var f in Model.RatingAndFeedbacks.PickupBoyFeedbacks)
+                                {
+                                    <span class="label @labelClass">@f.Name</span>
+                                }
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.PickupBoyRemark))
+                        {
+                            <blockquote class="small m-b-none">@Model.RatingAndFeedbacks.PickupBoyRemark</blockquote>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+</div>
+<div class="col-md-6">
+    <div class="hpanel">
+        <div class="v-timeline vertical-container animate-panel" data-child="vertical-timeline-block" data-delay="1">
+            @foreach (var t in timeline.Where(m => m.Time != null).OrderBy(m => m.Time))
+            {
+                <div class="vertical-timeline-block" style="">
+                    <div class="vertical-timeline-icon navy-bg">
+                        <i class="fa @t.IconClass"></i>
+                    </div>
+                    <div class="vertical-timeline-content">
+                        <div class="p-xs">
+                            <span class="vertical-date pull-right text-center"><span class="small">@string.Format("{0:dd/MM/yyyy}", t.Time)</span><br /><small>@string.Format("{0:hh:mm tt}", t.Time)</small></span>
+                            @switch (t.Type)
+                            {
+                                case RequestTimelineTypes.Submission:
+                                    <div class="p-b-xs">Submitted by @Model.Submitter.Name</div>
+                                    if (!string.IsNullOrWhiteSpace(Model.Comment))
+                                    {<blockquote class="small m-b-none">@Model.Comment</blockquote> }
+                                <div><b>Source</b>: @Model.SourceApp.Name</div>
+                                break;
+                            case RequestTimelineTypes.SubmissionAndSchedule:
+                                var schedule = Model.Schedules.FirstOrDefault(m => m.Id == t.Id);
+                                <div class="p-b-xs">Submitted and scheduled for <strong>@string.Format("{0:ddd, dd MMM}", schedule.ScheduleDate), <small>@schedule.Slot.Text</small></strong> by @Model.Submitter.Name </div>
+                                if (!string.IsNullOrWhiteSpace(Model.Comment))
+                                {<blockquote class="small m-b-none">@Model.Comment</blockquote> }
+                            <div><b>Source</b>: @Model.SourceApp.Name</div>
+                            break;
+                        case RequestTimelineTypes.Schedule:
+                            schedule = Model.Schedules.FirstOrDefault(m => m.Id == t.Id);
+                            <div class="p-b-xs">Rescheduled for <strong>@string.Format("{0:ddd, dd MMM}", schedule.ScheduleDate), <small>@schedule.Slot.Text</small></strong> by @schedule.Scheduler.Name</div>
+                            <blockquote class="small m-b-none">@schedule.Reason.Reason</blockquote>
+                            <div><b>Source</b>: @schedule.SourceApp?.Name</div>
+                            @*<div><b>Reason</b>: @schedule.Reason.Reason</div>*@
+                            break;
+                        case RequestTimelineTypes.Assignment:
+                            var assignment = Model.Assignments.FirstOrDefault(m => m.Id == t.Id);
+                            <div class="p-b-xs">Assigned by @assignment.Assigner.Name</div>
+                            <div class="p-b-xs"><b>Vehicle</b>: @assignment.PickupSession.VehicleName <small>(@assignment.PickupSession.VehicleNumber)</small></div>
+                            <div><b>Pickup Boys</b>: @string.Join(", ", assignment.PickupSession.PickupBoys.Select(m => m.Name))</div>
+                            break;
+                        case RequestTimelineTypes.Handle:
+                            <div class="p-b-xs">Handled<br /><small>(updated by @Model.Completion.Updater.Name)</small></div>
+                            <div class="p-b-xs"><b>Handlers</b>: @string.Join(", ", Model.Completion.Handlers.Select(m => m.Name))</div>
+                            <div class="p-b-xs"><b>Handle Time</b>: @(Model.Completion.HandleStartTime != null ? string.Format("{0:dd MMM, hh:mm tt}", Model.Completion.HandleStartTime) + " - " : "")@string.Format("{0:dd MMM, hh:mm tt}", Model.Completion.HandleEndTime)</div>
+                            @if (Model.Completion.HandleStartTime != null)
+                            {
+                                int diff = (int)Model.Completion.HandleEndTime.Subtract(Model.Completion.HandleStartTime.Value).TotalSeconds;
+                                int min = diff / 60;
+                                int sec = diff % 60;
+                                <div class="p-b-xs"><b>Duration</b>: @(min > 0 ? min + " min" : "") @(sec > 0 ? sec + " sec" : "")</div>
+                            }
+                            <div><b>Source</b>: @Model.Completion.SourceApp?.Name</div>
+                            break;
+                        case RequestTimelineTypes.Cancellation:
+                            <div class="p-b-xs">Cancelled by @Model.Cancellation.Canceller.Name</div>
+                            <blockquote class="small m-b-none">@Model.Cancellation.Reason.Reason</blockquote>
+                            <div><b>Source</b>: @Model.Cancellation.SourceApp?.Name</div>
+                            @*<div><b>Reason</b>: @Model.Cancellation.Reason.Reason</div>*@
+                            break;
+                        case RequestTimelineTypes.Payment:
+                            var payment = Model.Completion!.PaymentTransactions.FirstOrDefault(m => m.Id == t.Id);
+                            if (payment.MethodId == PaymentMethod.Cash.Id)
+                            {
+                                if (payment.OfflinePayer == null)
+                                {
+                                    <div class="p-b-xs">Paid <strong>₹ @payment.Amount.ToString("0.00")</strong> of @payment.MethodName by @payment.Updater.Name</div>
+                                }
+                                else
+                                {
+                                    <div class="p-b-xs">Paid <strong>₹ @payment.Amount.ToString("0.00")</strong> of @payment.MethodName by @payment.OfflinePayer.Name <br /><small>(updated by @payment.Updater.Name)</small></div>
+                                }
+                            }
+                            else if (payment.MethodId == PaymentMethod.UPI.Id)
+                            {
+                                <div class="p-b-xs">Payment of <strong>₹ @payment.Amount.ToString("0.00")</strong> to UPI address "@payment.UPIAddress" by @payment.Updater.Name</div>
+                            }
+                            else if (payment.MethodId == PaymentMethod.PaytmWallet.Id)
+                            {
+                                <div class="p-b-xs">Payment of <strong>₹ @payment.Amount.ToString("0.00")</strong> in Paytm wallet "@payment.PaytmWalletNumber" by @payment.Updater.Name</div>
+                            }
+                            else if (payment.MethodId == PaymentMethod.IMPS.Id)
+                            {
+                                <div class="p-b-xs">Payment of <strong>₹ @payment.Amount.ToString("0.00")</strong> to Bank account (AccountNo: @payment.BankAccountNumber, IFSC: @payment.BankIFSC) through IMPS  by @payment.Updater.Name</div>
+                            }
+                            else if (payment.MethodId == PaymentMethod.UserWallet.Id)
+                            {
+                                <div class="p-b-xs">Payment of <strong>₹ @payment.Amount.ToString("0.00")</strong> in user's wallet by @payment.Updater.Name</div>
+                            }
+                            <div><span class="pull-right"><b>Status</b>: <span id="paymentStatusText_@payment.Id">@payment.StatusName</span></span><b>Transaction Id</b>: @payment.Id</div>
+                            @if (payment.StatusId == PaymentTransactionStatus.Pending.Id)
+                            {
+                                <div id="paymentTransactionStatusCheckButtonContainer_@payment.Id">
+                                    <span class="small" id="paymentTransactionStatusCheckMessage_@payment.Id"></span>
+                                    <button data-paymentid="@payment.Id" id="paymentTransactionStatusCheckButton_@payment.Id" class="btn btn-link btn-xs paymentTransactionStatusCheckButton">Check Status</button>
+                                </div>
+                                <br />
+                            }
+                            if (!string.IsNullOrWhiteSpace(payment.Comment))
+                            { <blockquote class="small m-b-none">@payment.Comment</blockquote>}
+                        break;
+                }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    $(function () {
+        $(".paymentTransactionStatusCheckButton").on("click",function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var paymentId = btn.attr("data-paymentid");
+            var messageSpan = $("#paymentTransactionStatusCheckMessage_" + paymentId);
+
+            btn.attr("disabled", "").html("Checking status");
+            $.ajax({
+                url:"@Url.Action("CheckRequestPaymentStatus","Request")?paymentTransactionId="+paymentId,
+                method: "post",
+                success: function (data) {
+                    if (data != null && data != "") {
+                        var statusText = data.statusId == @PaymentTransactionStatus.Pending.Id ? "Pending" : data.statusId == @PaymentTransactionStatus.Successful.Id ? "Successful" : "Failed";
+                        $("#paymentStatusText_" + paymentId).html(statusText);
+                        messageSpan.removeClass("text-danger").addClass("text-success").html("Payment status has been updated.");
+                    } else {
+                        messageSpan.removeClass("text-success").addClass("text-danger").html("Failed to check status due to an error.");
+                    }
+                },
+                error: function () {
+                        messageSpan.removeClass("text-success").addClass("text-danger").html("Failed to check status due to an error.");
+                },
+                complete: function () {
+                    btn.removeAttr("disabled").html("Re-check status");
+                }
+            });
+        })
+    });
+</script>
+<lib name="BlueImpGallery" />

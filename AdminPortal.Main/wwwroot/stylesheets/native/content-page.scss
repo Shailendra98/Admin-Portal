@@ -1,0 +1,19 @@
+﻿.content-box {
+    padding-top: 15px;
+
+    .panel-heading {
+        background-color: #fff;
+        text-align: center;
+        padding: 10px 5px;
+        border:1px solid $border-color;
+    }
+
+    .panel-body {
+        padding:40px;
+        p {
+            color: lighten($color-text,10%);
+            font-size:18px;
+            font-weight:400;
+        }
+    }
+}

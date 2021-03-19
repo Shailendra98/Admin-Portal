@@ -1,0 +1,3 @@
+﻿@{    
+    Layout = user?.Current?.Role == ApplicationCore.Enums.UserRole.Admin ? "_LayoutAdmin" : user?.Current.Role == ApplicationCore.Enums.UserRole.FranchiseAdmin ? "_LayoutFranchiseAdmin" : "_LayoutTeleCaller";
+}

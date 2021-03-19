@@ -1,0 +1,24 @@
+﻿@page "{id:long}"
+@model DetailsModel
+@{
+    ViewBag.Title = "Request Details";
+}
+<pagetitle title="Request details" description="All details of request"></pagetitle>
+<div class="content"><partial name="_Details" for="RequestModel" /></div>
+@section Footer{
+    <div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+    }
+@*@section Styles{ 
+    <link href="~/css/blueimggallery.min.css" rel="stylesheet" asp-append-version="true" />
+}
+@section Scripts{
+    <script src="~/js/blueimggallery.min.js" asp-append-version="true" type="text/javascript"></script>
+}*@

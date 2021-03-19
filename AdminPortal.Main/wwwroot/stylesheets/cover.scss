@@ -1,0 +1,47 @@
+﻿@import "bootstrap/_variables.scss";
+body{
+    text-align:center;
+}
+.navbar-nav {
+    li {
+        display: inline-block;
+    }
+}
+.navbar-header {
+    display:inline-block;
+}
+@media(max-width:$grid-float-breakpoint-max){
+    .navbar-fixed-top{
+        position:absolute;
+    }
+}
+.frontMobileNo {
+    border-left: none;
+    
+    &:focus,&:active {
+        box-shadow:none;
+        border-color:$input-border;
+    }
+}
+.requestmsgbox {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+ .panel-heading {
+    font-family: 'Century Gothic';
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px;
+ }
+ .panel {
+    box-shadow: 0px 0px 15px grey;
+    border-radius: 13px;
+    border-color: #27AE60;
+}
+ .panel-body {
+    font-size: small;
+}
+    @media (min-width: $grid-float-breakpoint) {
+        position: relative;
+        top: 80px;
+    }
+}

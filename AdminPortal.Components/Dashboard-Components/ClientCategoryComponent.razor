@@ -1,0 +1,64 @@
+﻿@using ChartJs.Blazor.PieChart
+@using System.Drawing
+@using AdminPortal_Component.SharedComponents
+
+
+<div class="mb-3">
+    <h6 class="font-weight-bold text-secondary small">Client Category</h6>
+    <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
+        <div class="card-body">
+            <Chart Config="_config"></Chart>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private PieConfig _config;
+
+    protected override void OnInitialized()
+    {
+
+        _config = new PieConfig()
+        {
+
+            Options = new PieOptions
+            {
+
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Position = Position.Right
+                },
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                    Text = "ChartJs.Blazor Pie Chart"
+                }
+
+            }
+        };
+
+        foreach (string color in new[] { "HouseHold", "Office/Shop", "Institute", "Food", "Mall/Outlet", "Other" })
+        {
+            _config.Data.Labels.Add(color);
+        }
+
+        PieDataset<int> dataset = new PieDataset<int>(new[] { 6, 5, 3, 7, 2, 1 })
+        {
+            BackgroundColor = new[]
+            {
+            ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
+            ColorUtil.ColorString(92, 198, 65, 0.7), // Slice 2 aka "Yellow"
+            ColorUtil.ColorString(92, 198, 65, 0.5), // Slice 3 aka "Green"
+            ColorUtil.ColorString(92, 198, 65, 0.3), // Slice 4 aka "Blue"
+            ColorUtil.ColorString(92, 198, 65, 0.1),
+            ColorUtil.ColorString(92, 198, 65, 0.6),
+            ColorUtil.ColorString(92, 198, 65, 0.4),
+        }
+        };
+
+        _config.Data.Datasets.Add(dataset);
+    }
+
+}

@@ -1,0 +1,73 @@
+﻿@using ChartJs.Blazor.PieChart
+@using System.Drawing
+@using AdminPortal_Component.SharedComponents
+
+<div class="mb-3">
+    <h6 class="font-weight-bold text-secondary small">New Customers</h6>
+    <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);"> 
+        <div class="card-body py-2">
+            <div class="position-relative">
+                <Chart Config="_config"></Chart>
+            </div>
+            <div class="position-absolute text-center" style="top: 50%; left: 50%; transform: translate(-50%, 50%);">
+                <h6 class="small font-weight-bold text-secondary"> 34.5 %</h6>
+                <small class="font-weight-bolder">60</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private PieConfig _config;
+
+    protected override void OnInitialized()
+    {
+
+        _config = new PieConfig(true)
+        {
+
+
+            Options = new PieOptions
+            {
+                AspectRatio = 1,
+                MaintainAspectRatio = true,
+                Responsive = true,
+                CutoutPercentage = 80,
+
+                Rotation = 1 * Math.PI,
+                Circumference = 1 * Math.PI,
+                
+                Legend = new Legend
+                {
+                    Display = false,
+                    Position = Position.Right
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = true,
+                    Text = "New Customers this month"
+                }
+
+
+            }
+        };
+
+        foreach (string color in new[] { "New Customers", "Left" })
+        {
+            _config.Data.Labels.Add(color);
+        }
+
+        PieDataset<int> dataset = new PieDataset<int>(new[] { 7, 3 })
+        {
+            BackgroundColor = new[]
+            {
+            ColorUtil.ColorString(92, 198, 65, 1),
+            ColorUtil.ColorString(92, 198, 65, 0.1), 
+
+            }
+        };
+
+        _config.Data.Datasets.Add(dataset);
+    }
+}

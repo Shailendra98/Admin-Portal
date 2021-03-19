@@ -1,0 +1,76 @@
+﻿@page
+@model TKW.AdminPortal.Pages.Ajax.OTPModel
+@{
+}
+    <div class="panel-body text-center">
+        <div class="pull-left"><a href="#" onclick="$('#SignContent').html('<div class=\'panel-body text-center\'><img src=\'/images/ripple.gif\'></div>').load('/Account/_SignIn/@Model');"><i class="fa fa-arrow-left text-muted"></i></a></div>
+        <h4 class="font-bold">
+            Check your phone !!
+            <br /><br />
+            <small>An OTP has been sent to your mobile number.</small>
+        </h4>
+        <br />
+        <form method="post"
+              data-ajax="true"
+              data-ajax-url="@Url.Page("OTP")"
+              data-ajax-update="#otp_validation"
+              data-ajax-method="post"
+              data-ajax-begin="$('#otp_fieldset').attr('disabled','');" ,
+              data-ajax-complete="$('#otp_fieldset').removeAttr('disabled');">
+
+            <input asp-for="MobileNo" />
+            <input asp-for="ReturnUrl" />
+            <fieldset id="otp_fieldset">
+                <div class="text-right" id="otp_resend_container">
+                    Resend OTP in <span id="otp_timer">70</span> seconds.
+                </div>
+                <input type="hidden" name="username" value="@Model" />
+                <div class="mb-3">
+                    <label asp-for="OTP" class="control-label sr-only"></label>
+                    <input asp-for="OTP" class="form-control" placeholder="Enter OTP" />
+                    <span asp-validation-for="OTP" class="text-danger small" id="otp_validation"></span>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success p-l-md p-r-md font-bold" type="submit">SIGN IN</button>
+                </div>
+            </fieldset>
+
+        </form>
+        <script>
+        var timer = 70;
+        function otptimer() {
+            if (timer > 0) {
+                $("#otp_timer").html(--timer);
+                setTimeout("otptimer();", 999);
+            } else {
+                $("#otp_resend_container").html("<button class='btn btn-link btn-sm' type='button' onclick='resendOtp()'>Resend Otp</button>");
+            }
+            }
+            function resendOtp() {
+               $.ajax({
+                    url: "@Url.Action("Send", "OTP", new
+                    {
+                        ReturnUrl = Model.ReturnUrl
+                    })",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("RequestVerificationToken",
+                            token);
+                    },
+                    method: "POST",
+                    data: {
+                        MobileNo: username.val(),
+                    },
+                    success: function (data) {
+                        $("#SignContent").html(data);
+                    },
+                    error: function () {
+                        $("#SignContent").html("<div class='panel-body text-center'><div class='alert alert-danger'>Please check your internet connection and reload the page.</div></div>");
+                    }
+                });
+            }
+        otptimer();
+        </script>
+    </div>
+
+
+

@@ -1,0 +1,96 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal-Component.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal-Component.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal-Component.csproj",
+        "projectName": "AdminPortal-Component",
+        "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal-Component.csproj",
+        "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\NuGet.Config",
+          "C:\\Users\\Sameer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/The-Kabadiwala/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "ChartJs.Blazor.Fork": {
+              "target": "Package",
+              "version": "[2.0.2, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.3, )"
+            },
+            "System.Net.Http.Json": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Runtime.browser-wasm",
+              "version": "[5.0.4, 5.0.4]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "browser-wasm": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

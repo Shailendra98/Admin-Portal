@@ -1,0 +1,56 @@
+﻿@page "{id:int}"
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.ExpensesModel
+@{
+    Layout = null;
+}
+<div class="hpanel">
+    <div class=" panel-body p-3">
+        @if (Model.Expenses == null || Model.Expenses.Count == 0)
+        {
+            <div class="text-center p-sm">
+                There is no expense.
+            </div>
+        }
+        else
+        {@foreach (var Expense in Model.Expenses)
+            {
+                <div class="hpanel mb-2">
+                    <div class="panel-body  py-0 px-1">
+                        <div class="row px-2 py-3">
+                            <div class="col-md-1 text-center"><b>@Expense.Id</b></div>
+                            <div class="col-md-11">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <span class="no-margins text-nowrap">@Expense.Type.Name</span>
+                                    </div>
+                                    <div class="col-md-4 ps-3">
+                                        <span class="float-start"><small>Amount : ₹</small><b> @Expense.Amount.ToString("0.00")</b></span>
+                                        <span class="float-end">@Expense.Comment</span>
+                                    </div>
+                                    <div class="col-md-3 text-end">
+                                        <small> Updated by</small> @Expense.Updater.Name
+                                    </div>
+                                    <div class="col-md-3 text-center">
+                                        <small class="float-start font-trans">
+                                            @string.Format("{0:hh:mm tt}", Expense.Time)
+                                        </small>
+                                        <a href="#ExpenseModal" data-bs-toggle="modal" data-bs-target="#ExpenseModal" data-load-url="@Url.Page("Modal/Details", new {area = "Expense", Expense.Id})" class="btn btn-default btn-xs detailbtn">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }}
+    </div>
+</div>
+<script>
+    $(function () {
+        $(document).on("click", ".detailbtn", function (e) {
+            e.preventDefault();
+            $('#ExpenseModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/ExpenseList' + $(this).data('id'));
+        });
+
+    });
+</script>
+@*style="background-color: #dff0d8"*@

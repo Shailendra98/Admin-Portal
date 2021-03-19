@@ -1,0 +1,275 @@
+﻿@model TKW.ApplicationCore.Contexts.SellContext.DTOs.SellModel
+@using TKW.ApplicationCore.Contexts.SellContext.Aggregates.SellAggregate
+@using TKW.AdminPortal.Areas.Sell.ViewModels
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    List<SellTimelineModel> timeline = new List<SellTimelineModel>();
+    var firstSchedule = Model.UpdateTime;
+    if (firstSchedule != null)
+    {
+        timeline.Add(new SellTimelineModel
+        {
+            //Id = firstSchedule.Id,
+            Time = Model.UpdateTime,
+            Type = SellTimelineModel.SellTimelineTypes.Pending,
+            IconClass = "fa-plus"
+        });
+    }
+    if (Model.Completion != null)
+    {
+        timeline.Add(new SellTimelineModel
+        {
+            Time = Model.Completion.HandledTime,
+            Type = SellTimelineModel.SellTimelineTypes.Handled,
+            IconClass = "fa-check text-success"
+        });
+        if (Model.Completion.CompletionTime != null)
+        {
+            timeline.Add(new SellTimelineModel
+            {
+                Time = Model.Completion.CompletionTime,
+                Type = SellTimelineModel.SellTimelineTypes.Completed,
+                IconClass = "fa-money text-success"
+            });
+        }
+    }
+    else if (Model.Cancellation != null)
+    {
+        timeline.Add(new SellTimelineModel
+        {
+            Time = Model.Cancellation.CancellationTime,
+            Type = SellTimelineModel.SellTimelineTypes.Cancelled,
+            IconClass = "fa-close text-danger"
+        });
+    }
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <b>Id:</b> @Model.Id
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-right">
+                            @*<span style="font-size:85%;" class="label @(Model.Status.Id == SellStatus.Submitted.Id ? "label-default" : Model.Status.Id == SellStatus.Cancelled.Id ? "label-danger" : "label-success")"> @Model.Status.Name</span>*@
+                            <label class="float-end badge @(Model.Status.Id == SellStatus.Submitted.Id ? "bg-default" : Model.Status.Id == SellStatus.Cancelled.Id ? "bg-danger" : "h-bg-green")">@Model.Status.Name</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hpanel mb-3">
+            <div class="panel-heading">Buyer</div>
+            <div class="panel-body">
+                <h6 class="mt-1">@Model.Buyer.OwnerName <small>(@Model.Buyer.OwnerMobileNo)</small></h6>
+                <div>
+                    @Model.Buyer.FirmName
+                </div>
+                @if (Model.Buyer.LocalityId != null)
+                {
+                    <div class="pt-2"> <address class="mb-0" addressline="@Model.Buyer.AddressLine" locality="@Model.Buyer.LocalityName" pincode="@Model.Buyer.Pincode"></address></div>
+                }
+            </div>
+        </div>
+        <div class="hpanel mb-3">
+            <div class="panel-heading">Warehouse </div>
+            <div class="panel-body p-3">
+                <h6 class="mt-1"> @Model.Warehouse.Name</h6>
+                <div>
+                    <address class="mb-0" addressline="@Model.Warehouse.AddressLine" locality="@Model.Warehouse.LocalityName" pincode="@Model.Warehouse.Pincode" ></address>
+                </div>
+            </div>
+        </div>
+        @if (Model.Items != null)
+        {
+            <div class="hpanel">
+                <div class="panel-heading">
+                    Materials
+                </div>
+                @if (Model.Status.Id == SellStatus.Submitted.Id || Model.Status.Id == SellStatus.Cancelled.Id)
+                {
+                    <div class="panel-body">
+                        <b> @string.Join(", ", Model.Items.Select(m => m.MaterialName))</b>
+                    </div>
+                }
+                else if (Model.Status.Id == SellStatus.Handled.Id)
+                {
+                 
+                        <table class="panel-body table table-hover table-responsive text-center table-borderless">
+                            <thead class="border-bottom">
+                                <tr><th class="text-center">Name</th><th class="text-center">Quantity</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var m in Model.Items)
+                                {
+                                    <tr class="border-bottom">
+                                        <td>@m.MaterialName</td>
+                                        <td>@m.ActualQuantity.Value.ToString("0.00") @m.MaterialUnitName</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                }
+                else
+                {
+                    <table class="panel-body table table-hover table-responsive table-borderless">
+                        <thead class="border-bottom">
+                            <tr><th>Name</th><th>Quantity</th><th>Diff. Qty.</th><th>Rate</th><th class="text-right">Amount</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in Model.Items)
+                            {
+                                <tr class="border-bottom">
+                                    <td>@m.MaterialName</td>
+                                    <td>@m.ActualQuantity!.Value.ToString("0.00") @m.MaterialUnitName</td>
+                                    <td>@m.DifferenceQuantity!.Value.ToString("0.00") @m.MaterialUnitName</td>
+                                    <td>₹ @m.Rate!.Value.ToString("0.00") / @m.MaterialUnitName</td>
+                                    <td class="text-right">₹ @((m.ActualQuantity * m.Rate).Value.ToString("0.00"))</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            @if (Model.Completion?.InvoiceNo != null)
+                            {
+                                <tr>
+                                    <td class="text-right no-borders" colspan="4">
+                                        <div class="pull-left">
+                                            <b>Invoice No.:</b> @Model.Completion.InvoiceNo
+                                        </div>
+                                        <b>Amount</b>:
+                                    </td>
+                                    <td class="text-right no-borders fw-bold">₹ @Model.Completion.Amount.Value.ToString("0.00")</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right no-borders" colspan="4">
+                                        <div class="pull-left">
+                                            @if (Model.Completion.IsIGST == true)
+                                            {
+                                                <b>IGST:</b>
+                                                <span>₹ @Model.Completion.GSTAmount!.Value.ToString("0.00")</span>
+                                            }
+                                            else
+                                            {
+                                                decimal val = Model.Completion.GSTAmount!.Value / 2;
+                                                <b>SGST & CGST:</b>
+                                                <span>₹ @val.ToString("0.00") & ₹ @val.ToString("0.00")</span>
+                                            }
+                                        </div>
+                                        <b>GST</b>:
+                                    </td>
+                                    <td class="text-right">₹ @Model.Completion.GSTAmount.Value.ToString("0.00")</td>
+                                </tr>
+                            }
+                            <tr><td class="text-right border-0" colspan="4"><b>Total Amount</b>:</td><td class="text-right font-bold">₹ @((Model.Completion?.Amount + (Model.Completion?.GSTAmount ?? 0))!.Value.ToString("0.00"))</td></tr>
+                        </tfoot>
+                    </table>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <div class="hpanel">
+            <div class="v-timeline vertical-container animate-panel" data-child="vertical-timeline-block" data-delay="1">
+                @foreach (var t in timeline.Where(m => m.Time != null).OrderBy(m => m.Time))
+                {
+                    <div class="vertical-timeline-block">
+                        <div class="vertical-timeline-icon navy-bg">
+                            <i class="fa @(t.IconClass)"></i>
+                        </div>
+                        <div class="vertical-timeline-content">
+                            <div class="p-2">
+                                <span class="vertical-date pull-right">@string.Format("{0:dd/MM/yyyy}", t.Time)<br /> <small>@string.Format("{0:hh:mm tt}", t.Time)</small> </span>
+                                @switch (t.Type)
+                                {
+                                    case SellTimelineModel.SellTimelineTypes.Pending:
+                                        <div class="pb-2">
+                                            Created & Assigned by @Model.Updater.Name
+                                        </div>
+                                        if (Model.PickupSession != null)
+                                        {
+                                            <div class="pb-1">
+                                                <b>Vehicle </b>: @Model.PickupSession.VehicleName <small>@Model.PickupSession.VehicleNumber</small>
+                                            </div>
+                                            if (Model.PickupSession.PickupBoys.Count() > 0)
+                                            {
+                                                <div class="pb-2">
+                                                    <b>Pickup Boys </b>: @string.Join(", ", Model.PickupSession.PickupBoys.Select(m => m.Name))
+                                                </div>
+                                            }
+                                        }
+                                        if (Model.Comment != null)
+                                        {
+                                            <div>
+                                                <blockquote class="small mb-2">@Model.Comment</blockquote>
+                                            </div>
+                                        }
+                                        break;
+                                    case SellTimelineModel.SellTimelineTypes.Handled:
+
+                                        if (Model.Completion.HandleUpdater != null)
+                                        {
+                                            <div class="pb-2">
+                                                Handled by @Model.Completion.HandleUpdater.Name
+                                            </div>
+                                        }
+                                        if (Model.Completion.Handlers != null)
+                                        {
+                                            <div class="pb-2">
+                                                <b>Pickup Boys </b>: @string.Join(", ", Model.Completion.Handlers.Select(m => m.Name))
+                                            </div>
+                                        }
+                                        if (Model.Completion.CashReceivedFromBuyer != null)
+                                        {
+                                            <span>
+                                                Cash Received ₹ <b>@Model.Completion.Amount!.Value.ToString("0.00")</b>
+                                            </span>
+                                        }
+                                        if (Model.Completion.HandleComment != null)
+                                        {
+                                            <div>
+                                                <blockquote class="small mb-2">@Model.Completion.HandleComment</blockquote>
+                                            </div>
+                                        }
+                                        if (Model.Completion.BillPictureName != null)
+                                        {
+                                            <a class="pull-right btn btn-link btn-default btn-xs" href="@urlGenerator.SellBillPic(Model.Completion.BillPictureName)" data-gallery>
+                                                Bill Picture
+                                            </a>
+                                            <lib name="BlueImpGallery" />
+                                        }
+
+                                        break;
+                                    case SellTimelineModel.SellTimelineTypes.Completed:
+                                        <div class="pb-2">
+                                            Completed by @Model.Completion.CompletionUpdater.Name
+                                        </div>
+
+                                        if (Model.Completion.CompletionComment != null)
+                                        {
+                                            <div>
+                                                <blockquote class="small mb-2">@Model.Completion.HandleComment</blockquote>
+                                            </div>
+                                        }
+                                        break;
+                                    case SellTimelineModel.SellTimelineTypes.Cancelled:
+                                        <div class="pb-2">
+                                            Cancelled by @Model.Cancellation.Canceller.Name
+                                        </div>
+                                        if (Model.Cancellation.Reason != null)
+                                        {
+                                            <div>
+                                                <blockquote class="small mb-2">@Model.Cancellation.Reason.Reason </blockquote>
+                                            </div>
+                                        }
+                                        break;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

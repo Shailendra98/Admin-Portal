@@ -1,0 +1,47 @@
+﻿// Import Google font
+/*@import url("../fonts/HarmoniaSansProCyr-Regular.otf");*/
+/*@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");*/
+// Color list
+$color-navy-blue: #34495e;
+$color-violet: #9b59b6;
+$color-blue: #3498db;
+$color-green: #62cb31;
+$color-yellow: #ffb606;
+$color-orange: #e67e22;
+$color-red: #e74c3c;
+$color-red-deep: #c0392b;
+
+// Additional colors
+$color-text: #6a6c6f;
+$color-bright: #f7f9fa;
+$color-background: #f1f3f6;
+$color-background-boxed: lighten($color-background, 3%);
+$border-color: #e4e5e7;
+
+$border-color1:#707070;
+// Additional variables
+/*$menu-width: 180px;
+$main-transition: all 0.1s ease-out 0s;*/
+
+// Import all styles
+
+// Components
+@import "homer/components/modal";
+@import "homer/components/inputs";
+@import "homer/components/buttons";
+@import "homer/components/panels";
+
+// Utilities
+@import "homer/utilities/backgrounds";
+@import "homer/utilities/borders";
+@import "homer/utilities/colors";
+@import "homer/utilities/margins";
+/*@import "homer/utilities/layout";*/
+@import "homer/utilities/grid";
+/*@import "homer/utilities/heights_widths";*/
+/*@import "homer/utilities/fonts";*/
+/*@import "homer/utilities/various";*/
+
+// Styles for landing page
+@import "homer/pages/landing";
+/*@import "Native/ContentPage";*/

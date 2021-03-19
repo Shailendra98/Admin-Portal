@@ -1,0 +1,155 @@
+﻿@page
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Invoice</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="~/css/invoicestyle.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="container container-p" style="max-width:1000px; font-size:12px;">
+        <div class="row p-sm">
+            <div class="col-sm-12 text-center" style="padding:20px;">
+                <span>
+                    <img src="~/images/the-kabadiwala-logo (1).png" height="40" />
+                </span>
+                <span class="h3 font-extra-bold">
+                    The Kabadiwala
+                </span>
+            </div>
+        </div>
+        <div class="row p-sm">
+            <div class="col-sm-6 col-print-6">
+                <strong> Asar Green kabadi Pvt. Ltd.</strong><br>
+                B-Nest, Smart City,<br /> Bhopal Office<br>
+                Near Natraj Petrol Pump <br>Sector A Berkheda Bhopal<br>
+                <strong>State </strong> &nbsp;: MP , <strong>Code</strong>&nbsp; : 23
+               
+            </div>
+            <div class="col-sm-6  col-print-6" style="text-align:-webkit-right">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><strong>Invoice No</strong>&nbsp;</td>
+                            <td class="text-right">236</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date</strong> &nbsp;</td>
+                            <td class="text-right">12 Jan 2020</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vehicle No</strong> &nbsp;</td>
+                            <td class="text-right">MP 08 HY 7865</td>
+                        </tr>
+                        <tr>
+                            <td> <strong> GSTIN</strong>&nbsp;</td>
+                            <td class="text-right">23AANCA8009M1ZF</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>CIN</strong> &nbsp;</td>
+                            <td class="text-right">U74900MP2014</td>
+                        </tr>
+                        <tr>
+                            <td><strong>E-Mail</strong> &nbsp;</td>
+                            <td class="text-right">anurag@thekabadiwala.com</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+              
+            </div>
+        </div>
+        <div class="row p-sm">
+         
+            <div class="col-sm-12 text-center">
+                <h4>Tax Invoice</h4>
+            </div>
+           
+        </div>
+        <div class="row p-sm">
+            <div class="col-md-6  col-print-6">
+                Buyer Detail<br />
+                <strong>Shivani Deshmukh</strong><br />
+                9898989898<br />
+                H. No. 80 kailash nagar Govindpura,<br />
+                Bhopal, Madhya Pradesh - 463439<br />
+                <strong>GSTIN</strong> : 44332HGFRUHJH6789<br />
+                <strong>State</strong> : Gujrat , <strong>Code</strong> : 24
+            </div>
+            @*<div class="col-md-6 col-print-6 " style="text-align:-webkit-right; padding-right:65px;">
+                <table >
+                    <tbody >
+                        
+                    </tbody>
+                </table>
+           
+            </div>*@
+        </div>
+
+        <div class="row p-sm" style="padding-top:30px;">
+            <div class="col-xs-12">
+                <div class="row b-p-b f-border">
+                    <div class="col-xs-1 "><p>S.No.</p></div>
+                    <div class="col-xs-2 "><p>MATERIAL</p></div>
+                    <div class="col-xs-2"><p>HSN</p></div>
+                    <div class="col-xs-2"><p>QUANTITY </p></div>
+                    <div class="col-xs-2"><p>RATE</p></div>
+                    <div class="col-xs-1 "><p>GST</p></div>
+                    <div class="col-xs-2 text-right"><p>AMOUNT</p></div>
+                </div>
+                <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                    <div class="col-xs-1"><span class="h5 no-margins font-extra-bold ">1</span></div>
+                    <div class="col-xs-2"><span class="h5 no-margins font-extra-bold ">Paper</span></div>
+                    <div class="col-xs-2"><span class="h5 no-margins font-extra-bold ">6325</span></div>
+                    <div class="col-xs-2"><span class="h5 no-margins font-extra-bold ">8</span><small class="print-p-t"> kg</small></div>
+                    <div class="col-xs-2"><small>₹ </small><span class="h5 no-margins font-extra-bold ">6.22</span><small class="print-p-t"> / kg</small></div>
+                    <div class="col-xs-1"><Span class="h5 no-margins font-extra-bold ">7%<br /><small class="print-p-t">700</small></Span></div>
+                    <div class="col-xs-2 text-right"><span><small class="print-p-t">₹ </small><span class="h5 no-margins font-extra-bold ">67890</span></span></div>
+                </div>
+                <div class="row" style="padding-top:10px; padding-bottom:10px;">
+                    <div class="col-xs-1"><span class="h5 no-margins font-extra-bold ">2</span></div>
+                    <div class="col-xs-2"><span class="h5 no-margins font-extra-bold ">plastic</span></div>
+                    <div class="col-xs-2"><span class="h5 no-margins font-extra-bold ">6789</span></div>
+                    <div class="col-xs-2"><span class="h5 no-margins font-extra-bold ">9</span><small class="print-p-t"> kg</small></div>
+                    <div class="col-xs-2"><small>₹ </small><span class="h5 no-margins font-extra-bold ">7.22</span><small class="print-p-t"> / kg</small></div>
+                    <div class="col-xs-1"><Span class="h5 no-margins font-extra-bold ">5%<br /><small class="print-p-t">700</small></Span></div>
+                    <div class="col-xs-2 text-right"><span><small class="print-p-t">₹ </small><span class="h5 no-margins font-extra-bold ">39065</span></span></div>
+                </div>
+                <div class="row" style="border-top: 2px solid #ddd; padding-top:10px;">
+                    <div class="col-xs-9"></div>
+
+                    <div class="col-xs-1"><span class="h5 no-margins font-extra-bold">Total</span></div>
+                    <div class="col-xs-2 text-right"><span class="h5 no-margins font-extra-bold"><small class="print-p-t">₹ </small>69890</span></div>
+                </div>
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-xs-9"></div>
+
+                    <div class="col-xs-1"><span class="h5 no-margins font-extra-bold">GST</span></div>
+                    <div class="col-xs-2 text-right"><span class="h5 no-margins font-extra-bold"><small class="print-p-t">₹ </small>890</span></div>
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="f-s" style="padding-top:20px; padding-bottom:20px;">
+            <div class="container" style="max-width:1000px;">
+                <div class="row f-border p-b-r">
+                    <div class="col-xs-6"><p>PAYMENT METHOD</p></div>
+                    <div class="col-xs-6 text-right"><p>TOTAL AMOUNT</p></div>
+                </div>
+                <div class="row f-border p-sm">
+                    <div class="col-xs-6 text-left h4 font-extra-bold heading font1"><P>Cash</P></div>
+                    <div class="col-xs-6 text-right h4 font-extra-bold heading font1"><p>₹ 68890</p><small>Sixty Seven Thaousand Eight Hundred Ninety</small></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

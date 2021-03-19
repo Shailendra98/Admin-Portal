@@ -1,0 +1,55 @@
+﻿@page "{UserId:int}"
+@model TKW.AdminPortal.Pages.Ajax.Address_.ListModel
+<modal-header title="Select Address" close-button="true">
+</modal-header>
+@if (Model.Addresses == null)
+{
+    <div class="alert alert-warning text-center mb-0">
+        There is no address!<br />Click on the <strong>New Address</strong> button below to add one.
+    </div>
+}
+else
+{
+    <div class="list-item">
+        @foreach (var address in Model.Addresses)
+        {
+            <a data-addrid="@address.Id" class="list-group-item addr" href="#">
+                <address class="m-b-none" addressline="@address.AddressLine"
+                           type="@address.Type"
+                         locality="@address.LocalityName"
+                         city="@address.CityName "
+                         state="@address.StateName "
+                         pincode="@address.Pincode "
+                         name="@address.Name"
+                         mobile-no="@address.MobileNo">
+                </address>
+            </a>
+        }
+    </div>
+}
+<modal-footer>
+    <button type="button" data-bs-dismiss="modal" class="btn btn-default">Close</button>
+    <button type="button" id="newAddrBtn" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> New Address</button>
+
+</modal-footer>
+<script>
+    $(function () {
+        var modalContent = $("#@Model.ModalId").find(".modal-content");
+        $("a.addr").click(function (e) {
+            e.preventDefault();
+            var self = $(this);
+            modalContent.trigger(
+                {
+                    type:"action.done",
+                    id:self.data('addrid'),
+                    html:self.html()
+                }
+            );
+        });
+        $("#newAddrBtn").click(function (e) {
+            e.preventDefault();
+            modalContent.html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..' /></div>");
+            modalContent.load("/Ajax/Address/Modal/New/@Model.UserId?ModalId=@Model.ModalId");
+        });
+    });
+</script>

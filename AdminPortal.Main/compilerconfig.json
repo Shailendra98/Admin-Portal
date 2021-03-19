@@ -1,0 +1,22 @@
+﻿[
+  {
+    "outputFile": "wwwroot/stylesheets/bootstrap.css",
+    "inputFile": "wwwroot/stylesheets/bootstrap.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/invoicestyle.css",
+    "inputFile": "wwwroot/stylesheets/invoicestyle.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/landing-page.css",
+    "inputFile": "wwwroot/stylesheets/landing-page.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/awesome-bootstrap-checkbox.css",
+    "inputFile": "wwwroot/stylesheets/awesome-bootstrap-checkbox.scss"
+  },
+  {
+    "outputFile": "wwwroot/scripts/bootstrap-datetimepicker.es5.js",
+    "inputFile": "wwwroot/scripts/bootstrap-datetimepicker.js"
+  }
+]

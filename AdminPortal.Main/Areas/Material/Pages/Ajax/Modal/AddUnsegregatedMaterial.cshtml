@@ -1,0 +1,79 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal.AddUnsegregatedMaterialModel
+@{
+    Layout = null;
+}
+<modal-header title="Add Unsegregated Material" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Material has been added.</div>
+        </div>
+    </modal-body>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("AddUnsegregatedMaterial")"
+          data-ajax-begin="$('#AddPurchaseStockMaterialFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#AddPurchaseStockMaterialFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="AddPurchaseStockMaterialFieldSet">
+            <modal-body>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold text-left" asp-for="Name">Name</label><br />
+                            <input class="form-control" type="text" asp-for="Name" placeholder="Material Name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="SegregatedMaterialIds" class="col-form-label fw-bold"></label>
+                            <select class="form-select" asp-for="SegregatedMaterialIds" asp-items="Model.SegregatedMaterials" multiple>
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="SegregatedMaterialIds" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">Unit</label>
+                            <div class="ps-3">
+                                @foreach (var unit in Model.Units)
+                                {
+                                    <div class="form-check p-2 form-check-inline">
+                                        @if (Model.UnitId == unit.Id)
+                                        {
+                                            <input class="form-check-input" id="Unit_@unit.Id" asp-for="UnitId" checked value="@unit.Id" type="radio" />
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" id="Unit_@unit.Id" asp-for="UnitId" value="@unit.Id" type="radio" />
+                                        }
+                                        <label for="Unit_@unit.Id" class="form-check-label">@unit.Name</label>
+                                    </div>
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </modal-body>
+            <modal-footer>
+                <button class="btn btn-success" type="submit">Add Material</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+    <script>
+        $(function () {
+            $("#@Html.IdFor(m=>m.SegregatedMaterialIds)").select2AutoParent({ placeholder: "Select Materials" });
+        });
+    </script>
+}

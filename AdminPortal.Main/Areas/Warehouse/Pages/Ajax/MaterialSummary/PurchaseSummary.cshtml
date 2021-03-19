@@ -1,0 +1,43 @@
+﻿@page "{id:int}"
+@using Newtonsoft.Json
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.MaterialSummary.UnsegregatedModel
+@{
+    Layout = null;
+}
+
+<div class="panel-body p-3">
+
+    @if (Model.Filter.StartDate == null && Model.Filter.EndDate == null)
+    {
+        <div class="text-center"><h5 class="fw-normal">Please select date range.</h5></div>
+    }
+    else
+    {
+        @if (Model.PurchaseMaterials.Count() == 0)
+        {
+            <div class="text-center"> <h5 class="fw-normal">There is no material.</h5></div>
+        }
+        else
+        {
+            <h5 class="fw-normal mt-2">
+                Purchase summary
+            </h5>
+            <div class="row">
+                @{ int i = 0; }
+                @foreach (var a in Model.PurchaseMaterials)
+                {
+                    @(i > 0 && i % 4 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+                    i++;
+                    <div class="col-md-3 search-material px-2 py-1">
+                        <div class="hpanel mb-2">
+                            <div class="panel-body text-center p-xs">
+                                <div class="font-bold">@a.MaterialName</div>
+                                <div class="h5">@a.Quantity.ToString("G29")<small class="font-trans"> @a.UnitName</small></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

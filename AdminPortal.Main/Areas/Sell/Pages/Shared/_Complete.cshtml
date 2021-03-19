@@ -1,0 +1,61 @@
+﻿@model TKW.AdminPortal.Areas.Sell.ViewModels.CompleteSellModel
+@{
+}
+
+<div class="mb-3">
+    <label class="fw-bold col-form-label">Materials</label>
+    <div class="hpanel">
+        <div class="panel-body p-0">
+            @Html.EditorFor(m => m.Materials, "~/Pages/Shared/EditorTemplates/SellMaterialList.cshtml", null, new { IsSellMaterial = true })
+        </div>
+    </div>
+    <span class="text-danger small"></span>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label class="fw-bold col-form-label" asp-for="@Model.IsGST">Bill Type</label>
+            <div class="ps-3">
+                <div class="form-check form-check-inline p-2">
+                    <input class="form-check-input" name="@Html.NameFor(m=>m.IsGST)" id="isgst_yes" @(Model.IsGST ? "checked" : "") value="true" type="radio" />
+                    <label for="isgst_yes" class="form-check-label">GST</label>
+                </div>
+                <div class="form-check form-check-inline p-2">
+                    <input class="form-check-input" name="@Html.NameFor(m=>m.IsGST)" id="isgst_no" @(Model.IsGST ? "" : "checked") value="false" type="radio" />
+                    <label for="isgst_no" class="form-check-label">Non-GST</label>
+                </div>
+            </div>
+            <span class="text-danger small" asp-validation-for="@Model.IsGST"></span>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="mb-3" id="gsttype" style="@(!Model.IsGST?"display:none;":"")">
+            <label class="fw-bold col-form-label" asp-for="@Model.IsIGST">GST Type</label>
+            <div class="ps-3">
+                <div class="form-check form-check-inline p-2">
+                    <input class="form-check-input" name="@Html.NameFor(m=>m.IsIGST)" id="isigst_no" @(Model.IsIGST ? "" : "checked") value="false" type="radio" />
+                    <label for="isigst_no" class="form-check-label">SGST & CGST</label>
+                </div>
+                <div class="form-check form-check-inline p-2">
+                    <input class="form-check-input" name="@Html.NameFor(m=>m.IsIGST)" id="isigst_yes" @(Model.IsIGST ? "checked" : "") value="true" type="radio" />
+                    <label for="isigst_yes" class="form-check-label">IGST</label>
+                </div>
+            </div>
+            <span class="text-danger small" asp-validation-for="@Model.IsIGST"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        $("input[name='@Html.NameFor(m => m.IsGST)']").change(function (e) {
+        var val = $("input[name='@Html.NameFor(m => m.IsGST)']:checked").val();
+        if (val == "true") {
+        $("#gsttype").show();
+        } else {
+        $("#gsttype").hide();
+        }
+        });
+        });
+</script>

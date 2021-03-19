@@ -1,0 +1,97 @@
+﻿@model PaymentModel
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates
+@{
+    bool AddNotPaid = ViewBag.AddNotPaid == null ? true : (bool)ViewBag.AddNotPaid;
+}<div class="row">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label class="col-form-label fw-bold" asp-for="PaymentMethodId"></label>
+            <select asp-for="PaymentMethodId" asp-items="Model.PaymentMethods" class="form-select">
+                @if (AddNotPaid)
+                {
+                    <option value="">Not Paid</option>
+                }
+            </select>
+            <span asp-validation-for="PaymentMethodId" class="text-danger small"></span>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div id="extra_@PaymentMethod.Cash.Id" class="mb-3 d-none">
+            <label asp-for="OfflinePayerId" class="col-form-label fw-bold"></label>
+            <select asp-for="OfflinePayerId" class="form-control">
+                @if (Model.OfflinePayer != null)
+                {
+                    <option selected value="@Model.OfflinePayer.Id">@Model.OfflinePayer.Name</option>
+                }
+            </select>
+            <span asp-validation-for="OfflinePayerId" class="text-danger small"></span>
+        </div>
+        <div id="extra_@PaymentMethod.PaytmWallet.Id" class="mb-3 d-none">
+            <label asp-for="PaytmWalletNumber" class="col-form-label fw-bold"></label>
+            <input asp-for="PaytmWalletNumber" class="form-control" placeholder="Mobile number" />
+            <span asp-validation-for="PaytmWalletNumber" class="text-danger small"></span>
+        </div>
+        <div id="extra_@PaymentMethod.UPI.Id" class="mb-3 d-none">
+            <label asp-for="UPIAddress" class="  col-form-label fw-bold"></label>
+            <input asp-for="UPIAddress" class="form-control" placeholder="UPI Address" />
+            <span asp-validation-for="UPIAddress" class="text-danger small"></span>
+        </div>
+        <div id="extra_@PaymentMethod.IMPS.Id" class="mb-3 d-none">
+            <label class="  col-form-label fw-bold">Bank details</label>
+            <input asp-for="AccountNumber" class="form-control" placeholder="Account number" />
+            <span asp-validation-for="AccountNumber" class="text-danger small"></span><br />
+            <input asp-for="IFSC" class="form-control" placeholder="IFSC" />
+            <span asp-validation-for="IFSC" class="text-danger small"></span>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#@Html.IdFor(m=>m.OfflinePayerId)").select2AutoParent(
+           select2SearchResponseAjaxConfiguration(
+               "@Url.Action("SearchActivePickupEmployees","Employee")",
+               function(user){
+                   if (user.loading) {
+                       return user.text;
+                   }var markup = "<div class='d-flex'>"
+                       + "<div class='flex-grow-1'><img src='" + (user.pictureName != null && user.pictureName.length > 0 ? "@(urlGenerator.ProfilePicUrlPrefix)x80/" + user.pictureName : "/images/default/profilex80.png") + "' alt='User picture' height='50' class='rounded-circle'></div>"
+                       + "<div>"
+                       + "<div>" + user.name + "</div>"
+                       + "<p class='small'>" + user.mobileNo + "</p>"
+                       + "</div>"
+                       + "</div>";
+                   return markup;
+               },
+               function (obj) { return obj.text || obj.name; },
+           {id:0,text:"Select Payer"}
+            ));
+
+        selectChange($("#@Html.IdFor(m => m.PaymentMethodId)"));
+
+        $('#@Html.IdFor(m=>m.PaymentMethodId)').change(function (e) {
+            selectChange($(this));
+        });
+    });
+    function selectChange(elem) {
+        alert("dasd");
+        var selected = elem.find('option:checked');
+        $('[id^="extra_"]').each(function () {
+            var id = $(this).attr('id');
+            if (id == 'extra_' + selected.val()) {
+                $(this).removeClass("d-none");
+            } else {
+                $(this).addClass("d-none");
+                //$(this).find(':input').each(function (index) {
+                //    if ($(this).hasClass('sugginput-btn') || $(this).hasClass('sugginput-input')) {
+                //        $(this).remove();
+                //    } else if ($(this).type == "checkbox" || $(this).type == "radio") {
+                //        $(this).checked = false;
+                //    } else {
+                //        $(this).val('');
+                //    }
+                //});
+            }
+        });
+    }
+</script>

@@ -1,0 +1,75 @@
+﻿@model HandleModel
+@inject  TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    DateTime? defaultDate = Model?.HandleEndTime;
+    if (defaultDate == null || defaultDate == DateTime.MinValue)
+    {
+        defaultDate = Dt.Now;
+    }
+}
+<div class="mb-3">
+    <label asp-for="Materials" class="col-form-label fw-bold"></label>
+    <div class="panel panel-default">
+        <div class="panel-body p-0">
+            @Html.EditorFor(m => m.Materials, "~/Pages/Shared/EditorTemplates/MaterialList.cshtml", null)
+        </div>
+    </div>
+    <span asp-validation-for="Materials" class="text-danger small"></span>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="HandlerIds" class="col-form-label fw-bold"></label>
+            <select asp-for="HandlerIds" multiple class="w-100">
+                @if (Model?.Handlers != null)
+                {
+                    foreach (var handler in Model.Handlers)
+                    {
+                        <option selected value="@handler.Id">@handler.Name</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="HandlerIds" class="text-danger small"></span>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="HandleEndTime" class=" col-form-label fw-bold"></label>
+            <input asp-for="HandleEndTime" placeholder="Handled time" class="form-control" type="text" readonly style="background-color:#fff;" />
+            <span class="text-danger small" asp-validation-for="HandleEndTime"></span>
+        </div>
+    </div>
+</div>
+<lib name="DatetimePicker" />
+<script>
+    $(function () {
+        $("#@Html.IdFor(m=>m.HandlerIds)").select2AutoParent(
+            select2SearchResponseAjaxConfiguration(
+                "@Url.Action("SearchActivePickupEmployees","Employee")",
+                function(user){
+                    if (user.loading) {
+                        return user.text;
+                    }var markup = "<div class='d-flex'>"
+                        + "<div class='flex-grow-1'><img src='" + (user.pictureName != null && user.pictureName.length > 0 ? "@(urlGenerator.ProfilePicUrlPrefix)x80/" + user.pictureName : "/images/default/profilex80.png") + "' alt='User picture' height='50' class='rounded-circle'></div>"
+                        + "<div>"
+                        + "<div>" + user.name + "</div>"
+                        + "<p class='small'>" + user.mobileNo + "</p>"
+                        + "</div>"
+                        + "</div>";
+                    return markup;
+                },
+                function (obj) { return obj.text || obj.name; },
+            {id:0,text:"Select Pickup Boy"}
+            ));
+        $("#@Html.IdFor(m=>m.HandleEndTime)").datetimepicker({
+            useStrict: true,
+            ignoreReadonly: true,
+            format: "DD-MM-YYYY hh:mm A",
+            sideBySide: true,
+            @if (defaultDate != null) {
+                    @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultDate)",
+                    }
+            });
+    });
+</script>

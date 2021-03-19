@@ -1,0 +1,48 @@
+@mixin checkbox-variant($parent, $color) {
+  #{$parent} input[type="checkbox"]:checked + label{
+    &::before {
+      background-color: $color;
+      border-color: $color;
+    }
+    &::after{
+      color: #fff;
+    }
+  }
+}
+
+@mixin radio-variant($parent, $color) {
+  #{$parent} input[type="radio"]{
+    + label{
+      &::after{
+        background-color: $color;
+      }
+    }
+    &:checked + label{
+      &::before {
+        border-color: $color;
+      }
+      &::after{
+        background-color: $color;
+      }
+    }
+  }
+}
+
+
+
+
+@include checkbox-variant('.checkbox-primary', $color-navy-blue);
+@include checkbox-variant('.checkbox-danger', $color-red);
+@include checkbox-variant('.checkbox-info', $color-blue);
+@include checkbox-variant('.checkbox-warning', $color-yellow);
+@include checkbox-variant('.checkbox-success', $color-green);
+@include radio-variant('.radio-primary', $color-navy-blue);
+@include radio-variant('.radio-danger', $color-red);
+@include radio-variant('.radio-info', $color-blue);
+@include radio-variant('.radio-warning', $color-yellow);
+@include radio-variant('.radio-success', $color-green);
+
+.checkbox input:hover,
+.radio input:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,31 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Employee.Pages.Ajax.Modal.Add.MobileNoModel
+@{
+}
+<modal-header title="Add Employee" close-button="true"></modal-header>
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("MobileNo")"
+          data-ajax-method="POST"
+          data-ajax-update="#ActionModalContent"
+          data-ajax-begin="$('#addFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#addFieldSet').removeAttr('disabled');">
+        <fieldset id="addFieldSet">
+            <modal-body>
+                <div class="row mb-3 d-flex justify-content-center">
+
+                    <div class="col-md-6">
+
+                        <label asp-for="MobileNo" class="col-form-label fw-bold"></label>
+                        <input asp-for="MobileNo" class="form-control" placeholder="Mobile Number" />
+                        <span asp-validation-for="MobileNo" class="text-danger small"></span>
+
+                    </div>
+
+                </div>
+            </modal-body>
+            <modal-footer>
+                <button type="submit" class="btn btn-success">Proceed</button>
+            </modal-footer>
+        </fieldset>
+    </form>

@@ -1,0 +1,53 @@
+﻿@page "{Id:long?}"
+@model TKW.AdminPortal.Areas.Request.Pages.Action.CancelModel
+@{
+    ViewBag.Title = "Cancel Request";
+}
+
+<pagetitle title="Cancel Request" description="Cancel the request for pickup."></pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <partial name="_RequestBrief" model="Model.RequestModel" />
+            <div class="hpanel">
+                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">
+                        @Model.ErrorMessage
+                    </div>
+                }
+                <div class="panel-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="ReasonId" class="col-form-label fw-bold"></label>
+                            @foreach (var reason in Model.Reasons.Where(m => m.ReasonForPickupEmployee != null))
+                            {
+                                <div class="form-check py-1">
+                                    <input class="form-check-input" type="radio" asp-for="ReasonId" id="reason_@reason.Id" value="@reason.Id" />
+                                    <label class="form-check-label" for="reason_@reason.Id">
+                                        @reason.Reason
+                                    </label>
+                                </div>
+                            }
+                            <span asp-validation-for="ReasonId" class="text-danger small"></span>
+                        </div>
+                        <div class="text-end">
+                            @*<div class="pull-left">
+                                <div class="checkbox checkbox-danger">
+                                    <input type="checkbox" asp-for="NoSMS" value="True" />
+                                    <label asp-for="NoSMS">
+                                        Don't send message to the user
+                                    </label>
+                                </div>
+                            </div>*@
+                                <button class="btn btn-success btn-sm" type="submit">Cancel Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Footer{
+    <modal id="DetailsModal" dialog-class="modal-lg" loader="true"></modal>
+}

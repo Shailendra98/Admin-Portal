@@ -1,0 +1,15 @@
+﻿@model List<TKW.ApplicationCore.Contexts.FranchiseContext.DTOs.FranchiseModel>
+
+<div class="hpanel">
+    <div class="panel-body">
+        <div class="text-center">
+            <h4>Please select a franchise to continue</h4>
+                @foreach(var franchise in Model.OrderByDescending(m=>m.IsActive).ThenBy(m=>m.Name))
+                {
+                    <a href="@Url.Action("SetFranchise","Account",new { Id=franchise.Id,Return=Context.Request.Path+Context.Request.QueryString })" class="btn btn-primary btn-outline btn-sm m-xs">
+                        @franchise.Name
+                    </a>
+                }
+        </div>
+    </div>
+</div>

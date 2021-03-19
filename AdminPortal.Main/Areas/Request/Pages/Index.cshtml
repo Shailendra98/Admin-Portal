@@ -1,0 +1,429 @@
+﻿@page
+@using Newtonsoft.Json
+@using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
+@using TKW.ApplicationCore.Helpers
+@model IndexModel
+@inject Microsoft.Extensions.Options.IOptions<TKW.ApplicationCore.Settings.PhotoSetting> urlPrefixes
+@{
+    ViewBag.Title = "Requests";
+}
+<pagetitle title="Requests" description="List of requests.">
+    <a href="@Url.Page("Add/Index")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Request</a>
+</pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="m-b-md">
+                        <h5>
+                            Filters
+                        </h5>
+                        <small>
+                            Filter the list of requests.
+                        </small>
+                    </div>
+                    <form data-ajax="true"
+                          data-ajax-method="get"
+                          data-ajax-url="@Url.Page("Ajax/RequestList")"
+                          data-ajax-update="#requestlist"
+                          data-ajax-begin="$('#requestlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                          id="filtersortform">
+                        <div class="mb-3">
+                            <label class="  fw-bold col-form-label fw-bold col-form-label" asp-for="Filter.Search"></label>
+                            <input asp-for="Filter.Search" class="form-control form-control-sm" placeholder="Search Requests" />
+                        </div>
+                        @if (!Model.FranchiseMode)
+                        {
+                            <div class="mb-3">
+                                <label asp-for="Filter.Franchise" class="  fw-bold col-form-label"></label>
+                                <select asp-for="Filter.Franchise" asp-items="Model.Franchises" class="form-control form-control-sm select2 select2-field" data-placeholder="Select Franchise"></select>
+                            </div>
+                        }
+                        <div class="mb-3">
+                            <label class="  fw-bold col-form-label col-form-label fw-bold">
+                                Date
+                            </label>
+                            <div class="mb-3">
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                </div>
+                                <div class="text-center text-muted" style="display:inline-block;width:5%;">
+                                    <span class="bi-dash"></span>
+                                </div>
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<IndexModel.DateType>()" class="form-select form-select-sm"></select>
+                            </div>
+                        </div>
+                        @*<div class="mb-3">
+                            <label asp-for="Filter.User" class="  fw-bold col-form-label"></label>
+                            <select asp-for="Filter.User" class="form-control form-control-sm   select2-field" multiple>
+                                <option></option>
+                            </select>
+                        </div>*@
+                        <div class="mb-3">
+                            <label asp-for="Filter.Status" class="fw-bold col-form-label"></label>
+                            <div>
+                                @{ var ischecked = false;
+                                    var checkname = Html.NameFor(m => m.Filter.Status);
+                                }
+                                @foreach (var a in Model.Statuses)
+                                {
+                                    ischecked = (Model?.Filter?.Status != null && Model.Filter.Status.Contains(a.Id));
+                                    <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                        <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
+                                        <label for="check_@a.Id">@a.Status</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        @*@if (Model.FranchiseMode)
+                        {
+                            <div class="mb-3" id="filterPincodeContainer" @( (!(Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)) || (Model?.Filter?.Locality != null && Model.Filter.Locality.Count > 0) ? "style=display:none;" : "")>
+                                <div class="pull-right">
+                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterCityContainer').show();">City</button>
+                                    &bull;
+                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterLocalityContainer').show();">Locality</button>
+                                </div>
+                                <label class="  fw-bold col-form-label" for="@Html.IdFor(m => m.Filter.Pincode)">Pincode</label>
+                                <select asp-for="Filter.Pincode" class="w-100" data-placeholder="Select Pincodes" asp-items="@Model.Pincodes" multiple></select>
+                            </div>
+                            <div class="mb-3" id="filterLocalityContainer" @((Model?.Filter?.Locality != null && Model.Filter.Locality.Count > 0) ? "" : "style=display:none;")>
+                                <div class="pull-right">
+                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterLocalityContainer').hide(); $('#filterPincodeContainer').show();">Pincode</button>
+                                </div>
+                                <label for="@Html.IdFor(m => m.Filter.Locality)" class="  fw-bold col-form-label">Locality</label>
+                                <select asp-for="Filter.Locality" class="form-select form-select-sm   select2-field" data-placeholder="Select Localities" multiple>
+                                    @if (Model?.SelectedLocalities != null && Model.SelectedLocalities.Count > 0)
+                                    {
+                                        foreach (var locality in Model.SelectedLocalities)
+                                        {
+                                            <option selected value="@locality.Id">@locality.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-3" id="filterCityContainer" @( (Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0) ? "style=display:none" : "")>
+                                <div class="pull-right">
+                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterCityContainer').hide(); $('#filterPincodeContainer').show();">Pincode</button>
+                                </div>
+                                <label class="  fw-bold col-form-label" for="@Html.IdFor(m=>m.Filter.City)">City</label>
+                                <select asp-for="Filter.City" class="w-100" data-placeholder="Select Cities" multiple>
+                                    @if (Model?.SelectedCities != null && Model.SelectedCities.Count > 0)
+                                    {
+                                        foreach (var city in Model.SelectedCities)
+                                        {
+                                            <option selected value="@city.Id">@city.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-3" id="filterPincodeContainer" @( (!(Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)) ? "style=display:none;" : "")>
+                                <div class="pull-right">
+                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterCityContainer').show();">City</button>
+                                </div>
+                                <label class="  fw-bold col-form-label" for="@Html.IdFor(m=>m.Filter.Pincode)">Pincode</label>
+                                <select asp-for="Filter.Pincode" class="w-100 select2" data-placeholder="Select Pincodes" multiple>
+                                    @if (Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)
+                                    {
+                                        foreach (var pincode in Model.Filter.Pincode)
+                                        {
+                                            <option selected value="@pincode">@pincode</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        }*@
+                        <div class="mb-3">
+                            <label class="  fw-bold col-form-label" for="@Html.NameFor(m=>m.Filter.SortBy)">Sort by</label>
+                            <select asp-for="Filter.SortBy" asp-items="Html.GetEnumSelectList<IndexModel.SortBy>()" class="form-select form-select-sm"></select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-sm" type="submit" id="filtersubmitbtn">Apply</button>
+                            <button class="btn btn-default btn-sm" type="reset" id="filterresetbtn">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-9">
+            @*<div class="row">
+                    <div class="col-lg-12">
+                        <div class="hpanel">
+                            <div class="panel-body">
+                                <button class="btn btn-info" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span> Refresh</button>
+                                <button type="button" class="btn btn-success" id="todaybtn"><span class="fa fa-calendar"></span> Today's Requests</button>
+                                <button type="button" class="btn btn-warning" id="printbtn"><span class="fa fa-print"></span> Print</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hpanel">
+                        <div class="panel-body">
+                            <div class="btn-group btn-group-sm">
+                                <button class="btn btn-default" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span>  Refresh</button>
+                                <button type="button" class="btn btn-default" id="todaybtn"><span class="fa fa-calendar"></span>  Today's Requests</button>
+                                @*<button type="button" class="btn btn-default" id="printbtn"><span class="fa fa-print"></span>  Print</button>*@
+                            </div>
+                            <div id="requestlist">
+                                <div class="text-center">
+                                    <img src="~/images/ripple.gif" alt="Loading.." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="listform_ajax" method="post">
+
+</form>
+@section Styles{
+    <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/js/datetimepicker.min.js" asp-append-version="true" type="text/javascript"></script>
+    <script>
+        $(function () {
+
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            };
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+            var model=@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
+            $.ajax({
+                url: '@(Url.Page("Ajax/RequestList"))',
+                data: model,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#listform_ajax input").val());
+                },
+                method: 'POST',
+                success: function (data) { $('#requestlist').html(data);}
+            });
+
+            $('.collapse').on("show.bs.collapse", function () {
+                var id = $(this).attr('id');
+                $("[data-target='#" + id + "']").find('.fa').removeClass('fa-menu-right').addClass('fa-menu-down');
+            });
+            $('.collapse').on("hide.bs.collapse", function () {
+                var id = $(this).attr('id');
+                $("[data-target='#" + id + "']").find('.fa').removeClass('fa-menu-down').addClass('fa-menu-right');
+            });
+            var startDate = $("[id='@Html.IdFor(m=>m.Filter.StartDate)']");
+            var endDate = $("[id='@Html.IdFor(m=>m.Filter.EndDate)']");
+
+            startDate.on("dp.change", function (e) {
+                endDate.data("DateTimePicker").minDate(e.date);
+            });
+            endDate.on("dp.change", function (e) {
+                startDate.data("DateTimePicker").maxDate(e.date);
+            });
+
+            $('#refreshreqbtn').click(function (e) {
+                e.preventDefault();
+                $('#requestlist').html('<div class="text-center"><img src="/images/ripple.gif" alt="Loading.." /></div>');
+                $('#requestlist').load("@Url.Page("Ajax/RequestList")" + window.location.search);
+            });
+            $("#printbtn").click(function (e) {
+                e.preventDefault();
+                window.open("/Request/list/print" + window.location.search, "", "width=1000,height=600");
+            });
+            $("#filterresetbtn").click(function (e) {
+                $(".select2-field").val('').trigger('change');
+            });
+            $("#todaybtn").click(function (e) {
+                $('#filterresetbtn').click();
+                            @foreach(var status in Model.Statuses.Where(m=>m.Id==RequestStatus.Submitted.Id ||m.Id==RequestStatus.Rescheduled.Id || m.Id==RequestStatus.Assigned.Id))
+                            {
+                                @:$("input#check_@(status.Id)").prop("checked", true);
+                            }
+                $("#@Html.IdFor(m=>m.Filter.SortBy) option[value='@((int)IndexModel.SortBy.PincodeLocalityVisited)']").attr("selected", true);
+                $("#@Html.IdFor(m=>m.Filter.DateType) option[value='0']").attr("selected", true);
+                endDate.data("DateTimePicker").date('@String.Format("{0:dd-MM-yyyy}",Dt.Now)');
+                startDate.data("DateTimePicker").clear();
+                $('#filtersortform').submit();
+            });
+            $("select.select2").select2();
+
+            $("#@Html.IdFor(m=>m.Filter.User)").select2(
+                select2SearchResponseAjaxConfiguration("/ajax/search/account/users", formatUser, formatUserSelection, "Select users")
+            );
+
+                        @*$("#@Html.IdFor(m=>m.Filter.User)").select2({
+                            ajax: {
+                                url: "/api/User/Search?sessionid=@Member.SessionId",
+                                processResults: function (data, params) {
+                                    return {
+                                        results: data.data,
+                                        pagination: {
+                                            more: (data.page * data.size) < data.total
+                                        }
+                                    };
+                                },
+                                cache: true,
+                                delay: 500
+                            },
+                            placeholder:"Select users",
+                            escapeMarkup: function (markup) { return markup; },
+                            minimumInputLength: 1,
+                            templateResult: formatUser,
+                            templateSelection: formatUserSelection
+                        });*@
+            @if (Model.FranchiseMode) {
+                        <text>
+            $("#@Html.IdFor(m=>m.Filter.Locality)").select2({
+                ajax: {
+                    url: "@Url.Action("Localities","Address")",
+                    processResults: function (data, params) {
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: data.total > (data.page * data.size) 
+                            }
+                        };
+                    },
+                    cache: true,
+                    delay: 500
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatLocality,
+                templateSelection: function (locality) { return locality.name }
+            });
+            </text>
+            }
+            else{<text>
+            $("#@Html.IdFor(m=>m.Filter.Pincode)").select2({
+                ajax: {
+                    url: "@Url.Action("Pincodes","Address")",
+                    processResults: function (data, params) {
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more: data.total > (data.page * data.size)
+                            }
+                        };
+                    },
+                    cache: true,
+                    delay: 500
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatPincode,
+                templateSelection: function (pincode) { return pincode.id+""; }
+            });
+            </text><text>
+            $("#@Html.IdFor(m=>m.Filter.City)").select2({
+                ajax: {
+                    url: "@Url.Action("Cities","Address")",
+
+                    processResults: function (data, params) {
+                        return {
+                            results: data.data,
+                            pagination: {
+                                more:data.total > (data.page * data.size) 
+                            }
+                        };
+                    },
+                    cache: true,
+                    delay: 500
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+                templateResult: formatCity,
+                templateSelection: function (city) { return city.name; }
+            });
+            </text> }
+        });
+        @if (Model.FranchiseMode) { <text>
+        function formatLocality(locality) {
+            if (locality.loading) {
+                return locality.text;
+            }
+            var markup = "<div class='media'>"
+                + "<div class='media-body'>"
+                + "<div class='media-heading'>" + locality.name + "</div>"
+                + "</div>"
+                + "</div>";
+            return markup;
+        }</text>}
+        else {<text>
+        function formatPincode(pincode) {
+            if (pincode.loading) {
+                return pincode.text;
+            }
+            var markup = "<div class='media'>"
+                + "<div class='media-body'>"
+                + "<div class='media-heading'>" + pincode.id + "</div>"
+                + "<p class='small'>" + pincode.city.name + ", " + pincode.city.state.name + "</p>"
+                + "</div>"
+                + "</div>";
+            return markup;
+        }
+        function formatCity(city) {
+            if (city.loading) {
+                return city.text;
+            }
+            var markup = "<div class='media'>"
+                + "<div class='media-body'>"
+                + "<div class='media-heading'>" + city.name + "</div>"
+                + "<p class='small'>" + city.state.name + "</p>"
+                + "</div>"
+                + "</div>";
+            return markup;
+        }
+        </text>}
+        function formatUser(user) {
+            if (user.loading) {
+                return user.text;
+            }var markup = "<div class='media'>"
+                + "<div class='media-left'><img src='"+(user.picture!=null && user.picture.length>0 ?  "@(urlPrefixes.Value.GetProfileUrlPrefix)x80/" + user.picture:"/images/default/profilex80.png") + "' alt='User picture' height='50' class='img-circle'></div>"
+                + "<div class='media-body'>"
+                + "<div class='media-heading'>" + user.name + "</div>"
+                + "<p class='small'>" + user.mobileNo + "</p>"
+                + "</div>"
+                + "</div>";
+            return markup;
+        }
+
+        function formatUserSelection(user) {
+            return user.name || user.text;
+        }
+    </script>
+}
+@section Footer{
+    <modal content-id="DetailsModalContent" dialog-class="modal-lg" loader="true" id="DetailsModal"></modal>
+    <modal content-id="ActionModalContent"  loader="true" id="ActionModal"></modal>
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+}

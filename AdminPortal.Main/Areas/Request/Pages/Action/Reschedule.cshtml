@@ -1,0 +1,42 @@
+﻿@page "{Id:long?}"
+@model TKW.AdminPortal.Areas.Request.Pages.Action.RescheduleModel
+@{ 
+    ViewBag.Title = "Reschedule Request";
+}
+<pagetitle title="Reschedule Request" description="Change schedule of the request."></pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+                 <partial name="_RequestBrief" model="Model.RequestModel" />
+            <div class="hpanel">
+                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">
+                        @Model.ErrorMessage
+                    </div>
+                }
+                <div class="panel-body">
+                    <form method="post">
+                        <partial name="_Reschedule" model="Model.rescheduleModel" />
+                        <div >
+                            @*<div class="pull-left">
+                                <div class="checkbox checkbox-danger">
+                                    <input type="checkbox" asp-for="NoSMS" value="True" />
+                                    <label asp-for="NoSMS">
+                                        Don't send message to the user
+                                    </label>
+                                </div>
+                            </div>*@
+                            <div class="mb-3 text-end">
+                                <button class="btn btn-success" type="submit">Reschedule Request</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Footer{ 
+<modal id="DetailsModal" dialog-class="modal-lg" loader="true"></modal>
+}

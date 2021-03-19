@@ -1,0 +1,120 @@
+﻿@page
+@model IndexModel
+@using TKW.AdminPortal.Extensions;
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="The Kabadiwala is online doorstep scrap pickup service which buys your scrap/junk materials at your place. You can sell Newspapers, Books, Carton, Plastic, Iron, Steel, Copper, Brass, Tin and many more recyclable materials by booking a pickup online.">
+    <title>The Kabadiwala - Admin Portal</title>
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/landing.min.css" />
+    <script src="~/js/core.min.js"></script>
+</head>
+<body class="bg-light-soft">
+    <div style="max-width:400px;" class="m-auto justify-content-center">
+        <div class="text-center ">
+            <img src="~/images/the-kabadiwala-logo.png" class="py-3 m-auto" height="150" /><br />
+       
+            <img src="~/images/thekabadiwala.png" class="img-responsive" height="40" />
+          
+            <h3 class="heading">Sign in to your account</h3>
+        </div>
+        <div class="hpanel" id="SignContent">
+            <div id="signin_msg"></div>
+            <div class="panel-body">
+                <form asp-antiforgery="true"
+                      data-ajax="true"
+                      data-ajax-method="post"
+                      data-ajax-begin="$('#signinsubbtn').html('Signing in'); $('#signinfield').attr('disabled','');"
+                      data-ajax-complete="$('#signinsubbtn').html('SIGN IN'); $('#signinfield').removeAttr('disabled');"
+                      data-ajax-update="#signin_msg"
+                      data-ajax-url="@Url.Page("Index")"
+                      id="signinform">
+
+                    <fieldset id="signinfield">
+                        <input asp-for="ReturnUrl" />
+                        <div class="mb-2">
+                            <label asp-for="MobileNo" class="col-form-label"></label>
+                            <input asp-for="MobileNo" placeholder="Mobile number" class="form-control" />
+                            <span asp-validation-for="MobileNo" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label asp-for="Password" class="col-form-label"></label>
+                            <div class="d-flex justify-content-between">
+                                <div class="flex-fill pe-4" id="passfield">
+                                    <input asp-for="Password" class="form-control" placeholder="Password" />
+                                </div>
+                                <div>
+                                    <a href="#" id="useotpbtn" class="btn btn-outline-primary" type="button">Send OTP</a>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-2 text-center">
+                            <button type="submit" class="btn btn-success px-3 font-bold">SIGN IN</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+    $(function () {
+        $.validator.unobtrusive.parse($("#signinform"));
+        $("#signinform").on("submit", function (e) {
+            $(".input-validation-error").closest(".form-group").addClass("has-error");
+        });
+        $("#signinform").on("focusout keyup", "textarea,input,select", function (e) {
+            if ($('#signinform').validate().element(this)) {
+                $(this).closest(".form-group").removeClass("has-error");
+            } else {
+                $(this).closest(".form-group").addClass("has-error");
+            }
+        });
+        $("#useotpbtn").click(function (e) {
+            e.preventDefault();
+            var username = $("#@Html.IdFor(m=>m.MobileNo)");
+            if ($('#signinform').validate().element(username)) {
+                var token = $('input:hidden[name="__RequestVerificationToken"]').val();
+                $("#SignContent").html("<div class='panel-body text-center'><img src='/images/ripple.gif'></div>");
+
+                $.ajax({
+                    url: "@Url.Action("Send", "OTP", new
+                    {
+                        ReturnUrl = Model.ReturnUrl
+                    })",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("RequestVerificationToken",
+                            token);
+                    },
+                    method: "POST",
+                    data: {
+                        MobileNo: username.val(),
+                    },
+                    success: function (data) {
+                        $("#SignContent").html(data);
+                    },
+                    error: function () {
+                        $("#SignContent").html("<div class='panel-body text-center'><div class='alert alert-danger'>Please check your internet connection and reload the page.</div></div>");
+                    }
+                });
+            } else {
+                username.closest(".form-group").addClass("has-error");
+            }
+        });
+    });
+    </script>
+
+</body>
+</html>

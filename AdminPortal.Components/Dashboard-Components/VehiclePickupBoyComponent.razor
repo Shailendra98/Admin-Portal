@@ -1,0 +1,90 @@
+﻿@using ChartJs.Blazor.PieChart
+
+<div class="mb-3">
+    <h6 class="font-weight-bold text-secondary small">Vehicle & Pickup Boy</h6>
+    <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
+        <div class="card-body pt-4">
+            <div class="mb-2">
+                <div class="pb-2">
+                    <h6 class="font-weight-bold text-secondary small">Active PickupBoys</h6>
+                    <div class="card border-0 px-2 shadow-sm">
+                        <div class="row">
+                            <div class="col-8 m-auto">
+                                <div class="card-body px-2">
+                                    <small>29 PickupBoy are active out of 100</small>
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+                                <Chart Config="_config"></Chart>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h6 class="font-weight-bold text-secondary small">Active Vehicle</h6>
+                    <div class="card border-0 px-2 shadow-sm">
+                        <div class="row">
+                            <div class="col-8 m-auto">
+                                <div class="card-body px-2">
+                                    <small>29 Vehicle are active out of 100</small>
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+                                @*<Chart Config="_config"></Chart>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code{
+        private PieConfig _config;
+
+        protected override void OnInitialized()
+        {
+
+            _config = new PieConfig(true)
+            {
+
+
+                Options = new PieOptions
+                {
+                    AspectRatio = 1,
+                    MaintainAspectRatio= true,
+                    CutoutPercentage = 80,
+                    
+                    Rotation =  181,
+               
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                    Position = Position.Right
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                    Text = "ChartJs.Blazor Pie Chart"
+                }
+    
+
+            }
+    };
+
+    PieDataset<int> dataset = new PieDataset<int>(new[] {  100- 29,29})
+    {
+        BackgroundColor = new[]
+        {
+            ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
+            ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
+            
+            }
+    };
+
+    _config.Data.Datasets.Add(dataset);
+    }
+
+}

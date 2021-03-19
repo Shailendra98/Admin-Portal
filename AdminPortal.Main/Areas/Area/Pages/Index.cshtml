@@ -1,0 +1,140 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Area.Pages.IndexModel
+@{
+    ViewBag.Title = "Area";
+    Layout = "_LayoutAdmin";
+    int i = 0;
+    int a = 0;
+}
+<pagetitle title="Cities" description="List of all cities."></pagetitle>
+<div class="content">
+    <div class="row justify-content-center mt-2">
+        <div class="col-md-12">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text" placeholder="Search Cities" class="form-control" id="searchCities" />
+                        <div class="input-group-btn">
+                            <button class="btn btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Cities">
+
+        <div class="search_results_text" style="display:none;">
+            <div class="d-flex align-self-center">
+                <div class="p-2 flex-fill ratelist-group-line">
+                    <hr class="bg-secondary rounded" style="padding:1px; margin-top:0.7rem;">
+                </div>
+
+                <div class="p-2 ratelist-group-name h6">Search Results</div>
+                <div class="p-2 flex-fill">
+                    <hr class="bg-secondary rounded" style="padding:1px; margin-top:0.7rem;">
+                </div>
+            </div>
+        </div>
+        <div class="operating_cities_section">
+            <div class="d-flex align-self-center">
+                <div class="p-2 flex-fill ratelist-group-line">
+                    <hr class="bg-secondary rounded" style="padding:1px; margin-top:0.7rem;">
+                </div>
+
+                <div class="p-2 ratelist-group-name h6">Operating Cities</div>
+                <div class="p-2 flex-fill">
+                    <hr class="bg-secondary rounded" style="padding:1px; margin-top:0.7rem;">
+                </div>
+            </div>
+            <div class="d-flex justify-content-start row row-cols-1 row-cols-md-4 g-4">
+
+                @foreach (var c in Model.Cities.Where(m => Model.OperatingCities.Contains(m.Id)))
+                {
+                    <div class="search-city" style="display: inline-block; min-width: 250px">
+                        <a class="text-decoration-none" href="@Url.Page("Pincodes", new { c.Id})">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <h5 class="card-title mt-1">
+                                        @c.Name
+                                    </h5>
+                                    <div class="card-text"> @c.StateName</div>
+
+                                    @*<div class="p-l-lg">
+                                            <a class="btn btn-xs btn-default float-right mt-3" href="@Url.Page("Pincodes", new { c.Id})">Manage Pincodes</a>
+                                        </div>*@
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                }
+            </div>
+        </div>
+        <div>
+            <div class="all_cities_heading mt-5">
+                <div class="d-flex align-self-center">
+                    <div class="p-2 flex-fill">
+                        <hr class="bg-secondary rounded" style="padding:1px; margin-top:0.7rem;">
+                    </div>
+
+                    <div class="p-2 h6">All Cities</div>
+                    <div class="p-2 flex-fill">
+                        <hr class="bg-secondary rounded" style="padding:1px; margin-top:0.7rem;">
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-start row row-cols-1 row-cols-md-4 g-4">
+                @foreach (var c in Model.Cities.OrderBy(m => m.Name))
+                {
+                    <div class="search-city" style="display: inline-block; min-width:250px;">
+                        <a class="text-decoration-none" href="@Url.Page("Pincodes", new { c.Id})">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <h5 class="card-title mt-1">
+                                                @c.Name
+                                            </h5>
+                                            <div class="card-text"> @c.StateName</div>
+                                        </div>
+                                        @*<div class="p-l-lg">
+                                                <a class="btn btn-xs btn-default float-end mt-3" href="@Url.Page("Pincodes", new { c.Id})">Manage Pincodes</a>
+                                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<lib name="SearchElem" />
+@section Scripts{
+    <script>
+        $("#searchCities").SearchElem("#Cities div.search-city", [{ elem: "h5", type: "text" }], { numberOfResult: 0 });
+        $("#searchCities").on("keyup", function (e) {
+            var self = $(this);
+            if (self.val() == "") {
+                $(".operating_cities_section").show();
+                $(".all_cities_heading").show();
+                $(".search_results_text").hide();
+                //$(".operating_cities_section").hide();
+                //$(".all_cities_heading").hide();
+            } else {
+                $(".search_results_text").show();
+                $(".operating_cities_section").hide();
+                $(".all_cities_heading").hide();
+
+                //$(".operating_cities_section").show();
+                //$(".all_cities_heading").show();
+            }
+        })
+    </script>
+}

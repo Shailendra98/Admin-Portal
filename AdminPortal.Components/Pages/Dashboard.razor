@@ -1,0 +1,58 @@
+﻿@page "/"
+@using AdminPortal_Component.Dashboard_Components
+
+
+<div class="row">
+    <div class="col-4">
+        <RequestsComponent></RequestsComponent>
+        <ClientCategoryComponent></ClientCategoryComponent>
+        <RequestSourceComponent></RequestSourceComponent>
+    </div>
+    <div class="col-8">
+        <div class="row">
+            <div class="col-8">
+                <AssignedRequestComponent></AssignedRequestComponent>
+            </div>
+            <div class="col-4">
+                <VehiclePickupBoyComponent></VehiclePickupBoyComponent>
+            </div>
+        </div>
+        <div class="row">
+            <PickupSessionComponent></PickupSessionComponent>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <RequestDetailComponent></RequestDetailComponent>
+            </div>
+            <div class="col-6">
+                <RequestDetailComponent></RequestDetailComponent>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <PaymentMethodComponent></PaymentMethodComponent>
+            </div>
+            <div class="col-4">
+                <NewCustomersComponent></NewCustomersComponent>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-4"><TargetAndProgressComponent></TargetAndProgressComponent></div>
+    <div class="col-4"><TargetAndProgressComponent></TargetAndProgressComponent></div>
+    <div class="col-4"><TargetAndProgressComponent></TargetAndProgressComponent></div>
+</div>
+<div class="row">
+    <div class="col-9">
+        <MaterialQuantityComponent></MaterialQuantityComponent>
+    </div>
+    <div class="col-3">
+        <TotalMaterialComponent></TotalMaterialComponent>
+    </div>
+</div>
+
+@code {
+
+}

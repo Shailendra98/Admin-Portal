@@ -1,0 +1,66 @@
+﻿@using ChartJs.Blazor.BarChart
+@using System.Drawing
+@using AdminPortal_Component.SharedComponents 
+
+<div class="mb-3">
+    <h6 class="font-weight-bold text-secondary small">Request Detail</h6>
+    <div class="card rounded-0 border-0 shadow-sm">
+        <div class="card-body py-1">
+            <Chart Config="_config" @ref="_chart"></Chart>
+        </div>
+
+    </div>
+</div>
+
+
+
+@code {
+    private const int InitalCount = 3;
+    private BarConfig _config;
+    private Random _rng = new Random();
+    private Chart _chart;
+
+    protected override void OnInitialized()
+    {
+        _config = new BarConfig(horizontal: true)
+        {
+            Options = new BarOptions
+            {
+                
+                MaintainAspectRatio = true,
+                Responsive = true,
+                
+                Scales = new BarScales
+                {
+                   
+                },
+
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Cancelled Requests"
+                },
+
+                Legend = new Legend
+                {
+                    Display = false,
+                },
+            }
+        };
+
+        IDataset<int> dataset1 = new BarDataset<int>(SampleUtils.RandomScalingFactor(InitalCount),horizontal: true)
+        {
+            BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.4),
+            BarThickness = 20,
+        };
+
+
+        _config.Data.Labels.AddRange(SampleUtils.RequestSource.Take(InitalCount));
+        _config.Data.Datasets.Add(dataset1);
+    }
+
+}
+
+@code {
+
+}

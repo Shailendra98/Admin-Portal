@@ -1,0 +1,51 @@
+﻿@page "{id:int}"
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.MaterialSummary.SegregatedSummaryModel
+@{
+    Layout = null;
+}
+
+<div class="panel-body p-3">
+    @if (Model.Filter.StartDate == null || Model.Filter.EndDate == null)
+    {
+        <div class="text-center"><h5 class="fw-normal">Please select date range.</h5></div>
+    }
+    else
+    {
+        @if (Model.SegregatedMaterials.Count() == 0)
+        {
+            <div class="text-center"><h5 class="fw-normal">There is no material.</h5></div>
+        }
+        else
+        { 
+            <h5  class="fw-normal mt-2">
+                Segregation summary
+            </h5>
+            @foreach (var a in Model.SegregatedMaterials.GroupBy(m => m.UnsegregatedMaterialId))
+            {
+
+                var u = Model.SegregatedMaterials.FirstOrDefault(m => m.UnsegregatedMaterialId == a.Key);
+
+                <div class="panel-body m-b-xs p-xs">
+                    <div class="d-inline-block">
+                        <div class="text-center p-2 d-inline-block">
+                            <div class="pb-1 font-bold">@u.UnsegregatedMaterialName</div>
+                            <span>@(a.Sum(m=>m.Quantity).ToString("G29")) <small class="text-muted">@(u.UnsegregatedMaterialUnitName)</small></span>
+                        </div>
+                    </div>
+                    <div class="d-inline-block px-2 py-1">
+                        <i class="fa fa-long-arrow-right"></i>
+                    </div>
+
+                    @foreach (var b in a)
+                    {
+                        <div class="text-center p-1 d-inline-block">
+                            <div class="pb-2 font-bold">@(b.SegregatedMaterialName)</div>
+                            <span>@(b.Quantity.ToString("G29")) <small class="text-muted">@(u.SegregatedMaterialUnitName)</small></span>
+                        </div>
+                    }
+
+                </div>
+            }
+        }
+    }
+</div>

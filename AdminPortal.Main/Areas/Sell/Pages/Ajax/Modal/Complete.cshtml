@@ -1,0 +1,53 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Sell.Pages.Ajax.Modal.CompleteModel
+@{
+}
+<modal-header title="Complete Sell" close-button="true"></modal-header>
+
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Sell has been completed.</div>
+        </div>
+    </modal-body>
+    <script>
+        $("#ActionModalContent").trigger("action.done");
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("Complete")"
+          data-ajax-begin="$('#CompleteFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#CompleteFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="CompleteFieldSet">
+            <modal-body>
+                <partial name="_Complete" for="CompleteSellModel"/>
+                <div class="mb-3" id="commentfield" style="@(string.IsNullOrEmpty(Model.CompleteSellModel.Comment)?"display:none;":"")">
+                    <label asp-for="CompleteSellModel.Comment" class="fw-bold col-form-label"></label>
+                    <input asp-for="CompleteSellModel.Comment" class="form-control form-control-sm" placeholder="Comment" />
+                </div>
+                <input asp-for="Id" type="hidden" />
+            </modal-body>
+            <modal-footer>
+                <div class="w-100">
+                    <div class="float-start" id="addcommentbtn" style="@(string.IsNullOrEmpty(Model.CompleteSellModel.Comment)?"":"display:none;")">
+                        <button type="button" class="btn btn-default" onclick="$('#commentfield').show(); $('#addcommentbtn').hide();"><i class="fa fa-plus"></i> Add Comment</button>
+                    </div>
+                    <button class="btn btn-success float-end" type="submit">Create Sell</button>
+                </div>
+            </modal-footer>
+        </fieldset>
+    </form>
+}
+
+

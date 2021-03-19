@@ -1,0 +1,56 @@
+﻿@model RescheduleModel
+@{
+    DateTime? defaultDate = Model.Date;
+    if (defaultDate == null || defaultDate == DateTime.MinValue)
+    {
+        defaultDate = Dt.Today;
+    }
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="Date" class=" col-form-label fw-bold"></label>
+            <input asp-for="Date" class="form-control" placeholder="Pickup Date" type="text" readonly style="background-color:#fff;" />
+            <span asp-validation-for="Date" class="text-danger small"></span>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="TimeSlotId" class=" col-form-label fw-bold"></label>
+            <select asp-for="TimeSlotId" class="form-select">
+                @foreach (var slot in Model.TimeSlots)
+                {
+                    <option value="@slot.Id">@slot.Text</option>
+                }
+            </select>
+            <span asp-validation-for="Date" class="text-danger small"></span>
+        </div>
+    </div>
+</div>
+<div class="mb-3">
+    <label asp-for="ReasonId" class="col-form-label fw-bold"></label>
+    @foreach (var reason in Model.Reasons.Where(m=>m.ReasonForPickupEmployee!=null))
+    {
+        <div class="form-check py-1">
+            <input class="form-check-input" type="radio" asp-for="ReasonId" id="reason_@reason.Id" value="@reason.Id" />
+            <label class="form-check-label" for="reason_@reason.Id">
+                @reason.Reason
+            </label>
+        </div>
+    }
+    <span asp-validation-for="ReasonId" class="text-danger small"></span>
+</div>
+<lib name="DatetimePicker" />
+<script>
+    $(function () {
+        $("#@Html.IdFor(m=>m.Date)").datetimepicker({
+            useStrict: true,
+            ignoreReadonly: true,
+            format: "DD-MM-YYYY",
+            @if (defaultDate != null) {
+                @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultDate)",
+            }
+            minDate:'@string.Format("{0:MM/dd/yyyy}",Dt.Now)'
+        });
+    });
+</script>

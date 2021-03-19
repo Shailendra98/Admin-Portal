@@ -1,0 +1,4 @@
+﻿@inject TKW.ApplicationCore.Identity.IAppUserService user
+@{
+    Layout = user?.Current?.Role == TKW.ApplicationCore.Enums.UserRole.Admin ? "_LayoutAdmin" : user?.Current?.Role == TKW.ApplicationCore.Enums.UserRole.FranchiseAdmin ? "_LayoutFranchiseAdmin" : "_LayoutTeleCaller";
+}

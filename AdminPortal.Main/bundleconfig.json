@@ -1,0 +1,250 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/css/font-awesome.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/font-awesome.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/css/bootstrap.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/bootstrap/css/bootstrap.min.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/css/bootstrap-icon.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/bootstrap/icon/bootstrap-icon.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  //{
+  //  "outputFileName": "wwwroot/css/bootstrap.css",
+  //  "inputFiles": [
+  //    "wwwroot/stylesheets/bootstrap.min.css"
+  //  ],
+  //  "minify": { "enabled": true }
+  //},
+
+  {
+    "outputFileName": "wwwroot/css/animate.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/animate.min.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/css/native.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/native.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+
+  {
+    "outputFileName": "wwwroot/css/peicon7stroke.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/pe-icon-7-stroke.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/core.js",
+    "inputFiles": [
+      "wwwroot/scripts/popper.js",
+      "wwwroot/scripts/jquery-3.1.1.js",
+      "wwwroot/scripts/bootstrap.js",
+      "wwwroot/scripts/respond.js",
+      "wwwroot/scripts/attribute-functioning.js",
+      "wwwroot/scripts/load.js",
+      "wwwroot/scripts/jquery.unobtrusive-ajax.js",
+      "wwwroot/scripts/jquery.validate.js",
+      "wwwroot/scripts/jquery.validate.unobtrusive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  //Awesome Bootstrap Checkbox
+  {
+    "outputFileName": "wwwroot/css/bootstrap-checkbox.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/awesome-bootstrap-checkbox.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  //Homer
+  {
+    "outputFileName": "wwwroot/css/homer.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/homer.css",
+      "wwwroot/stylesheets/select2.css",
+      "wwwroot/stylesheets/select2-bootstrap4.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/homer.js",
+    "inputFiles": [
+      "wwwroot/scripts/homer/metisMenu.js",
+      "wwwroot/scripts/homer/jquery.slimscroll.min.js",
+      "wwwroot/scripts/homer/jquery.peity.min.js",
+      "wwwroot/scripts/homer/sparkline.js",
+      "wwwroot/scripts/select2.full.min.js",
+      "wwwroot/scripts/select2.search-response.js",
+      "wwwroot/scripts/homer/homer.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+
+  //{
+  //  "outputFileName": "wwwroot/js/form.js",
+  //  "inputFiles": [
+  //    "wwwroot/Scripts/jquery.unobtrusive-ajax.js",
+  //    "wwwroot/Scripts/jquery.validate.js",
+  //    "wwwroot/Scripts/jquery.validate.unobtrusive.js"
+  //  ],
+  //  "minify": {
+  //    "enabled": true,
+  //    "renameLocals": true
+  //  },
+  //  "sourceMap": false
+  //},
+
+  // DateTime Picker
+  {
+    "outputFileName": "wwwroot/js/datetimepicker.js",
+    "inputFiles": [
+      "wwwroot/scripts/moment.min.js",
+      "wwwroot/scripts/bootstrap-datetimepicker.es5.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/css/datetimepicker.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/bootstrap-datetimepicker.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  //Select2
+  // Commented as it was included with Homer
+  //{
+  //  "outputFileName": "wwwroot/js/select2.js",
+  //  "inputFiles": [
+  //    "wwwroot/Scripts/select2.full.min.js",
+  //    "wwwroot/Scripts/select2_searchResponse.js"
+  //  ],
+  //  "minify": {
+  //    "enabled": true,
+  //    "renameLocals": true
+  //  },
+  //  "sourceMap": false
+  //},
+  //{
+  //  "outputFileName": "wwwroot/css/select2.css",
+  //  "inputFiles": [
+  //    "wwwroot/Stylesheets/select2.css",
+  //    "wwwroot/Stylesheets/select2-bootstrap.css"
+  //  ],
+  //  "minify": { "enabled": true }
+  //},
+  //Blueimp Gallery
+  {
+    "outputFileName": "wwwroot/js/blueimpgallery.js",
+    "inputFiles": [
+      "wwwroot/scripts/blueimp-gallery.min.js",
+      "wwwroot/scripts/jquery.blueimp-gallery.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/css/blueimpgallery.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/blueimp-gallery.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+
+  //Search Elem
+  {
+    "outputFileName": "wwwroot/js/searchelem.js",
+    "inputFiles": [
+      "wwwroot/scripts/searchelem.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/css/searchelem.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/searchelem.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+
+  //Chart JS
+  {
+    "outputFileName": "wwwroot/js/chart.js",
+    "inputFiles": [
+      "wwwroot/scripts/chart.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+
+  // Request Invoice style
+  {
+    "outputFileName": "wwwroot/css/invoicestyle.css",
+    "inputFiles": [
+      "wwwroot/stylesheets/invoicestyle.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  }
+]

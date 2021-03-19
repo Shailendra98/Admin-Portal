@@ -1,0 +1,28 @@
+﻿@page "{UserId:int}"
+@model TKW.AdminPortal.Pages.Ajax.Address_.NewModel
+<modal-header title="New Address" close-button="true"></modal-header>
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+@if (!Model.HideForm)
+{
+    <form method="post"
+          data-ajax="true"
+          data-ajax-method="post"
+          data-ajax-update="#@Model.ModalId .modal-content"
+          data-ajax-url="@Url.Page("New", new { ModalId = Model.ModalId, UserId = Model.UserId })"
+          data-ajax-begin="$('#addFieldset').attr('disabled','');"
+          data-ajax-complete="$('#addFieldset').removeAttr('disabled');">
+        <fieldset id="addFieldset">
+            <modal-body>
+                <partial name="_AddressInput" for="AddressModel" />
+
+            </modal-body>
+            <modal-footer>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success">Add</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}

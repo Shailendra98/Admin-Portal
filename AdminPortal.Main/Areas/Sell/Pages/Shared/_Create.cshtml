@@ -1,0 +1,58 @@
+﻿@model TKW.AdminPortal.Areas.Sell.ViewModels.CreateSellModel
+@{
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="BuyerId" class="col-form-label fw-bold"></label>
+            <select asp-for="BuyerId" asp-items="Model.Buyers" class="form-control">
+            </select>
+            <span asp-validation-for="BuyerId" class="text-danger small"></span>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="WarehouseId" class="col-form-label fw-bold"></label>
+            <select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-control">
+            </select>
+            <span asp-validation-for="WarehouseId" class="text-danger small"></span>
+        </div>
+    </div>
+</div>
+<div class="mb-3">
+    <label asp-for="@Model.PickupSessionId" class="col-form-label fw-bold"></label>
+    <select asp-for="@Model.PickupSessionId" class="form-control">
+    </select>
+    <span asp-validation-for="PickupSessionId" class="text-danger small"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="MaterialIds" class="col-form-label fw-bold"></label>
+    <select class="form-control" asp-for="MaterialIds" asp-items="Model.Materials" multiple>
+        <option></option>
+    </select>
+    <span asp-validation-for="MaterialIds" class="text-danger small"></span>
+</div>
+
+<script>
+    var pickupSessionOptions = @Json.Serialize(Model.PickupSessions);
+    $(function () {
+        $("#@Html.IdFor(m=>m.WarehouseId)").select2AutoParent({ placeholder: "Warehouse" });
+        $("#@Html.IdFor(m=>m.BuyerId)").select2AutoParent({ placeholder: "Buyer" });
+          $("#@Html.IdFor(m=>m.MaterialIds)").select2AutoParent({placeholder:"Select Materials"});
+        $("#@Html.IdFor(m=>m.PickupSessionId)").select2({
+            placeholder: "PickupSession",
+            data: pickupSessionOptions,
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            templateResult: function (data) {
+                return data.html;
+            },
+            templateSelection: function (data) {
+                return data.text;
+            }
+        });
+
+    });
+
+</script>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPortal.Main", "AdminPortal.Main\AdminPortal.Main.csproj", "{BA7475D4-A506-40EE-9D14-71B45378799B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPortal.Components", "AdminPortal.Components\AdminPortal.Components.csproj", "{C1BDE830-2917-4599-903D-04FFDC3A9046}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA7475D4-A506-40EE-9D14-71B45378799B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA7475D4-A506-40EE-9D14-71B45378799B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA7475D4-A506-40EE-9D14-71B45378799B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA7475D4-A506-40EE-9D14-71B45378799B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1BDE830-2917-4599-903D-04FFDC3A9046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1BDE830-2917-4599-903D-04FFDC3A9046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1BDE830-2917-4599-903D-04FFDC3A9046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1BDE830-2917-4599-903D-04FFDC3A9046}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED3F4F8B-96D2-42CF-A05B-965A7A862352}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,186 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Sell.Pages.IndexModel
+@using Newtonsoft.Json
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+
+@{
+    ViewBag.Title = "Sells";
+}
+<pagetitle title="Sells" description="List of sells.">
+    @*<a href="#" data-toggle="modal" data-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/Add")" class="btn btn-primary btn-outline btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Sell</a>*@
+    <a href="#" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/Create")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Create Sell</a>
+</pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="mb-3">
+                        <h5>
+                            Filters
+                        </h5>
+                        <small>
+                            Filter the list of sells.
+                        </small>
+                    </div>
+                    <form data-ajax="true"
+                          data-ajax-method="get"
+                          data-ajax-url="@Url.Page("Ajax/SellList")"
+                          data-ajax-update="#selllist"
+                          data-ajax-begin="$('#selllist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                          id="filtersortform">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="Filter.Search"></label>
+                            <input asp-for="Filter.Search" class="form-control form-control-sm" placeholder="Search Sells" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">
+                                Date
+                            </label>
+                            <div class="mb-3">
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                    @*<input type="text" class="form-control input-sm" value="@(String.Format("{0:dd/MM/yyyy}"))" placeholder="Start date" data-dtpicker="true">*@
+                                </div>
+                                <div class="text-center text-muted" style="display:inline-block;width:5%;">
+                                    <i class="bi bi-dash"></i>
+                                </div>
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                    @*<input type="text" class="form-control input-sm" value="@(String.Format("{0:dd/MM/yyyy}"))" placeholder="Start date" data-dtpicker="true">*@
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.FranchiseMode)
+                        {
+                            <div class="mb-3">
+                                <label class="col-form-label fw-bold" for="@Html.IdFor(m=>m.Filter.Warehouses)">Warehouses</label>
+                                <select asp-for="Filter.Warehouses" asp-items="Model.Warehouses" class="form-select form-select-sm" multiple>
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Filter.Buyers" class="col-form-label fw-bold"></label>
+                                <select asp-for="Filter.Buyers" asp-items="Model.Buyers"  class="form-select form-select-sm" multiple>
+                                    <option></option>
+                                </select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-3" id="filterFranchiseContainer" @((Model?.Filter?.Warehouses != null && Model.Filter.Warehouses.Count > 0) ? "style=display:none" : "")>
+                                <div class="pull-right">
+                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterFranchiseContainer').hide(); $('#filterWarehouseContainer').show();">Warehouses</button>
+                                </div>
+                                <label class="col-form-label" for="@Html.IdFor(m=>m.Filter.Franchises)">Franchises</label>
+                                <select asp-for="Filter.Franchises" asp-items="Model.Franchises" class="form-select form-select-sm select2 select2-field" multiple>
+                                    <option></option>
+                                </select>
+                            </div>
+                            @*<div class="mb-3" id="filterWarehouseContainer" @((!(Model?.Filter?.Warehouses != null && Model.Filter.Warehouses.Count > 0)) ? "style=display:none;" : "")>
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterWarehouseContainer').hide(); $('#filterFranchiseContainer').show();">Franchises</button>
+                </div>
+                <label class="col-form-label" for="@Html.IdFor(m=>m.Filter.Warehouses)">Warehouses</label>
+                <select asp-items="Model.Warehouses" asp-for="Filter.Warehouses" class="form-control input-sm select2 select2-field" data-placeholder="Select Warehouses" multiple>
+                    <option></option>
+                </select>
+            </div>*@
+                        }
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-sm" type="submit" id="filtersubmitbtn">Apply</button>
+                            <button class="btn btn-default btn-sm" type="reset" id="filterresetbtn">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hpanel">
+                        <div class="panel-body">
+                            <div id="selllist">
+                                <div class="text-center">
+                                    <img src="~/images/ripple.gif" alt="Loading.." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="listform_ajax" method="post"></form>
+@section Styles{
+    <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/js/datetimepicker.min.js" asp-append-version="true" type="text/javascript"></script>
+    <script>
+        $(function () {
+
+           $("#@Html.IdFor(m=>m.Filter.Warehouses)").select2({placeholder:"Select Warehouse"});
+            $("#@Html.IdFor(m=>m.Filter.Franchises)").select2({ placeholder: "Select Franchises" });
+            $("#@Html.IdFor(m=>m.Filter.Buyers)").select2({ placeholder:"Select Buyers"});
+
+        var options = {
+            useStrict: true,
+            ignoreReadonly: true,
+            format: "DD-MM-YYYY",
+            showClear: true
+        };
+        $("[data-dtpicker]").attr({
+            style: "background-color:#fff",
+            readonly: 'readonly'
+        }).datetimepicker(options);
+        var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.PageNo, pageSize = Model.PageSize }));
+        $.ajax({
+            url: '@(Url.Page("Ajax/selllist"))',
+            data: model,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("RequestVerificationToken",
+                    $("#listform_ajax input").val());
+            },
+            method: 'POST',
+            success: function (data){ $('#selllist').html(data); }
+        });
+
+        var startDate = $("[id='@Html.IdFor(m=>m.Filter.StartDate)']");
+        var endDate = $("[id='@Html.IdFor(m=>m.Filter.EndDate)']");
+
+        startDate.on("dp.change", function (e) {
+            endDate.data("DateTimePicker").minDate(e.date);
+        });
+        endDate.on("dp.change", function (e) {
+            startDate.data("DateTimePicker").maxDate(e.date);
+        });
+
+
+        $("#filterresetbtn").click(function (e) {
+            $(".select2-field").val('').trigger('change');
+        });
+
+    });
+    </script>
+}
+@section Footer{
+    <modal content-id="DetailsModalContent" dialog-class="modal-lg" loader="true" id="DetailsModal"></modal>
+    <modal content-id="ActionModalContent" loader="true" id="ActionModal"></modal>
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+}

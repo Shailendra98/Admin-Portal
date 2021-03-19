@@ -1,0 +1,207 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Franchise.Pages.PincodesModel
+@{
+    ViewBag.Title = "Franchise Pincodes";
+    var name = Html.NameFor(m => m.AddPincode);
+    var id = Html.IdFor(m => m.AddPincode);
+    var count = 0;
+}
+<pagetitle title="Franchise Pincodes" description="Manage pincodes of the franchise"></pagetitle>
+<div class="content">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="hpanel">
+                    <div class="panel-body p-0" id="panel">
+                        <span id="return_message" role="dialog" aria-hidden="true"></span>
+                        <form method="post"
+                              data-ajax="true"
+                              data-ajax-method="post"
+                              data-ajax-begin="$('#franchisePincodeFieldset').attr('disabled','');"
+                              data-ajax-complete="$('#franchisePincodeFieldset').removeAttr('disabled');"
+                              data-ajax-update="#return_message">
+                            <fieldset id="franchisePincodeFieldset">
+                                <div class="row p-2">
+                                    <div class="col-md-6">
+                                        <h3 class="ps-1">
+                                            @Model.FranchiseDetail.Name
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                            <div class="row pt-3">
+                                                <div class="col-md-6">
+                                                    <label asp-for="ManagerId" class="form-label float-end pt-1 fw-bold">Default Manager:</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <select asp-for="ManagerId" asp-items="Model.Managers">
+                                                    </select>
+                                                    <span asp-validation-for="ManagerId" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table vertical-mid-table mb-0">
+                                        <thead class="border-bottom border-top pb-1">
+                                            <tr>
+                                                <th class="text-center align-middle w-sm">Pincode</th>
+                                                <th class="text-center font-normal pb-4">
+                                                    Monday
+                                                    <div class="checkbox checkbox-success">
+                                                        <input type="checkbox" value="true" data-day="Mon" class="check-all" @(Model.PincodeList.All(m => m.Mon) ? "checked" : "") />
+                                                        <label></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center font-normal pb-4">
+                                                    Tuesday
+                                                    <div class="checkbox checkbox-success">
+                                                        <input type="checkbox" value="true" data-day="Tue" class="check-all" @(Model.PincodeList.All(m => m.Tue) ? "checked" : "") />
+                                                        <label></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center font-normal pb-4">
+                                                    Wednesday
+                                                    <div class="checkbox checkbox-success">
+                                                        <input type="checkbox" value="true" data-day="Wed" class="check-all" @(Model.PincodeList.All(m => m.Wed) ? "checked" : "") />
+                                                        <label></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center font-normal pb-4">
+                                                    Thursday
+                                                    <div class="checkbox checkbox-success">
+                                                        <input type="checkbox" value="true" data-day="Thu" class="check-all" @(Model.PincodeList.All(m => m.Thu) ? "checked" : "") />
+                                                        <label></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center font-normal pb-4">
+                                                    Friday
+                                                    <div class="checkbox checkbox-success">
+                                                        <input type="checkbox" value="true" data-day="Fri" class="check-all" @(Model.PincodeList.All(m => m.Fri) ? "checked" : "") />
+                                                        <label></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center font-normal pb-4">
+                                                    Saturday
+                                                    <div class="checkbox checkbox-success">
+                                                        <input type="checkbox" value="true" data-day="Sat" class="check-all" @(Model.PincodeList.All(m => m.Sat) ? "checked" : "") />
+                                                        <label></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center font-normal pb-4">
+                                                    Sunday
+                                                    <div class="checkbox checkbox-success">
+                                                        <input type="checkbox" value="true" data-day="Sun" class="check-all" @(Model.PincodeList.All(m => m.Sun) ? "checked" : "") />
+                                                        <label></label>
+                                                    </div>
+                                                </th>
+                                                <th class="text-center">
+                                                    <button class="btn-close btn-xs pe-4 btn-light invisible"></button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableBody">
+                                            @foreach (var item in Model.PincodeList)
+                                            {
+                                                <tr id="tr@(count)">
+                                                    <td class="text-center w-sm">@item.Pincode<input type="hidden" name="@(name)[@(count)].Pincode" class="pincode_field" value="@item.Pincode" /></td>
+                                                    <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Mon" type="checkbox" name="@(name)[@(count)].Mon" value="true" checked="@item.Mon" /><label></label></div></td>
+                                                    <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Tue" type="checkbox" name="@(name)[@(count)].Tue" value="true" checked="@item.Tue" /><label></label></div></td>
+                                                    <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Wed" type="checkbox" name="@(name)[@(count)].Wed" value="true" checked="@item.Wed" /><label></label></div></td>
+                                                    <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Thu" type="checkbox" name="@(name)[@(count)].Thu" value="true" checked="@item.Thu" /><label></label></div></td>
+                                                    <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Fri" type="checkbox" name="@(name)[@(count)].Fri" value="true" checked="@item.Fri" /><label></label></div></td>
+                                                    <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Sat" type="checkbox" name="@(name)[@(count)].Sat" value="true" checked="@item.Sat" /><label></label></div></td>
+                                                    <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Sun" type="checkbox" name="@(name)[@(count)].Sun" value="true" checked="@item.Sun" /><label></label></div></td>
+                                                    <td class="text-center"><button class="btn-close btn-xs pe-4 btn-light" onclick="_removeRow(@(count));"></button></td>
+                                                </tr>
+                                                count = count + 1;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                             
+                                <div class="row p-2">
+                                    <div class="col-md-6 ps-3">
+                                        <a class="btn btn-default btn-sm" onclick="addRow();">
+                                            <i class="fa fa-plus"></i>&nbsp;&nbsp;Add Pincode
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 pe-3">
+                                        <button class="btn btn-success btn-sm w-sm float-end" type="submit">Update</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles{
+    <style>
+        label::after {
+            padding-left: 1px !important;
+        }
+    </style>
+}
+@section Scripts{
+    <script>
+        $(function () {
+            $("#@Html.IdFor(m=>m.ManagerId)").select2();
+            $(".check-all").click(function () {
+                var day = $(this).attr("data-day");
+                var checked = $(this).is(":checked");
+                $("#tableBody").find(".day-check[data-day='" + day + "']").prop("checked", checked);
+            });
+        });
+        function _removeRow(id) {
+            var controlToBeRemoved = '#tr' + id;
+            var i = 0;
+            $(controlToBeRemoved).nextAll().each(function (index) {
+                i = parseInt(id) + index;
+                var inside = i + 1;
+                $(this).attr('id', 'tr' + i +'');
+                $(this).find('.pincode_field').attr('name', '@(name)[' + i + '].Pincode');
+                $(this).find('input[name="@(name)[' + inside + '].Mon"]').attr('name', '@(name)[' + i + '].Mon');
+                $(this).find('input[name="@(name)[' + inside + '].Tue"]').attr('name', '@(name)[' + i + '].Tue');
+                $(this).find('input[name="@(name)[' + inside + '].Wed"]').attr('name', '@(name)[' + i + '].Wed');
+                $(this).find('input[name="@(name)[' + inside + '].Thu"]').attr('name', '@(name)[' + i + '].Thu');
+                $(this).find('input[name="@(name)[' + inside + '].Fri"]').attr('name', '@(name)[' + i + '].Fri');
+                $(this).find('input[name="@(name)[' + inside + '].Sat"]').attr('name', '@(name)[' + i + '].Sat');
+                $(this).find('input[name="@(name)[' + inside + '].Sun"]').attr('name', '@(name)[' + i + '].Sun');
+                $(this).find('button').attr('onclick', '_removeRow(' + i + ')');
+            });
+            $(controlToBeRemoved).remove();
+        }
+
+        function addRow() {
+            var temp = $("#tableBody").children('tr').length;
+            var select = "<select name='@(name)[" + temp + "].Pincode' placeholder='Select Pincode'  id='pincode_result' class='pincode_field input-sm select2-field'></select>";
+            var pincell = "<td class='text-center w-sm'>" + select + "</td>";
+            var checks = _generateDayCheckbox("Mon", temp) + _generateDayCheckbox("Tue", temp) + _generateDayCheckbox("Wed", temp) + _generateDayCheckbox("Thu", temp) + _generateDayCheckbox("Fri", temp) + _generateDayCheckbox("Sat", temp) + _generateDayCheckbox("Sun", temp);
+            var removecell = "<td class='text-center'><button class='btn-close btn-xs pe-4 btn-light' onclick='_removeRow(" + temp + ")'></button></td>";
+            var newrow = "<tr id='tr" + temp + "'>" + pincell + checks + removecell + "</tr>";
+            $("#tableBody").append(newrow);
+            $(".select2-field").select2(
+                select2SearchResponseAjaxConfiguration("@Url.Action("Pincodes","Address")", formatPincode, function (pincode) { return pincode.text || pincode.id + ""; }, {id:0, text:"Select pincode"})
+            );
+            function formatPincode(pincode) {
+
+                if (pincode.loading) {
+                    return pincode.text;
+                }
+                var markup = "<div class='media'>"
+                    + "<div class='media-body'>"
+                    + "<div class='media-heading'>" + pincode.id + "</div>"
+                    + "<p class='small'>" + pincode.cityName + ", " + pincode.stateName + "</p>"
+                    + "</div>"
+                    + "</div>";
+                return markup;
+            }
+        }
+        function _generateDayCheckbox(day, index) {
+            return "<td class='text-center pb-4'><div class='checkbox checkbox-success'><input class='day-check' data-day='"+day+"'  type='checkbox' name='@(name)[" + index + "]."+day+"' value='true' checked/><label></label></div></td>";
+        }
+
+    </script>
+}

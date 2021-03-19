@@ -1,0 +1,132 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal.EditPurchaseMaterialModel
+@{
+    Layout = null;
+}
+<modal-header title="Edit Purchase Material" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Material has been updated.</div>
+        </div>
+    </modal-body>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("EditPurchaseMaterial", new { Id = Model.Id })"
+          data-ajax-begin="$('#editPurchaseFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#editPurchaseFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="editPurchaseFieldSet">
+            <modal-body>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="Name"></label><br />
+                            <input class="form-control" placeholder="Material Name" asp-for="Name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="UnsegregatedMaterialId" class="  col-form-label fw-bold"></label>
+                            <select asp-for="UnsegregatedMaterialId" asp-items="Model.UnsegregatedMaterial" class="form-control">
+                            </select>
+                            <span asp-validation-for="UnsegregatedMaterialId" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TypeId" class="col-form-label fw-bold"></label>
+                            <select asp-for="TypeId" asp-items="Model.Types" class="form-control">
+                            </select>
+                            <span asp-validation-for="TypeId" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="GroupId" class="  col-form-label fw-bold"></label>
+                            <select asp-for="GroupId" asp-items="Model.Groups" class="form-control">
+                            </select>
+                            <span asp-validation-for="GroupId" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold text-left" asp-for="GSTPercent"></label><br />
+                            <input class="form-control" placeholder="GST Percentage" asp-for="GSTPercent" />
+                            <span asp-validation-for="GSTPercent" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="   col-form-label fw-bold text-left" asp-for="HSNCode">HSN Code</label><br />
+                            <input class="form-control" placeholder="HSN Code" asp-for="HSNCode" />
+                            <span asp-validation-for="HSNCode" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">Unit </label>
+                            <div class="ps-3">
+                                @foreach (var unit in Model.Units)
+                                {
+                                    <div class="form-check p-2 form-check-inline">
+
+                                        @if (Model.UnitId == unit.Id)
+                                        {
+                                            <input class="form-check-input" id="Unit_@unit.Id" asp-for="UnitId" checked value="@unit.Id" type="radio" />
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" id="Unit_@unit.Id" asp-for="UnitId" value="@unit.Id" type="radio" />
+                                        }
+                                        <label for="Unit_@unit.Id" class="form-check-label">@unit.Name</label>
+                                    </div>}
+
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="IsActive">Is Active?</label>
+                            <div class="ps-3">
+                                <div class="form-check p-2 form-check-inline">
+                                    @if (Model.IsActive)
+                                    {
+                                        <input class="form-check-input" asp-for="IsActive" id="Active_True" checked value="true" type="radio" />
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" asp-for="IsActive" id="Active_True" value="true" type="radio" />
+                                    }
+                                    <label for="Active_True" class="form-check-label">Yes</label>
+                                </div>
+                                <div class="form-check p-2 form-check-inline">
+                                    @if (Model.IsActive)
+                                    {
+                                        <input class="form-check-input" asp-for="IsActive" id="Active_False" value="false" type="radio" />
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" asp-for="IsActive" id="Active_False" checked value="false" type="radio" />
+                                    }
+                                    <label for="Active_False" class="form-check-label">No</label>
+                                </div>
+                            </div>
+                            <span class="text-danger small" asp-validation-for="IsActive"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </modal-body>
+            <modal-footer>
+                <button class="btn btn-success" type="submit">Update Material</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+    <script>
+        $(function () {
+            $("#@Html.IdFor(m=>m.UnsegregatedMaterialId)").select2AutoParent();
+            $("#@Html.IdFor(m=>m.TypeId)").select2AutoParent();
+            $("#@Html.IdFor(m=>m.GroupId)").select2AutoParent();
+        });
+    </script>
+}

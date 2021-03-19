@@ -1,0 +1,28 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Sell.Pages.BuyersModel
+@{
+    ViewBag.Title = "Buyers";
+}
+<pagetitle title="Buyers" description="List of all buyers">
+    <a href="#" data-toggle="modal" data-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/Buyer/MobileNo")" class="btn btn-primary btn-outline btn-sm"><span class="glyphicon glyphicon-plus"></span> Add Buyer</a>
+</pagetitle>
+<div class="content">
+    <div id="buyerlist">
+        <div class="text-center">
+            <img src="~/images/ripple.gif" alt="Loading.." />
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#buyerlist').load("@Url.Page("Ajax/BuyerList")");
+            $('#ActionModalContent').on('action.done', function (e) {
+                $('#buyerlist').load("@Url.Page("Ajax/BuyerList")");
+            });
+        });
+    </script>
+}
+@section Footer{
+    <modal content-id="ActionModalContent" loader="true" id="ActionModal"></modal>
+}

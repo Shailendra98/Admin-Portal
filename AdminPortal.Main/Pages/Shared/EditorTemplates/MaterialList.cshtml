@@ -1,0 +1,204 @@
+﻿@model List<TKW.AdminPortal.ViewModels.MaterialRateQuantityInputModel>
+@{
+    var count = 0;
+    var name = Html.NameFor(m => m);
+    var id = Html.IdFor(m => m);
+    bool RateIncluded = ViewData["IncludeRate"] == null ? true : (bool)ViewData["IncludeRate"];
+    bool QuantityIncluded = ViewData["IncludeQuantity"] == null ? true : (bool)ViewData["IncludeQuantity"];
+    bool ShowGSTAmount = ViewData["ShowGSTAmount"] == null ? false : (bool)ViewData["ShowGSTAmount"];
+    bool IsSellMaterial = ViewData["IsSellMaterial"] == null ? false : (bool)ViewData["IsSellMaterial"];
+    int? Pincode = (int?)ViewData["Pincode"];
+}
+<table class="table border border-1 table-borderless">
+    <thead>
+        <tr class="border-bottom">
+            <th class="text-center" style="min-width:180px">Name</th>
+            @if (QuantityIncluded) {
+                <th class="text-center" style="width:100px">Quantity</th>
+            }
+            @if (RateIncluded)
+            {
+                <th class="text-center" style="width:100px">Rate</th>
+            }
+        <th>
+        </th>
+        </tr>
+    </thead>
+    <tbody id="tb@(id)">
+        @if (Model != null)
+        {
+            foreach (var m in Model)
+            {
+                <tr id="tr@(id)@(count)" class="border-bottom">
+                    <td class="d-none">
+                        <input type="hidden" name="@(name).Index" value="@count" />
+                    </td>
+                    <td class="tdmaterialname">
+                        <select class="form-control materialSelect2" name="@(name)[@(count)].Id" id="@(id)[@(count)]_Id" data-gstpercent="@m.GSTPercent">
+                            <option value="@m.Id" selected>@m.Name</option>
+                        </select>
+                    </td>
+                    @if (QuantityIncluded) { 
+                    <td class="tdmaterialquantity">
+                        <input class="form-control calcVal" placeholder='Quantity' type="number" name="@(name)[@(count)].Quantity" id="@(id)[@(count)]_Quantity" value="@m.Quantity" step="0.01" />
+                    </td>
+                    }
+                    @if (RateIncluded)
+                    {
+                        <td class="tdmaterialrate">
+                            <input class="form-control calcVal" placeholder='Rate' type="number" name="@(name)[@(count)].Rate" id="@(id)[@(count)]_Rate" value="@(m.Rate.HasValue ? m.Rate.Value.ToString("G29") : "")" step="0.01" />
+                        </td>
+                    }
+                    <td class="tdmaterialremove">
+                        <button class="btn btn-close btn-xs px-0 mt-1" type="button" aria-label="Close" onclick="event.preventDefault(); @(id)_removeRow(@(count));">
+                        </button>
+                    </td>
+             </tr>
+                count++;
+            }
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="p-1">
+                @if (RateIncluded && QuantityIncluded)
+                {<text>
+                                <span id="@(id+"TotalAmount")"></span>
+                </text>}
+            </td>
+            <td colspan="@(RateIncluded && QuantityIncluded?3:2)" class="text-end">
+                @*@if (RateIncluded && IsSellMaterial!=true)
+                    {
+                        <em class="pull-left"><small class="text-muted">Set rate to "0" for default rate.</small></em>
+                    }*@
+                <button type="button" onclick="event.preventDefault(); @(id)_addRow();" class="btn btn-default btn-sm text-nowrap">
+                    <span class="bi bi-plus"></span> Add material
+                </button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $(function () {
+        $(".materialSelect2").each(function () {
+            initializeSelect2($(this));
+        });
+        $("#tb@(id)").on("change keyup", "input.calcVal", function () {
+           @if (RateIncluded && QuantityIncluded)
+           {<text>
+            var amount = 0;
+            var gst = 0;
+            $("#tb@(id)").children("tr").each(function (index) {
+                var rate = parseFloat($(this).find(".tdmaterialrate input").val());
+                var quantity = parseFloat($(this).find(".tdmaterialquantity input").val());
+                var gstPercent = parseFloat($(this).find(".tdmaterialname select").attr('data-gstpercent'));
+                if (!isNaN(rate) && !isNaN(quantity)) {
+                    amount += rate * quantity;
+                    if (!isNaN(gstPercent))
+                        gst += (rate * quantity * gstPercent / 100);
+                }
+                
+            });
+            $("#@(id)TotalAmount").html("<span title='₹"+(amount+gst)+" (Including GST)'>Total Amount: ₹<strong>" + amount.toFixed(2) + "</strong> + <small>₹<strong>" + gst.toFixed(2)+"</strong> (GST)</small><span>");
+            </text>}
+        });
+    });
+    function @(id)_addRow() {
+        var index = $('#tb@(id)').children('tr').length;
+        var indexCell = "<td style='display:none'><input name='@(name).Index' type='hidden' value='" + index + "' /></td>";
+        var nameCell = "<td class='tdmaterialname'><select class='form-control materialSelect2' id='@(id)[" + index + "]_Id' name='@(name)[" + index + "].Id'><option></option></select></td>";
+        @if (QuantityIncluded) { 
+        @:var quantityCell = "<td class='tdmaterialquantity'><input placeholder='Quantity' class='form-control calcVal' id='@(id)[" + index + "]_Quantity' name='@(name)[" + index + "].Quantity' type='number' value='' step='0.01' /></td>";
+        }
+        else
+        {
+            @:var quantityCell = "";
+        }
+            @if (RateIncluded)
+        {
+                @:var rateCell = "<td class='tdmaterialrate'><input placeholder='Rate' class='form-control calcVal' id='@(id)[" + index + "]_Rate' name='@(name)[" + index + "].Rate' type='number' value='' step='0.01' /></td>)";
+                }
+        else
+        {
+            @:var rateCell = "";
+                }
+        var removeCell = "<td class='tdmaterialremove'><button type='button' class='btn btn-close btn-xs px-0 mt-1' aria-label='Close' onclick='@(id)_removeRow(" + index + ");'></button></td>";
+        var newRow = "<tr id='tr@(id)" + index + "' class='border-bottom'>" + indexCell + nameCell + quantityCell + rateCell + removeCell + "</tr>";
+        $("#tb@(id)").append(newRow);
+        initializeSelect2($("[id='@(id)[" + index + "]_Id']"));
+    }
+    function @(id)_removeRow(id) {
+        var total = $('#tb@(id)').children('tr').length;
+        if (total >= 1) {
+            var controlToBeRemoved = '#tr@(id)' + id;
+            var i = 0;
+            $(controlToBeRemoved).nextAll().each(function (index) {
+                i = parseInt(id) + index;
+                $(this).attr('id', 'tr@(id)' + i);
+                $(this).find('input[name="@(name).Index"]').val(i);
+                $(this).find('td.tdmaterialname select').attr('id', '@(id)[' + i + ']_Id');
+                $(this).find('td.tdmaterialname select').attr('name', '@(name)[' + i + '].Id');
+             @if(QuantityIncluded)
+             {   <text>
+                    $(this).find('td.tdmaterialquantity input').attr('id', '@(id)[' + i + ']_Quantity');
+                    $(this).find('td.tdmaterialquantity input').attr('name', '@(name)[' + i + '].Quantity');
+                </text>
+            }
+                @if (RateIncluded) {
+          <text>$(this).find('td.tdmaterialrate input').attr('id', '@(id)[' + i + ']_Rate');
+                $(this).find('td.tdmaterialrate input').attr('name', '@(name)[' + i + '].Rate');
+                </text>}
+                $(this).find('td.tdmaterialremove button').attr('onclick', '@(id)_removeRow(' + i + ');');
+            });
+            $(controlToBeRemoved).remove();
+            $("input.calcVal").change();
+        }
+        if (total == 1) {
+            $("#@(id)TotalAmount").html("");
+        }
+
+    }
+    function initializeSelect2(selectElementObj) {
+        selectElementObj.select2AutoParent(
+            getSelect2obj()
+        );
+    }
+    var materialselect2obj_Set = false;
+    var materialselect2obj = {};
+    function getSelect2obj() {
+        if (!materialselect2obj_Set) {
+            var materialRemoteUrl=@if (IsSellMaterial) {<text> '@Url.Action("SellMaterials","Material")';</text>} else {<text> '@Url.Action("PurchaseMaterials","Material")';</text>}
+            materialselect2obj = select2ApiDataConfiguration(
+                materialRemoteUrl,
+                formatMaterial,
+                function (obj) {
+                    @if (ShowGSTAmount)
+                    {<text>
+                    $("select.materialSelect2").filter(function (i, e) {
+                        return $(e).find("option:selected").val() == obj.id;
+                    }).attr("data-gstpercent",obj.gstPercent);
+                    </text>}
+                    return obj.text || obj.name;
+                },
+                "Materials"
+            );
+            materialselect2obj_Set = true;
+        }
+        return materialselect2obj;
+    }
+    function formatMaterial(material) {
+        if (!material.name) {
+            return material.text;
+        }
+        var markup = "<div class='media'>"
+            + "<div class='media-body'>"
+            + "<div class='media-heading'>" + material.name + "</div>"
+            + "</div>";
+        @*if (material.pictureName) {
+            markup += "<div class='media-right'><img src='@(urlPrefixes.Value.Material)x64/" + material.pictureName + "' alt='Material picture' height='50'></div>"
+        }*@
+        markup += "</div>";
+        return markup;
+    }
+
+</script>

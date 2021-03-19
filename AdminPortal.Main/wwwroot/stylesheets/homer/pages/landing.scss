@@ -1,0 +1,373 @@
+// local color variable
+$color-dark: #455463;
+$text-light: #a7afb8;
+$mobile-width: 480px;
+.navbar-form-custom, .navbar-right, #logo {
+    display: block;
+  }
+.navbar-toggle{
+    background-color:#fff;
+    border:none;
+}
+  .navbar-default {
+    background: #fff;
+  }
+
+  .navbar .navbar-brand {
+    font-size: 12px;
+    height: auto;
+    margin-top: 8px;
+    padding: 0px 15px;
+    font-weight: 700;
+    display: block;
+    margin-left: 0;
+  }
+
+  .navbar-default .navbar-toggle:hover,
+  .navbar-default .navbar-toggle:focus {
+    background: $color-green;
+  }
+
+.navbar-default .navbar-toggle:hover .icon-bar,
+.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #fff !important;
+}
+
+  .navbar-default .navbar-nav > .active > a,
+  .navbar-default .navbar-nav > .active > a:hover,
+  .navbar-default .navbar-nav > .active > a:focus {
+    background-color: transparent;
+    color: $color-green;
+    border: none;
+  }
+
+  .navbar-default li a:hover {
+    border-bottom: none;
+  }
+
+  .brand-desc {
+    color: $color-dark;
+    margin: 15px 10px 0 90px;
+    width: 180px;
+    font-weight:600;
+    font-size:17px;
+    display:block;
+    &:hover,&:focus{
+        text-decoration:none;
+    }
+  }
+
+  .navbar-nav > li > a {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 15px 15px;
+    color: $color-dark;
+  }
+  .navbar-nav > li, .navbar-nav > li > a {
+    height: 55px;
+  }
+
+header {
+    padding-top: 0px;
+    padding-bottom:50px;
+    border-bottom: 1px solid $border-color;
+    h1{
+        font-size:32px;
+        font-weight:600;
+
+    }
+    h2{
+        font-size:27px;
+        margin-top:10px;
+    }
+}
+
+section {
+    padding: 50px 0 50px 0;
+    border-bottom: 1px solid $border-color;
+    &.dark {
+        background-color: #d8f2c0;
+    }
+}
+  section h2 {
+    margin-top: 0;
+    font-weight:600;
+  }
+
+  section p {
+    margin-top: 0px;
+  }
+
+  header .container {
+    position: relative;
+  }
+
+  h4 {
+    font-weight: 600;
+  }
+
+  p {
+    color: $text-light;
+  }
+
+  
+  @media (max-width: 1200px) {
+  .brand-desc {
+      display: none;
+    }
+
+    .navbar .navbar-brand {
+      margin-left: 10px;
+    }
+  }
+.container1000 {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.container870 {
+    max-width: 870px;
+    margin: 0 auto;
+}
+.container300 {
+    max-width: 300px;
+    margin: 0 auto;
+}
+.testinomial-container {
+    .testinomial-image {
+        padding-top: 65px;
+    }
+
+    .testinomial-panels {
+        .hpanel {
+            margin-bottom:0;
+            .panel-body {
+                border-radius: 23px;
+
+                img {
+                    margin-top: -40px;
+                    height: 70px;
+                }
+            }
+        }
+    }
+}
+/*progressbar*/
+#progressbar {
+    margin: 0 auto;
+    margin-bottom: 10px;
+    overflow: hidden;
+    /*CSS counters to number the steps*/
+    counter-reset: step;
+    text-align: center;
+    max-width: 400px;
+    background-color: white;
+    padding: 10px 0px;
+}
+
+#progressbar li {
+    list-style-type: none;
+    color: silver;
+    text-transform: uppercase;
+    font-size: 9px;
+    width: 33.33%;
+    float: left;
+    position: relative;
+}
+
+#progressbar li.active {
+    color: $color-green;
+}
+
+#progressbar li:before {
+    content: counter(step);
+    counter-increment: step;
+    width: 20px;
+    line-height: 20px;
+    display: block;
+    font-size: 10px;
+    color: #333;
+    background-color: silver;
+    border-radius: 3px;
+    margin: 0 auto 5px auto;
+    position: relative;
+    z-index: 2;
+}
+/*progressbar connectors*/
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: silver;
+    position: absolute;
+    left: -50%;
+    top: 9px;
+    /*put it behind the numbers*/
+}
+/*.modal progressbar li:after{
+    width:90%;
+    left:-42%;
+}*/
+#progressbar li:first-child:after {
+    /*connector not needed before the first step*/
+    content: none;
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before, #progressbar li.active:after {
+    background: $color-green;
+    color: white;
+}
+.request-box > .panel-body {
+    min-height: 428px !important;
+    border-color: $border-color1;
+    box-shadow: 0 0 10px silver;
+    padding-bottom:55px;
+    #progressbar {
+        position: absolute;
+        right: 1px;
+        left: 1px;
+        bottom: 0px;
+    }
+}
+
+.input-group-addon{
+    background-color:$color-background-boxed;
+} 
+.mobileno-code {
+    background-color: white;
+    padding: 0 5px;
+    border-right: none !important;
+    font-size: 18px;
+    /*border-left: none !important;*/
+}
+fieldset[disabled] .mobileno-code{
+    background-color:#eee;
+}
+.mobileno-input {
+    padding-left: 5px;
+    border-left: none!important;
+}
+.input-dark-border {
+    .input-group-addon:first-child {
+        border-right: none;
+    }
+    .mobileno-input {
+        &:hover, &:focus, &:active {
+            border-color: initial;
+            box-shadow: none;
+        }
+    }
+}
+.input-dark-border .input-group-addon, .input-dark-border .form-control {
+    border: 1px solid $border-color1;
+}
+.input-dark-border .select2 .form-control {
+    border: 1px solid $border-color1 !important;
+}
+.phonetext{
+    letter-spacing:1.5px;
+}
+@font-face {
+    font-family: 'HarmoniaSans';
+    src: url(../../fonts/harmonia-sans-pro-cyr-regular.otf);
+}
+
+body {
+    font-family: 'HarmoniaSans',Arial !important;
+    margin-bottom:0;
+    color:$color-text;
+}
+
+.img-links a {
+    &:hover, &:focus {
+        text-decoration: none;
+    }
+
+    img {
+        transition: opacity linear .3s;
+        &:hover, &:focus {
+            opacity:.5;
+        }
+    }
+}
+.heading{
+    padding:30px 0;
+}
+
+.ratecard {
+    border-color: #62cb31 !important;
+}
+.ratecard.md{
+    padding:15px !important;
+}
+
+.ratecard.xs {
+    padding: 10px !important;
+}
+.ratecard h4 {
+    margin-top: 0;
+    font-weight: 200 !important;
+    color: #62cb31 !important;
+}
+
+.ratecard .media-body {
+    vertical-align: middle !important;
+}
+@media(max-width:$mobile-width){
+    .content .container{
+        padding-left:0;
+        padding-right:0;
+    }
+    header{
+        border:none;
+        padding:0;
+        h1{
+            font-size:20px;
+            margin-top:0;
+        }
+        h2{
+            font-size:14px;
+            margin:0;
+        }
+        h3{
+            font-size:20px;
+        }
+        .request-box{
+            margin-bottom:10px;
+        }
+    }
+    .phonetext{
+        letter-spacing:normal;
+    }
+    section{
+        padding:20px 0;
+        
+        h2{
+            font-size:25px;
+            font-weight:200;
+        }
+        h3{
+            font-size:20px;
+        }
+        h4{
+            font-size:17px;
+        .font-extra-bold{
+            font-weight:800;
+        }
+            }
+    }
+    .heading{
+        padding:10px 0;
+        font-size:20px;
+    }
+    .ratecard h4 {
+        margin-bottom:0;
+    }
+    .ratecard .media-left{
+        padding:0 20px 0 10px;
+
+    }
+    .ratecard .media-body>div{
+        display:inline-block
+    }
+}

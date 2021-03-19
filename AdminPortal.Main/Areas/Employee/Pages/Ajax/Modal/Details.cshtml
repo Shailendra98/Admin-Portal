@@ -1,0 +1,54 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Employee.Pages.Ajax.Modal.DetailsModel
+@using TKW.AdminPortal.Constants
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+<modal-header title="Employee Details" close-button="true"></modal-header>
+<modal-body>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="text-center p-b-xs">
+                <img src="@urlGenerator.ProfilePic(Model?.Employee?.PictureName,UserPicSize.x240)" height="200" class="img-responsive img-thumbnail" />
+            </div>
+        </div>
+        <div class="col-sm-6">
+
+            <table class="table">
+                <tr>
+                    <td><b>Name</b></td>
+                    <td class="text-end text-nowrap">@Model.Employee.Name</td>
+                </tr>
+                <tr>
+                    <td class="text-nowrap"><b>Mobile number</b></td>
+                    <td class="text-end">@Model.Employee.MobileNo</td>
+                </tr>
+                <tr>
+                    <td><b>Id</b></td>
+                    <td class="text-end">@Model.Employee.Id</td>
+                </tr>
+                <tr>
+                    <td><b>Role</b></td>
+                    <td class="text-end">@Model.Employee.Role.Name</td>
+                </tr>
+                <tr>
+                    <td><b>Status</b></td>
+                    <td class="text-end">@Model.Employee.Status.Name</td>
+                </tr>
+                @if (!string.IsNullOrEmpty(Model.Employee.ManagerName))
+                {
+                    <tr>
+                        <td><b>Manager</b></td>
+                        <td class="text-end">@Model.Employee.ManagerName</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-around">
+            <button class="btn btn-sm btn-default" data-modal-href="@Url.Page("ProfilePicture",new { Id=Model.Employee.Id })" type="button">@(string.IsNullOrEmpty(Model.Employee.PictureName) ? "Upload" : "Change") Picture</button>
+            <button class="btn btn-sm btn-default" data-modal-href="@Url.Page("Edit",new {Id=Model.Employee.Id })" type="button">Edit Details</button>
+            <button class="btn btn-sm btn-default" data-modal-href="@Url.Page("ChangeStatus",new {Id=Model.Employee.Id })" type="button">Change Status</button>
+        </div>
+    </div>
+</modal-body>
+

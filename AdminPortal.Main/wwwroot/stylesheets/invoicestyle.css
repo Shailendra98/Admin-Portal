@@ -1,0 +1,98 @@
+﻿@font-face {
+  font-family: 'HarmoniaSans';
+  src: url("../fonts/harmonia-sans-pro-cyr-regular.otf") format("opentype"); }
+
+body {
+  font-family: "HarmoniaSans"; }
+
+html {
+  min-height: 100%;
+  position: relative; }
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact; }
+  .col-lg-6 .col-sm-6 .col-md-6 .col-xs-12 {
+    width: 50%;
+    /*float: left;*/ }
+  .col-print-6 {
+    max-width: 50%; }
+  .col-print-7 {
+    max-width: 64%;
+    padding: 0px; }
+  .col-print-5 {
+    max-width: 36%;
+    padding: 0px; }
+  .container-p {
+    padding-left: 50px;
+    padding-right: 50px; }
+  .f-s {
+    background-color: #e6e6e6 !important;
+    padding-left: 50px;
+    padding-right: 50px; }
+  .print-p-t {
+    color: dimgray; }
+  .font {
+    font-size: 12px; }
+  .font1 {
+    font-size: 15px;
+    font-weight: 900; }
+  .footer-p {
+    padding-bottom: 20px;
+    padding-top: 20px; } }
+
+@media only screen and (max-width: 767px) {
+  .header1 {
+    text-align: center;
+    padding: initial; }
+  .font {
+    font-size: 12px; }
+  .font1 {
+    font-size: 15px;
+    font-weight: 900; }
+  .f-s {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding: 15px;
+    background-color: #e6e6e6 !important; }
+  .p-in {
+    padding-bottom: 150px; }
+  .footer-p {
+    padding-bottom: 8px;
+    padding-top: 8px; } }
+
+.p-sm {
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.p-b-r {
+  padding-top: 8px; }
+
+.p-tb-md {
+  padding-bottom: 35px;
+  padding-top: 34px; }
+
+.heading {
+  letter-spacing: 2px; }
+
+.font-extra-bold {
+  font-weight: 800; }
+
+.f-border {
+  border-bottom: 2px solid #ddd; }
+
+.row-1 {
+  padding-right: 0px; }
+
+.f-s {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #e6e6e6 !important; }
+
+.footer-p {
+  padding-bottom: 20px;
+  padding-top: 20px; }

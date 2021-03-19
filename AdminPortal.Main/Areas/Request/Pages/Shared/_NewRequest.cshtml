@@ -1,0 +1,117 @@
+﻿@model NewRequestModel
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="Name" class="col-form-label-sm fw-bold"></label>
+            @if (Model.IsNewUser)
+            {
+                <input asp-for="Name" placeholder="Enter name" class="form-control form-control-sm  " />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            }
+            else
+            {
+                <div>
+                    @Model.Name
+                </div>
+                <input asp-for="Name" type="hidden" />
+            }
+        </div>
+
+    </div>
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="MobileNo" class="col-form-label fw-bold"></label>
+            @if (!Model.IsNewUser)
+            {
+                <div>
+                    @(Model.MobileNo ?? "")
+                </div>
+                <input asp-for="MobileNo" type="hidden" />
+            }
+            else
+            {
+                <input asp-for="MobileNo" readonly class="form-control form-control-sm " placeholder="Enter mobile number" />
+                <span asp-validation-for="MobileNo" class="text-danger small"></span>
+            }
+        </div>
+    </div>
+</div>
+<input asp-for="IsNewAddress" type="hidden" />
+<input asp-for="IsNewUser" type="hidden" />
+<div class="mb-3">
+    <label class="col-form-label fw-bold">Address</label>
+    @if (Model.IsNewAddress)
+    {
+        <partial name="_AddressInput" for="Address" />
+        <span asp-validation-for="Address" class="text-danger small"></span>
+    }
+    else
+    {
+        @await Component.InvokeAsync("SelectAddress", new { InputName = Html.NameFor(m => m.AddressId), ModalId = "AddressModal", Id = Model.AddressId })
+    }
+</div>
+
+@*<div class="mb-3">
+        <label asp-for="Schedule" class=" ">Pickup Schedule</label>
+        <partial name="_ScheduleInput" for="Schedule" />
+        <span asp-validation-for="Schedule" class="text-danger small"></span>
+        <div class="row">
+            <div class="col-sm-6 mb-3">
+
+                @Html.EditorFor(m => m.ExpectedDate, "DateTime", new { placeholder = "Select date", minDate = String.Format("{0:MM/dd/yyyy}", dt.Now) })
+                @Html.ValidationMessageFor(m => m.ExpectedDate, "", new { @class = "text-danger" }, "small")
+            </div>
+            <div class="col-sm-6 mb-3">
+                @Html.DropDownList("TimeSlot", null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TimeSlot, "", new { @class = "text-danger" }, "small")
+            </div>
+        </div>
+    </div>*@
+
+
+
+@*<div class="mb-3">
+        @Html.LabelFor(m => m.Materials, new { @class = " " })
+        @Html.EditorFor(m => m.Materials, "MaterialList")
+    </div>*@
+@*<div class="row">
+        <div class="col-sm-6">
+            <div class="mb-3">
+                @Html.Label("Request Type", new { @class = " " })
+                <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-default @(Model.IsDonation?"":"active")">
+                        @Html.RadioButtonFor(m => m.IsDonation, false, new { autocomplete = "off", id = "sellBtn" }) Sell
+                    </label>
+                    <label class="btn btn-default @(Model.IsDonation?"active":"")">
+                        @Html.RadioButtonFor(m => m.IsDonation, true, new { autocomplete = "off", id = "donationBtn" }) Donation
+                    </label>
+                </div>
+                @Html.ValidationMessageFor(m => m.IsDonation, "", new { @class = "text-danger" }, "small")
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3" id="selectNgoId" style=@(Model.IsDonation?"":"display:none;")>
+                @Html.LabelFor(m => m.NGOId, new { @class = " " })
+                @Html.SelectFor(m => m.NGOId, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.NGOId, "", new { @class = "text-danger" }, "small")
+            </div>
+        </div>
+    </div>*@
+@*<script>
+        $(function () {
+              $("#@Html.IdFor(m=>m.NGOId)").select2(
+                select2SearchResponseAjaxConfiguration(
+                    "/api/NGO/search?sessionid=@Member.SessionId",
+                    function (obj) { return select2SelectionTemplate(obj, "name", "type", "picture", "right"); },
+                    function (obj) { return obj.name; },
+                    "Select NGO"
+                ));
+            $("input:radio[name='@Html.NameFor(m=>m.IsDonation)']").change(function (e) {
+                if ($(this).is(":checked") && $(this).val() == "True") {
+                    $("#selectNgoId").show();
+                } else {
+                    $("#selectNgoId").hide();
+                }
+            });
+        });
+    </script>*@

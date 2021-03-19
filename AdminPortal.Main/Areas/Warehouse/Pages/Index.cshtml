@@ -1,0 +1,37 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Warehouse.Pages.IndexModel
+@{
+    ViewBag.Title = "Warehouses";
+}
+
+<pagetitle title="Warehouses" description="List of all warehouses">
+</pagetitle>
+<div class="content">
+    @if (!Model.IsFranchise)
+    {
+        @await Component.InvokeAsync("SelectFranchise")
+    }
+    else if (Model.Warehouses == null || Model.Warehouses.Count() == 0)
+    {
+        <div class="hpanel">
+            <div class="panel-body text-center">
+                <h5>There is no warehouse.</h5>
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var m in Model.Warehouses)
+        {
+            <div class="hpanel">
+                <a href="@Url.Page("Details", new { m.Id })" class="text-decoration-none">
+                    <div class="panel-body m-b-sm">
+                        <h5 class="font-extra-bold d-inline me-lg-3">@m.Name</h5>
+                        <small>@m.AddressLine @m.LocalityName @m.CityName @m.Pincode</small>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+</div>
+

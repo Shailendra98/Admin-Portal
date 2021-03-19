@@ -1,0 +1,49 @@
+﻿@page
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.Requests.CancelledModel
+@{
+}
+<div class="panel-body">
+    @if (Model.Requests == null || Model.Requests.Count == 0)
+    {
+        <div class="text-center p-sm">
+            There is no cancelled request.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-condensed vertical-mid-table animated fadeIn">
+                <tbody>
+                    @foreach (var r in Model.Requests)
+                    {
+                        <tr class="pt-1 pb-1">
+                            <td>@r.Id</td>
+                            <td><img alt="logo" class="rounded-circle" height="40" src="~/images/default/profilex240.png"></td>
+                            <td>@r.Seller?.Name <br /><small>(@r.Seller.MobileNo)</small> </td>
+                            <td>
+                                @if (r.Address?.AddressLine != null)
+                                {
+                                    <address class="mb-0 small" type="@r.Address?.TypeName" name="@r.Address?.Name" mobile-no="@r.Address?.MobileNo" addressline="@r.Address?.AddressLine" locality="@r.Address?.LocalityName" state="@r.Address?.StateName" city="@r.Address?.CityName" pincode="@r.Address?.Pincode"></address>
+                                }
+                                else
+                                {
+                                    <em>Address not found..!</em>
+                                }
+                            </td>
+                            <td>
+                                <small>
+                                    Reason : <b class="text-danger">@r.CancellationReason.Reason</b><br />
+                                    Cancelled by @r.Canceller.Name
+                                </small>
+                            </td>
+                            <td> <small class="float-end font-trans">@Generate.Time(Convert.ToDateTime(r.SubmissionTime), 's')</small></td>
+                            <td>
+                                <a href="@Url.Page("../Details", new { area ="Request", r.Id})" class="btn btn-default btn-xs reqdetailbtn" data-id="@r.Id">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

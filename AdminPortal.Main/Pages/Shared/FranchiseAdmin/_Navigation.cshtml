@@ -1,0 +1,50 @@
+﻿@inject TKW.AdminPortal.Utils.SessionData SessionData
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@using TKW.AdminPortal.Extensions
+@{
+    var user =await SessionData.GetUser();
+}
+<div id="navigation">
+    <div class="profile-picture">
+        <a href="#">
+            <img src="@urlGenerator.ProfilePic(user?.PictureName,TKW.AdminPortal.Constants.UserPicSize.x80)" class="img-circle m-b" alt="logo" height="76" width="76">
+        </a>
+
+        <div class="stats-label text-color">
+            <span class="font-extra-bold font-uppercase">@(user?.Name)</span>
+        </div>
+       
+    </div>
+    <ul class="nav metismenu flex-sm-column" id="side-menu">
+        <li class="@Html.IsSelected(page:"/Dashboard")">
+            <a href="@Url.Page("/Dashboard")" class="text-decoration-none d-block"><span class="nav-label">Dashboard</span></a>
+        </li>
+        <li class="@Html.IsSelected(area:"Request")">
+            <a href="#" class="text-decoration-none d-block"><span class="nav-label">Requests</span><span class="fa arrow"></span> </a>
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(page: "/Index",area:"Request")"><a href="@Url.Page("/Index",new { area="Request"})" class="text-decoration-none d-block">View requests</a></li>
+                <li class="@Html.IsSelected(page: "/Add/Index",area:"Request")"><a href="@Url.Page("/Add/Index",new { area="Request"})" class="text-decoration-none d-block">Add request</a></li>
+            </ul>
+        </li>
+        <li class="@Html.IsSelected(area:"PickupSession")">
+            <a href="@Url.Page("/Index",new { area="PickupSession" })" class="text-decoration-none d-block"><span class="nav-label">Pickup Sessions</span></a>
+        </li>
+        <li class="@Html.IsSelected(area:"Warehouse")">
+            <a href="@Url.Page("/Index",new { area="Warehouse" })" class="text-decoration-none d-block"><span class="nav-label">Warehouses</span></a>
+        </li>
+        <li class="@Html.IsSelected(area:"Sell")">
+            <a href="@Url.Page("/Index",new { area="Sell" })" class="text-decoration-none d-block"><span class="nav-label">Sells</span></a>
+        </li>
+        <li class="@Html.IsSelected(area: "Expense")">
+            <a href="@Url.Page("/Index", new { area = "Expense" })" class="text-decoration-none d-block"><span class="nav-label">Expenses</span></a>
+        </li>
+        <li class="@Html.IsSelected(area:"Material")">
+            <a href="@Url.Page("/Index", new { area = "Material" })" class="text-decoration-none d-block"><span class="nav-label">Materials</span></a>
+        </li>
+        @*
+        <li class="@Html.IsSelected(area: "Employee")">
+            <a href="@Url.Page("/Index", new { area = "Employee" })"><span class="nav-label">Employees</span></a>
+        </li>*@
+    </ul>
+</div>
+ 

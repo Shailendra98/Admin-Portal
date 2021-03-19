@@ -1,0 +1,116 @@
+﻿@page "{Id:int}"
+@using Microsoft.AspNetCore.Routing
+@using Newtonsoft.Json
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Lists.SellListModel
+@{
+    Layout = null;
+    var filter = Model.Filter;
+    var route = new RouteValueDictionary();
+    route["Filter.StartDate"] = String.Format("{0:dd/MM/yyyy}", filter.StartDate);
+    route["Filter.EndDate"] = String.Format("{0:dd/MM/yyyy}", filter.EndDate);
+
+    var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Sells.PageNumber + "&pageSize=" + Model.Sells.PageSize;
+    string returnUrl = Url.Page("../../Index") + "?" + querystring;
+}
+
+
+
+<div class="panel-body p-3">
+    @if (Model.Sells == null || Model.Sells.Count == 0)
+    {
+
+        <div class="text-center pt-3">
+            <h5 class="fw-normal">No Sells !</h5><div>There is no sell.</div>
+        </div>
+
+    }
+    else
+    {
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <h5 class="mt-2 fw-normal">
+                    Sell records
+                </h5>
+            </div>
+            <div class="col-md-6">
+                <div class="font-bold text-end pb-2">
+                    @Model.Sells.FirstItemOnPage - @Model.Sells.LastItemOnPage of @Model.Sells.TotalItemCount
+                </div>
+                <div class="pull-right">
+                    <form data-ajax="true"
+                          data-ajax-method="get"
+                          data-ajax-url="@Url.Page("SellList", route)" ,
+                          data-ajax-begin="$('#sell_list').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                          data-ajax-update="#sell_list"
+                          class="form-inline">
+                        <div class="row">
+                            <div class="col-auto"><label for="pagesize" class="col-form-label fw-bold">Sell per page:</label></div>
+                            <div class="col-auto">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" name="pageSize" id="pagesize" style="max-width:50px;" value="@Model.Sells.PageSize " />
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default btn-sm">Go</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var s in Model.Sells)
+        {
+            <a data-bs-target="#ModalId" data-bs-toggle="modal" data-load-url="@Url.Page("../Modal/SellDetails" , new { s.Id})" class="detailbtn text-decoration-none">
+                <div class="panel-body p-1 mb-2">
+                    <div class="row">
+                        <div class="col-md-8">
+                            @foreach (var item in s.Items)
+                            {
+                                <div class="text-center p-2 d-inline-block">
+                                    <div class="pb-1 font-bold">@item.MaterialName</div>
+                                    <span>@item.ActualQuantity.ToString("G29") <small class="text-muted">@item.MaterialUnitName</small></span>
+                                </div>
+                            }
+                           
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-2">
+                                <span class="small">
+                                    <span class="text-muted">Updated on</span>
+                                    <strong>
+                                        @string.Format("{0:dd MMM, yyyy}", s.UpdateTime)
+                                        @string.Format("{0:hh:mm tt}", s.UpdateTime)
+                                    </strong>
+                                    <span class="text-muted">by</span> @s.Updater.Name
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+
+        <div class="d-flex justify-content-center mt-3">
+            <pager data-ajax="true"
+                   data-ajax-method="get"
+                   data-ajax-begin="window.location.hash='sell_list'; $('#sell_list').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                   data-ajax-update="#sell_list"
+                   list="Model.Sells"
+                   url='pageNo=>Url.Page("SellList", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Sells.PageSize })))'></pager>
+        </div>
+        route["pageSize"] = Model.Sells.PageSize;
+        route["pageNo"] = Model.Sells.PageNumber;
+
+
+        @*<script>
+    $(function () {
+        if (history.pushState) {
+            var newUrl = "@Html.Raw(Url.Page("../../Index",route))";
+            window.history.pushState({ path: newUrl },'', newUrl);
+        }
+       });
+        </script>*@
+    }
+</div>

@@ -1,0 +1,160 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Area.Pages.PincodesModel
+@{
+    ViewBag.Title = "Pincode";
+    Layout = "_LayoutAdmin";
+    int i = 0;
+}
+<pagetitle title="@Model.City.Name City" description="View and Filter Localities based on pincode."></pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-body p-0">
+                    @if (Model.City.Localities.Select(m => m.Pincode).Count() == 0)
+                    {
+                        <div>
+                            <h5>There is no pincode.</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="pt-3 px-3">
+                            <a class="btn btn-xs btn-outline btn-default pull-right btn-view-all active"> <div class="d-flex w-100 justify-content-center">Clear Filter</div></a>
+                            <span class="h5 font-bold">Filter</span> <br />
+                            <small>Select Pincodes to view localities</small>
+
+                        </div>
+                        <div class="list-group pt-4">
+                            <div class="panel-section">
+                                <div id="search_container">
+                                    <div class="searchElem list-group-item list-group-item-action flex-column align-items-start input-group">
+                                        <span class="input-group-append p-0">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                        <input class="mx-2" style="width:100%; font-size:14px;" type="text" placeholder="Search Pincodes" id="searchPincodes" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pincode_div">
+                                @foreach (var p in Model.City.Localities.GroupBy(m => m.Pincode))
+                                {
+                                    <div class="search-pincode">
+                                        <a class="list-group-item list-group-item-action flex-column align-items-start btn-pincode-view" data-pincode="@p.Key" id="pincode_table">
+                                            <div class="d-flex w-100 justify-content-between pincode_tr">
+                                                <h6 class="mb-1">@p.Key</h6>
+                                                <small>Localities: @p.Select(m => m.Id).Count()</small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="hpanel">
+                <div class="panel-body mx-1">
+                    @if (Model.City.Localities.Count() == 0)
+                    {
+                        <div>
+                            <h5>There is no locality.</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="pb-4">
+                            <span class="h4 fw-bold">Localities</span>
+                            <span class="float-end">
+                                <a class="btn btn-primary btn-outline btn-sm" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddLocality",new { Model.City.Id})"><i class="fa fa-plus"></i>  Add Locality</a>
+                            </span>
+                        </div>
+                        <div id="search_container">
+                            <div class="hpanel">
+                                <div class="panel-body">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Search Localities" class="form-control" id="searchLocality" />
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="locality">
+                            <div class="d-flex justify-content-start row row-cols-1 row-cols-md-3 g-2">
+                                @foreach (var l in Model.City.Localities.OrderBy(m => m.Name))
+                                {
+                                    <div class="locality-container" data-pincode="@l.Pincode" style="display: inline-block;">
+                                        <div class="card">
+                                            <a data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/EditLocality",new { Id = l.Id , CityId = Model.City.Id})">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">@l.Name</h6>
+                                                    <div class="card-text">Pincode: @l.Pincode </div>
+                                                    <div class="pull-right mb-2 mx-0">
+                                                        <div class="pull-right">
+                                                            @if (l.IsActive)
+                                                            {
+                                                                <label class="badge h-bg-green">Active</label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="badge badge-danger">Inactive</label>
+                                                            }
+                                                            @if (l.Longitude == null && l.Latitude == null)
+                                                            {
+                                                                <span><i class="bi bi-geo-alt-fill text-danger"></i></span>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<lib name="SearchElem" />
+@section Scripts{
+    <script>
+        $(function () {
+
+            $("#searchLocality").SearchElem("#locality div.locality-container", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
+            $("#searchPincodes").SearchElem("#pincode_div div.search-pincode", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
+
+            $(".btn-pincode-view").click(function (e) {
+                e.preventDefault();
+                var pincode = $(this).data("pincode");
+
+                $("#pincode_div a").removeClass("active");
+                $(this).addClass("active");
+                $(".btn-view-all").removeClass("active");
+                $(".locality-container").hide();
+                $(".locality-container[data-pincode='" + pincode + "']").show();
+            });
+
+            $(".btn-view-all").click(function () {
+
+                $(".btn-view-all").addClass("active");
+                $("#pincode_div a").removeClass("active");
+                $(".active_pincode").hide();
+                $(".locality-container").show();
+            });
+        });
+    </script>
+}
+@section Footer{
+    <modal id="ActionModal" content-id="ActionModalContent" loader="true"></modal>
+}

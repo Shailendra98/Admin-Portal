@@ -1,0 +1,400 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>27a60aa4-6410-4cb1-ba50-8e62f1e6f071</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <RootNamespace>TKW.AdminPortal</RootNamespace>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <Compile Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
+    <Compile Remove="Areas\Request\Pages\Shared\**" />
+    <Compile Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
+    <Compile Remove="Areas\Vehicle\**" />
+    <Compile Remove="Controllers\**" />
+    <Compile Remove="wwwroot\lib\**" />
+    <Content Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <Content Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
+    <Content Remove="Areas\Request\Pages\Shared\**" />
+    <Content Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
+    <Content Remove="Areas\Vehicle\**" />
+    <Content Remove="Controllers\**" />
+    <Content Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <EmbeddedResource Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
+    <EmbeddedResource Remove="Areas\Request\Pages\Shared\**" />
+    <EmbeddedResource Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
+    <EmbeddedResource Remove="Areas\Vehicle\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
+    <None Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <None Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
+    <None Remove="Areas\Request\Pages\Shared\**" />
+    <None Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
+    <None Remove="Areas\Vehicle\**" />
+    <None Remove="Controllers\**" />
+    <None Remove="wwwroot\lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Employee\ViewModels\EmployeeProfileModel.cs" />
+    <Compile Remove="Areas\PickupSession\Pages\Ajax\CashTransaction.cshtml.cs" />
+    <Compile Remove="Areas\PickupSession\Pages\Ajax\PickupSession.cshtml.cs" />
+    <Compile Remove="Areas\Request\Pages\Ajax\Modal\Store.cshtml.cs" />
+    <Compile Remove="Areas\Sell\Pages\Ajax\BuyerList.cshtml.cs" />
+    <Compile Remove="Areas\Sell\Pages\Ajax\Modal\GSTInvoice.cshtml.cs" />
+    <Compile Remove="Areas\Sell\Pages\Buyers.cshtml.cs" />
+    <Compile Remove="Pages\Ajax\Request\OTP.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <Content Remove="Areas\Area\Pages\_ViewImports.cshtml" />
+
+    <Content Remove="Areas\Area\Pages\_ViewStart.cshtml" />
+
+    <Content Remove="Areas\PickupSession\Pages\Ajax\CashTransaction.cshtml" />
+    <Content Remove="Areas\PickupSession\Pages\Ajax\PickupSession.cshtml" />
+    <Content Remove="Areas\Request\Pages\Ajax\Modal\Store.cshtml" />
+    <Content Remove="Areas\Sell\Pages\Ajax\BuyerList.cshtml" />
+    <Content Remove="Areas\Sell\Pages\Ajax\Modal\GSTInvoice.cshtml" />
+    <Content Remove="Areas\Sell\Pages\Buyers.cshtml" />
+    <Content Remove="Areas\Sell\Pages\Invoice.cshtml" />
+    <Content Remove="Areas\Sell\Pages\Shared\_BuyerInput.cshtml" />
+    <Content Remove="compilerconfig.json" />
+    <Content Remove="Pages\Ajax\Request\OTP.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <Compile Include="Areas\Employee\Pages\Ajax\Modal\Add\Add.cshtml.cs" />
+    <Compile Include="Areas\Employee\Pages\Ajax\Modal\Add\MobileNo.cshtml.cs" />
+    <Compile Include="Areas\Employee\Pages\Ajax\Modal\ChangeStatus.cshtml.cs" />
+    <Compile Include="Areas\Employee\Pages\Ajax\Modal\Details.cshtml.cs" />
+    <Compile Include="Areas\Employee\Pages\Ajax\Modal\Edit.cshtml.cs" />
+    <Compile Include="Areas\Employee\Pages\Ajax\Modal\ProfilePicture.cshtml.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\MaterialController.cs" />
+    <Compile Include="Controllers\OTPController.cs" />
+    <Compile Include="Controllers\RequestController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Area\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\Area\Pages\_ViewStart.cshtml" />
+    <None Include="Areas\Employee\Pages\Ajax\List.cshtml" />
+    <Content Include="Areas\Employee\Pages\Ajax\Modal\Details.cshtml" />
+    <Content Include="Areas\Employee\Pages\Ajax\Modal\Add\Add.cshtml" />
+    <Content Include="Areas\Employee\Pages\Ajax\Modal\Add\MobileNo.cshtml" />
+    <Content Include="Areas\Employee\Pages\Ajax\Modal\Edit.cshtml" />
+    <Content Include="Areas\Employee\Pages\Ajax\Modal\ProfilePicture.cshtml" />
+    <Content Include="Areas\Employee\Pages\Ajax\Modal\ChangeStatus.cshtml" />
+    <None Include="Areas\Employee\Pages\Ajax\Modal\_ViewStart.cshtml" />
+    <None Include="Areas\Employee\Pages\Ajax\_ViewStart.cshtml" />
+    <None Include="Areas\Employee\Pages\Index.cshtml" />
+    <None Include="Areas\Employee\Pages\Shared\_EmployeeList.cshtml" />
+    <None Include="Areas\Employee\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\Employee\Pages\_ViewStart.cshtml" />
+    <None Include="Areas\Expense\Pages\Ajax\ExpenseList.cshtml" />
+    <None Include="Areas\Expense\Pages\Ajax\Modal\Add.cshtml" />
+    <None Include="Areas\Expense\Pages\Ajax\Modal\Details.cshtml" />
+    <None Include="Areas\Expense\Pages\Ajax\_ViewStart.cshtml" />
+    <None Include="Areas\Expense\Pages\Index.cshtml" />
+    <None Include="Areas\Expense\Pages\Shared\_Details.cshtml" />
+    <None Include="Areas\Expense\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\Expense\Pages\_ViewStart.cshtml" />
+    <None Include="Areas\Franchise\Pages\Ajax\List.cshtml" />
+    <None Include="Areas\Franchise\Pages\Ajax\_ViewStart.cshtml" />
+    <None Include="Areas\Franchise\Pages\Index.cshtml" />
+    <None Include="Areas\Franchise\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\Franchise\Pages\_ViewStart.cshtml" />
+    <None Include="Areas\Material\Pages\Ajax\Modal\AddPurchaseMaterial.cshtml" />
+    <None Include="Areas\Material\Pages\Ajax\Modal\AddSegregatedMaterial.cshtml" />
+    <None Include="Areas\Material\Pages\Ajax\Modal\AddUnsegregatedMaterial.cshtml" />
+    <None Include="Areas\Material\Pages\Ajax\Modal\EditPurchaseMaterial.cshtml" />
+    <None Include="Areas\Material\Pages\Ajax\Modal\EditSegregatedMaterial.cshtml" />
+    <None Include="Areas\Material\Pages\Ajax\Modal\EditUnsegregatedMaterial.cshtml" />
+    <None Include="Areas\Material\Pages\RateList.cshtml" />
+    <None Include="Areas\Material\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\Material\Pages\_ViewStart.cshtml" />
+    <None Include="Areas\PickupSession\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\PickupSession\Pages\_ViewStart.cshtml" />
+    <None Include="Areas\Request\Pages\Action\Cancel.cshtml" />
+    <None Include="Areas\Request\Pages\Action\Reschedule.cshtml" />
+    <None Include="Areas\Request\Pages\Add\Index.cshtml" />
+    <None Include="Areas\Request\Pages\Add\New.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_NewRequest.cshtml" />
+    <None Include="Areas\Request\Pages\Ajax\Modal\Cancel.cshtml" />
+    <None Include="Areas\Request\Pages\Ajax\Modal\Reschedule.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_Reschedule.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_Handle.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_Details.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_RequestBrief.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_Payment.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_EditPending.cshtml" />
+    <None Include="compilerconfig.json" />
+    <None Include="Pages\Ajax\Address\Modal\Edit.cshtml" />
+    <None Include="Pages\Ajax\Address\Modal\List.cshtml" />
+    <None Include="Pages\Ajax\Address\Modal\New.cshtml" />
+    <None Include="wwwroot\scripts\arrow-navigation.js" />
+    <None Include="wwwroot\scripts\attribute-functioning.js" />
+    <None Include="wwwroot\scripts\blueimp-gallery.js" />
+    <None Include="wwwroot\scripts\blueimp-gallery.min.js" />
+    <None Include="wwwroot\scripts\bootstrap-datetimepicker.js" />
+    <None Include="wwwroot\scripts\bootstrap-datetimepicker.min.js" />
+    <None Include="wwwroot\scripts\bootstrap-editable.js" />
+    <None Include="wwwroot\scripts\bootstrap-editable.min.js" />
+    <None Include="wwwroot\scripts\bootstrap-sprockets.js" />
+    <None Include="wwwroot\scripts\bootstrap-tour.js" />
+    <None Include="wwwroot\scripts\bootstrap-tour.min.js" />
+    <None Include="wwwroot\scripts\bootstrap-old.js" />
+    <None Include="wwwroot\scripts\bootstrap-old.min.js" />
+    <None Include="wwwroot\scripts\bootstrap\affix.js" />
+    <None Include="wwwroot\scripts\bootstrap\alert.js" />
+    <None Include="wwwroot\scripts\bootstrap\button.js" />
+    <None Include="wwwroot\scripts\bootstrap\carousel.js" />
+    <None Include="wwwroot\scripts\bootstrap\collapse.js" />
+    <None Include="wwwroot\scripts\bootstrap\dropdown.js" />
+    <None Include="wwwroot\scripts\bootstrap\modal.js" />
+    <None Include="wwwroot\scripts\bootstrap\popover.js" />
+    <None Include="wwwroot\scripts\bootstrap\scrollspy.js" />
+    <None Include="wwwroot\scripts\bootstrap\tab.js" />
+    <None Include="wwwroot\scripts\bootstrap\tooltip.js" />
+    <None Include="wwwroot\scripts\bootstrap\transition.js" />
+    <None Include="wwwroot\scripts\chart.min.js" />
+    <None Include="wwwroot\scripts\d3.js" />
+    <None Include="wwwroot\scripts\d3.min.js" />
+    <None Include="wwwroot\scripts\dataTables.bootstrap.js" />
+    <None Include="wwwroot\scripts\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\buttons.bootstrap.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\buttons.bootstrap.min.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\buttons.html5.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\buttons.html5.min.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\buttons.print.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\buttons.print.min.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\dataTables.buttons.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\dataTables.buttons.min.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\pdfmake.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\pdfmake.min.js" />
+    <None Include="wwwroot\scripts\datatablesPlugins\pdfmake.min.js.map" />
+    <None Include="wwwroot\scripts\datatablesPlugins\vfs_fonts.js" />
+    <None Include="wwwroot\scripts\flot\curvedLines.js" />
+    <None Include="wwwroot\scripts\flot\jquery.flot.js" />
+    <None Include="wwwroot\scripts\flot\jquery.flot.pie.js" />
+    <None Include="wwwroot\scripts\flot\jquery.flot.resize.js" />
+    <None Include="wwwroot\scripts\flot\jquery.flot.spline.js" />
+    <None Include="wwwroot\scripts\fullcalendar.js" />
+    <None Include="wwwroot\scripts\fullcalendar.min.js" />
+    <None Include="wwwroot\scripts\homer\charts.js" />
+    <None Include="wwwroot\scripts\homer\homer.js" />
+    <None Include="wwwroot\scripts\homer\icheck.js" />
+    <None Include="wwwroot\scripts\homer\icheck.min.js" />
+    <None Include="wwwroot\scripts\homer\jquery.peity.js" />
+    <None Include="wwwroot\scripts\homer\jquery.peity.min.js" />
+    <None Include="wwwroot\scripts\homer\jquery.slimscroll.js" />
+    <None Include="wwwroot\scripts\homer\jquery.slimscroll.min.js" />
+    <None Include="wwwroot\scripts\homer\metisMenu.js" />
+    <None Include="wwwroot\scripts\homer\metisMenu.min.js" />
+    <None Include="wwwroot\scripts\homer\sparkline.js" />
+    <None Include="wwwroot\scripts\Init.js" />
+    <None Include="wwwroot\scripts\jquery-3.1.1.intellisense.js" />
+    <None Include="wwwroot\scripts\jquery-3.1.1.js" />
+    <None Include="wwwroot\scripts\jquery-3.1.1.min.js" />
+    <None Include="wwwroot\scripts\jquery-3.1.1.min.map" />
+    <None Include="wwwroot\scripts\jquery-3.1.1.slim.js" />
+    <None Include="wwwroot\scripts\jquery-3.1.1.slim.min.js" />
+    <None Include="wwwroot\scripts\jquery-3.1.1.slim.min.map" />
+    <None Include="wwwroot\scripts\jquery-ui.js" />
+    <None Include="wwwroot\scripts\jquery-ui.min.js" />
+    <None Include="wwwroot\scripts\jquery.blueimp-gallery.js" />
+    <None Include="wwwroot\scripts\jquery.blueimp-gallery.min.js" />
+    <None Include="wwwroot\scripts\jquery.bootstrap-touchspin.js" />
+    <None Include="wwwroot\scripts\jquery.bootstrap-touchspin.min.js" />
+    <None Include="wwwroot\scripts\jquery.dataTables.js" />
+    <None Include="wwwroot\scripts\jquery.dataTables.min.js" />
+    <None Include="wwwroot\scripts\jquery.nestable.js" />
+    <None Include="wwwroot\scripts\jquery.signalR-2.2.3.js" />
+    <None Include="wwwroot\scripts\jquery.signalR-2.2.3.min.js" />
+    <None Include="wwwroot\scripts\jquery.unobtrusive-ajax.js" />
+    <None Include="wwwroot\scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="wwwroot\scripts\jquery.validate-vsdoc.js" />
+    <None Include="wwwroot\scripts\jquery.validate.js" />
+    <None Include="wwwroot\scripts\jquery.validate.min.js" />
+    <None Include="wwwroot\scripts\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\scripts\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\scripts\ladda\ladda.jquery.js" />
+    <None Include="wwwroot\scripts\ladda\ladda.jquery.min.js" />
+    <None Include="wwwroot\scripts\ladda\ladda.js" />
+    <None Include="wwwroot\scripts\ladda\ladda.min.js" />
+    <None Include="wwwroot\scripts\ladda\spin.js" />
+    <None Include="wwwroot\scripts\ladda\spin.min.js" />
+    <None Include="wwwroot\scripts\load.js" />
+    <None Include="wwwroot\scripts\modernizr-2.6.2.js" />
+    <None Include="wwwroot\scripts\moment-with-locales.js" />
+    <None Include="wwwroot\scripts\moment-with-locales.min.js" />
+    <None Include="wwwroot\scripts\moment.js" />
+    <None Include="wwwroot\scripts\moment.min.js" />
+    <None Include="wwwroot\scripts\npm.js" />
+    <None Include="wwwroot\scripts\respond.js" />
+    <None Include="wwwroot\scripts\respond.min.js" />
+    <None Include="wwwroot\scripts\searchelem.es5.js" />
+    <None Include="wwwroot\scripts\searchelem.es5.min.js" />
+    <None Include="wwwroot\scripts\searchelem.js" />
+    <None Include="wwwroot\scripts\select2.full.js" />
+    <None Include="wwwroot\scripts\select2.full.min.js" />
+    <None Include="wwwroot\scripts\select2.js" />
+    <None Include="wwwroot\scripts\select2.min.js" />
+    <None Include="wwwroot\scripts\select2.search-response.js" />
+    <None Include="wwwroot\scripts\star-rating.js" />
+    <None Include="wwwroot\scripts\star-rating.min.js" />
+    <None Include="wwwroot\scripts\sugg-input.js" />
+    <None Include="wwwroot\scripts\suggestions.js" />
+    <None Include="wwwroot\scripts\sweet-alert.js" />
+    <None Include="wwwroot\scripts\sweet-alert.min.js" />
+    <None Include="wwwroot\scripts\timeago.js" />
+    <None Include="wwwroot\scripts\toastr.min.js" />
+    <None Include="wwwroot\stylesheets\awesome-bootstrap-checkbox.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.rtl.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.rtl.min.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.rtl.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.rtl.min.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.min.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.rtl.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.rtl.min.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.rtl.css.map" />
+    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.rtl.min.css.map" />
+    <None Include="wwwroot\scripts\bootstrap.bundle.js" />
+    <None Include="wwwroot\scripts\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\scripts\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\scripts\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\scripts\bootstrap.esm.js" />
+    <None Include="wwwroot\scripts\bootstrap.esm.js.map" />
+    <None Include="wwwroot\scripts\bootstrap.esm.min.js" />
+    <None Include="wwwroot\scripts\bootstrap.esm.min.js.map" />
+    <None Include="wwwroot\scripts\bootstrap.js" />
+    <None Include="wwwroot\scripts\bootstrap.js.map" />
+    <None Include="wwwroot\scripts\bootstrap.min.js" />
+    <None Include="wwwroot\scripts\bootstrap.min.js.map" />
+    <None Include="wwwroot\stylesheets\bootstrap.scss" />
+    <None Include="wwwroot\stylesheets\bs-wizard.scss" />
+    <None Include="wwwroot\stylesheets\cover.scss" />
+    <None Include="wwwroot\stylesheets\homer.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\badge.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\buttons.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\checkbox_radio.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\dropdown.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\inputs.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\lists.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\loader.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\modal.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\panels.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\progress_bar.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\splash.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\tabs.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\timeline.scss" />
+    <None Include="wwwroot\stylesheets\homer\components\tooltip.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\analytics.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\app_plans.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\blog.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\chat.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\contact.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\file_manager.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\forum.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\landing.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\login.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\mailbox.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\notes.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\projects.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\search.scss" />
+    <None Include="wwwroot\stylesheets\homer\pages\social_board.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\calendar.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\codemirror.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\flot.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\icheck.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\nestable.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\notify.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\sweetalert.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\text_editor.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\toastr.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\tour.scss" />
+    <None Include="wwwroot\stylesheets\homer\plugins\ui_sortable.scss" />
+    <None Include="wwwroot\stylesheets\homer\skins\light_shadow.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\backgrounds.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\borders.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\colors.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\fonts.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\grid.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\heights_widths.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\layout.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\margins.scss" />
+    <None Include="wwwroot\stylesheets\homer\utilities\various.scss" />
+    <None Include="wwwroot\stylesheets\invoicestyle.scss" />
+    <None Include="wwwroot\stylesheets\landing-page.scss" />
+    <None Include="wwwroot\stylesheets\native.scss" />
+    <None Include="wwwroot\stylesheets\native\content-page.scss" />
+    <None Include="wwwroot\stylesheets\searchelem.scss" />
+    <None Include="wwwroot\stylesheets\stylesheet.scss" />
+    <None Include="wwwroot\stylesheets\sweet-alert.scss" />
+    <None Include="wwwroot\stylesheets\_bootstrap-compass.scss" />
+    <None Include="wwwroot\stylesheets\_bootstrap-mincer.scss" />
+    <None Include="wwwroot\stylesheets\_bootstrap-sprockets.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="Fingers10.ExcelExport" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Request\Pages\Ajax\RequestList.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Request\Pages\_ViewImports.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Request\Pages\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="bundleconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\images\the-kabadiwala-logo.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Ajax\Request\" />
+    <Folder Include="wwwroot\scripts\bootstrap5.0.0\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="TKW.ApplicationCore" Version="1.1.0" />
+    <PackageReference Include="TKW.Infrastructure" Version="1.1.0" />
+  </ItemGroup>
+  <!--<Import Project="..\WebShared\WebShared.projitems" Label="Shared" />-->
+
+
+
+</Project>

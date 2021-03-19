@@ -1,0 +1,38 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.ListModel
+@{
+}
+<div class="row">
+    @{ var i = 0; }
+    @foreach (var f in Model.Franchises.OrderByDescending(m => m.IsActive))
+    {
+        @(i > 0 && i % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+        <div class="col-md-4">
+            <div class="hpanel">
+                <div class="panel-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <b>@f.Name</b>
+                                <div class="pt-2">
+                                    <span class="fw-light">Contact :</span>@f.ContactNumber
+                                </div>
+                            </div>
+                            <div>
+                                @if (f.IsActive)
+                                {
+                                    <label class="badge h-bg-green float-end rounded-1">Active</label>
+                                }
+                                else
+                                {
+                                    <label class="badge bg-danger float-end">Inactive</label>
+                                }
+                                <div class="pt-4">
+                                    <a class="btn btn-xs btn-default" href="@Url.Page("/Pincodes", new { f.Id})">Manage Pincodes</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

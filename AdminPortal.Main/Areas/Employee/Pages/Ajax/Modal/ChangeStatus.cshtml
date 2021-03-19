@@ -1,0 +1,84 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Employee.Pages.Ajax.Modal.ChangeStatusModel
+<modal-header title="Employee Status" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+               <div class="h5 mt-3">Employee status has been updated.</div>
+            @if (Model.StatusId != TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate.EmployeeStatus.Left.Id) { 
+            <br />
+            <button type="button" data-modal-href="@Url.Page("Details",new { Id=Model.Id })" class="btn btn-default">Go to details</button>
+        }
+        </div>
+    </modal-body>
+
+    <script>
+        $("#DetailModalContent").trigger(
+            {
+                type: "action.done",
+                roleId:@((int)Model.RoleId),
+                statusId:@Model.StatusId
+            });
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("ChangeStatus", new { Id = Model.Id })"
+          data-ajax-begin="$('#addFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#addFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#DetailModalContent">
+        <fieldset id="addFieldSet">
+            <modal-body>
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="StatusId"></label>
+                            <div>
+                                <div class="radio radio-primary" style="display:inline-block">
+                                    <input asp-for="StatusId" id="Active" value="2" type="radio" />
+                                    <label for="Active">Active</label>
+                                </div>
+                                <div class="radio radio-primary" style="display:inline-block">
+                                    <input asp-for="StatusId" id="Leave" value="4" type="radio" />
+                                    <label for="Leave">Leave</label>
+                                </div>
+                                <div class="radio radio-primary" style="display:inline-block">
+                                    <input asp-for="StatusId" id="Left" value="3" type="radio" />
+                                    <label for="Left">Left</label>
+                                </div>
+                            </div>
+                            <span class="text-danger small" asp-validation-for="StatusId"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="mb-3">
+                            <label asp-for="Comment" class="col-form-label fw-bold"></label>
+                            <textarea asp-for="Comment" class="form-control" placeholder="Comment" />
+                            <span asp-validation-for="Comment" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </modal-body>
+            <modal-footer class="modal-footer d-flex justify-content-between">
+                 <button type="button" data-modal-href="@Url.Page("Details",new { Id=Model.Id })" class="btn btn-default">Go back</button>
+                    <button type="submit" class="btn btn-success">Change Status</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}

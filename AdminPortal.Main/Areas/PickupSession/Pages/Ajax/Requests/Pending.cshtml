@@ -1,0 +1,68 @@
+﻿@page
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.Requests.PendingModel
+@{
+}
+<div class="panel-body">
+    @if (Model.Requests == null || Model.Requests.Count == 0)
+    {
+        <div class="text-center p-sm">
+            There is no pending request.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-condensed vertical-mid-table animated fadeIn">
+                <tbody>
+                    @foreach (var r in Model.Requests)
+                    {
+                        <tr>
+                            <td>@r.Id</td>
+                            <td><img alt="logo" class="rounded-circle" height="40" src="~/images/default/profilex240.png"></td>
+                            <td>@r.Seller?.Name <br /><small> (@r.Seller.MobileNo)</small></td>
+                            <td>
+                                @if (r.Address?.AddressLine != null)
+                                {
+                                    <address class="mb-0 small" name="@r.Address?.Name" mobile-no="@r.Address?.MobileNo" addressline="@r.Address?.AddressLine" locality="@r.Address?.LocalityName" state="@r.Address?.StateName" city="@r.Address?.CityName" pincode="@r.Address?.Pincode"></address>
+                                }
+                                else
+                                {
+                                    <em>Address not found..!</em>
+                                }
+                            </td>
+                            <td><small class="float-left font-trans p-t-xs">@Generate.Time(Convert.ToDateTime(r.SubmissionTime), 's')</small></td>
+                            <td>
+                                <div class="btn-group-vertical">
+                                    <a href="@Url.Page("../Details", new { area ="Request", r.Id})" class="btn btn-default btn-xs reqdetailbtn" data-id="@r.Id">Details</a>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Action <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" style="font-size:small;">
+                                            <li>
+                                                <a href="#" class="actionlink" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request" })" data-id="@r.Id">Edit Request</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="actionlink" data-url="@Url.Page("/Ajax/Modal/Reschedule",new { area="Request"})" data-id="@r.Id">Reschedule Request</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="actionlink" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})" data-id="@r.Id">Reassign to Pickup Session</a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="actionlink" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})" data-id="@r.Id">Cancel Request</a>
+                                            </li>
+                                            @*<li>
+                                                <a href="#" class="actionlink" data-url="@Url.Page("/Ajax/Modal/Handle", new {area ="Request"})" data-id="@r.Id">Handle Request</a>
+                                            </li>*@
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

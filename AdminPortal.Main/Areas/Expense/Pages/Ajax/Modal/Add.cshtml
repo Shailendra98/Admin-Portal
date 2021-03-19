@@ -1,0 +1,119 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Expense.Pages.Ajax.Modal.AddModel
+
+<modal-header title="Add Expense" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Expense has been added.</div>
+        </div>
+    </modal-body>
+    <script>
+        $("#ExpenseModalContent").trigger("action.done");
+    </script>
+}
+else if (!Model.IsFranchise)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-info-circle text-info"></i><br />
+            <h5>Please select <strong>franchise</strong> first to proceed.</h5>
+        </div>
+    </modal-body>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+        <fieldset id="addFieldSet">
+            <modal-body>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="TypeId" class="col-form-label fw-bold"></label>
+                            <select class="form-control" asp-items="Model.Types" asp-for="TypeId">
+                            </select>
+                            <span asp-validation-for="TypeId" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Amount" class="col-form-label fw-bold"></label>
+                            <input asp-for="Amount" class="form-control" placeholder="Amount">
+                            <span asp-validation-for="Amount" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Comment" class="col-form-label fw-bold"></label>
+                            <input asp-for="Comment" class="form-control" placeholder="Comment" />
+                            <span asp-validation-for="Comment" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="@Model.Picture" class="col-form-label fw-bold"></label>
+                            <imginput preview="true" preview-width="200" name="@Html.NameFor(m => m.Picture)" id="@Html.IdFor(m => m.Picture)" button-class="btn btn-default"> </imginput>
+                            <span asp-validation-for="Picture" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" asp-for="Latitude" />
+                <input type="hidden" asp-for="Longitude" />
+            </modal-body>
+            <modal-footer>
+                <button class="btn btn-success" type="submit" id="addExpenseButton">Add Expense</button>
+            </modal-footer>
+        </fieldset>
+    <form method="post" id="listform_ajax"></form>
+
+<script>
+    $(function () {
+
+        $("#addExpenseButton").click(function (e) {
+            e.preventDefault();
+            var fieldset = $("#addFieldSet");
+            fieldset.attr("disabled", "");
+            var picture = $("#@Html.IdFor(m => m.Picture)").prop("files")[0];
+            var formData = new FormData();
+            formData.append('@Html.NameFor(m => m.Picture)', picture);
+            formData.append('@Html.NameFor(m => m.Comment)', $('#@Html.IdFor(m => m.Comment)').val());
+            formData.append('@Html.NameFor(m => m.Amount)', $('#@Html.IdFor(m => m.Amount)').val());
+            formData.append('@Html.NameFor(m => m.TypeId)', $('#@Html.IdFor(m => m.TypeId)').val());
+            formData.append('@Html.NameFor(m => m.Latitude)', $('#@Html.IdFor(m => m.Latitude)').val());
+            formData.append('@Html.NameFor(m => m.Longitude)', $('#@Html.IdFor(m => m.Longitude)').val());
+
+            $.ajax({
+                url: "@Url.Page("Add")",
+                method: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#listform_ajax input").val());
+                },
+                success: function (data) {
+                    $('#ExpenseModalContent').html(data);
+                },
+                complete: function () {
+                    fieldset.removeAttr("disabled");
+                }
+            });
+        });
+
+        $("#@Html.IdFor(m => m.TypeId)").select2AutoParent({ placeholder:"Select type"});
+        getLocation();
+
+    });
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(setPosition);
+        }
+    }
+    function setPosition(position) {
+        $("#@Html.IdFor(m => m.Latitude)").val(position.coords.latitude);
+        $("#@Html.IdFor(m => m.Longitude)").val(position.coords.longitude);
+    }
+</script>
+}

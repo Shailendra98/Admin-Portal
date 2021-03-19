@@ -1,0 +1,163 @@
+﻿@page
+@using Microsoft.AspNetCore.Routing
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.PickupSessionListModel
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    var filter = Model.Filter;
+    var route = new RouteValueDictionary();
+    if (filter.StartDate.HasValue)
+        route["Filter.StartDate"] = String.Format("{0:dd/MM/yyyy}", filter.StartDate);
+    if (filter.EndDate.HasValue)
+        route["Filter.EndDate"] = String.Format("{0:dd/MM/yyyy}", filter.EndDate);
+    if (filter.FranchiseId.HasValue)
+        route["Filter.FranchiseId"] = filter.FranchiseId;
+    if (filter.VehicleId.HasValue)
+        route["Filter.VehicleId"] = filter.VehicleId;
+
+    var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.PickupSessions.PageNumber + "&pageSize=" + Model.PickupSessions.PageSize;
+    string returnUrl = Url.Page("../Index") + "?" + querystring;
+}
+@if (Model.PickupSessions == null || Model.PickupSessions.Count == 0)
+{
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="text-center pt-2"><h5 class="fw-normal">No Pickup Session !</h5><div>There is no pickup session.</div></div>
+        </div>
+    </div>
+}
+else
+{
+    <div>
+        <div class="font-bold text-end pb-1">
+            @Model.PickupSessions.FirstItemOnPage - @Model.PickupSessions.LastItemOnPage of @Model.PickupSessions.TotalItemCount
+        </div>
+        <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn">
+            <thead>
+                <tr>
+                    <td colspan="8">
+                        <div class="float-end">
+                            <form data-ajax="true"
+                                  data-ajax-method="GET"
+                                  data-ajax-url="@Url.Page("PickupSessionList", route)" ,
+                                  data-ajax-begin="$('#pickupsessionlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                                  data-ajax-update="#pickupsessionlist"
+                                  class="form-inline">
+                                <div class="row">
+                                    <div class="col-auto"><label for="pagesize" class="col-form-label fw-bold">Pickup sessions per page:</label></div>
+                                    <div class="col-auto">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" name="pageSize" id="pagesize" style="max-width:50px;" value="@Model.PickupSessions.PageSize" />
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-default btn-sm">Go</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="border-bottom">
+                    <th>Id</th>
+                    <th>Vehicle</th>
+                    <th>Pickup boys</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pickupSession in Model.PickupSessions)
+                {
+                    <tr data-href="@Url.Page("/Details", new { pickupSession.Id })" style="cursor:pointer;">
+                        <td>@pickupSession.Id</td>
+                        <td><span>@pickupSession.Vehicle.Name</span><br /><small>@pickupSession.Vehicle.Number</small></td>
+                        <td>
+                        @if (pickupSession.PickupBoys != null) 
+                        { 
+                            @string.Join(", ", pickupSession.PickupBoys.OrderByDescending(m=>m.StartTime).Select(m=>m.Name).Distinct())
+                        }
+                        else
+                        {
+                            <em>No pickup boy added</em>
+                        }
+                        </td>
+                        <td>
+                            @String.Format("{0:ddd, dd MMM, yyyy}", pickupSession.CreateTime)<br />
+                            @if (pickupSession.EndTime != null)
+                            {
+                                <small class="text-muted">@string.Format("{0:hh:mm tt}", pickupSession.StartTime) - @string.Format("{0:hh:mm tt}", pickupSession.EndTime)</small>
+                            }
+                            else if (pickupSession.StartTime != null)
+                            {
+                                <small class="text-muted">@string.Format("{0:hh:mm tt}", pickupSession.StartTime) - N/A</small>
+                            }
+                            else if (pickupSession.CloseTime != null)
+                            {
+                                <small class="text-muted">@string.Format("{0:hh:mm tt}", pickupSession.CloseTime)</small>
+                            }
+                            else
+                            {
+                                <small class="text-muted"><em>Not started yet</em></small>
+                            }
+
+                            @*@if (pickupSession.StartTime == null)
+                            {
+                                <small class="text-muted"><em>Not started yet</em></small>
+                            }
+                            else if (pickupSession.EndTime == null)
+                            {
+                                <small class="text-muted">@string.Format("{0:hh:mm tt}", pickupSession.StartTime) - N/A</small>
+                            }
+                            else if (pickupSession.CloseTime != null)
+                            {
+                                <small class="text-muted">@string.Format("0:hh:mm tt", pickupSession.CloseTime)</small>
+                            }
+                            else
+                            {
+                                <small class="text-muted">@string.Format("{0:hh:mm tt}", pickupSession.StartTime) - @string.Format("{0:hh:mm tt}", pickupSession.EndTime)</small>
+                            }*@
+                        </td>
+                        <td>
+                            @if (pickupSession.CloseTime != null)
+                            {
+                                <span class="badge badge-success rounded-1">Closed</span>
+                            }else if (pickupSession.EndTime != null)
+                            {
+                            <span class="badge badge-info rounded-1">Ended</span>
+                            }
+                            else if (pickupSession.StartTime != null)
+                            {
+                            <span class="badge badge-warning rounded-1">Active</span>
+                            }
+                            else
+                            {
+                            <span class="badge bg-secondary rounded-1">Created</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+  <div class="d-flex mt-3 justify-content-center">
+        <pager data-ajax="true"
+               data-ajax-method="get"
+               data-ajax-begin="window.location.hash='pickupsessionlist'; $('#pickupsessionlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+               data-ajax-update="#pickupsessionlist"
+               list="Model.PickupSessions"
+               url='pageNo=>Url.Page("PickupSessionList", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.PickupSessions.PageSize })))'>
+        </pager>
+    </div>
+
+    route["pageSize"] = Model.PickupSessions.PageSize;
+    route["pageNo"] = Model.PickupSessions.PageNumber;
+
+    <script>
+    $(function () {
+        if (history.pushState) {
+            var newUrl = "@Html.Raw(Url.Page("../Index",route))";
+            window.history.pushState({ path: newUrl },'', newUrl);
+        }
+       });
+    </script>
+}

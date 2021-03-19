@@ -1,0 +1,37 @@
+﻿@page "{id:int}"
+@model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal.EditModel
+@{
+}
+<modal-header title="Edit Franchise"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <h4>Franchise has been updated.</h4><br />
+        </div>
+    </modal-body>
+    <script>
+        $("#ActionModalContent").trigger("action.done");
+    </script>
+}
+else
+{
+
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("Edit",new {Id = Model.Id})"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent"
+          data-ajax-begin="$('#editFieldset').attr('disabled','');"
+          data-ajax-complete="$('#editFieldset').removeAttr('disabled');">
+        <fieldset id="editFieldset">
+            <modal-body>
+                <partial name="_FranchiseInput" for="FranchiseModel" />
+            </modal-body>
+            <modal-footer>
+                <button class="btn btn-success" type="submit">Update Franchise</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}

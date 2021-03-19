@@ -1,0 +1,27 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Request.Pages.Add.IndexModel
+@{
+    ViewBag.Title = "Add request";
+}
+    <pagetitle title="Add Request" description="Add new or handled requests.">
+        <a href="@Url.Page("../Index")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-list"></span> Back to List</a>
+    </pagetitle>
+<div class="content">
+    <div class="hpanel" style="max-width:500px; margin:0 auto;">
+        <div class="panel-body">
+            <form method="post">
+                <div class="mb-3">
+                    <label class="col-form-label fw-bold" asp-for="MobileNo"></label>
+                    <input class="form-control" asp-for="MobileNo" placeholder="Enter Mobile Number" />
+                    <span asp-validation-for="MobileNo" class="text-danger small"></span>
+                </div>
+                    <div class="text-end">
+                        <button class="btn btn-info" type="submit" name="isNew" value="True">New Request</button>
+                    </div>
+                    @*<div class="col-xs-6 text-right">
+                        <button class="btn btn-success" type="submit" name="isNew" value="False">Handled Request</button>
+                    </div>*@
+            </form>
+        </div>
+    </div>
+</div>

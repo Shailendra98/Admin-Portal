@@ -1,0 +1,181 @@
+﻿@page "{Id:int}"
+@using Newtonsoft.Json
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.PurchaseTabModel
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-9">
+        <div id="content">
+            <div class="hpanel">
+                <ul class="nav nav-tabs nav-justified" style="max-width:400px; margin: 0 auto;">
+                    <li class="nav-item">
+                        <button class="nav-link w-100 active" data-bs-toggle="tab" data-bs-target="#purchase_list" id="purchase_list_button" data-loaded="false" aria-controls="purchase_list" aria-selected="true">
+                            Records
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100" data-bs-toggle="tab" data-bs-target="#purchase_summary" id="purchase_summary_button" data-loaded="false" aria-controls="purchase_summary" aria-selected="true">
+                            Summary
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="purchase_list" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="panel-body text-center">
+                            <img src="~/images/ripple.gif" alt="Loading.." />
+                        </div>
+                    </div>
+                    <div id="purchase_summary" class="tab-pane fade">
+                        <div class="panel-body text-center">
+                            <img src="~/images/ripple.gif" alt="Loading.." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div class="m-b-md">
+                    <h5 class="fw-normal">Filters</h5>
+                    <small>Filters list of purchases</small>
+                </div>
+                <div class="mb-3">
+                    <div>
+                        <div class="d-inline-block" style="width:48%;">
+                            <label class="col-form-label fw-bold">From</label>
+                            <input type="text" asp-for="Filter.StartDate" id="purchase_start_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                        </div>
+                        <div class="d-inline-block" style="width:48%;">
+                            <label class="col-form-label fw-bold">To</label>
+                            <input type="text" asp-for="Filter.EndDate" id="purchase_end_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success btn-sm btn-block" type="button" id="purchasefiltersubmitbtn">Apply</button>
+                    <button class="btn btn-default btn-sm btn-block" type="reset" id="purchasefilterresetbtn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="purchase_listform_ajax" method="post">
+</form>
+<lib name="DatetimePicker" />
+<script>
+    var purchaseSummaryActive = false;
+
+        $(function () {
+
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            };
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+
+            var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.PageNo, pageSize = Model.PageSize }));
+
+            var purchasestartDateElement = $("#purchase_start_date");
+            var purchaseendDateElement = $("#purchase_end_date");
+
+            purchasestartDateElement.on("dp.change", function (e) {
+                purchaseendDateElement.data("DateTimePicker").minDate(e.date);
+            });
+            purchaseendDateElement.on("dp.change", function (e) {
+                purchasestartDateElement.data("DateTimePicker").maxDate(e.date);
+            });
+
+            $("#purchasefilterresetbtn").click(function (e) {
+                $(".select2-field").val('').trigger('change');
+            });
+
+            $("a#purchase_list_button").tab('show');
+            loadPurchaseRecords();
+
+            $("#purchasefiltersubmitbtn").on("click", function (e) {
+                $("#purchase_list_button").attr("data-loaded", false);
+                $("#purchase_list_button").data("loaded", false);
+                $("#purchase_summary_button").attr("data-loaded", false);
+                $("#purchase_summary_button").data("loaded", false);
+                if (purchaseSummaryActive) {
+                    loadPurchaseSummary();
+                } else {
+                    loadPurchaseRecords();
+                }
+            });
+
+            $("#purchase_summary_button").click(function () {
+                loadPurchaseSummary();
+            });
+
+            $("#purchase_list_button").click(function () {
+                loadPurchaseRecords();
+            });
+        });
+
+    function loadPurchaseRecords() {
+        var loaded = $("#purchase_list_button").data("loaded");
+        purchaseSummaryActive = false;
+        if (!loaded) {
+            $('#purchase_list').html('<div class="panel-body text-center"><img src = "/images/ripple.gif" alt="Loading.." /></div>"');
+            $.ajax({
+                    url: '@(Url.Page("Lists/PurchaseList", new { Model.Id }))',
+                    data: {
+                        Filter: {
+                            StartDate: $('#purchase_start_date').val(),
+                            EndDate: $('#purchase_end_date').val()
+                        },
+                        PageNo: 1,
+                        PageSize: 10
+                    },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#purchase_listform_ajax input").val());
+                },
+                method: 'POST',
+            success: function (data) {
+                $('#purchase_list').html(data);
+                $("#purchase_list_button").data("loaded", true);
+                $("#purchase_list_button").attr("data-loaded", true);
+            }
+        });
+
+        }
+    }
+    function loadPurchaseSummary() {
+        var loaded = $("#purchase_summary_button").data("loaded");
+        purchaseSummaryActive = true;
+        if (!loaded) {
+            $('#purchase_summary').html('<div class="panel-body text-center"><img src = "/images/ripple.gif" alt="Loading.." /></div>"');
+        $.ajax({
+                    url: '@(Url.Page("MaterialSummary/PurchaseSummary", new { Model.Id }))',
+                    data: {
+                        Filter: {
+                            StartDate: $('#purchase_start_date').val(),
+                            EndDate: $('#purchase_end_date').val()
+                        },
+                        PageNo: 1,
+                        PageSize: 10
+                    },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#purchase_listform_ajax input").val());
+                },
+                method: 'POST',
+            success: function (data) {
+                $('#purchase_summary').html(data);
+                $("#purchase_summary_button").data("loaded", true);
+                $("#purchase_summary_button").attr("data-loaded", true);
+            }
+        });
+        }
+    }
+</script>

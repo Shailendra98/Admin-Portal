@@ -1,0 +1,24 @@
+
+{
+    "region" : "ap-south-1",
+    "profile" : "Thekabadiwala",
+    "configuration" : "Release",
+    "tag"           : "adminportal:production",
+    "docker-build-working-dir" : "../../../",
+    "cluster"                  : "TKW-Production-Cluster",
+    "launch-type"              : "EC2",
+    "task-definition-name"     : "TKWAdminPortal_Production",
+    "task-definition-network-mode" : "bridge",
+    "task-definition-task-role"    : "arn:aws:iam::054841072575:role/ecs_execution_TKWAdminPortal_Production",
+    "container-name"               : "TKWAdminPortal_Production",
+    "container-memory-soft-limit"  : 500,
+    "container-port-mapping"       : "8080:80",
+    "container-environment-variables" : "\"ASPNETCORE_ENVIRONMENT\"=\"Production\"",
+    "skip-image-push"                 : false,
+    "cluster-service"                 : "TKWAdminPortal",
+    "desired-count"                   : 1,
+    "deployment-minimum-healthy-percent" : 50,
+    "deployment-maximum-percent"         : 200,
+    "vstoolkit-deployment-mode"          : "DeployService",
+    "image-tag"                          : "adminportal:production"
+}

@@ -1,0 +1,43 @@
+﻿@page
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.Requests.HandledModel
+@{
+}
+
+<div class="panel-body">
+    @if (Model.Requests == null || Model.Requests.Count == 0)
+    {
+        <div class="text-center p-sm">
+            There is no handled request.
+        </div>}
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-condensed vertical-mid-table animated fadeIn">
+                <tbody>
+                    @foreach (var r in Model.Requests)
+                    {
+                        <tr>
+                            <td>@r.Id</td>
+                            <td><img alt="logo" class="rounded-circle" height="40" src="~/images/default/profilex240.png"></td>
+                            <td>@r.Seller.Name <br /><small> (@r.Seller.MobileNo)</small></td>
+                            <td>
+                                @if (r.Address?.AddressLine != null)
+                                {
+                                    <address class="mb-0 small" type="@r.Address?.TypeName" name="@r.Address?.Name" mobile-no="@r.Address?.MobileNo" addressline="@r.Address?.AddressLine" locality="@r.Address?.LocalityName" state="@r.Address?.StateName" city="@r.Address?.CityName" pincode="@r.Address?.Pincode"></address>
+                                }
+                                else
+                                {
+                                    <em>Address not found..!</em>
+                                }
+                            </td>
+                            <td class="text-center w-xs">₹<b class="text-success"> @r.TotalAmount.ToString("G29")</b><br /><small class="font-trans">Amount</small></td>
+                            <td class="text-center w-xs"><b>@string.Format("{0:hh:mm tt}", r.HandleEndTime)</b><br /><small class="font-trans">Handle time</small></td>
+                            <td><a href="@Url.Page("../Details", new { area ="Request", r.Id})" class="btn btn-default btn-xs reqdetailbtn" data-id="@r.Id">Details</a></td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

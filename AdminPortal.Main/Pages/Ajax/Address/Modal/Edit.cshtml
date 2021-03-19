@@ -1,0 +1,26 @@
+﻿@page "{AddressId}"
+@model TKW.AdminPortal.Pages.Ajax.Address.EditModel
+<modal-header title="Edit Address" close-button="true"></modal-header>
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+@if (!Model.HideForm) {
+    <form method="post"
+          data-ajax="true"
+          data-ajax-method="post"
+          data-ajax-update="#@Model.ModalId .modal-content"
+          data-ajax-url="@Url.Page("Edit", new { ModalId = Model.ModalId, AddressId = Model.AddressId })"
+          data-ajax-begin="$('#editFieldset').attr('disabled','');"
+          data-ajax-complete="$('#editFieldset').removeAttr('disabled');">
+        <fieldset id="editFieldset">
+            <modal-body>
+                <partial name="_AddressInput" for="AddressModel" />
+            </modal-body>
+            <modal-footer>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success">Update</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}

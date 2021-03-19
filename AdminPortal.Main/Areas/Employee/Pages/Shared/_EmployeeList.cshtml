@@ -1,0 +1,44 @@
+﻿@model IEnumerable<EmployeeViewModel>
+@using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate
+@using TKW.AdminPortal.Constants
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+<div class="row">
+    @{ int i = 0; }
+    @foreach (var employee in Model)
+    {
+        var hasManager = !string.IsNullOrEmpty(employee.ManagerName);
+        @(i > 0 && i % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+        <div class="col-md-4">
+            <a class="text-decoration-none" href="@(EmployeeStatus.Left.Id == employee.Status.Id? "#ActionModal":"#DetailModal")" data-bs-toggle="modal" data-load-url="@(EmployeeStatus.Left.Id == employee.Status.Id ?Url.Page("Modal/Add/Add",new { MobileNo=employee.MobileNo}) : Url.Page("/Ajax/Modal/Details",new { id = employee.Id}))">
+                <div class="hpanel mb-2">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="@(hasManager?"col-xs-6":"col-xs-9")">
+                                <div class="d-flex align-items-start">
+                                    <img class="rounded-circle" height="50" src="@urlGenerator.ProfilePic( employee.PictureName, UserPicSize.x80)" />
+                                    <div class="flex-grow-1">
+
+                                        <h6 class="fw-normal pt-1 px-2"> @employee.Name</h6>
+                                        <small class="fw-normal pt-0 px-2">@employee.MobileNo</small>
+                                    </div>
+                                    <div>
+                                        <div class="pb-1">
+                                            <span class="float-end badge @(employee.Status.Id == EmployeeStatus.Active.Id ?"h-bg-green"
+                                                :employee.Status.Id==EmployeeStatus.Leave.Id ? "bg-warning":employee.Status.Id==EmployeeStatus.Left.Id ?"bg-danger":"bg-info")">@employee.Status.Name</span>
+                                            </div>
+
+                                            @if (hasManager)
+                                            {
+                                                <small class="float-end pt-3"><b>Manager:</b> @employee.ManagerName</small>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            i++;
+        }
+</div>

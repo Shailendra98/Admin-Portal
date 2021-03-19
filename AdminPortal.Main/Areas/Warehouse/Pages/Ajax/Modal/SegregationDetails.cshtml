@@ -1,0 +1,59 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal.SegregationDetailsModel
+@{
+}
+<modal-header title="Segregation Details" close-button="true"></modal-header>
+<modal-body>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="hpanel">
+                <div class="panel-body mb-2 p-2">
+                    <span><span class="font-trans">Unsegregated Material:</span><b> @Model.Segregation.UnsegregatedMaterial.Name</b></span>
+                </div>
+                <div class="panel-body p-2">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-hover vertical-mid-table">
+                            <thead>
+                                <tr class="border-bottom">
+                                    <th>Material</th>
+                                    <th class="text-end">Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var m in Model.Segregation.SegregatedItems)
+                                {
+                                    <tr>
+                                        <td>@m.MaterialName</td>
+                                        <td class="text-end"><span class="font-extra-bold text-right">@m.Quantity.ToString("0.00") </span><small> @m.MaterialUnitName</small></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="hpanel">
+                <div class="panel-body p-2">
+                    <span class="float-end">
+                        <small class="font-trans">Id:</small>
+                        @Model.Segregation.Id
+                    </span>
+                    <div>
+                        <span class="font-trans">Updated by:</span>
+                        <span> @Model.Segregation.Updater.Name</span>
+                    </div>
+                    <div class="pt-2">
+                        <span class="font-trans">Handlers:</span>
+                        <span> @string.Join(", ", Model.Segregation.PickupBoys.Select(m => m.Name))</span>
+                    </div>
+                    <div class="pt-2">
+                        <span class="font-trans">Time:</span>
+                        <span> @string.Format("{0:dd/MM/yyyy}", Model.Segregation.UpdateTime)<small class="text-muted"> @string.Format("{0:hh:mm tt}", Model.Segregation.UpdateTime)</small></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</modal-body>

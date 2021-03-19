@@ -1,0 +1,31 @@
+﻿@inject TKW.AdminPortal.Utils.SessionData SessionData
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@using TKW.AdminPortal.Extensions
+@{
+    var user =await SessionData.GetUser();
+}
+<div id="navigation">
+    <div class="profile-picture">
+        <a href="#">
+            <img src="@urlGenerator.ProfilePic(user?.PictureName,TKW.AdminPortal.Constants.UserPicSize.x80)" class="img-circle m-b" alt="logo" height="76" width="76">
+        </a>
+
+        <div class="stats-label text-color">
+            <span class="font-extra-bold font-uppercase">@(user?.Name)</span>
+        </div>
+       
+    </div>
+    <ul class="nav metismenu" id="side-menu">
+        <li class="@Html.IsSelected(page:"/Dashboard")">
+            <a href="@Url.Page("/Dashboard")"><span class="nav-label">Dashboard</span></a>
+        </li>
+        <li class="@Html.IsSelected(area:"Request")">
+            <a href="#"><span class="nav-label">Requests</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+                <li class="@Html.IsSelected(page: "/Index",area:"Request")"><a href="@Url.Page("/Index",new { area="Request"})">View requests</a></li>
+                <li class="@Html.IsSelected(page: "/Add/Index",area:"Request")"><a href="@Url.Page("/Add/Index",new { area="Request"})">Add request</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+ 

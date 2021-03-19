@@ -1,0 +1,146 @@
+﻿@page "{id:int}"
+@model TKW.AdminPortal.Areas.Warehouse.Pages.DetailsModel
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    ViewBag.Title = Model.Warehouse.Name + " | Warehouse";
+}
+<pagetitle title="Warehouse Detail " description="Details of the warehouse">
+    <a data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/AddSegregation",new { Model.Warehouse.Id })" data-bs-target="#ModalId" class="btn btn-primary btn-outline btn-sm"><i class="fa fa-plus"></i> Add Segregation</a>
+</pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-heading">
+                    Warehouse Detail
+                </div>
+                <div class="panel-body">
+                    <h5 class="pb-1">@Model.Warehouse.Name</h5>
+                    <address addressline="@Model.Warehouse.AddressLine" locality="@Model.Warehouse.LocalityName" pincode="@Model.Warehouse.Pincode" city="@Model.Warehouse.CityName"></address>
+                </div>
+            </div>
+            <div class="hpanel mb-2">
+                <div class="panel-heading">
+                    Manager Detail
+                </div>
+                <div class="panel-body">
+                    <h6 class="fw-normal">@Model.Warehouse.Manager.Name</h6>
+                    <span>@Model.Warehouse.Manager.MobileNo</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <ul class="nav nav-pills flex-row mb-4" id="nav_pills_warehouse">
+                <li class="nav-item flex-fill">
+                    <button class="nav-link py-3 px-5 bg-white" data-bs-toggle="tab" data-loaded="false" data-load-url="@Url.Page("/Ajax/StockTab",new { Model.Tab, Model.Warehouse.Id})" data-bs-target="#pills-stock" aria-current="page" href="#">
+                        Stock
+                    </button>
+                </li>
+                <li class="nav-item flex-fill">
+                    <button class="nav-link py-3 px-5 bg-white" data-bs-toggle="tab" data-loaded="false" data-load-url="@Url.Page("/Ajax/PurchaseTab",new { Model.Tab, Model.Warehouse.Id})" data-bs-target="#pills-purchase" aria-current="page" href="#">
+                        Purchase
+                    </button>
+                </li>
+                <li class="nav-item flex-fill">
+                    <button class="nav-link py-3 px-5 bg-white" data-bs-toggle="tab" data-loaded="false" data-load-url="@Url.Page("/Ajax/SegregationTab",new { Model.Tab, Model.Warehouse.Id})" data-bs-target="#pills-segregation" aria-current="page" href="#">
+                        Segregation
+                    </button>
+                </li>
+                <li class="nav-item flex-fill">
+                    <button class="nav-link py-3 px-5 bg-white" data-bs-toggle="tab" data-loaded="false" data-load-url="@Url.Page("/Ajax/SellTab",new { Model.Tab, Model.Warehouse.Id})" data-bs-target="#pills-sell" aria-current="page" href="#">
+                        Sell
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tab_Content">
+                <div class="tab-pane fade" id="pills-stock" role="tabpanel" aria-labelledby="pills-home-tab"></div>
+                <div class="tab-pane fade" id="pills-purchase" role="tabpanel" aria-labelledby="pills-purchase-tab"></div>
+                <div class="tab-pane fade" id="pills-segregation" role="tabpanel" aria-labelledby="pills-purchase-tab"></div>
+                <div class="tab-pane fade" id="pills-sell" role="tabpanel" aria-labelledby="pills-purchase-tab"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles{
+    <style>
+        /*.bak {
+            background: #dff0d8 !important;
+        }*/
+
+      /*  .nav-pills .nav-link.active{
+            color: #34495e !important;
+            background-color: #dff0d8 !important;
+
+        }*/
+    </style>
+    <link rel="stylesheet" href="~/css/native.min.css" />
+
+}
+@section Scripts{
+    <script src="~/js/searchelem.min.js"></script>
+    <script>
+        $(function () {
+            @*$("#pills-stock").load('@Url.Page("/Ajax/StockTab",new { Model.Tab, Model.Warehouse.Id})');*@
+
+            $("#nav_pills_warehouse button").click(function () {
+                $("#nav_pills_warehouse button").addClass("bg-white");
+                $(this).removeClass("bg-white");
+            });
+
+         //$("#searchMaterials").SearchElem("#materialTable tr", [{ elem: "td", type: "text" }], { numberOfResult: 0 });
+         // $("#toptabs button").on('show.bs.tab', function (e) {
+               // $("#toptabs button .panel-body").removeClass("bak");
+               // $(this).find(".panel-body").addClass("bak");
+         // });
+
+        @if(Model.Tab == "SellTab")
+        {
+            <text>
+            $('#nav_pills_warehouse button[data-bs-target="#pills-sell"]').removeClass("bg-white");
+            $('#nav_pills_warehouse button[data-bs-target="#pills-sell"]').addClass('active');
+            $("#pills-sell").load("@Url.Page("/Ajax/SellTab", new { Model.Warehouse.Id })");
+            $("#pills-sell").addClass('show active');
+           </text>
+        }
+        else if(Model.Tab == "PurchaseTab")
+        {
+            <text>
+            $('#nav_pills_warehouse button[data-bs-target="#pills-purchase"]').removeClass("bg-white");
+            $('#nav_pills_warehouse button[data-bs-target="#pills-purchase"]').addClass('active');
+            $("#pills-purchase").load("@Url.Page("/Ajax/PurchaseTab",new { Model.Tab, Model.Warehouse.Id})");
+            $("#pills-purchase").addClass('show active');
+            </text>
+        }
+         else if(Model.Tab == "SegregationTab")
+        {
+            <text>
+            $('#nav_pills_warehouse button[data-bs-target="#pills-segregation"]').removeClass("bg-white");
+            $('#nav_pills_warehouse button[data-bs-target="#pills-segregation"]').addClass('active');
+            $("#pills-segregation").load("@Url.Page("/Ajax/SegregationTab",new { Model.Tab, Model.Warehouse.Id})");
+            $("#pills-segregation").addClass('show active');
+            </text>
+        }
+         else
+        {
+            <text>
+            $('#nav_pills_warehouse button[data-bs-target="#pills-stock"]').removeClass("bg-white");
+            $('#nav_pills_warehouse button[data-bs-target="#pills-stock"]').addClass('active');
+            $("#pills-stock").load("@Url.Page("/Ajax/StockTab",new { Model.Tab, Model.Warehouse.Id})");
+            $("#pills-stock").addClass('show active');
+           </text>
+        }
+    });
+    </script>
+}
+@section Footer{
+    <modal id="ModalId" content-id="ModalContent" loader="true"></modal>
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+}

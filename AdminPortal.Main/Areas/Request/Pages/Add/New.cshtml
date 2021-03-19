@@ -1,0 +1,119 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Request.Pages.Add.NewModel
+@{
+    ViewBag.Title = "New Request";
+}
+<pagetitle title="New Request" description="Add new request.">
+</pagetitle>
+<div class="content">
+    <div class="row justify-content-center">
+        <div class="col-md-6 @(Model.PendingRequests!=null && Model.PendingRequests.Count>0 ?"" : "col-md-offset-3")">
+            <div class="hpanel">
+                <div class="panel-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger m-t-n-md m-l-n-md m-r-n-md">@Model.ErrorMessage</div>
+                    <br />
+                    }
+                    <form method="post">
+                    <partial name="_NewRequest" for="NewRequestModel"/>
+                    <div class="mb-3">
+                        <label asp-for="Materials" class="col-form-label fw-bold"></label>
+                        <div class="panel panel-default">
+                            <div class="panel-body p-0">
+                                @Html.EditorFor(m => m.Materials, "~/Pages/Shared/EditorTemplates/MaterialList.cshtml", null, new { IncludeQuantity = false })
+                            </div>
+                        </div>
+                        <span asp-validation-for="Materials" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ScheduleModel" class="col-form-label fw-bold"></label>
+                        <partial name="_ScheduleInput" for="ScheduleModel" />
+                        <span asp-validation-for="ScheduleModel" class="small text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <div id="commentfield" style="display:none">
+                            <label asp-for="NewRequestModel.Comment" class="col-form-label fw-bold"></label>
+                            <input asp-for="NewRequestModel.Comment" class="form-control" placeholder="Comment" />
+                            <span asp-validation-for="NewRequestModel.Comment" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <div class="float-start" id="addcommentbtn">
+                            <button class="btn btn-sm btn-link text-decoration-none" type="button" onclick="$('#commentfield').show(); $('#addcommentbtn').hide();"><i class="fa fa-plus"></i> Add comment</button>
+                        </div>
+                            <button class="btn btn-success" type="submit">Add Request</button>
+                    </div>
+
+                        @*<div class="col-sm-6">
+            <div class="pull-left">
+                <div class="checkbox checkbox-danger">
+                    <input type="checkbox" asp-for="NoSMS" id="NoSMS1" value="True" />
+                    <label asp-for="NoSMS" for="NoSMS1">
+                        Don't send message to the user
+                    </label>
+                </div>
+            </div>
+        </div>*@
+
+                   
+                </form>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.PendingRequests != null && Model.PendingRequests.Count > 0)
+        {
+            <div class="col-md-6">
+                <div class="hpanel">
+                    <div class="panel-heading">
+                        Pending Requests from this user
+                    </div>
+                    <div class="panel-body p-0">
+                        <div class="list-group">
+                            @foreach (var r in Model.PendingRequests)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <div>
+                                                <b>Id:</b> @r.Id
+                                            </div>
+                                            @if (r.Schedule != null)
+                                            {
+                                                <div>
+                                                    @String.Format("{0:dd MMM, yyyy}", r.Schedule.Date) @r.Schedule.TimeSlot.Text
+                                                </div>
+                                            }
+                                            <div class="small pt-1">
+                                                <address class="mb-0" name="@r.Address.Name" mobile-no="@r.Address.MobileNo" addressline="@r.Address.AddressLine" locality="@r.Address.LocalityName" city="@r.Address.CityName" state="@r.Address.StateName" pincode="@r.Address.Pincode" ></address>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            @r.Status.Status
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="text-center">
+                                        <a href="#" data-loaded="false" data-load-url="@Url.Page("../Ajax/Modal/Details",new { r.Id})" data-bs-target="#DetailsModal" class="btn btn-default btn-xs" data-bs-toggle="modal">Details</a>
+                                        <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Reschedule",new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Reschedule</a>
+                                        <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Assign",new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Assign</a>
+                                        @*<a href="#" data-load-url="@Url.Page("../Ajax/Modal/Handle",new { r.Id  })" data-target="#ActionModal" data-toggle="modal" class="btn btn-default btn-xs">Handle</a>*@
+                                        <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Cancel",new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Cancel</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+@section Footer{ 
+<modal id="AddressModal" loader="true"></modal>
+<modal id="DetailsModal" dialog-class="modal-lg" loader="true"></modal>
+<modal id="ActionModal" content-id="ActionModalContent" loader="true"></modal>
+}

@@ -1,0 +1,188 @@
+﻿@page
+@using Microsoft.AspNetCore.Routing
+@using TKW.ApplicationCore.Contexts.SellContext.Aggregates.SellAggregate;
+@model SellListModel
+
+@{
+    Layout = null;
+    var filter = Model.Filter;
+    var route = new RouteValueDictionary();
+    route["Filter.Search"] = filter.Search;
+    route["Filter.StartDate"] = String.Format("{0:dd/MM/yyyy}", filter.StartDate);
+    route["Filter.EndDate"] = String.Format("{0:dd/MM/yyyy}", filter.EndDate);
+    var i = 0;
+    if (filter.Franchises != null)
+    {
+        foreach (var a in filter.Franchises)
+        {
+            route["Filter.Franchises[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.Warehouses != null)
+    {
+        foreach (var a in filter.Warehouses)
+        {
+            route["Filter.Warehouses[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.Buyers != null)
+    {
+        foreach (var a in filter.Buyers)
+        {
+            route["Filter.Buyers[" + i++ + "]"] = a;
+        }
+    }
+    //route.Add("size", ViewBag.Size);
+    var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Sells.PageNumber + "&pageSize=" + Model.Sells.PageSize;
+    string returnUrl = Url.Page("../Index") + "?" + querystring;
+}
+@if (Model.Sells == null || Model.Sells.Count == 0)
+{
+    <div class="text-center p-t-sm"><h4>No Sell !</h4><div>There is no sell.</div></div>
+}
+else
+{
+    <div class="table-responsive">
+        <div class="fw-bold pb-2 pull-right">
+            @Model.Sells.FirstItemOnPage - @Model.Sells.LastItemOnPage of @Model.Sells.TotalItemCount
+        </div>
+        <table class="table table-condensed table-hover vertical-mid-table animated fadeIn">
+            <thead>
+                <tr>
+                    <td colspan="8">
+                        <div class="pull-right">
+                            <form data-ajax="true"
+                                  data-ajax-method="GET"
+                                  data-ajax-url="@Url.Page("SellList", route)" ,
+                                  data-ajax-begin="$('#selllist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                                  data-ajax-update="#selllist"
+                                  class="form-inline">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <label for="pagesize" class="col-form-label fw-bold">Sells per page:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="input-group input-group-sm mb-3">
+                                            <input type="text" class="form-control" style="max-width:50px;" name="pageSize" id="pagesize" value="@Model.Sells.PageSize" aria-describedby="button-addon2">
+                                            <button class="btn btn-outline-secondary btn-default" type="submit" id="button-addon2">Go</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="border-bottom">
+                    <th></th>
+                    <th>ID</th>
+                    <th>Buyer</th>
+                    <th>Warehouse</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.Sells)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@s.Id</td>
+                        <td>
+                            @(s.Buyer.OwnerName) @if (s.Buyer.OwnerMobileNo != null)
+                            {
+                                <small> (@(s.Buyer.OwnerMobileNo))</small>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(s.Buyer.FirmName))
+                            {
+                                <br /><small>@(s.Buyer.FirmName)</small>
+                            }
+                        </td>
+                        <td>
+                            <span>@s.WarehouseName</span>
+                        </td>
+                        <td>
+                            <span>    @String.Format("{0:ddd, dd MMM yyyy hh:mm tt}", s.UpdateTime)  @*Thu, 17 dec, 2020 <br /><small> 10:45 AM</small>*@</span>
+                        </td>
+                        <td>
+                            @s.StatusName
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group-vertical">
+                                <a href="#DetailsModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/Details", new { s.Id})" class="btn btn-default btn-xs">Details</a>
+                                @if (s.StatusId != SellStatus.Completed.Id && s.StatusId != SellStatus.Cancelled.Id)
+                                {
+                                    <div class="btn-group" role="group">
+                                        <button type="button" id="btnGroupDrop1" class="btn btn-default btn-xs dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Action <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1" style="font-size:small;">
+                                            @if (s.StatusId == SellStatus.Handled.Id)
+                                            {
+                                                <text>
+                                                    <li class="dropdown-item">
+                                                        <a href="#ActionModal" class="text-decoration-none d-block" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/Complete", new { s.Id })">Complete Sell</a>
+                                                    </li>
+                                                </text>
+                                            }
+                                            else if (s.StatusId == SellStatus.Submitted.Id)
+                                            {
+                                                <text>
+                                                    <li class="dropdown-item">
+                                                        <a href="#ActionModal" class="text-decoration-none d-block" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/Cancel", new { s.Id })">Cancel Sell</a>
+                                                    </li>
+                                                </text>
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <pager data-ajax="true"
+               data-ajax-method="get"
+               data-ajax-begin="window.location.hash='selllist'; $('#selllist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+               data-ajax-update="#selllist"
+               list="Model.Sells"
+               url='pageNo=>Url.Page("selllist", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Sells.PageSize })))'></pager>
+    </div>
+    route["pageSize"] = Model.Sells.PageSize;
+    route["pageNo"] = Model.Sells.PageNumber;
+
+    @*if (Model.Sells.PageCount > 1)
+        {
+            @Html.PagedListPager(Model.Sells, pageNo => Url.Page("selllist", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Sells.PageSize }))), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+        {
+            HttpMethod = "GET",
+            UpdateTargetId = "selllist",
+            OnBegin = "window.location.hash='selllist'; $('#selllist').html('<div class=\\'text-center\\'><img src=\\'/images/ripple.gif\\' alt=\\'Loading..\\' /></div>')",
+            InsertionMode = InsertionMode.Replace
+        }))
+        }*@
+
+    <script>
+    $(function () {
+        if (history.pushState) {
+            var newUrl = "@Html.Raw(Url.Page("../Index", route))";
+            window.history.pushState({ path: newUrl },'', newUrl);
+        }
+        $('#ActionModal').find('.modal-content').on('action.done', function (e, data) {
+            $('#selllist').load('@Url.Page("selllist", route)');
+        });
+       });
+    </script>
+}

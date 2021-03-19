@@ -1,0 +1,38 @@
+﻿body {
+  text-align: center; }
+
+.navbar-nav li {
+  display: inline-block; }
+
+.navbar-header {
+  display: inline-block; }
+
+@media (max-width: 767px) {
+  .navbar-fixed-top {
+    position: absolute; } }
+
+.frontMobileNo {
+  border-left: none; }
+  .frontMobileNo:focus, .frontMobileNo:active {
+    box-shadow: none;
+    border-color: #ccc; }
+
+.requestmsgbox {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center; }
+  .requestmsgbox .panel-heading {
+    font-family: 'Century Gothic';
+    border-top-left-radius: 13px;
+    border-top-right-radius: 13px; }
+  .requestmsgbox .panel {
+    box-shadow: 0px 0px 15px grey;
+    border-radius: 13px;
+    border-color: #27AE60; }
+  .requestmsgbox .panel-body {
+    font-size: small; }
+  @media (min-width: 768px) {
+    .requestmsgbox {
+      position: relative;
+      top: 80px; } }
+

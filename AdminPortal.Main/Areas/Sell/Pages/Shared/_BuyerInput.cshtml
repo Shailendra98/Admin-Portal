@@ -1,0 +1,57 @@
+﻿@model TKW.AdminPortal.Areas.Sell.ViewModels.BuyerInputModel
+@{
+}
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                @if (Model.NameDisabled)
+                {
+                    <input asp-for="Name" class="form-control" readonly placeholder=" Buyer Name" />
+                }
+                else
+                {
+                    <input asp-for="Name" class="form-control" placeholder="Buyer Name" />
+                }
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirmName" class="control-label"></label>
+                <input class="form-control" asp-for="FirmName" placeholder="Firm name" />
+                <span class="text-danger small" asp-validation-for="FirmName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GSTIN" class="control-label"></label>
+                <input class="form-control" asp-for="GSTIN" placeholder="GSTIN" />
+                <span class="text-danger small" asp-validation-for="GSTIN"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label asp-for="MobileNo" class="control-label"></label>
+                @if (Model.MobileNoDisabled)
+                {
+                    <input asp-for="MobileNo" class="form-control" readonly placeholder="Mobile Number" />
+                }
+                else
+                {
+                    <input asp-for="MobileNo" class="form-control" placeholder="Mobile Number" />
+                }
+                <span asp-validation-for="MobileNo" class="text-danger small"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsActive" class="control-label">Status</label>
+                <div>
+                    <div class="radio p-r-md" style="display:inline-block">
+                        <input id="active_radio" name="@Html.NameFor(m=>m.IsActive)" @(Model.IsActive ? "checked" : "") value="true" type="radio" />
+                        <label for="active_radio">Active</label>
+                    </div>
+                    <div class="radio p-r-xs p-l-sm" style="display:inline-block">
+                        <input id="inactive_radio" name="@Html.NameFor(m=>m.IsActive)" @(Model.IsActive ? "" : "checked") value="false" type="radio" />
+                        <label for="inactive_radio">Inactive</label>
+                    </div>
+                </div>
+                <span class="small text-danger" asp-validation-for="IsActive"></span>
+            </div>
+        </div>
+    </div>

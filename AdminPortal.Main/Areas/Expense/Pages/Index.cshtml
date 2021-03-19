@@ -1,0 +1,149 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Expense.Pages.IndexModel
+@using Newtonsoft.Json
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    ViewBag.Title = "Expenses";
+}
+<pagetitle title="Expenses" description="List of Expenses.">
+    @if (Model.FranchiseMode)
+    {
+        <a href="#" data-bs-toggle="modal" data-bs-target="#ExpenseModal" data-load-url="@Url.Page("Ajax/Modal/Add/")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Expense</a>
+    }
+</pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="m-b-md">
+                        <h5>
+                            Filters
+                        </h5>
+                        <small>
+                            Filter the list of expense.
+                        </small>
+                    </div>
+                    <form data-ajax="true"
+                          data-ajax-method="get"
+                          data-ajax-url="@Url.Page("Ajax/ExpenseList")"
+                          data-ajax-update="#expenselist"
+                          data-ajax-begin="$('#expenselist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                          id="filtersortform">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">
+                                Date
+                            </label>
+                            <div class="mb-3">
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                </div>
+                                <div class="text-center text-muted d-inline-block" style="width:5%;">
+                                    <i class="bi bi-dash"></i>
+                                </div>
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                </div>
+                            </div>
+                        </div>
+                        @if (!Model.FranchiseMode)
+                        {
+                            <div class="mb-3">
+                                <label class="col-form-label fw-bold" asp-for="Filter.Franchises">Franchises</label>
+                                <select asp-for="Filter.Franchises" asp-items="Model.Franchises" class="form-select form-select-sm"  multiple>
+                                    <option></option>
+                                </select>
+                            </div>
+                        }
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="Filter.Types">Type</label>
+                            <select asp-for="Filter.Types" asp-items="Model.Types" class=" form-select form-select-sm" multiple>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="d-grid gap-1">
+                            <button class="btn btn-success btn-block btn-sm" type="submit" id="filtersubmitbtn">Apply</button>
+                            <button class="btn btn-default btn-block btn-sm" type="reset" id="filterresetbtn">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hpanel">
+                        <div class="panel-body">
+                            <div id="expenselist">
+                                <div class="text-center">
+                                    <img src="~/images/ripple.gif" alt="Loading.." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles{
+    <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/js/datetimepicker.min.js" asp-append-version="true" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $("#@Html.IdFor(m=>m.Filter.Types)").select2({ placeholder:"Select Types" });
+            $("#@Html.IdFor(m=>m.Filter.Franchises)").select2({ placeholder:"Select Franchises" });
+
+
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            };
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+            var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
+            $.ajax({
+                url: '@(Url.Page("Ajax/ExpenseList"))',
+                data: model,
+                method: 'GET',
+                success: function (data) { $('#expenselist').html(data); }
+            });
+
+            var startDate = $("[id='@Html.IdFor(m=>m.Filter.StartDate)']");
+            var endDate = $("[id='@Html.IdFor(m=>m.Filter.EndDate)']");
+
+            startDate.on("dp.change", function (e) {
+                endDate.data("DateTimePicker").minDate(e.date);
+            });
+            endDate.on("dp.change", function (e) {
+                startDate.data("DateTimePicker").maxDate(e.date);
+            });
+
+            $("#filterresetbtn").click(function (e) {
+                $(".select2-field").val('').trigger('change');
+            });
+
+            $("select .select2").select2();
+
+        });
+    </script>
+}
+@section Footer{
+    <modal content-id="ExpenseModalContent" loader="true" id="ExpenseModal"></modal>
+        <div id="blueimp-gallery" class="blueimp-gallery">
+            <div class="slides"></div>
+            <h3 class="title"></h3>
+            <a class="prev">‹</a>
+            <a class="next">›</a>
+            <a class="close">×</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    
+}

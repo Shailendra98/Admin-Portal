@@ -1,0 +1,51 @@
+﻿@using TKW.AdminPortal.Enums
+@model ImportLibViewModel
+<script>
+    @if (!String.IsNullOrEmpty(Model.Js)) {
+     <text>   if (!$("script[src='@Model.Js']").length) {
+            var Js = document.createElement("script");
+            Js.src = "@Model.Js";
+                $("head").append(Js)
+                    }
+    </text>}
+    @if (!String.IsNullOrEmpty(Model.Css))
+    {<text>
+        if (!$("link[href='@Model.Css']").length) {
+            var Css = document.createElement("link");
+            Css.rel = "stylesheet";
+            Css.href = "@Model.Css";
+            $("head").append(Css);
+    }
+    </text>}
+</script>
+@*@switch (Model.Lib)
+{
+    @*case ClientSideLib.DatetimePicker:
+        <text>
+            <script>
+                $(function () {
+                    var options = {
+                        useStrict: true,
+                        ignoreReadonly: true,
+                        format: "DD/MM/YYYY",
+                        showClear: true
+                    };
+                    $("[data-dtpicker]").attr({
+                        style: "background-color:#fff",
+                        readonly: 'readonly'
+                    }).datetimepicker(options);
+                });
+            </script></text>
+        break;
+    @*case ClientSideLib.Select2:
+        <text>
+            <script>
+                $(function () {
+                    $.fn.select2.defaults.set("theme", "bootstrap");
+                    $.fn.select2.defaults.set("containerCssClass", ":all:");
+                });
+            </script></text>
+        break;
+    default:
+        break;
+}*@

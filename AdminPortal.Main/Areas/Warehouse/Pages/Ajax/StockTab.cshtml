@@ -1,0 +1,107 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.PurchaseModel
+@{
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h5 class="fw-normal">Unsegregated Material</h5>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mb-3">
+                                    <input class="form-control form-control-sm" type="text" placeholder="Search Materials" id="searchUnMaterials" />
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model.UnsegregatedMaterial.Count() == 0)
+                        {
+                            <h5>There is no material.</h5>
+                        }
+                        else
+                        {
+                            <div id="unsegregated_material">
+                                <div class="pt-4">
+                                    @*@{ int i = 0; }*@
+                                    @foreach (var unsegregated in Model.UnsegregatedMaterial)
+                                    {
+                                        @*@(i > 0 && i % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+                                        i++;*@
+
+                                    <div class="d-inline-block">
+                                        <div class="search-material">
+                                            <div class="hpanel mx-1 mb-3">
+                                                <div class="panel-body text-center py-2">
+                                                    <div class="font-bold pb-2">@unsegregated.MaterialName</div>
+                                                    <div class="h5">@unsegregated.Quantity.ToString("G29")<small class="font-trans"> @unsegregated.UnitName</small></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                       
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <h5 class="fw-normal">Segregated Material</h5>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mb-3">
+                                    <input class="form-control form-control-sm" type="text" placeholder="Search Materials" id="searchseMaterials" />
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model.SegregatedMaterial.Count() == 0)
+                        {
+                            <h4>There is no material.</h4>
+                        }
+                        else
+                        {
+                            <div id="segregated_material">
+                                <div class="pt-4">
+                                    @*@{ int a = 0; }*@
+                                    @foreach (var segregated in Model.SegregatedMaterial)
+                                    {
+                                        @*@(a > 0 && a % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+                                        a++;*@
+
+                                    <div class="d-inline-block">
+                                        <div class="search-material">
+                                            <div class="hpanel  mx-1 mb-3">
+                                                <div class="panel-body text-center py-2">
+                                                    <div class="font-bold pb-2">@segregated.MaterialName</div>
+                                                    <div class="h5">@segregated.Quantity.ToString("G29")<small class="font-trans">@segregated.UnitName</small></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<lib name="SearchElem" />
+<script>
+    $("#searchUnMaterials").SearchElem("#unsegregated_material .search-material", [{ elem: "div", type: "text" }], { numberOfResult: 0 });
+    $("#searchseMaterials").SearchElem("#segregated_material .search-material", [{ elem: "div", type: "text" }], { numberOfResult: 0 });
+</script>

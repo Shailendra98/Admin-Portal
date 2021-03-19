@@ -1,0 +1,277 @@
+﻿@model AddressModel
+@{
+    bool showNameBox = !string.IsNullOrWhiteSpace(Model?.Name);
+    bool showMobileNoBox = !string.IsNullOrWhiteSpace(Model?.MobileNo);
+}
+<div class="row">
+    @if (!Model.OnlyLocalities)
+    {
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label asp-for="CityId" class="sr-only col-form-label fw-bold"></label>
+                <select asp-for="CityId" class="w-100 form-control" placeholder="City">
+                    @if (Model?.CityId != null)
+                    {
+                        <option value="@Model.CityId">@Model.CityName</option>
+                    }
+                    else
+                    {
+                        <option></option>
+                    }
+                </select>
+                <span asp-validation-for="CityId" class="text-danger small"></span>
+            </div>
+        </div>
+    }
+    <div class="col-sm-@(Model.OnlyLocalities?"12":"6")">
+        <div class="mb-3">
+            <label asp-for="LocalityId" class="sr-only col-form-label fw-bold"></label>
+            <select asp-for="LocalityId" class="w-100 form-control" placeholder="Locality">
+                @if (Model?.LocalityId != null)
+                {
+                    <option value="@Model.LocalityId">@Model.LocalityName</option>
+                }
+                else
+                {
+                    <option></option>
+                }
+            </select>
+            <span asp-validation-for="LocalityId" class="text-danger small"></span>
+        </div>
+    </div>
+</div>
+<div style="position:relative; display:none;" id="address_map_container">
+    <div id="googleMap" class="mb-3" style="width:100%;height:250px; border: 1px solid #707070; border-radius:4px;"></div>
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-100%);">
+        <img src="~/images/map_pin.png" height="40" />
+    </div>
+    <input asp-for="Latitude" type="hidden" />
+    <input asp-for="Longitude" type="hidden" />
+</div>
+<div class="mb-3">
+    <label asp-for="AddressLine" class="sr-only col-form-label fw-bold"></label>
+    <input asp-for="AddressLine" class="form-control" placeholder="Eg.- House/Flat No, Society/Apartment Name" />
+    <span asp-validation-for="AddressLine" class="text-danger small"></span>
+</div>
+<div class="mb-3">
+    <div>
+        <label class="  col-form-label fw-bold p-r-xs">Type : </label>
+        @foreach (var type in Model.AddressTypes)
+        {
+    <div class="form-check form-check-inline">
+        @if (Model.AddressTypeId == type.Id)
+        {
+            <input class="form-check-input" id="AddressType_@type.Id" asp-for="AddressTypeId" checked="checked"  value="@type.Id" type="radio" />
+        }
+        else
+        {
+            <input class="form-check-input" id="AddressType_@type.Id" asp-for="AddressTypeId" value="@type.Id" type="radio" />
+        }
+        <label for="AddressType_@type.Id" class="form-check-label">@type.Name</label>
+    </div>}
+
+    </div>
+
+</div>
+@if (Model.IncludeNameMobileNo)
+{
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <div id="btncontainer_@Html.IdFor(m=>m.Name)">
+                    <button class="btn btn-link btn-sm" style="@(showNameBox?"display:none;":"")" type="button" onclick="$('#btncontainer_@Html.IdFor(m=>m.Name)').hide(); $('#container_@Html.IdFor(m=>m.Name)').addClass('animate bounceIn').show();"><i class="fa fa-plus"></i> Add name</button>
+                </div>
+                <div id="container_@Html.IdFor(m=>m.Name)" style="@(showNameBox?"":"display:none;")">
+                    @Html.LabelFor(m => m.Name, new { @class = "  col-form-label fw-bold sr-only" })
+                    <div class="input-group">
+                        @*<span class="input-group-addon"><i class="fa fa-user"></i></span>*@
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm  " , placeholder = "Enter name" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" }, "small")
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <div id="btncontainer_@Html.IdFor(m=>m.MobileNo)">
+                    <button class="btn btn-link btn-sm" type="button" style="@(showMobileNoBox?"display:none;":"")" onclick="$('#btncontainer_@Html.IdFor(m=>m.MobileNo)').hide(); $('#container_@Html.IdFor(m=>m.MobileNo)').addClass('animate bounceIn').show();"><i class="fa fa-plus"></i> Add mobile number</button>
+                </div>
+                <div id="container_@Html.IdFor(m=>m.MobileNo)" style="@(showMobileNoBox?"":"display:none;")">
+                    @Html.LabelFor(m => m.MobileNo, new { @class = "  col-form-label fw-bold sr-only" })
+                    <div class="input-group">
+                        @*<span class="input-group-addon"><i class="fa fa-mobile"></i></span>*@
+                        @Html.TextBoxFor(m => m.MobileNo, new { @class = "form-control form-control-sm  ", placeholder = "Enter mobile number" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.MobileNo, "", new { @class = "text-danger" }, "small")
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    var loc = { lat: 0.0, lng:  0.0 };
+  
+    var map;
+    $(function () {
+        var modal = $("#@Html.IdFor(m => m.LocalityId)").closest(".modal");
+        $("#@Html.IdFor(m => m.LocalityId)").select2({
+            ajax: {
+                url: "@Url.Action("Localities","Address")",
+                data: function (params) {
+                    return $.extend(
+                        {
+                            cityId: $("#@Html.IdFor(m => m.CityId)").val(),
+                            q: params.term
+                        }, params);
+                },
+                processResults: function (data, params) {
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: (data.page * data.size) < data.total
+                        }
+                    };
+                },
+                cache: true,
+                delay: 1000
+            },
+            dropdownParent: modal.length ? modal : $(document.body),
+            placeholder: { id: 0, name: "Locality" },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 2,
+            templateResult: formatLocality,
+            templateSelection: function (locality) {
+                setLoc(locality.latitude ?? 0, locality.longitude ?? 0);
+                return locality.text || locality.name
+            }
+        });
+        @if (!Model.OnlyLocalities) {
+        <text>
+        $("#@Html.IdFor(m => m.CityId)").select2({
+        ajax: {
+            url: "@Url.Action("Cities","Address")",
+                    processResults: function(data, params) {
+                    return {
+                        results: data.data,
+                        pagination: {
+                            more: data.total > (data.page * data.size)
+                        }
+                    };
+                },
+                                cache: true,
+                                delay: 1000
+                },
+            dropdownParent: modal.length? modal : $(document.body),
+            placeholder: { id: 0, name: "City" },
+            autoClear: true,
+                            escapeMarkup: function(markup) { return markup },
+                            minimumInputLength: 2,
+                            templateResult: formatCity,
+                            templateSelection: function (city) { return city.text || city.name }
+        });
+            </text>}
+    });
+    @if (!Model.OnlyLocalities) {
+        <text>
+        function formatCity(city) {
+            if (city.loading) {
+                return city.text;
+            }
+            var markup = "<div class='d-flex'>"
+                + "<div>"
+                + "<div>" + city.name + "</div>"
+                + "<p class='small'>" + city.stateName + "</p>"
+                + "</div>"
+                + "</div>";
+            return markup;
+        }
+    </text>}
+    function formatLocality(locality) {
+        if (locality.loading) {
+            return locality.text;
+        }
+        return locality.name;
+    }
+
+    //var markerArray = [];
+
+    //var mapProp;
+    //var marker;
+
+    function setLoc(lat, lng, moveMap = true) {
+        loc = { lat: lat, lng: lng };
+        $("#@Html.IdFor(m=>m.Latitude)").val(lat);
+        $("#@Html.IdFor(m=>m.Longitude)").val(lng);
+        $("#address_map_container").show();
+        if (moveMap && map !== undefined) {
+            map.panTo(loc);
+        }
+    }
+
+    function initMap() {
+
+        map = new google.maps.Map(document.getElementById("googleMap"), {
+            clickableIcons: false,
+            mapTypeControl: false,
+            streetViewControl: false,
+            center: loc,
+            zoom: 17,
+        });
+        @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+        {
+            @:setLoc(@(Model.Latitude.ToString()),@(Model.Longitude.ToString()));
+        }else if(Model.LocalityLatitude.HasValue && Model.LocalityLongitude.HasValue)
+        {
+            @:setLoc(@(Model.LocalityLatitude.ToString()),@(Model.LocalityLongitude.ToString()));
+        }
+        //new google.maps.event.addListener(map, 'click', function (event) {
+        //    setLoc(event.latLng.lat(), event.latLng.lng());
+        //});
+        new google.maps.event.addListener(map, 'dragend', function (event) {
+            var center = map.getCenter();
+            setLoc(center.lat, center.lng, false);
+        });
+
+        //if (loc == null || loc == undefined) {
+        //    if (navigator.geolocation) {
+        //        navigator.geolocation.getCurrentPosition(function (position) {
+        //            if (!isLocSet) {
+        //                setLoc(position.coords.latitude, position.coords.longitude);
+        //            }
+        //        });
+        //    }
+        //}
+        //else {
+        //    map.panTo(loc);
+        //    placeMarker(loc);
+        //}
+    }
+
+    //function placeMarker(location) {
+    //    deleteOverlays();
+    //    marker = new google.maps.Marker({
+    //        position: location,
+    //        map: map,
+    //        draggable: true,
+
+    //    });
+    //    marker.addListener('dragend', function (event) {
+    //        setLoc(event.latLng.lat(), event.latLng.lng(), false);
+    //        map.panTo(event.latLng);
+
+    //    });
+    //    markerArray.push(marker);
+    //}
+
+    //function deleteOverlays() {
+    //    if (markerArray) {
+    //        for (i in markerArray) {
+    //            markerArray[i].setMap(null);
+    //        }
+    //        markerArray.length = 0;
+    //    }
+    //}
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYTvgY5DS7ipPNzOgxYmJYeZBe4r03qS4&callback=initMap"></script>

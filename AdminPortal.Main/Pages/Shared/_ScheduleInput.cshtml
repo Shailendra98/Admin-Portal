@@ -1,0 +1,43 @@
+﻿@model ScheduleModel
+@{
+    DateTime? defaultDate = Model?.Date;
+    if (defaultDate == null || defaultDate == DateTime.MinValue)
+    {
+        defaultDate = Model.AvailableSchedule.Dates.Select(m => m.Date).FirstOrDefault();
+    }
+}
+<lib name="DatetimePicker" />
+<div class="row">
+    <div class="col-sm-6">
+       
+            <label asp-for="Date" class="  col-form-label fw-bold sr-only"></label>
+            <input asp-for="Date" class="form-control" placeholder="Pickup Date" type="text" readonly style="background-color:#fff;" />
+            <span asp-validation-for="Date" class="text-danger small"></span>
+        
+    </div>
+    <div class="col-sm-6">
+        
+            <label asp-for="TimeSlotId" class="  col-form-label fw-bold sr-only"></label>
+            <select asp-for="TimeSlotId" class="form-control">
+                @foreach (var slot in Model.AvailableSchedule.Slots)
+                {
+                    <option value="@slot.Key">@slot.Value</option>
+                }
+            </select>
+            <span asp-validation-for="Date" class="text-danger small"></span>
+        
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#@Html.IdFor(m=>m.Date)").datetimepicker({
+            useStrict: true,
+            ignoreReadonly: true,
+            format: "DD-MM-YYYY",
+            @if (defaultDate != null) {
+                @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultDate)",
+            }
+            minDate:'@string.Format("{0:MM/dd/yyyy}",TKW.ApplicationCore.Helpers.Dt.Now)'
+        });
+    });
+</script>

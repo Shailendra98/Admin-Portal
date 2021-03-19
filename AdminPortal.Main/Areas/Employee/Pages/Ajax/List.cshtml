@@ -1,0 +1,16 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Employee.Pages.Ajax.ListModel
+
+    <div class="panel-body">
+        @if (Model.List == null || Model.List.Count() == 0)
+        {
+            <div class="text-center">
+                <h4>No Employee !</h4>
+                <small>There is no employee under this category.</small>
+            </div>
+        }
+        else
+        {
+            <partial name="_EmployeeList" for="List" />
+        }
+    </div>

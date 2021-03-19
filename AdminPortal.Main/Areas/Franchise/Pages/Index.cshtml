@@ -1,0 +1,32 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Franchise.Pages.IndexModel
+@{
+    ViewBag.Title = "Franchises";
+}
+<pagetitle title="Franchises" description="List of all franchises">
+    @*
+        //For future use
+        <a href="#ActionModal" data-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/Add")" class="btn btn-primary btn-outline btn-sm"><i class="fa fa-plus"></i> Add Franchise</a>*@
+</pagetitle>
+<div class="content">
+    <div id="franchiseList">
+        <div class="text-center">
+            <img src="~/images/ripple.gif" alt="Loading.."/>
+        </div>
+    </div>
+</div>
+@section Footer{ 
+<modal content-id="ActionModalContent" id="ActionModal" loader="true"></modal>
+}
+@section Scripts{ 
+<script>
+    $(function () {
+        $("#franchiseList").load("@Url.Page("Ajax/List")");
+
+        $("#ActionModalContent").on("action.done", function (e) {
+            $("#franchiseList").load("@Url.Page("Ajax/List")");
+        });
+    });
+</script>
+
+}

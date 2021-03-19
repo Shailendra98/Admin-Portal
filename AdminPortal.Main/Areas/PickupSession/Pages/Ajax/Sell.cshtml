@@ -1,0 +1,69 @@
+﻿@page
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.SellModel
+@{
+}
+
+<div class="hpanel">
+    <div class=" panel-body p-xs bg-white">
+        @if (Model.Sells == null || Model.Sells.Count == 0)
+        {
+            <div class="text-center p-sm">
+                There is no sell.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover vertical-mid-table animated fadeIn">
+                    <tbody>
+                        @foreach (var Sell in Model.Sells)
+                        {
+                        <tr>
+                            <td>@Sell.Id</td>
+                            <td><span class="no-margins p-t-xs text-nowrap">@Sell.Buyer.OwnerName <small> (@Sell.Buyer.OwnerMobileNo)</small> <br /><span> @Sell.Buyer.FirmName</span></span></td>
+                            <td>     <span class="float-end"><i class="pe-7s-home"></i> @Sell.Warehouse.Name</span></td>
+                            <td>   <span>@Sell.Status.Name</span></td>
+                            <td>
+                                @if (Sell.Status.Id == 4)
+                                {
+                                    <b><small>@Sell.Cancellation.Reason.Reason</small></b>
+                                }
+                                else if (Sell.Status.Id == 3)
+                                {
+                                    <b><small>₹</small> @Sell.Completion.Amount.Value.ToString("G29")</b>
+                                }
+                            </td>
+                            <td>
+                                <small class="font-trans">
+                                    @if (Sell.Status.Id == 4)
+                                    {
+                                        @string.Format("{0:hh:mm tt}", Sell.Cancellation.CancellationTime)
+                                    }
+                                    else if (Sell.Status.Id == 3)
+                                    {
+                                        @string.Format("{0:hh:mm tt}", Sell.Completion.CompletionTime)
+                                    }
+                                    else if (Sell.Status.Id == 2)
+                                    {
+                                        @string.Format("{0:hh:mm tt}", Sell.Completion.HandledTime)
+                                    }
+                                </small>
+                            </td>
+                            <td>  <a href="#DetailsModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/Details", new {area = "Sell", Sell.Id})" class="btn btn-default btn-xs detailbtn">Details</a></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+    </div>
+        </div>
+<script>
+    $(function () {
+        $(document).on("click", ".detailbtn", function (e) {
+            e.preventDefault();
+            $('#DetailsModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/SellList' + $(this).data('id'));
+        });
+    });
+</script>

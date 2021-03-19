@@ -1,0 +1,149 @@
+﻿@page "{id:int}"
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.MaterialsModel
+@{
+    Layout = null;
+}
+@if (Model.PurchaseMaterials == null || Model.PurchaseMaterials.Count == 0)
+{
+    <div class="hpanel">
+        <div class="panel-body">
+            <div class="text-center p-sm">
+                There is no material.
+            </div>
+        </div>
+    </div>
+}
+else
+{
+<div class="hpanel">
+    <div class="panel-body">
+        <div class="float-end">
+            Total: <b>
+    @Model.PurchaseMaterials.Where(m => m.Material.UnitId == 1).Sum(m => m.NotStoredQuantity + m.StoredQuantity).ToString("G29") <small>Kg</small>
+    @if (Model.PurchaseMaterials.Any(m => m.Material.UnitId == 2))
+    {<text>+ @Model.PurchaseMaterials.Where(m => m.Material.UnitId == 2).Sum(m => m.NotStoredQuantity + m.StoredQuantity).ToString("G29") <small>Pieces</small> </text>} </b>
+        </div>
+        <div class="h5">Purchased Materials</div><br />
+        <div class="row">
+            @{ int i = 0; }
+            @foreach (var purchasematerial in Model.PurchaseMaterials)
+            {
+                var Quantity = purchasematerial.StoredQuantity + purchasematerial.NotStoredQuantity;
+                if (Quantity <= 0) continue;
+                @(i > 0 && i % 6 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+                i++;
+                <div class="col-md-2">
+                    <div class="hpanel m-b-sm">
+                        <div class="panel-body text-center p-xs">
+                            <div class="text-nowrap font-bold" style="overflow:hidden;">@purchasematerial.Material.Name</div>
+                            <div><span class="h5">@Quantity.ToString("G29")</span><span class="font-trans"> @purchasematerial.Material.UnitName</span></div>
+                            @*<span class="font-bold">@purchasematerial.Material.Name</span>
+                        <span class="font-extra-bold pull-right">@Quantity.ToString("G29") <small class="font-trans">@purchasematerial.Material.UnitName</small></span>*@
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+}
+
+
+@*<div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-xs-8 center-block">
+            <div class="panel-body p-xs bg-white">
+                <div class="btn-group pull-right p-t-xxs">
+                    <div class="nav nav-tabs top-nav">
+                        <a class="btn btn-link btn-xs active" data-toggle="tab" href="#all">All</a>
+                        &bull;
+                        <a class="btn btn-link btn-xs" data-toggle="tab" href="#onvehicle">On Vehicle</a>
+                        &bull;
+                        <a class="btn btn-link btn-xs" data-toggle="tab" href="#stored">Stored</a>
+                    </div>
+                </div>
+                <h5>Pickup</h5>
+                <div class="tab-content">
+                    <div id="all" class="tab-pane fade in active">
+                        @if (Model.PurchaseMaterials == null || Model.PurchaseMaterials.Count == 0)
+                        {
+                            <h6 class="text-center">
+                                There is no material
+                            </h6>
+                        }
+                        else
+                        {
+                            @foreach (var purchasematerial in Model.PurchaseMaterials)
+                            {
+                                var Quantity = purchasematerial.StoredQuantity + purchasematerial.NotStoredQuantity;
+
+                                <div class="hpanel m-b-xs">
+                                    <div class="panel-body">
+                                        <span class="font-bold">@purchasematerial.Material.Name</span>
+                                        <span class="font-extra-bold pull-right">@Quantity.ToString("G29") <small class="font-trans">@purchasematerial.Material.UnitName</small></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div id="onvehicle" class="tab-pane fade">
+
+                        @if (Model.PurchaseMaterials == null || Model.PurchaseMaterials.Count == 0)
+                        {
+                            <h6 class="text-center">
+                                There is no material
+                            </h6>
+                        }
+                        else
+                        {
+                            @foreach (var purchasematerial in Model.PurchaseMaterials)
+                            {
+                                <div class="hpanel m-b-xs">
+                                    <div class="panel-body">
+                                        <span class="font-bold">@purchasematerial.Material.Name</span>
+                                        <span class="font-extra-bold pull-right">@purchasematerial.NotStoredQuantity.ToString("G29") <small class="font-trans">@purchasematerial.Material.UnitName</small></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div id="stored" class="tab-pane fade">
+                        @if (Model.PurchaseMaterials == null || Model.PurchaseMaterials.Count == 0)
+                        {
+                            <h6 class="text-center">
+                                There is no material
+                            </h6>
+                        }
+                        else
+                        {
+
+                            @foreach (var purchasematerial in Model.PurchaseMaterials)
+                            {
+                                <div class="hpanel m-b-xs">
+                                    <div class="panel-body">
+                                        <span class="font-bold">@purchasematerial.Material.Name</span>
+                                        <span class="font-extra-bold pull-right">@purchasematerial.StoredQuantity.ToString("G29") <small class="font-trans">@purchasematerial.Material.UnitName</small></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>*@
+<style>
+    .bak {
+        text-decoration-color: #dff0d8 !important;
+    }
+</style>
+<script>
+    $(function () {
+        $("#top-nav a").click(function () {
+            $("#top-nav a").removeclass("bak");
+            $(this).find("a").addclass("bak");
+        });
+    });
+</script>

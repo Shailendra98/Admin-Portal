@@ -1,0 +1,439 @@
+﻿@page
+@using Microsoft.AspNetCore.Routing
+@using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
+@model RequestListModel
+
+@{
+    Layout = null;
+    var filter = Model.Filter;
+    var route = new RouteValueDictionary();
+    route["Filter.Search"] = filter.Search;
+    route["Filter.DateType"] = filter.DateType;
+    route["Filter.StartDate"] = String.Format("{0:dd/MM/yyyy}", filter.StartDate);
+    route["Filter.EndDate"] = String.Format("{0:dd/MM/yyyy}", filter.EndDate);
+    var i = 0;
+    if (filter.City != null)
+    {
+        foreach (var a in filter.City)
+        {
+            route["Filter.City[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.Franchise != null)
+    {
+        foreach (var a in filter.Franchise)
+        {
+            route["Filter.Franchise[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.Locality != null)
+    {
+        foreach (var a in filter.Locality)
+        {
+            route["Filter.Locality[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.Pincode != null)
+    {
+        foreach (var a in filter.Pincode)
+        {
+            route["Filter.Pincode[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.Status != null)
+    {
+        foreach (var a in filter.Status)
+        {
+            route["Filter.Status[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.User != null)
+    {
+        foreach (var a in filter.User)
+        {
+            route["Filter.User[" + i++ + "]"] = a;
+        }
+    }
+
+    route["Filter.SortBy"] = filter.SortBy;
+    //route.Add("size", ViewBag.Size);
+    var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Requests.PageNumber + "&pageSize=" + Model.Requests.PageSize;
+    string returnUrl = Url.Page("../Index") + "?" + querystring;
+}
+@if (Model.Requests == null || Model.Requests.Count == 0)
+{
+        <div class="text-center p-t-sm"><div class="h5 mt-3">No Request !</div><div>There is no request.</div></div>
+}
+else
+{
+<div>
+    <div class="font-bold pull-right p-b-xs">
+        @Model.Requests.FirstItemOnPage - @Model.Requests.LastItemOnPage of @Model.Requests.TotalItemCount
+    </div>
+    <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn">
+        <thead>
+            <tr>
+                <td colspan="8">
+                    <div class="btn btn-default p-1 btn-xs mt-1">
+                        <div class="checkbox p-1 d-inline-block">
+                            <input id="select_all" type="checkbox" />
+                            <label class="mb-3 p-0" for="select_all"></label>
+                        </div>
+                        <div class="dropdown d-inline-block">
+                            <button class="p-0 btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li class="dropdown-header">Select Request by status</li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.Submitted.Id);">Submitted</a></li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.Rescheduled.Id);">Rescheduled</a></li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.Assigned.Id);">Assigned</a></li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.Handled.Id);">Handled</a></li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.NotPaid_Stored.Id);">Not Paid But Stored</a></li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.NotStored_Paid.Id);">Not Stored But Paid</a></li>
+                                <li role="separator" class="dropdown-divider"></li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.Handled.Id,@RequestStatus.NotPaid_Stored.Id);">Not Paid</a></li>
+                                <li class="dropdown-item"><a href="#" class="text-decoration-none" onclick="check_checkboxes(@RequestStatus.Handled.Id,@RequestStatus.NotStored_Paid.Id);">Not Stored</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <em id="selectinfo" style="padding:15px;" vertical-align:middle;">
+                        0 request selected
+                    </em>
+                    <button class="btn btn-sm btn-default selectactionbtn" data-url="@Url.Page("Modal/Reschedule")" id="select_reschedulebtn" style="display:none;">Reschedule</button>
+                    <button class="btn btn-sm btn-default selectactionbtn" data-url="@Url.Page("Modal/Assign")" id="select_assignbtn" style="display:none;">Assign</button>
+                    @*<button class="btn btn-sm btn-default selectactionbtn" data-url="@Url.Page("Modal/Store")" id="select_storebtn" style="display:none;">Store</button>*@
+                    @*<button class="btn btn-sm btn-default selectactionbtn hidden" id="select_paybtn" style="display:none;">Pay</button>*@
+                    <button class="btn btn-sm btn-default selectactionbtn" data-url="@Url.Page("Modal/Cancel")" id="select_cancelbtn" style="display:none;">Cancel</button>
+                    @*</td>
+        <td colspan="3">*@
+                    <div class="pull-right">
+                        <form data-ajax="true"
+                              data-ajax-method="GET"
+                              data-ajax-url="@Url.Page("RequestList", route)" ,
+                              data-ajax-begin="$('#requestlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                              data-ajax-update="#requestlist"
+                              class="form-inline">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <label for="pagesize" class="col-form-label fw-bold">Requests per page:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <input type="text" class="form-control" style="max-width:50px;" name="pageSize" id="pagesize" value="@Model.Requests.PageSize" aria-describedby="button-addon2">
+                                        <button class="btn btn-outline-secondary btn-default" type="submit" id="button-addon2">Go</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr class="border-bottom">
+                <th>
+                </th>
+                <th>Id</th>
+                <th>Requester</th>
+                <th>Schedule</th>
+                <th>Status</th>
+                <th>Address</th>
+                <th>Aging</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model.Requests)
+            {
+
+                <tr class="@if (r.Status?.Id == RequestStatus.Completed.Id)
+                {<text>table-success</text> }
+                else if (r.Status?.Id == RequestStatus.Cancelled.Id)
+                {<text>table-danger</text> }">
+                    <td>
+                        @if (r.Status?.Id != RequestStatus.Completed.Id && r.Status?.Id != RequestStatus.Cancelled.Id)
+                        {
+                            <div class="checkbox mb-3">
+                                <input type="checkbox" data-status="@r.Status.Id" data-id="@r.Id" class="requestcheckbox" name="requestid" id="checkbox_@r.Id" />
+                                <label for="checkbox_@r.Id"></label>
+                            </div>
+                        }
+                    </td>
+                    <td>@r.Id</td>
+                    <td>
+                        @(r.Seller?.Name) [@(r.TotalHandledRequestsCount)]
+                        <br />@if (r.Seller?.MobileNo != null)
+                        {<small>(@r.Seller.MobileNo)</small>}
+                    </td>
+                    <td>
+                        @if (r?.Schedule?.Date != null)
+                        {
+                            @String.Format("{0:ddd, dd MMM, yyyy}", r.Schedule?.Date)<br />
+                            <small class="text-nowrap">@(r.Schedule?.TimeSlot?.Text)</small>
+                        }
+                    </td>
+                    <td>
+                        @(r.Status?.Status) 
+                    </td>
+                    <td>
+                        @if (r.Address?.AddressLine != null)
+                        {
+                            <address class="m-b-none small" type="@r.Address?.TypeName" name="@r.Address?.Name" mobile-no="@r.Address?.MobileNo" addressline="@r.Address?.AddressLine" locality="@r.Address?.LocalityName" state="@r.Address?.StateName" city="@r.Address?.CityName" pincode="@r.Address?.Pincode"></address>
+                        }
+                        else
+                        {
+                            <em>Address not found..!</em>
+                        }
+                    </td>
+                    <td>
+                        <small>@Generate.Time(Convert.ToDateTime(r.SubmissionTime), 's')</small>
+                    </td>
+                    <td>
+                        <div class="btn-group-vertical">
+                            <a href="@Url.Page("../Details", new { r.Id, returnUrl })" class="btn btn-default btn-xs reqdetailbtn" data-id="@r.Id">Details</a>
+                            @if (r.Status.Id != RequestStatus.Cancelled.Id && r.Status.Id != RequestStatus.Completed.Id && r.Status.Id != RequestStatus.NotStored_Paid.Id)
+                            {
+
+                                <div class="dropdown">
+                                    <a role="button" id="btnGroupDrop1" class="btn btn-default btn-xs dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Action <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right" style="font-size:small;" aria-labelledby="btnGroupDrop1">
+                                        @if (r.Status?.Id == RequestStatus.Submitted.Id || r.Status?.Id == RequestStatus.Rescheduled.Id)
+                                        {
+                                            <text>
+
+                                                <li class="dropdown-item">
+                                                    <a href="#" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/EditPending")" data-id="@r.Id">Edit Request</a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="@Url.Page("../Action/Reschedule", new { r.Id })" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/Reschedule")" data-id="@r.Id">Reschedule Request</a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="#" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/Assign")" data-id="@r.Id">Assign to Pickup Session</a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="@Url.Page("../Action/Cancel", new { r.Id })" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/Cancel")" data-id="@r.Id">Cancel Request</a>
+                                                </li>
+
+                                                @*<li>
+                                    <a href="#" class="actionlink" data-url="@Url.Page("Modal/Handle")" data-id="@r.Id">Handle Request</a>
+                                </li>*@
+                                            </text>}
+                                        else if (r.Status?.Id == RequestStatus.Assigned.Id)
+                                        {<text>
+                                                <li class="dropdown-item">
+                                                    <a href="#" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/EditPending")" data-id="@r.Id">Edit Request</a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="@Url.Page("../Action/Reschedule", new { r.Id })" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/Reschedule")" data-id="@r.Id">Reschedule Request</a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="#" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/Assign")" data-id="@r.Id">Reassign to Pickup Session</a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="@Url.Page("../Action/Cancel", new { r.Id })" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/Cancel")" data-id="@r.Id">Cancel Request</a>
+                                                </li>
+                                                @*<li>
+                                    <a href="#" class="actionlink" data-url="@Url.Page("Modal/Handle")" data-id="@r.Id">Handle Request</a>
+                                </li>*@
+                                        </text>
+                                    }
+                                    else if (r.Status?.Id == RequestStatus.NotPaid_Stored.Id || r.Status?.Id == RequestStatus.Handled.Id)
+                                    {
+                                        <li class="dropdown-item">
+                                            <a href="#" class="actionlink text-decoration-none d-block" data-url="@Url.Page("Modal/Payment")" data-id="@r.Id">Make Payment</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                    </ul>
+                                </div>}
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div class="d-flex justify-content-center pt-4">
+    <pager data-ajax="true"
+           data-ajax-method="get"
+           data-ajax-begin="window.location.hash='requestlist'; $('#requestlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+           data-ajax-update="#requestlist"
+           list="Model.Requests"
+           url='pageNo=>Url.Page("requestlist", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Requests.PageSize })))'></pager>
+</div>
+    route["pageSize"] = Model.Requests.PageSize;
+    route["pageNo"] = Model.Requests.PageNumber;
+
+<script>
+       var selectCount=new Object();
+       selectCount['@RequestStatus.Submitted.Id']=0;
+       selectCount['@RequestStatus.Rescheduled.Id']=0;
+       selectCount['@RequestStatus.Assigned.Id'] = 0;
+       selectCount['@RequestStatus.Handled.Id']=0;
+       selectCount['@RequestStatus.NotPaid_Stored.Id'] = 0;
+    selectCount['@RequestStatus.NotStored_Paid.Id'] = 0;
+    var selected = [];
+    $(function () {
+        if (history.pushState) {
+            var newUrl = "@Html.Raw(Url.Page("../Index", route))";
+            window.history.pushState({ path: newUrl },'', newUrl);
+        }
+        $('.selectactionbtn').click(function (e) {
+            var url = $(this).data('url');
+            $('#ActionModal').modal('show');
+            $("#ActionModal").find(".modal-content").html("<div class='modal-body text-center'><img src='/Images/ripple.gif' alt='Loading..' /></div>")
+            $.get(url+"?"+$.param({ ids:selected },true), function (data) {
+                $('#ActionModal').find('.modal-content').html(data);
+            });
+        });
+        $(".actionlink").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data('url');
+            var id = $(this).data('id');
+            $('#ActionModal').modal('show');
+            $("#ActionModal").find(".modal-content").html("<div class='modal-body text-center'><img src='/Images/ripple.gif' alt='Loading..' /></div>")
+            $.get(url + "?Id=" + id+"&Ids="+id, function (data) {
+                $('#ActionModal').find('.modal-content').html(data);
+            });
+        });
+        $('#ActionModal').find('.modal-content').on('action.done', function (e, data) {
+            $('#requestlist').load('@Url.Page("requestlist", route)');
+        });
+        $("#select_all").change(function () {
+
+          
+               var ischecked = $(this).is(':checked');
+               $("input:checkbox.requestcheckbox").each(function (i) {
+                   var status = $(this).data("status");
+                   var ischecked1 = $(this).is(":checked");
+                   var trparent = $(this).closest("tr");
+                   var id = $(this).data('id');
+                   var index = $.inArray(id, selected);
+                   if (ischecked1 != ischecked) {
+                       if (ischecked) {
+                           $(this).prop("checked", true);
+                           trparent.addClass("active");
+                           selectCount[status]++;
+                           if (index == -1){
+                               selected.push(id);
+                           }
+                       } else {
+                           $(this).prop("checked", false);
+                           trparent.removeClass("active");
+                           selectCount[status]--;
+                           if (index > -1) {
+                               selected.slice(index,1);
+                           }
+                       }
+                   }
+               });
+               updateBtns();
+           });
+
+           $("input:checkbox.requestcheckbox").change(function () {
+               var status = $(this).data("status");
+               var ischecked = $(this).is(':checked');
+               var trparent = $(this).closest("tr");
+               var id = $(this).data('id');
+               var index = $.inArray(id, selected);
+               if (ischecked) {
+                   trparent.addClass("active");
+                   selectCount[status]++;
+                   if (index == -1) {
+                       selected.push(id);
+                   }
+               } else {
+                   trparent.removeClass("active");
+                   selectCount[status]--;
+                   if (index > -1) {
+                       selected.slice(index, 1);
+                   }
+               }
+               updateBtns();
+           });
+        $(".reqdetailbtn").click(function (e) {
+               e.preventDefault();
+               $('#DetailsModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/Request/Ajax/Modal/Details/' + $(this).data('id'));
+            });
+       });
+       function updateBtns() {
+           var total = 0;
+           for (var i in selectCount) {
+               total += selectCount[i];
+           }
+           if (selectCount["@RequestStatus.Handled.Id"] > 0 || selectCount["@RequestStatus.NotPaid_Stored.Id"] > 0 || selectCount["@RequestStatus.NotStored_Paid.Id"] > 0) {
+               $("#select_cancelbtn").hide();
+               $("#select_reschedulebtn").hide();
+               $("#select_assignbtn").hide();
+               //$("#select_paybtn").show();
+               //$("#select_storebtn").show();
+               var sum = selectCount["@RequestStatus.Submitted.Id"] + selectCount["@RequestStatus.Rescheduled.Id"] + selectCount["@RequestStatus.Assigned.Id"];
+               @*if (sum + selectCount["@RequestStatus.NotPaid_Stored.Id"] > 0) {
+                   $("#select_storebtn").hide();
+               }*@
+               @*if (sum+selectCount["@RequestStatus.NotStored_Paid.Id"] > 0) {
+                   $("#select_paybtn").hide();
+               }*@
+           } else {
+               //$("#select_paybtn").hide();
+               //$("#select_storebtn").hide();
+               if(total!=0){
+                   $("#select_cancelbtn").show();
+                   $("#select_reschedulebtn").show();
+                   $("#select_assignbtn").show();
+               } else {
+                   $("#select_cancelbtn").hide();
+                   $("#select_reschedulebtn").hide();
+                   $("#select_assignbtn").hide();
+               }
+           }
+           if (total > 1) {
+               $("#selectinfo").text(total + " requests selected.");
+           } else {
+               $("#selectinfo").text(total + " request selected.");
+           }
+       }
+       function check_checkboxes() {
+           var a = arguments;
+           $("input:checkbox.requestcheckbox").each(function(i){
+               var self=$(this);
+               var status=self.data("status");
+               var ischecked=self.is(":checked");
+               var trparent = self.closest("tr");
+               var id = $(this).data('id');
+               var index = $.inArray(id, selected);
+               if($.inArray(status,a)==-1){
+                   if(ischecked){
+                       self.prop("checked",false);
+                       trparent.removeClass("active");
+                       selectCount[status]--;
+                       if (index > -1) {
+                           selected.slice(index, 1);
+                       }
+                   }
+               }else{
+                   if (!ischecked) {
+                       self.prop("checked", true);
+                       trparent.addClass("active");
+                       selectCount[status]++; if (index == -1) {
+                           selected.push(id);
+                       }
+                   }
+               }
+           });
+           updateBtns();
+       }
+
+</script>
+    }

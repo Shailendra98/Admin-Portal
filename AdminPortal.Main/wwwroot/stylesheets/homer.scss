@@ -1,0 +1,84 @@
+// Import Google font
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+
+// Color list
+$color-navy-blue:#34495e;
+$color-violet:#9b59b6;
+$color-blue:#3498db;
+$color-green:#62cb31;
+$color-yellow:#ffb606;
+$color-orange:#e67e22;
+$color-red:#e74c3c;
+$color-red-deep:#c0392b;
+
+// Additional colors
+$color-text: #6a6c6f;
+$color-bright: #f7f9fa;
+$color-background: #f1f3f6;
+$color-background-boxed: lighten($color-background, 3%);
+$border-color: #e4e5e7;
+
+// Additional variables
+$menu-width: 180px;
+$main-transition: all 0.1s ease-out 0s;
+
+// Import all styles
+
+// Components
+@import "homer/components/modal";
+@import "homer/components/progress_bar";
+@import "homer/components/badge";
+@import "homer/components/checkbox_radio";
+@import "homer/components/inputs";
+@import "homer/components/loader";
+@import "homer/components/splash";
+@import "homer/components/timeline";
+@import "homer/components/dropdown";
+@import "homer/components/buttons";
+@import "homer/components/lists";
+@import "homer/components/panels";
+@import "homer/components/tabs";
+@import "homer/components/tooltip";
+
+// Pages
+/*@import "homer/pages/analytics";
+@import "homer/pages/app_plans";*/
+@import "homer/pages/chat";
+/*@import "homer/pages/projects";
+@import "homer/pages/social_board";
+@import "homer/pages/blog";
+@import "homer/pages/forum";
+@import "homer/pages/mailbox";
+@import "homer/pages/contact";
+@import "homer/pages/file_manager";
+@import "homer/pages/login";
+@import "homer/pages/notes";
+@import "homer/pages/search";*/
+
+// Plugins
+/*@import "homer/plugins/sweetalert";
+@import "homer/plugins/notify";
+@import "homer/plugins/toastr";
+@import "homer/plugins/tour";
+@import "homer/plugins/calendar";
+@import "homer/plugins/codemirror";
+@import "homer/plugins/flot";
+@import "homer/plugins/text_editor";
+@import "homer/plugins/nestable";
+@import "homer/plugins/icheck";
+@import "homer/plugins/ui_sortable";*/
+
+// Utilities
+@import "homer/utilities/backgrounds";
+@import "homer/utilities/borders";
+@import "homer/utilities/colors";
+@import "homer/utilities/margins";
+@import "homer/utilities/layout";
+@import "homer/utilities/grid";
+@import "homer/utilities/heights_widths";
+@import "homer/utilities/fonts";
+@import "homer/utilities/various";
+
+// Skins
+@import "homer/skins/light_shadow";
+

@@ -1,0 +1,45 @@
+﻿@page
+@model StoreModel
+@{
+    Layout = null;
+}
+<modal-header title="Store materials" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <h4>Materials have been stored.</h4>
+        </div>
+    </modal-body>
+    <script>
+    $("#ActionModalContent").trigger("action.done");
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+        <form method="post"
+              data-ajax="true"
+              data-ajax-url="@Url.Page("Store")"
+              data-ajax-begin="$('#storeFieldSet').attr('disabled','');"
+              data-ajax-complete="$('#storeFieldSet').removeAttr('disabled');"
+              data-ajax-method="post"
+              data-ajax-update="#ActionModalContent">
+            <fieldset id="storeFieldSet">
+                <modal-body>
+                    <partial name="_Store" for="Model" />
+                </modal-body>
+                <modal-footer>
+                    <button class="btn btn-success" type="submit">Store Materials</button>
+                </modal-footer>
+            </fieldset>
+            @foreach (var id in Model.Ids)
+            {
+                <input name="Ids" value="@id" type="hidden" />
+            }
+        </form>
+}

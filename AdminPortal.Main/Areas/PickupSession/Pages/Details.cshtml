@@ -1,0 +1,269 @@
+﻿@page "{id:int}"
+@model TKW.AdminPortal.Areas.PickupSession.Pages.DetailsModel
+@{
+    ViewBag.Title = "Pickup Session Detail";
+    bool hasEnded = Model.PickupSession.EndOdometerReading.HasValue;
+}
+<pagetitle title="Pickup Session Details" description="All details of the Pickup Session">
+    @if (Model.PickupSession.CloseTime == null && ( Model.PickupSession.StartTime == null || Model.PickupSession.EndTime != null))
+    {
+        <a href="#CloseSessionModal" class="btn btn-outline btn-sm btn-primary" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/ClosePickupSession",new { Model.PickupSession.Id })"><i class="fa fa-close"></i> Close session</a>
+    }
+</pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel stats">
+                <div class="panel-body p-0">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <table class="table">
+                                <tr>
+                                    <td class="border-0 p-0 w-50">
+                                        <b class="text-muted small">Id</b><br /><div class="h6 mt-2 fw-normal">@Model.PickupSession.Id</div>
+                                    </td>
+                                    <td class="border-0 p-0 w-50">
+                                        <b class="text-muted small">Date</b><br /><div><div class="h6 mt-2 mb-0 fw-normal">@string.Format("{0:dd MMM, yyyy}", Model.PickupSession.CreateTime)</div><small class="font-light">@string.Format("{0:hh:mm tt}", Model.PickupSession.CreateTime)</small></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="list-group-item">
+                            <b class="text-muted small">Vehicle</b>
+                            <div class="mt-2"><span class="h6">@Model.PickupSession.Vehicle.Name </span><small class="font-light">@Model.PickupSession.Vehicle.Number</small></div>
+                        </div>
+                        @if (Model.PickupSession.StartTime.HasValue || Model.PickupSession.EndTime.HasValue)
+                        {
+                            <div class="list-group-item">
+                                <b class="text-muted small">Session time</b><br />
+                                @if (Model.PickupSession.StartTime.HasValue && Model.PickupSession.EndTime.HasValue)
+                                {
+                                    var diff = Model.PickupSession.EndTime.Value.Subtract(Model.PickupSession.StartTime.Value);
+                                    <div class="float-end small">
+                                        @(diff.Hours > 0 ? diff.Hours +"h ":"")@(diff.Minutes>0?diff.Minutes+"m":"")
+                                    </div>
+                                }
+                                <div class="h6 mt-2 mb-1">
+                                    @(Model.PickupSession.StartTime.HasValue ? string.Format("{0:hh:mm tt}", Model.PickupSession.StartTime) : "N/A") - @(Model.PickupSession.EndTime.HasValue ? string.Format("{0:hh:mm tt}", Model.PickupSession.EndTime) : "N/A")
+                                </div>
+                            </div>
+                        }
+                        <div class="list-group-item">
+                            <b class="small text-muted">Odometer Reading</b><br />
+                            @if (Model.PickupSession.EndOdometerReading == null)
+                            {
+                                <div class="h6 mt-2 mb-1">@Model.PickupSession.StartOdometerReading - N/A</div>
+                            }
+                            else
+                            { <div class="float-end small">
+                                    @(Model.PickupSession.EndOdometerReading - Model.PickupSession.StartOdometerReading) <small>KM</small>
+                                </div>
+                                <div class="h6 mt-2 mb-1">@Model.PickupSession.StartOdometerReading - @Model.PickupSession.EndOdometerReading</div>
+
+                            }
+                        </div>
+
+                        @if (!hasEnded)
+                        {
+                            <div class="list-group-item">
+                                <b class="small text-muted">Available Cash</b><br />
+                                <div class="float-end"><a href="#AddCashModal" class="btn btn-outline btn-xs btn-primary" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/AddCash",new { Model.PickupSession.Id })">Add</a></div>
+                                <div class="h6 mt-2 mb-1">
+                                    <small>₹ </small>@Model.PickupSession.Cash.ToString("G29")
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                @*<div class="text-center p-t-m">
+                        <a href="#pickupSessionMoreDetail" data-toggle="modal" class="btn btn-default btn-xs">More detail</a>
+                    </div>*@
+            </div>
+            <div class="hpanel">
+                <div class="panel-body p-0">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            @if (!hasEnded)
+                            {
+                                <div class="pull-right"><a href="#AddPickupBoyModal" class="btn btn-outline btn-xs btn-primary" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/AddPickupBoy",new { Model.PickupSession.Id , FranchiseId = Model.PickupSession.FranchiseId})">Add</a></div>
+                            }
+                            <div class="h6 m-0 fw-normal">Pickup boys</div>
+                        </div>
+                        @if (Model.PickupSession.PickupBoys == null || Model.PickupSession.PickupBoys.Count == 0)
+                        {
+                            <div class="list-group-item text-center">
+                                <em>There is no pickup boy</em>
+                            </div>
+                        }
+                        else
+                        {
+                            foreach (var pickupboy in Model.PickupSession.PickupBoys.OrderByDescending(m => m.StartTime))
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 pe-2">
+                                            <img alt="logo" class="rounded-circle" height="30" src="~/images/default/profilex240.png">
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="mb-0">@pickupboy.Name</div>
+                                            <small class="font-trans">@string.Format("{0:hh:mm tt}", pickupboy.StartTime) - @(pickupboy.EndTime.HasValue ? string.Format("{0:hh:mm tt}", pickupboy.EndTime) : "N/A")</small>
+                                        </div>
+                                        <div>
+                                            @if (pickupboy.EndTime == null)
+                                            {
+                                                <a href="#RemovePickupBoyModal" class="btn btn-xs btn-outline btn-danger mt-2" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/RemovePickupBoy", new {Model.PickupSession.Id ,HandlerId  =  pickupboy.Id})"> Remove</a>
+                                            }
+                                            else
+                                            {
+                                                var diff = pickupboy.EndTime.Value.Subtract(pickupboy.StartTime);
+                                                <small class="font-trans">@(diff.Hours > 0 ? diff.Hours +"h ":"")@(diff.Minutes>0?diff.Minutes+"m":"")</small>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <ul class="nav nav-pills flex-row mb-4" id="nav_pills_pickup">
+                <li class="nav-item flex-fill">
+                    <button class="nav-link px-4 py-3 bg-white" id="request_button" data-bs-target="#pills-home-request" data-bs-toggle="tab" data-loaded="false" aria-current="page" data-load-url="@Url.Page("/Ajax/Requests",new { Model.Tab, Model.PickupSession.Id, EndedSession = hasEnded})">Request</button>
+
+                </li>
+                <li class="nav-item flex-fill">
+
+                    <button class="nav-link px-4 py-3 bg-white" id="expenses_button" data-bs-target="#pills-home-expenses" data-bs-toggle="tab" data-loaded="false" aria-current="page" data-load-url="@Url.Page("/Ajax/Expenses",new { Model.Tab, Model.PickupSession.Id})">Expenses</button>
+
+                </li>
+                <li class="nav-item flex-fill">
+
+                    <button class="nav-link px-4 py-3 bg-white" id="materials_button" data-bs-target="#pills-home-materials" data-bs-toggle="tab" data-loaded="false" aria-current="page" data-load-url="@Url.Page("/Ajax/Materials",new { Model.Tab , Model.PickupSession.Id})">Materials</button>
+
+                </li>
+                <li class="nav-item flex-fill">
+
+                    <button class="nav-link px-4 py-3 bg-white" id="transactions_button" data-bs-target="#pills-home-transaction" data-bs-toggle="tab" data-loaded="false" aria-current="page" data-load-url="@Url.Page("/Ajax/Transactions",new { Model.Tab , Model.PickupSession.Id})">Transactions</button>
+
+                </li>
+                <li class="nav-item flex-fill">
+
+                    <button class="nav-link px-4 py-3 bg-white" id="sell_button" data-bs-target="#pills-home-sell" data-bs-toggle="tab" data-loaded="false" aria-current="page" data-load-url="@Url.Page("/Ajax/Sell",new { Model.Tab , Model.PickupSession.Id})">Sells</button>
+
+                </li>
+                <li class="nav-item flex-fill">
+
+                    <button class="nav-link px-4 py-3 bg-white" id="map_button" data-bs-target="#pills-home-map" data-bs-toggle="tab" data-loaded="false" aria-current="page" data-load-url="@Url.Page("/Ajax/Map",new { Model.Tab , Model.PickupSession.Id})">Map</button>
+
+                </li>
+            </ul>
+            <div class="tab-content" id="tab_content">
+                <div class="tab-pane fade" id="pills-home-request" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                </div>
+                <div class="tab-pane fade" id="pills-home-expenses" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                </div>
+                <div class="tab-pane fade" id="pills-home-materials" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                </div>
+                <div class="tab-pane fade" id="pills-home-transaction" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                </div>
+                <div class="tab-pane fade " id="pills-home-sell" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                </div>
+                <div class="tab-pane fade" id="pills-home-map" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <link href="~/css/peicon7stroke.min.css" rel="stylesheet" />
+    <style>
+    /*   .nav-pills .nav-link.active {
+            color: #34495e !important;
+            background-color: #dff0d8 !important;
+        }*/
+    </style>
+}
+@section Scripts{
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYTvgY5DS7ipPNzOgxYmJYeZBe4r03qS4"></script>
+ 
+    <script>
+        $(function () {
+            @*$("#pills-home-request").load('@Url.Page("/Ajax/Requests",new { Model.Tab, Model.PickupSession.Id, EndedSession = hasEnded})');*@
+            $("#nav_pills_pickup button").click(function () {
+                $("#nav_pills_pickup button").addClass("bg-white");
+                $(this).removeClass("bg-white");
+            });
+        @if(Model.Tab == "sell")
+        {<text>
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-sell"]').removeClass("bg-white");
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-sell"]').addClass('active');
+            $("#pills-home-sell").load("@Url.Page("/Ajax/Sells", new { Model.PickupSession.Id })");
+            $("#pills-home-sell").addClass('show active');
+        </text>}
+        else if(Model.Tab == "expense")
+        {
+            <text>
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-expense"]').removeClass("bg-white");
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-expense"]').addClass('active');
+            $("#pills-home-expense").load("@Url.Page("/Ajax/Expenses", new { Model.PickupSession.Id })");
+            $("#pills-home-expense").addClass('show active');
+            </text>
+        }
+         else if(Model.Tab == "material")
+        {
+            <text>
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-material"]').removeClass("bg-white");
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-material"]').addClass('active');
+            $("#pills-home-material").load("@Url.Page("/Ajax/Materials", new { Model.PickupSession.Id })");
+            $("#pills-home-material").addClass('show active');
+            </text>
+        }
+         else if(Model.Tab == "transaction")
+        {
+            <text>
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-transaction"]').removeClass("bg-white");
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-transaction"]').addClass('active');
+            $("#pills-home-transaction").load("@Url.Page("/Ajax/Transactions", new { Model.PickupSession.Id })");
+            $("#pills-home-transaction").addClass('show active');
+        </text>
+        }
+         else if(Model.Tab == "map")
+        {
+            <text>
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-map"]').removeClass("bg-white");
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-map"]').addClass('active');
+            $("#pills-home-map").load("@Url.Page("/Ajax/Map", new { Model.PickupSession.Id })");
+            $("#pills-home-map").addClass('show active');
+            </text>
+        }
+         else
+        {
+         <text>
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-request"]').removeClass("bg-white");
+            $('#nav_pills_pickup button[data-bs-target="#pills-home-request"]').addClass('active');
+            $("#pills-home-request").load("@Url.Page("/Ajax/Requests", new { Model.Tab, Model.PickupSession.Id, EndedSession = hasEnded })");
+            $("#pills-home-request").addClass('show active');
+        </text>
+        }
+    });
+    </script>
+
+}
+@section Footer{
+    <modal content-id="RemovePickupBoyModalContent" loader="true" id="RemovePickupBoyModal"></modal>
+    <modal content-id="CloseSessionModalContent" loader="true" id="CloseSessionModal"></modal>
+    <modal content-id="AddCashModalContent" loader="true" id="AddCashModal"></modal>
+    <modal content-id="AddPickupBoyModalContent" loader="true" id="AddPickupBoyModal"></modal>
+    <modal content-id="DetailsModalContent" dialog-class="modal-lg" loader="true" id="DetailsModal"></modal>
+    <modal content-id="ActionModalContent" loader="true" id="ActionModal"></modal>
+    <modal content-id="ExpenseModalContent" loader="true" id="ExpenseModal"></modal>
+}

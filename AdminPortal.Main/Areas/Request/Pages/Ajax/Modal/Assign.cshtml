@@ -1,0 +1,120 @@
+﻿@page
+@model AssignModel
+@using TKW.AdminPortal.Constants
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    Layout = null;
+}
+<modal-header close-button="true" title="Assign to Pickup Session"></modal-header>
+@if (Model.isDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Request@(Model.Ids.Count > 1 ? "s have" : " has") been assigned.</div>
+        </div>
+    </modal-body>
+    <script>
+        $("#ActionModalContent").trigger("action.done");
+    </script>
+}
+else if (Model.PickupSessions == null || Model.PickupSessions.Count() == 0)
+{
+    <div class="alert alert-danger text-center">
+        There is no active pickup session.
+    </div>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("Assign")"
+          data-ajax-begin="$('#assignFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#assignFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="assignFieldSet">
+            <div class="list-group mb-0">
+                @foreach (var pickupSession in Model.PickupSessions)
+                {
+                    <a href="#" class="list-group-item list-group-item-action" data-pickupsessionid="@pickupSession.Id">
+                        <div class="d-flex">
+                            <div class="pt-2 pe-3">
+                                <div class="radio radio-success">
+                                    <input type="radio" asp-for="PickupSessionId" value="@pickupSession.Id" />
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="row">
+                                    <div class="col-sm-5 pt-2">
+                                        <h6>@pickupSession.Vehicle.Name<br /><small>@pickupSession.Vehicle.Number</small></h6>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="mt-3 mb-3 pull-right">
+                                            @foreach (var pickupBoy in pickupSession.PickupBoys.Where(m => !m.EndTime.HasValue))
+                                            {
+                                                <span><img src="@urlGenerator.ProfilePic(pickupBoy.PictureName,UserPicSize.x80)" height="25" class="rounded-circle" data-bs-toggle="tooltip" title="@pickupBoy.Name" /></span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+                <span asp-validation-for="PickupSessionId" class="list-group-item text-danger"></span>
+            </div>
+            @foreach (var id in Model.Ids)
+            {
+                <input type="hidden" asp-for="Ids" value="@id" />
+            }
+            <modal-footer>
+             
+                    @*<div class="pull-left">
+                        <div class="checkbox checkbox-danger">
+                            <input type="checkbox" asp-for="NoSMS" value="True" />
+                            <label asp-for="NoSMS">
+                                Don't send message to the user
+                            </label>
+                        </div>
+                    </div>*@
+                    <button class="btn btn-success" type="submit">Assign Request</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+    <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip({ container: ".modal-content" });
+        $('a[data-pickupsessionid]').on("click", function (e) {
+        e.preventDefault();
+            $('a[data-pickupsessionid]').removeClass('list-group-item-success');
+        var input = $(this).find("input[type='radio']");
+        if (input.prop('checked')) { input.prop('checked', false); } else { input.prop('checked', true);    $(this).addClass("list-group-item-success");
+        }
+    });
+            @*$("#@Html.IdFor(m=>m.AssigneeId)").select2AutoParent(
+            select2SearchResponseAjaxConfiguration(
+                "@Url.Action("SearchActivePickupEmployees","Employee")",
+                function(user){
+                    if (user.loading) {
+                        return user.text;
+                    }var markup = "<div class='media'>"
+                        + "<div class='media-left'><img src='"+(user.picture!=null && user.picture.length>0 ?  "@(urlPrefixes)x80/" + user.picture:"/images/default/profilex80.png") + "' alt='User picture' height='50' class='img-circle'></div>"
+                        + "<div class='media-body'>"
+                        + "<div class='media-heading'>" + user.name + "@Html.Raw(Model.FranchiseMode?"":" <small>(\"+user.franchise.name+\")</small>")</div>"
+                        + "<p class='small'>" + user.mobileNo + "</p>"
+                        + "</div>"
+                        + "</div>";
+                    return markup;
+                },
+                function (obj) { return obj.text || obj.name; },
+            {id:0,text:"Select Pickup Boy"}
+            ));*@
+    });
+    </script>
+}

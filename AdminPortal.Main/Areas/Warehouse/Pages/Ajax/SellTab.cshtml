@@ -1,0 +1,198 @@
+﻿@page "{Id:int}"
+@using Newtonsoft.Json
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.SellModel
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-9">
+        <div id="content">
+            <div class="hpanel">
+                @*<ul class="nav nav-tabs nav-justified" style="max-width:400px; margin: 0 auto;">
+            <li><a href="#sell_list" data-toggle="tab" id="sell_list_button" data-loaded="false">Records</a></li>
+            <li><a href="#sell_summary" id="sell_summary_button" data-loaded="false" data-toggle="tab">Summary</a></li>
+        </ul>*@
+                <ul class="nav nav-tabs nav-justified" style="max-width:400px; margin: 0 auto;">
+                    <li class="nav-item">
+                        <button class="nav-link w-100 active" data-bs-toggle="tab" data-bs-target="#sell_list" id="sell_list_button" data-loaded="false" aria-controls="sell_list" aria-selected="true">
+                            Records
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100" data-bs-toggle="tab" data-bs-target="#sell_summary" id="sell_summary_button" data-loaded="false" aria-controls="sell_summary" aria-selected="true">
+                            Summary
+                        </button>
+                    </li>
+                </ul>
+                @*<div class="tab-content">
+            <div id="sell_list" class="tab-pane fade">
+                <div class="panel-body text-center">
+                    <img src="~/images/ripple.gif" alt="Loading.." />
+                </div>
+            </div>
+            <div id="sell_summary" class="tab-pane fade">
+                <div class="panel-body text-center">
+                    <img src="~/images/ripple.gif" alt="Loading.." />
+                </div>
+            </div>
+        </div>*@
+                <div class="tab-content">
+                    <div id="sell_list" class="tab-pane fade show active" role="tabpanel" aria-labelledby="sell-tab">
+                        <div class="panel-body text-center">
+                            <img src="~/images/ripple.gif" alt="Loading.." />
+                        </div>
+                    </div>
+                    <div id="sell_summary" class="tab-pane fade">
+                        <div class="panel-body text-center">
+                            <img src="~/images/ripple.gif" alt="Loading.." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="hpanel">
+            <div class="panel-body">
+                <div class="m-b-md">
+                    <h5 class="fw-normal">Filters</h5>
+                    <small>Filters list of Sells</small>
+                </div>
+                        <div class="mb-3">
+                            <div>
+                                <div class="d-inline-block" style="width:48%;">
+                                    <label class="col-form-label fw-bold">From</label>
+                                    <input type="text" asp-for="Filter.StartDate" id="sell_start_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                </div>
+                                <div class="d-inline-block" style="width:48%;">
+                                    <label class="col-form-label fw-bold">To</label>
+                                    <input type="text" asp-for="Filter.EndDate"  id="sell_end_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-sm btn-block" type="button" id="sellfiltersubmitbtn">Apply</button>
+                            <button class="btn btn-default btn-sm btn-block" type="reset" id="sellfilterresetbtn">Reset</button>
+                        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="sell_listform_ajax" method="post">
+</form>
+<lib name="DatetimePicker" />
+<script>
+    var sellSummaryActive = false;
+
+        $(function () {
+
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            };
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+
+            var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.PageNo, pageSize = Model.PageSize }));
+
+            var sellstartDateElement = $("[id='sell_start_date']");
+            var sellendDateElement = $("[id='sell_end_date']");
+
+            sellstartDateElement.on("dp.change", function (e) {
+                sellendDateElement.data("DateTimePicker").minDate(e.date);
+            });
+            sellendDateElement.on("dp.change", function (e) {
+                sellstartDateElement.data("DateTimePicker").maxDate(e.date);
+            });
+
+            $("#sellfilterresetbtn").click(function (e) {
+                $(".select2-field").val('').trigger('change');
+            });
+
+            $("a#sell_list_button").tab('show');
+            loadSellRecords();
+
+            $("#sellfiltersubmitbtn").on("click", function (e) {
+                $("#sell_list_button").attr("data-loaded", false);
+                $("#sell_summary_button").attr("data-loaded", false);
+                $("#sell_list_button").data("loaded", false);
+                $("#sell_summary_button").data("loaded", false);
+                if (sellSummaryActive) {
+                   loadSellSummary();
+                } else {
+                   loadSellRecords();
+                }
+            });
+
+            $("#sell_summary_button").click(function () {
+                loadSellSummary();
+            });
+
+            $("#sell_list_button").click(function () {
+                loadSellRecords();
+            });
+        });
+
+    function loadSellRecords() {
+        var loaded = $("#sell_list_button").data("loaded");
+        sellSummaryActive = false;
+        if (!loaded) {
+            $('#sell_list').html('<div class="panel-body text-center"><img src = "/images/ripple.gif" alt="Loading.." /></div>"');
+        $.ajax({
+                    url: '@(Url.Page("Lists/SellList", new { Model.Id }))',
+                    data: {
+                        Filter: {
+                            StartDate: $('#sell_start_date').val(),
+                            EndDate: $('#sell_end_date').val()
+                        },
+                        PageNo: 1,
+                        PageSize: 10
+                    },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#sell_listform_ajax input").val());
+                },
+                method: 'POST',
+            success: function (data) {
+                $('#sell_list').html(data);
+                $("#sell_list_button").data("loaded", true);
+                $("#sell_list_button").attr("data-loaded", true);
+            }
+        });
+        }
+    }
+    function loadSellSummary() {
+        var loaded = $("#sell_summary_button").data("loaded");
+        sellSummaryActive = true;
+        if (!loaded) {
+            $('#sell_summary').html('<div class="panel-body text-center"><img src = "/images/ripple.gif" alt="Loading.." /></div>"');
+        $.ajax({
+                    url: '@(Url.Page("MaterialSummary/SellSummary", new { Model.Id }))',
+                    data: {
+                        Filter: {
+                             StartDate: $('#sell_start_date').val(),
+                            EndDate: $('#sell_end_date').val()
+                        },
+                        PageNo: 1,
+                        PageSize: 10
+                    },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#sell_listform_ajax input").val());
+                },
+                method: 'POST',
+            success: function (data) {
+                $('#sell_summary').html(data);
+                $("#sell_summary_button").data("loaded", true);
+                $("#sell_summary_button").attr("data-loaded", true);
+            }
+        });
+           
+        }
+    }
+</script>
+

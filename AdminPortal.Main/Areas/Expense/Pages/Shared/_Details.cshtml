@@ -1,0 +1,55 @@
+﻿@model TKW.ApplicationCore.Contexts.ExpenseContext.DTOs.ExpenseModel
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+<div class="row">
+    <div class="col-sm-8">
+        <div class="hpanel m-b-xxs">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-7">
+                        <h4 class="@(string.IsNullOrWhiteSpace(Model.Comment)?"p-t-xs":"")">@Model.Type.Name</h4>
+                        @if (!string.IsNullOrWhiteSpace(Model.Comment))
+                        {
+                            <p class="m-b-none">@Model.Comment</p>
+                        }
+                    </div>
+                    <div class="col-xs-5 text-right">
+                        <h3 class="text-success p-t-xxs">₹ @Model.Amount.ToString("0.##")</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hpanel">
+            <div class="panel-body p-xs">
+                <div class="row">
+                    <div class="col-sm-1 text-center">
+                        <div class="fw-bold text-muted small">ID</div>
+                        <div class="pt-1">@Model.Id</div>
+                    </div>
+                    <div class="col-sm-5 text-center">
+                        <div class="fw-bold text-muted small">UPDATED BY</div>
+                        <div class="pt-1">@Model.Updater.Name</div>
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <div class="font-bold text-muted small">UPDATED ON</div>
+                        <div class="pt-1">@string.Format("{0:dd/MM/yyyy}", Model.Time) <small class="text-muted">@string.Format("{0:hh:mm tt}", Model.Time)</small></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 text-center">
+        @if (string.IsNullOrWhiteSpace(Model.PictureName))
+        {
+            <div class="img-thumbnail" style="padding:60px;">
+                No image
+            </div>
+        }
+        else
+        {
+    <a href="@urlGenerator.ExpensePic(Model.PictureName)" data-gallery>
+        <img class="img-thumbnail" style="width:98%" src="@urlGenerator.ExpensePic(Model.PictureName)" alt="Expense Bill" />
+    </a>
+                <lib name="BlueImpGallery" />
+        }
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿@page
+
+@model TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.Modal.AddPickupBoyModel
+@using TKW.AdminPortal.Constants
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    Layout = null;
+}
+<modal-header close-button="true" title="Add Pickup Boy"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Pickup Boy has been added.</div>
+        </div>
+    </modal-body>
+    <script>
+        $("#ActionModalContent").trigger("action.done");
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    @if (Model.Handlers == null || Model.Handlers.Count() == 0)
+    {
+        <div class="alert alert-warning">There is no free pickup boy available.</div>
+    }
+    else
+    {
+        <form method="post"
+              data-ajax="true"
+              data-ajax-url="@Url.Page("AddPickupBoy",new { Model.id, Model.HandlerIds })"
+              data-ajax-begin="$('#pickupBoyFieldSet').attr('disabled','');"
+              data-ajax-complete="$('#pickupBoyFieldSet').removeAttr('disabled');"
+              data-ajax-method="post"
+              data-ajax-update="#AddPickupBoyModalContent">
+            <fieldset id="pickupBoyFieldSet">
+                <div class="list-group mb-0" style="max-height:600px; overflow-y:auto;">
+
+
+                    @foreach (var pickupboys in Model.Handlers)
+                    {
+                        <a href="#" class="list-group-item list-group-item-action" data-handlerid="@pickupboys.Id">
+                            <div class="d-flex">
+                                <div>
+                                    <img src="@urlGenerator.ProfilePic(pickupboys.PictureName,UserPicSize.x80)" height="35" class="rounded-circle" />
+                                </div>
+                                <div class="flex-grow-1 p-l-sm">
+                                    <div>
+                                        @pickupboys.Name
+                                    </div>
+                                    <div>@pickupboys.MobileNo</div>
+                                </div>
+                                <div>
+                                    <div class="checkbox checkbox-success">
+                                        <input type="checkbox" name="@Html.NameFor(m=>m.HandlerIds)" value="@pickupboys.Id" />
+                                        <label></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                    <span asp-validation-for="HandlerIds" class="list-group-item text-danger"></span>
+
+                </div>
+                <modal-footer>
+                    <button class="btn btn-success" type="submit">Add Pickup boy</button>
+                </modal-footer>
+            </fieldset>
+        </form>
+        <script>
+            $(function () {
+                $('a[data-handlerid]').on("click", function (e) {
+                    e.preventDefault();
+                    $('a[data-handlerid]').removeClass('list-group-item-success');
+                    var input = $(this).find("input[type='checkbox']");
+                    if (input.prop('checked'))
+                    {
+                        input.prop('checked', false);
+                    }
+                    else
+                    {
+                        input.prop('checked', true); $(this).addClass("list-group-item-success");
+                    }
+                });
+            });
+        </script>
+    }
+}
+

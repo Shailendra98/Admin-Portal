@@ -1,0 +1,142 @@
+﻿@page
+@model TKW.AdminPortal.Areas.PickupSession.Pages.IndexModel
+@using Newtonsoft.Json
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    ViewBag.Title = "Pickup Sessions";
+}
+<pagetitle title="Pickup Sessions" description="List of all Pickup Sessions">
+    @if (Model.FranchiseMode)
+    {
+        <a href="#CreateSessionModal" class="btn btn-outline btn-sm btn-primary" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/CreateSession")"><i class="fa fa-plus"></i> Create Pickup Session</a>
+    }
+</pagetitle>
+
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="mb-3">
+                        <h5 class="fw-normal">Filters</h5>
+                        <small>Filters list of pickup sessions</small>
+                    </div>
+
+                    <form data-ajax="true"
+                          data-ajax-method="get"
+                          data-ajax-url="@Url.Page("Ajax/PickupSessionList")"
+                          data-ajax-update="#pickupsessionlist"
+                          data-ajax-begin="$('#pickupsessionlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                          id="filtersortform">
+
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">
+                                Date
+                            </label>
+                            <div>
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                </div>
+                                <div class="text-center text-muted" style="display:inline-block;width:5%;">
+                                    <i class="bi bi-dash"></i>
+                                </div>
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model?.FranchiseMode == true)
+                        {
+                            <div class="mb-3">
+                                <label class="col-form-label fw-bold" asp-for="Filter.VehicleId">Vehicle</label>
+                                
+                                    <select asp-for="Filter.VehicleId" asp-items="Model?.Vehicles" class="form-control form-control-sm">
+                                        <option value="">Select Vehicle</option>
+                                        @*<option value="">Select vehicle</option>*@
+                                    </select>
+                                
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-3">
+                                <label class="col-form-label  fw-bold" asp-for="Filter.FranchiseId">Franchise</label>
+                                    <select asp-for="Filter.FranchiseId" asp-items="Model?.Franchises" class="form-control form-control-sm">
+                                        <option></option>
+                                        @*<option value="">Select franchise</option>*@
+                                    </select>
+                              
+                            </div>
+                        }
+                        <div class="d-grid gap-1">
+                            <button class="btn btn-success btn-sm btn-block" type="submit" id="filtersubmitbtn">Apply</button>
+                            <button class="btn btn-default btn-sm btn-block" type="reset" id="filterresetbtn">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div id="pickupsessionlist">
+                        <div class="text-center">
+                            <img src="~/images/ripple.gif" alt="Loading.." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/js/datetimepicker.min.js" asp-append-version="true" type="text/javascript"></script>
+    <script>
+
+        $(function () {
+            $("#@Html.IdFor(m=>m.Filter.FranchiseId)").select2({placeholder:"Select franchise"});
+            $("#@Html.IdFor(m=>m.Filter.VehicleId)").select2({ placeholder:"Select vehicle" });
+
+             var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            };
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+            var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.PageNo, pageSize = Model.PageSize }));
+            $.ajax({
+                url: '@(Url.Page("Ajax/PickupSessionList"))',
+                data: model,
+                method: 'GET',
+                success: function (data) { $('#pickupsessionlist').html(data); }
+            });
+
+            var startDate = $("[id='@Html.IdFor(m=>m.Filter.StartDate)']");
+            var endDate = $("[id='@Html.IdFor(m=>m.Filter.EndDate)']");
+
+            startDate.on("dp.change", function (e) {
+                endDate.data("DateTimePicker").minDate(e.date);
+            });
+            endDate.on("dp.change", function (e) {
+                startDate.data("DateTimePicker").maxDate(e.date);
+            });
+
+            $("#filterresetbtn").click(function (e) {
+                $(".select2-field").val('').trigger('change');
+            });
+        });
+    </script>
+}
+
+@section Footer{
+
+    <modal content-id="CreateSessionModalContent" loader="true" id="CreateSessionModal"></modal>
+}

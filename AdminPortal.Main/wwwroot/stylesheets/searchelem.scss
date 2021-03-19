@@ -1,0 +1,19 @@
+﻿.tableSearchBox {
+    border-top: 1px solid #e3e3e3;
+    width: 100%;
+    display: table;
+
+    input {
+        padding: 8px 0px;
+        border: none;
+        outline: none;
+        width: 95%;
+        display: table-cell;
+    }
+
+    span {
+        padding: 5px;
+        display: table-cell;
+        width: 5%;
+    }
+}

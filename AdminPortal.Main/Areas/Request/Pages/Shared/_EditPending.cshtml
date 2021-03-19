@@ -1,0 +1,30 @@
+﻿@model ViewModels.EditPendingRequestModel
+@{
+}
+<div class="mb-3">
+    <label asp-for="Materials" class="col-form-label fw-bold"></label>
+    <div class="panel panel-default">
+        <div class="panel-body p-0">
+            @Html.EditorFor(m => m.Materials, "~/Pages/Shared/EditorTemplates/MaterialList.cshtml", null, new { IncludeQuantity = false })
+        </div>
+    </div>
+    <span asp-validation-for="Materials" class="text-danger small"></span>
+</div>
+@if(Model.IsFranchise == false) { 
+<div class="mb-3">
+    <label asp-for="PickupManagerId" class="col-form-label fw-bold"></label>
+    <select class="w-100 form-control" asp-for="PickupManagerId" asp-items="Model.PickupManagers">
+    </select>
+    <span asp-validation-for="PickupManagerId" class="text-danger small"></span>
+</div>
+}
+<div class="mb-3">
+    <label asp-for="Comment" class="col-form-label fw-bold"></label>
+    <input asp-for="Comment" class="form-control" placeholder="Comment" />
+    <span asp-validation-for="Comment" class="text-danger small"></span>
+</div>
+<script>
+    $(function () {
+        $("#@Html.IdFor(m=>m.PickupManagerId)").select2AutoParent();
+    });
+</script>

@@ -1,0 +1,163 @@
+﻿@model TKW.AdminPortal.Areas.Sell.ViewModels.AddSellModel
+@using TKW.ApplicationCore.Helpers
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    DateTime? defaultDate = Model?.HandledTime;
+    if (defaultDate == null || defaultDate == DateTime.MinValue)
+    {
+        defaultDate = Dt.Now;
+    }
+}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="BuyerId" class="col-form-label fw-bold"></label>
+            <select asp-for="BuyerId" asp-items="Model.Buyers" class="form-control input-sm">
+            </select>
+            <span asp-validation-for="BuyerId" class="text-danger small"></span>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="WarehouseId" class="col-form-label fw-bold"></label>
+            <select asp-for="WarehouseId" asp-items="Model.Warehouses" class="form-control input-sm">
+            </select>
+            <span asp-validation-for="WarehouseId" class="text-danger small"></span>
+        </div>
+    </div>
+</div>
+<div class="mb-3">
+    <label asp-for="Materials" class="col-form-label fw-bold"></label> <div class="panel panel-default">
+        <div class="panel-body no-padding">
+            @Html.EditorFor(m => m.Materials, "~/Pages/Shared/EditorTemplates/SellMaterialList.cshtml", null, new { IsSellMaterial = true,ShowGSTAmount=true })
+        </div>
+    </div>
+    <span asp-validation-for="Materials" class="text-danger small"></span>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="HandlerIds" class="col-form-label fw-bold"></label>
+            <select asp-for="HandlerIds" class="form-control select2 input-sm" multiple>
+                @if (Model.Handlers != null && Model.Handlers.Count > 0)
+                {
+                    foreach (var handler in Model.Handlers)
+                    {
+                        <option selected value="@handler.Id">@handler.Name</option>
+                    }
+                }
+                else
+                {
+                    <option></option>
+                }
+            </select>
+            <span asp-validation-for="HandlerIds" class="text-danger small"></span>
+        </div>
+    </div><div class="col-sm-6">
+        <div class="mb-3">
+            <label asp-for="HandledTime" class="col-form-label fw-bold"></label>
+            <input asp-for="HandledTime" class="form-control input-sm" placeholder="Handled Time" type="text" readonly style="background-color:#fff;" />
+            <span asp-validation-for="HandledTime" class="text-danger small"></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="mb-3">
+            <label class="control-label" asp-for="IsGST">Bill Type</label>
+            <div>
+                <div class="radio" style="display:inline-block">
+                    <input name="@Html.NameFor(m=>m.IsGST)" id="isgst_yes" @(Model.IsGST ? "checked" : "") value="true" type="radio" />
+                    <label for="isgst_yes">GST</label>
+                </div>
+                <div class="radio" style="display:inline-block">
+                    <input name="@Html.NameFor(m=>m.IsGST)" id="isgst_no" @(Model.IsGST ? "" : "checked") value="false" type="radio" />
+                    <label for="isgst_no">Non-GST</label>
+                </div>
+            </div>
+            <span class="text-danger small" asp-validation-for="IsGST"></span>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="mb-3" id="gsttype" style="@(!Model.IsGST?"display:none;":"")">
+            <label class="control-label" asp-for="IsIGST">GST Type</label>
+            <div>
+                <div class="radio" style="display:inline-block">
+                    <input name="@Html.NameFor(m=>m.IsIGST)" id="isigst_no" @(Model.IsIGST ? "" : "checked") value="false" type="radio" />
+                    <label for="isigst_no">SGST & CGST</label>
+                </div>
+                <div class="radio" style="display:inline-block">
+                    <input name="@Html.NameFor(m=>m.IsIGST)" id="isigst_yes" @(Model.IsIGST ? "checked" : "") value="true" type="radio" />
+                    <label for="isigst_yes">IGST</label>
+                </div>
+            </div>
+            <span class="text-danger small" asp-validation-for="IsIGST"></span>
+        </div>
+    </div>
+</div>
+
+<lib name="DatetimePicker" />
+<script>
+    $(function () {
+
+        $("input[name='@Html.NameFor(m=>m.IsGST)']").change(function (e) {
+            var val = $("input[name='@Html.NameFor(m=>m.IsGST)']:checked").val();
+            if (val == "true") {
+                $("#gsttype").show();
+            } else {
+                $("#gsttype").hide();
+            }
+        });
+
+             $("#@Html.IdFor(m=>m.HandlerIds)").select2AutoParent(
+            select2SearchResponseAjaxConfiguration(
+                "@Url.Action("SearchActivePickupEmployees","Employee")",
+                function(user){
+                    if (user.loading) {
+                        return user.text;
+                    }var markup = "<div class='media'>"
+                        + "<div class='media-left'><img src='"+(user.pictureName!=null && user.pictureName.length>0 ?  "@(urlGenerator.ProfilePicUrlPrefix)x80/" + user.pictureName:"/images/default/profilex80.png") + "' alt='User picture' height='50' class='img-circle'></div>"
+                        + "<div class='media-body'>"
+                        + "<div class='media-heading'>" + user.name + "</div>"
+                        + "<p class='small'>" + user.mobileNo + "</p>"
+                        + "</div>"
+                        + "</div>";
+                    return markup;
+                },
+                function (obj) { return obj.text || obj.name; },
+            {id:0,text:"Handlers"}
+            ));
+        $("#@Html.IdFor(m=>m.HandledTime)").datetimepicker({
+            useStrict: true,
+            ignoreReadonly: true,
+            format: "DD-MM-YYYY hh:mm A",
+            @if (defaultDate != null) {
+                    @: defaultDate: "@string.Format("{0:MM/dd/yyyy hh:mm tt}", defaultDate)",
+                    }
+                maxDate:'@string.Format("{0:MM/dd/yyyy hh:mm tt}",Dt.Now)'
+        });
+
+        $("#@Html.IdFor(m=>m.WarehouseId)").select2AutoParent({ placeholder: "Warehouse" });
+        $("#@Html.IdFor(m=>m.BuyerId)").select2AutoParent({ placeholder: "Buyer" });
+        @*$("#@Html.IdFor(m=>m.BuyerId)").select2AutoParent(
+            select2SearchResponseAjaxConfiguration("@Url.Action("Search","Buyer")", formatBuyer, formatBuyerSelection, "Buyer")
+        );*@
+    });
+
+    @*function formatBuyer(buyer) {
+            if (buyer.loading) {
+                return buyer.text;
+            }var markup = "<div class='media'>"
+                + "<div class='media-left'><img src='"+(buyer.pictureName!=null && buyer.pictureName.length>0 ?  "@(urlGenerator.ProfilePicUrlPrefix)x80/" + buyer.pictureName:"/images/default/profilex80.png") + "' alt='User picture' height='50' class='img-circle'></div>"
+                + "<div class='media-body'>"
+                + "<div class='media-heading'>" + buyer.name + "</div>"
+                + "<p class='small'>" + buyer.mobileNo + "</p>"
+                + "</div>"
+                + "</div>";
+            return markup;
+        }
+        function formatBuyerSelection(buyer) {
+            return buyer.name || buyer.text;
+        }*@
+
+</script>

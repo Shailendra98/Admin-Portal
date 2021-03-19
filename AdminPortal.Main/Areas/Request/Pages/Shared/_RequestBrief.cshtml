@@ -1,0 +1,61 @@
+﻿@model TKW.ApplicationCore.Contexts.PurchaseContext.DTOs.RequestModel
+@using TKW.AdminPortal.Constants
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+<div class="hpanel mb-3">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-7">
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <img class="rounded-circle" height="50" src="@urlGenerator.ProfilePic(Model.Seller.PictureName,UserPicSize.x80)" />
+                    </div>
+                    <div>
+                        <h6>@Model.Seller.Name <small>@(string.IsNullOrEmpty(Model.Seller.MobileNo) ? "" : "(" + Model.Seller.MobileNo + ")")</small></h6>
+
+                        <address class="mb-0"
+                                 addressline="@Model.Address.AddressLine"
+                                 locality="@Model.Address.LocalityName"
+                                 pincode="@Model.Address.Pincode"
+                                 city="@Model.Address.CityName"
+                                 state="@Model.Address.StateName"
+                                 name="@Model.Address.Name"
+                                 mobile-no="@Model.Address.MobileNo"></address>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <div class="text-right">
+                    <div class="pb-2"><b>Id:</b> @Model.Id</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pull-right">
+            <button class="btn btn-sm btn-default" data-toggle="modal" data-load-url="@Url.Page("/Ajax/Modal/Details",new { Id=Model.Id })" data-target="#DetailsModal" data-loaded="">All Details</button>
+        </div>
+    </div>
+
+</div>
+@*<div class="row">
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label class="control-label">Request Id</label>
+                <div>
+                    @Model.Id
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label class="control-label">Name</label>
+                <div>
+                    @Model.User.Name @(Model.User.MobileNo != null ? "(" + Model.User?.MobileNo + ")" : "")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="control-label">Address</label>
+        <div>
+        </div>
+    </div>*@

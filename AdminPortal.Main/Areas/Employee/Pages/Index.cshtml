@@ -1,0 +1,106 @@
+﻿@page
+@using TKW.ApplicationCore.Contexts.AccountContext.Aggregates
+@using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate 
+@model TKW.AdminPortal.Areas.Employee.Pages.IndexModel
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    ViewBag.Title = "Employees";
+}
+@if (!Model.IsFranchise)
+{
+    <pagetitle title="Employees" description="List of all employees.">
+    </pagetitle>
+    <div class="content">
+        @await Component.InvokeAsync("SelectFranchise")
+    </div>
+}
+else
+{
+    <pagetitle title="Employees" description="List of all employees.">
+        <a href="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/Add/MobileNo")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Employee</a>
+    </pagetitle>
+    <div class="content">
+        <div class="hpanel">
+            <ul class="nav nav-tabs">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-target="#pickupboy" data-loaded="true" data-bs-toggle="tab" data-load-url="@Url.Page("Ajax/List",new {RoleId= UserRole.PickupBoy.Id })" aria-controls="pickupboy" aria-selected="true">Pickup Boys</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-target="#pickupmanager" data-loaded="false" data-bs-toggle="tab" data-load-url="@Url.Page("Ajax/List",new { RoleId= UserRole.PickupManager.Id})" aria-controls="pickupmanager" aria-selected="true">Pickup Managers</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-target="#franchiseadmin" data-loaded="false" data-bs-toggle="tab" data-load-url="@Url.Page("Ajax/List",new { RoleId = UserRole.FranchiseAdmin.Id })" aria-controls="franchiseadmin" aria-selected="true">Franchise Admins</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-target="#exemployee" id="exemployeetab" data-loaded="false" data-bs-toggle="tab" data-load-url="@Url.Page("Ajax/List")" aria-controls="exemployee" aria-selected="true">Ex-Employees</button>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="pickupboy" class="tab-pane active" role="tabpanel">
+                    <div class="panel-body text-center">
+                        <img src="/images/ripple.gif" alt="Loading.." />
+                    </div>
+                </div>
+                <div id="pickupmanager" class="tab-pane fade" role="tabpanel">
+                    <div class="panel-body text-center">
+                        <img src="/images/ripple.gif" alt="Loading.." />
+                    </div>
+                </div>
+                <div id="franchiseadmin" class="tab-pane fade" role="tabpanel">
+                    <div class="panel-body text-center">
+                        <img src="/images/ripple.gif" alt="Loading.." />
+                    </div>
+                </div>
+                <div id="exemployee" class="tab-pane fade" role="tabpanel">
+                    <div class="panel-body text-center">
+                        <img src="/images/ripple.gif" alt="Loading.." />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts
+{
+        <script>
+        $(function () {
+            $("#pickupboy").load('@(Url.Page("Ajax/List",new {RoleId=UserRole.PickupBoy.Id }))');
+
+            $("#ActionModalContent").on("action.done", function (data) {
+                updateList(data.roleId,true);
+            });
+            $("#DetailModalContent").on("action.done", function (data) {
+                if (data.statusId == @EmployeeStatus.Left.Id) {
+                    updateList(data.roleId, false);
+                    $("#exemployeetab").attr('data-loaded', false);
+                    $("#exemployeetab").data("loaded", false);
+                } else {
+                   updateList(data.roleId, true);
+                }
+            });
+        });
+            function updateList(roleId,showtab)
+            {
+                if (roleId == @UserRole.PickupBoy.Id) {
+                    if(showtab)
+                    $('.nav-tabs a[href="#pickupboy"]').tab('show');
+                    $("#pickupboy").load("@(Url.Page("Ajax/List",new { RoleId= UserRole.PickupBoy.Id}))");
+                }
+                else if (roleId == @UserRole.FranchiseAdmin.Id) {
+                    if(showtab) $('.nav-tabs a[href="#franchiseadmin"]').tab('show');
+                    $("#franchiseadmin").load("@(Url.Page("Ajax/List",new { RoleId= UserRole.FranchiseAdmin.Id}))");
+                }
+                else if (roleId == @UserRole.PickupManager.Id) {
+                   if(showtab) $('.nav-tabs a[href="#pickupmanager"]').tab('show');
+                    $("#pickupmanager").load("@(Url.Page("Ajax/List",new { RoleId= UserRole.PickupManager.Id }))");
+                }
+            }
+        </script>
+    }
+
+    @section Footer{
+        <modal content-id="ActionModalContent" loader="true" id="ActionModal"></modal>
+        <modal content-id="DetailModalContent" loader="true" id="DetailModal"></modal>
+    }
+
+}

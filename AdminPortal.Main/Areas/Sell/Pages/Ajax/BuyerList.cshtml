@@ -1,0 +1,74 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Sell.Pages.Ajax.BuyerListModel
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+
+@if (!Model.FranchiseMode)
+{
+    @await Component.InvokeAsync("SelectFranchise")
+}
+else
+{
+    @if (Model.Buyers == null || Model.Buyers.Count == 0)
+    {
+        <div class="hpanel">
+            <div class="panel-body">
+                <div class="text-center">
+                    <h4>No Buyers</h4>
+                    <div>There is no buyer.</div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @{ int i = 0; }
+            @foreach (var buyer in Model.Buyers.OrderByDescending(m=>m.IsActive))
+            {
+                @(i > 0 && i % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+                <div class="col-sm-4">
+                    <a href="#">
+                        <div class="hpanel m-b-sm">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-9">
+
+                                        <div class="media">
+                                            <div class="media">
+                                                <div class="media-left media-middle">
+                                                    @*<img class="img-circle" height="50" src="@urlGenerator.ProfilePic( buyer.PictureName, TKW.Constants.UserPicSize.x80)" />*@
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5>
+                                                        @*@buyer.Name @if (!string.IsNullOrEmpty(buyer.MobileNo))
+                                                        {<small>(@buyer.MobileNo)</small>}*@
+                                                    </h5>
+                                                    @*<p>@buyer.FirmName</p>*@
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <div class="text-right p-t-sm">
+                                            @if (buyer.IsActive)
+                                            {
+                                                <span class="label label-success">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-danger">Inactive</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                i++;
+            }
+        </div>
+    }
+
+}

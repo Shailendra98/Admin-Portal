@@ -1,0 +1,162 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Material.Pages.IndexModel
+@{
+    ViewBag.Title = "Materials";
+}
+<pagetitle title="Materials" description="List of all materials"></pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="p-b-m">
+                        <span class="h4 font-bold">Purchase Materials</span>
+                        @if (Model.IsSuperAdmin) { 
+                        <span class="pull-right">
+                            <a class="btn btn-circle in btn-outline btn-default" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddPurchaseMaterial")"><i class="fa fa-plus"></i></a>
+                        </span>
+                        }
+                    </div>
+                    <div id="search_container">
+                        <div class="searchElem">
+                            <span class="fa fa-search"></span><input type="text" placeholder="Search Materials" id="searchMaterials" />
+                        </div>
+                    </div>
+                    <div id="purchase_material">
+                        @foreach (var item in Model.PurchaseMaterials.OrderByDescending(m=>m.IsActive))
+                        {
+                        <div class="search-material">
+                            <div class="d-flex div-border mt-0">
+                                <div class="flex-grow-1 m-0">
+                                    <b>@item.Name</b> <small class="font-light">(@item.UnitName)</small> @if (!item.IsActive)
+                                    {<span class="m-l-sm label label-danger">Inactive</span>}<br />
+                                    <div class="mt-2 small">Stores in <strong>@item.StockMaterial.Name</strong> stock.</div>
+                                </div>
+                                @if (Model.IsSuperAdmin)
+                                {
+                                    <div class="p-2">
+                                        <a class="btn btn-default btn-xs in btn-outline pull-right" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/EditPurchaseMaterial",new { item.Id})">Edit</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="p-b-m">
+                        <span class="h4 font-bold">Unsegregated Materials</span>
+                        @if (Model.IsSuperAdmin) { 
+                        <span class="pull-right">
+                            <a class="btn btn-circle in btn-outline btn-default" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddUnsegregatedMaterial")"><i class="fa fa-plus"></i></a>
+                        </span>
+                        }
+                    </div>
+                    <div id="search_container">
+                        <div class="searchElem">
+                            <span class="fa fa-search"></span> <input placeholder="Search Materials" id="searchStockMaterials" />
+                        </div>
+                    </div>
+                    <div id="purchase_stock_material">
+                        @foreach (var item in Model.PurchaseStockMaterials.OrderByDescending(m => m.IsActive))
+                        {
+                        <div class="search-stock-material ">
+                            <div class="d-flex div-border mt-0">
+                                <div class="flex-grow-1 m-0 pt-2 pb-2">
+                                    <b>@item.Name</b> &nbsp;<small class="font-light">(@item.UnitName)</small>@if (!item.IsActive)
+                                    {<span class="m-l-sm label label-danger">Inactive</span>}<br />
+                                    @if (item.SellMaterials != null && item.SellMaterials.Count > 0)
+                                    {
+                                        <div class="mt-2 small">
+                                            Segregated into <strong>@string.Join(", ", item.SellMaterials.Select(m => m.Name))</strong>.
+                                        </div>
+                                    }
+                                </div>
+                                @if (Model.IsSuperAdmin)
+                                {
+                                    <div class="p-2">
+                                        <a class="btn btn-default btn-xs in btn-outline pull-right" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/EditUnsegregatedMaterial",new { item.Id})">Edit</a><br />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="p-b-m">
+                        <span class="h4 font-bold">Segregated(Sell) Materials</span>
+                        @if (Model.IsSuperAdmin) { 
+                        <span class="pull-right">
+                            <a class="btn btn-circle in btn-outline btn-default" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddSegregatedMaterial")"><i class="fa fa-plus"></i></a>
+                        </span>
+                        }
+                    </div>
+                    <div id="search_container">
+                        <div class="searchElem">
+                            <span class="fa fa-search"></span> <input type="text" placeholder="Search Materials" id="searchSellMaterials" />
+                        </div>
+                    </div>
+                    <div id="segregated_material">
+                        @foreach (var item in Model.SegregatedMaterials.OrderByDescending(m => m.IsActive))
+                        {
+                        <div class="search-segregated-material">
+                            <div class="d-flex div-border mt-0">
+                                <div class="flex-grow-1">
+                                    <b>@item.Name</b> &nbsp;<small class="font-light">(@item.UnitName)</small>@if (!item.IsActive)
+                                    {<span class="m-l-sm label label-danger">Inactive</span>}<br />
+                                    @if (item.PurchaseStockMaterials != null && item.PurchaseStockMaterials.Count > 0)
+                                    {
+                                        <div class="mt-2 small">Segregated from <strong>@string.Join(", ", item.PurchaseStockMaterials.Select(m => m.Name))</strong>.</div>
+                                    }
+                                </div>
+                                @if (Model.IsSuperAdmin)
+                                {
+                                    <div class="p-2">
+                                        <a class="btn btn-default btn-xs in btn-outline pull-right" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/EditSegregatedMaterial",new { item.Id})">Edit</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<lib name="SearchElem" />
+
+@section Styles{
+
+    <style>
+        .div-border {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+    </style>
+
+}
+@section Scripts{
+
+    <script>
+        $("#searchMaterials").SearchElem("#purchase_material div.search-material", [{ elem: "b", type: "text" }], { numberOfResult: 0 });
+        $("#searchStockMaterials").SearchElem("#purchase_stock_material div.search-stock-material", [{ elem: "b", type: "text" }], { numberOfResult: 0 });
+        $("#searchSellMaterials").SearchElem("#segregated_material div.search-segregated-material", [{ elem: "b", type: "text" }], { numberOfResult: 0 });
+    </script>
+}
+@section Footer{
+    @if (Model.IsSuperAdmin) { 
+        <modal id="ActionModal" content-id="ActionModalContent" loader="true"></modal>
+    }
+}

@@ -1,0 +1,43 @@
+﻿@model TKW.AdminPortal.ViewComponents.Models.SelectAddressModel
+
+<input type="hidden" name="@Model.InputName" value="@Model.Id" />
+<div class="pull-right">
+    <button class="btn btn-info btn-sm btn-outline" data-bs-target="#@Model.ModalId" data-bs-toggle="modal" type="button" id="@(Html.Id(Model.InputName)+"EditBtn")"><i class="fa fa-edit"></i> Edit</button>
+</div>
+<div id="@(Html.Id(Model.InputName))AddressText">
+    <address class="mb-0"
+             addressline="@Model.AddressLine"
+             type ="@Model.AddressType"
+             locality="@Model.Locality" 
+             pincode="@Model.Pincode" 
+             city="@Model.City" 
+             state="@Model.State" 
+             name="@Model.Name" 
+             mobile-no="@Model.MobileNo">
+    </address>
+</div>
+<br />
+<div>
+    <button class="btn btn-info btn-outline btn-sm w-100" type="button" data-bs-target="#@(Model.ModalId)" data-bs-toggle="modal" id="@(Html.Id(Model.InputName)+"ChangeBtn")"><i class="fa fa-th-list"></i> Change Address</button>
+</div>
+
+<script>
+    $(function () {
+        var modalContent = $("#@(Model.ModalId) .modal-content");
+        $("#@(Html.Id(Model.InputName)+"ChangeBtn")").click(function (e) {
+            modalContent.html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..' /></div>");
+            modalContent.load('/Ajax/Address/Modal/List/@Model.UserId?ModalId=@(Model.ModalId)');
+
+        });
+        $("#@(Html.Id(Model.InputName)+"EditBtn")").click(function (e) {
+            var val = $("input[name='@Model.InputName']").val();
+            modalContent.html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..' /></div>");
+            modalContent.load('/Ajax/Address/Modal/Edit/'+val+'?ModalId=@(Model.ModalId)');
+        });
+        modalContent.on('action.done', function (data) {
+            $('#@(Model.ModalId)').modal('hide');
+            $("input[name='@Model.InputName']").val(data.id);
+            $('#@(Html.Id(Model.InputName))AddressText').html(data.html);
+        });
+    });
+</script>

@@ -1,0 +1,76 @@
+﻿@model TKW.AdminPortal.Areas.Employee.ViewModels.EmployeeInputViewModel
+@using TKW.ApplicationCore.Contexts.AccountContext.Aggregates 
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label asp-for="Name" class="col-form-label fw-bold"></label>
+                @if (Model.NameDisabled)
+                {
+                    <input asp-for="Name" class="form-control" readonly placeholder="Name" />
+                }
+                else
+                {
+                    <input asp-for="Name" class="form-control" placeholder="Name" />
+                }
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label asp-for="MobileNo" class="col-form-label fw-bold"></label>
+                @if (Model.MobileNoDisabled)
+                {
+                    <input asp-for="MobileNo" class="form-control" readonly placeholder="Mobile Number" />
+                }
+                else
+                {
+                    <input asp-for="MobileNo" class="form-control" placeholder="Mobile Number" />
+                }
+                <span asp-validation-for="MobileNo" class="text-danger small"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label asp-for="RoleId" class="col-form-label fw-bold"></label>
+                <select asp-for="RoleId" class="form-select">
+                    <option>Select role</option>
+                    <option value="@UserRole.PickupBoy.Id">Pickup Boy</option>
+                    <option value="@UserRole.PickupManager.Id">Pickup Manager</option>
+                    @*<option value="@UserRole.WarehouseManagerId">Warehouse Manager</option>*@
+                    <option value="@UserRole.FranchiseAdmin.Id">Franchise Admin</option>
+                </select>
+                <span asp-validation-for="RoleId" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3" id="pickupManagerSelect" style="display:none;">
+                <label asp-for="ManagerId" class="col-form-label fw-bold"></label>
+                <select asp-for="ManagerId" asp-items="Model.PickupManagers" class="form-control">
+                </select>
+                <span asp-validation-for="ManagerId" class="text-danger small"></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $("#@Html.IdFor(m=>m.RoleId)").change(function () {
+                var Role = $(this).val();
+                if (!Role) 
+                    return;
+                if (Role == @UserRole.PickupBoy.Id) 
+                    $('#pickupManagerSelect').show();
+                else 
+                    $('#pickupManagerSelect').hide();
+            });
+
+            $("#@Html.IdFor(m=>m.RoleId)").change();
+            
+            $("#@Html.IdFor(m=>m.ManagerId)").select2AutoParent({ placeholder: "Manager" });
+          
+    });
+    </script>
+
