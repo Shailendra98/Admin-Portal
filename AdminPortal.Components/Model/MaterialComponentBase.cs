@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AdminPortal_Component.Model
+namespace TKW.AdminPortal.Components.Model
 {
     public class MaterialComponentBase : ComponentBase
 {

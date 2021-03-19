@@ -1,0 +1,24 @@
+﻿@page
+@using TKW.AdminPortal.Components
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal</title>
+    <base href="~/" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="TKW.AdminPortal.Component.styles.css" rel="stylesheet" />
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="WebAssemblyPrerendered" />
+    </app>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

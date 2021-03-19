@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace AdminPortal_Component.Pages
+namespace TKW.AdminPortal.Components.Pages
 {
     #line hidden
     using System;
@@ -70,14 +70,14 @@ using Microsoft.JSInterop;
 #nullable disable
 #nullable restore
 #line 9 "C:\Users\Sameer\source\Repositories\The-Kabadiwala\TKW\src\web\AdminPortal\AdminPortal.Components\_Imports.razor"
-using AdminPortal_Component;
+using TKW.AdminPortal.Components;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 10 "C:\Users\Sameer\source\Repositories\The-Kabadiwala\TKW\src\web\AdminPortal\AdminPortal.Components\_Imports.razor"
-using AdminPortal_Component.Shared;
+using TKW.AdminPortal.Components.Shared;
 
 #line default
 #line hidden
@@ -146,13 +146,12 @@ using ChartJs.Blazor.Interop;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\Sameer\source\Repositories\The-Kabadiwala\TKW\src\web\AdminPortal\AdminPortal.Components\Pages\Dashboard.razor"
-using AdminPortal_Component.Dashboard_Components;
+#line 1 "C:\Users\Sameer\source\Repositories\The-Kabadiwala\TKW\src\web\AdminPortal\AdminPortal.Components\Pages\Dashboard.razor"
+using TKW.AdminPortal.Components.Dashboard;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Dashboard : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998

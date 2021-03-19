@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace AdminPortal_Component.Dashboard_Components
+namespace TKW.AdminPortal.Components.Dashboard_Components
 {
     #line hidden
     using System;

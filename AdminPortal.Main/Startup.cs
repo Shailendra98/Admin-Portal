@@ -84,6 +84,8 @@ namespace AdminPortal
             TypeDescriptor.AddAttributes(typeof(DateTime), new TypeConverterAttribute(typeof(TKW.AdminPortal.TypeConverters.DateTimeConverter)));
             TypeDescriptor.AddAttributes(typeof(DateTime?), new TypeConverterAttribute(typeof(TKW.AdminPortal.TypeConverters.DateTimeConverter)));
 
+            services.AddHttpClient();
+
             services.AddRazorPages()
                 .AddRazorPagesOptions(options => {
                     options.Conventions.AuthorizeAreaFolder("Request", "/");
@@ -93,7 +95,7 @@ namespace AdminPortal
                     options.Conventions.AuthorizeAreaFolder("Sell", "/");
                     options.Conventions.AuthorizeAreaFolder("Expense", "/");
                 });
-            services.AddRazorPages().AddRazorRuntimeCompilation();
+            
             services.AddControllers();
 
         }
@@ -104,6 +106,7 @@ namespace AdminPortal
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -113,6 +116,7 @@ namespace AdminPortal
             }
 
             app.UseHttpsRedirection();
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
             app.UseSession();
             
@@ -129,6 +133,7 @@ namespace AdminPortal
             {
                 endpoints.MapRazorPages();
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

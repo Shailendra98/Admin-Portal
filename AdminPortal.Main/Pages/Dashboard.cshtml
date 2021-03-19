@@ -1,149 +1,17 @@
-@page
+﻿@page
 @model TKW.AdminPortal.Pages.DashboardModel
 @using TKW.ApplicationCore.Enums
-@using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs
-@using TKW.ApplicationCore.Helpers
-@using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
-@inject  TKW.ApplicationCore.Identity.IAppUserService user
-@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@using TKW.AdminPortal.Components.Pages
+@inject TKW.ApplicationCore.Identity.IAppUserService user
 @{
     ViewData["Title"] = "Dashboard";
-        Layout = user?.Current?.Role == UserRole.Admin ? "_LayoutAdmin" : user?.Current?.Role == UserRole.FranchiseAdmin ? "_LayoutFranchiseAdmin" : "_LayoutTeleCaller";
+    Layout = user?.Current?.Role == UserRole.Admin ? "_LayoutAdmin" : user?.Current?.Role == UserRole.FranchiseAdmin ? "_LayoutFranchiseAdmin" : "_LayoutTeleCaller";
 }
-    <div class="content p-t-lg">
-        @if (!Model.IsFranchise)
-        {
-            @await Component.InvokeAsync("SelectFranchise")
-        }
-        else
-        {
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string>{ {"area","Request"},{"Filter.DateType",DateType.Assigned.ToString() },{ "Filter.StartDate",Dt.Now.ToString("dd-MM-yyyy") },{"Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Assigned.Id.ToString()},{"pageSize", "50"} })">
-                            <div style="opacity: 1; background: rgba(108, 117, 125, 0.125);" class="panel-body text-center no-padding">
-                                <div class="text-primary p-b-xs">
-                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Assigned ?? 0) </h2>
-                                    <small class="font-extra-bold">Assigned</small>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string> { { "area","Request"},{"Filter.DateType", DateType.Cancelled.ToString() },{ "Filter.StartDate",Dt.Now.ToString("dd-MM-yyyy") },{ "Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy") },{ "pageSize","50" } })">
-                            <div style="opacity: 1; background: rgba(255, 7, 58, 0.125);" class="panel-body text-center no-padding">
-                                <div class="text-danger p-b-xs">
-                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Cancelled ?? 0)</h2>
-                                    <small class="font-extra-bold">Cancelled</small>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string> { { "area","Request" },{ "Filter.DateType", DateType.Handled.ToString() },{ "Filter.StartDate",Dt.Now.ToString("dd-MM-yyyy") },{ "Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy") },{ "pageSize","50" } })">
-                            <div style="opacity: 1; background: rgba(40, 167, 69, 0.125);" class="panel-body text-center no-padding">
-                                <div class="p-b-xs text-success">
-                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Handled ?? 0)</h2>
-                                    <small class="font-extra-bold">Handled</small>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string>() { {"area","Request"},{"Filter.DateType", DateType.Visiting.ToString() },{"Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Submitted.Id.ToString()},{"Filter.Status[1]",RequestStatus.Rescheduled.Id.ToString() },{"pageSize", "50"} })">
-                            <div style="opacity: 1; background: rgba(0, 123, 255, 0.125);" class="panel-body text-center no-padding">
-                                <div class="text-info p-b-xs">
-                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Unassigned ?? 0)</h2>
-                                    <small class="font-extra-bold">Unassigned</small>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="hpanel">
-                @if (Model.PickupSessions.Count() != 0)
-                {
-                    <div class="panel-heading" style="padding-left:15px">
-                        Pickup Sessions
-                    </div>
-                    int i = 0;
-
-
-            <div class="row">
-                @foreach (var pickupSession in Model.PickupSessions)
-                {
-                    var requestCounts = Model.PickupSessionRequestCounts.FirstOrDefault(m => m.PickupSessionId == pickupSession.Id) ?? new TKW.ApplicationCore.Contexts.PurchaseContext.DTOs.RequestCountsOfPickupSessionModel();
-                    var lessCash = requestCounts.Pending == 0 ? false : ((pickupSession.Cash / requestCounts.Pending) < 400);
-                    @(i > 0 && i % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
-                    i++;
-                    <div class="col-md-4">
-                        <div class="hpanel">
-                            <a href="@Url.Page("/Details", new { area = "PickupSession",pickupSession.Id })">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h5 class="m-t-none">@pickupSession.Vehicle.Name <br /><small>@pickupSession.Vehicle.Number</small></h5>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-7 p-t-xs">
-                                            @string.Join(", ", pickupSession.PickupBoys.Where(m => m.EndTime == null).Select(m => m.Name))
-                                        </div>
-                                        <div class="col-sm-5 text-right">
-                                            <h4 class="text-success @(lessCash ? "text-danger" : "text-success")"><small>₹</small> @pickupSession.Cash.ToString("0.00")</h4>
-                                        </div>
-                                    </div>
-                                    <div class="row text-center">
-                                        <div class="col-sm-3">
-                                            <a href="@Url.Page("/Details", new  { area = "PickupSession", Tab="pending_request",pickupSession.Id})">
-                                                <h3 class="m-b-xs">@requestCounts.Pending</h3>
-                                                <small>Pending</small>
-                                            </a>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <a href="@Url.Page("/Details", new  { area = "PickupSession", Tab="rescheduled_request",pickupSession.Id})">
-                                                <h3 class="m-b-xs">@requestCounts.Rescheduled</h3>
-                                                <small>Rescheduled</small>
-                                            </a>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <a href="@Url.Page("/Details", new  { area = "PickupSession", Tab="cancelled_request",pickupSession.Id})">
-                                                <h3 class="m-b-xs">@requestCounts.Cancelled</h3>
-                                                <small>Cancelled</small>
-                                            </a>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <a href="@Url.Page("/Details", new  { area = "PickupSession", Tab="handled_request",pickupSession.Id})">
-                                                <h3 class="m-b-xs">@requestCounts.Handled</h3>
-                                                <small>Handled</small>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-
-                        </div>
-                    </div>
-
-
-                }
-            </div>
-            }
-
-                    </div>
-        }
-    </div>
-@section Styles{ 
-<style>
-    a{
-        text-decoration:none;
-    }
-</style>
+<div class="content">
+    <component type="typeof(Dashboard)" render-mode="WebAssemblyPrerendered" />
+</div>
+@section Scripts{
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="~/js/chart.min.js"></script>
+    <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
 }

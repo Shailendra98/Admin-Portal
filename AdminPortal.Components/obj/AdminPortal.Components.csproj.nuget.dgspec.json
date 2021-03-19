@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
-        "projectName": "AdminPortal-Component",
+        "projectName": "AdminPortal.Components",
         "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
         "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\obj\\",
@@ -31,7 +31,11 @@
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+                "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -89,6 +93,67 @@
       "runtimes": {
         "browser-wasm": {
           "#import": []
+        }
+      }
+    },
+    "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj",
+        "projectName": "AdminPortal.Shared",
+        "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj",
+        "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\NuGet.Config",
+          "C:\\Users\\Sameer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/The-Kabadiwala/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     }

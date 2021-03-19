@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Collections.ObjectModel;
 
-namespace AdminPortal_Component.SharedComponents
+namespace TKW.AdminPortal.Components.SharedComponents
 {
     public static class SampleUtils
     {

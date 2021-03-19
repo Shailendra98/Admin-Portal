@@ -350,6 +350,16 @@
         "runtime": {
           "lib/net5.0/System.Net.Http.Json.dll": {}
         }
+      },
+      "AdminPortal.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/AdminPortal.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AdminPortal.Shared.dll": {}
+        }
       }
     },
     "net5.0/browser-wasm": {
@@ -700,6 +710,16 @@
         },
         "runtime": {
           "lib/net5.0/System.Net.Http.Json.dll": {}
+        }
+      },
+      "AdminPortal.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/AdminPortal.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AdminPortal.Shared.dll": {}
         }
       }
     }
@@ -1344,10 +1364,16 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "AdminPortal.Shared/1.0.0": {
+      "type": "project",
+      "path": "../AdminPortal.Shared/AdminPortal.Shared.csproj",
+      "msbuildProject": "../AdminPortal.Shared/AdminPortal.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "AdminPortal.Shared >= 1.0.0",
       "ChartJs.Blazor.Fork >= 2.0.2",
       "Microsoft.AspNetCore.Components.WebAssembly >= 5.0.3",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 5.0.3",
@@ -1362,7 +1388,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
-      "projectName": "AdminPortal-Component",
+      "projectName": "AdminPortal.Components",
       "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
       "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\obj\\",
@@ -1385,7 +1411,11 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+              "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

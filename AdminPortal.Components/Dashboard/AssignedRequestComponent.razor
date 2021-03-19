@@ -1,7 +1,6 @@
-﻿@page "/Linechart"
-@using ChartJs.Blazor.LineChart
-@using AdminPortal_Component.SharedComponents
-
+﻿@using ChartJs.Blazor.LineChart
+@using TKW.AdminPortal.Components.SharedComponents
+@namespace TKW.AdminPortal.Components.Dashboard
 <div class="mb-3">
     <h6 class="font-weight-bold text-secondary small">Assigned Request</h6>
     <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
@@ -45,7 +44,7 @@
                     Mode = InteractionMode.Nearest,
                     Intersect = true
                 },
-                
+
 
             }
         };

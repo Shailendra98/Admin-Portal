@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace AdminPortal_Component.Dashboard_Components
+namespace TKW.AdminPortal.Componentss.Dashboard_Components
 {
     #line hidden
     using System;
@@ -70,14 +70,14 @@ using Microsoft.JSInterop;
 #nullable disable
 #nullable restore
 #line 9 "C:\Users\Sameer\source\Repositories\The-Kabadiwala\TKW\src\web\AdminPortal\AdminPortal.Components\_Imports.razor"
-using AdminPortal_Component;
+using TKW.AdminPortal.Component;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 10 "C:\Users\Sameer\source\Repositories\The-Kabadiwala\TKW\src\web\AdminPortal\AdminPortal.Components\_Imports.razor"
-using AdminPortal_Component.Shared;
+using TKW.AdminPortal.Component.Shared;
 
 #line default
 #line hidden
@@ -161,7 +161,7 @@ using System.Drawing;
 #nullable disable
 #nullable restore
 #line 3 "C:\Users\Sameer\source\Repositories\The-Kabadiwala\TKW\src\web\AdminPortal\AdminPortal.Components\Dashboard-Components\RequestDetailComponent.razor"
-using AdminPortal_Component.SharedComponents;
+using TKW.AdminPortal.Components.SharedComponents;
 
 #line default
 #line hidden

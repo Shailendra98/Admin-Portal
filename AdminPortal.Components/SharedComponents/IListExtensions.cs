@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AdminPortal_Component.SharedComponents
+namespace TKW.AdminPortal.Components.SharedComponents
 {
     public static class IListExtensions
     {
