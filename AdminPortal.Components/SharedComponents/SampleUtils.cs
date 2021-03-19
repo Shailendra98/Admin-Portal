@@ -41,7 +41,7 @@ namespace TKW.AdminPortal.Components.SharedComponents
 
         public static IReadOnlyList<string> SampleSource { get; } = new ReadOnlyCollection<string>(new[]
         {
-            "Assigned", "Unassigned", "Completed", "Cancelled", "On Spot", "Rescheduled"
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
         });
 
         private static int RandomScalingFactorThreadUnsafe() => _rng.Next(50, 100);

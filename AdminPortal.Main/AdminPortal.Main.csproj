@@ -391,10 +391,10 @@
     <Folder Include="Pages\Ajax\Request\" />
     <Folder Include="wwwroot\scripts\bootstrap5.0.0\" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="TKW.ApplicationCore" Version="1.1.1" />
-    <PackageReference Include="TKW.Infrastructure" Version="1.1.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="TKW.ApplicationCore" Version="1.1.1" />
+		<PackageReference Include="TKW.Infrastructure" Version="1.1.1" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdminPortal.Components\AdminPortal.Components.csproj" />
     <ProjectReference Include="..\AdminPortal.Shared\AdminPortal.Shared.csproj" />

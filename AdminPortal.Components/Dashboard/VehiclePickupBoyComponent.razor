@@ -15,7 +15,12 @@
                                 </div>
                             </div>
                             <div class="col-4 m-auto">
-                                <Chart Config="_config"></Chart>
+                                <div class="position-relative">
+                                    <Chart Config="_config"></Chart>
+                                    <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
+                                        <span class="h6 fw-bold text-secondary">29</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -30,7 +35,12 @@
                                 </div>
                             </div>
                             <div class="col-4 m-auto">
-                                @*<Chart Config="_config"></Chart>*@
+                                <div class="position-relative">
+                                    <Chart Config="_config2"></Chart>
+                                    <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
+                                        <span class="h6 fw-bold text-secondary">29</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -40,23 +50,30 @@
     </div>
 </div>
 @code{
-        private PieConfig _config;
+    private PieConfig _config;
+    private PieConfig _config2;
 
-        protected override void OnInitialized()
+
+    protected override void OnInitialized()
+    {
+
+        _config = new PieConfig(true)
         {
 
-            _config = new PieConfig(true)
+
+            Options = new PieOptions
             {
+                AspectRatio = 1,
+                MaintainAspectRatio= true,
+                CutoutPercentage = 80,
 
+                Rotation =  181,
 
-                Options = new PieOptions
+                Tooltips = new Tooltips
                 {
-                    AspectRatio = 1,
-                    MaintainAspectRatio= true,
-                    CutoutPercentage = 80,
-                    
-                    Rotation =  181,
-               
+                    Enabled = false,
+                },
+
                 Responsive = true,
                 Legend = new Legend
                 {
@@ -69,22 +86,67 @@
                     Display = false,
                     Text = "ChartJs.Blazor Pie Chart"
                 }
-    
+
 
             }
-    };
+        };
 
-    PieDataset<int> dataset = new PieDataset<int>(new[] {  100- 29,29})
-    {
-        BackgroundColor = new[]
+        PieDataset<int> dataset = new PieDataset<int>(new[] {  100- 29,29})
         {
+            BackgroundColor = new[]
+            {
             ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
             ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
             
             }
-    };
+        };
 
-    _config.Data.Datasets.Add(dataset);
+        _config.Data.Datasets.Add(dataset);
+
+        _config2 = new PieConfig(true)
+        {
+
+
+            Options = new PieOptions
+            {
+                AspectRatio = 1,
+                MaintainAspectRatio = true,
+                CutoutPercentage = 80,
+
+                Rotation = 181,
+
+                Tooltips = new Tooltips
+                {
+                    Enabled = false,
+                },
+
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                    Position = Position.Right
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                    Text = "ChartJs.Blazor Pie Chart"
+                }
+
+
+            }
+        };
+
+        PieDataset<int> dataset2 = new PieDataset<int>(new[] { 100 - 29, 29 })
+        {
+            BackgroundColor = new[]
+            {
+            ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
+            ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
+            
+            }
+        };
+
+        _config2.Data.Datasets.Add(dataset2);
     }
-
-}
+    }
