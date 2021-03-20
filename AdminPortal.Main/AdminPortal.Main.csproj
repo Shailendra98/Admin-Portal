@@ -80,6 +80,7 @@
     <Compile Include="Areas\Employee\Pages\Ajax\Modal\ProfilePicture.cshtml.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AddressController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\MaterialController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
@@ -361,6 +362,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.11" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="TKW.ApplicationCore" Version="1.1.3" />
+    <PackageReference Include="TKW.Infrastructure" Version="1.1.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -391,10 +394,7 @@
     <Folder Include="Pages\Ajax\Request\" />
     <Folder Include="wwwroot\scripts\bootstrap5.0.0\" />
   </ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="TKW.ApplicationCore" Version="1.1.1" />
-		<PackageReference Include="TKW.Infrastructure" Version="1.1.1" />
-	</ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\AdminPortal.Components\AdminPortal.Components.csproj" />
     <ProjectReference Include="..\AdminPortal.Shared\AdminPortal.Shared.csproj" />

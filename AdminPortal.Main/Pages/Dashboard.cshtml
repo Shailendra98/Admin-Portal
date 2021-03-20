@@ -8,7 +8,14 @@
     Layout = user?.Current?.Role == UserRole.Admin ? "_LayoutAdmin" : user?.Current?.Role == UserRole.FranchiseAdmin ? "_LayoutFranchiseAdmin" : "_LayoutTeleCaller";
 }
 <div class="content">
-    <component type="typeof(Dashboard)" render-mode="WebAssemblyPrerendered" />
+    @if (!Model.IsFranchise)
+    {
+        @await Component.InvokeAsync("SelectFranchise")
+    }
+    else
+    {
+        <component type="typeof(Dashboard)" render-mode="WebAssemblyPrerendered" />
+    }
 </div>
 @section Scripts{
     <script src="_framework/blazor.webassembly.js"></script>

@@ -1,44 +1,59 @@
-﻿<div class="mb-3">
-    <h6 class="fw-bold small text-secondary">Requests</h6>
+@using AdminPortal.Components.Model
+@inject HttpClient http  
+@if(model!=null)
+            {
+<div class="mb-3">
+    <h6 class="fw-bold text-secondary">Requests</h6>
+
     <div class="card border-0 shadow-sm">
         <div class="card-body">
             <div class="text-center">
-                <h3 class="text-secondary fw-bold mb-0">120</h3>
-                 <small>Today's Request</small>
+                <h3 class="text-secondary fw-bold mb-0"></h3>
+                <small>Today's Request</small>
             </div>
             <div class="d-flex">
                 <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-warning mb-0 fw-bold">65</h6>
+                    <h6 class="text-warning mb-0 fw-bold">@model.Assigned</h6>
                     <small class="fw-bold text-secondary">Assigned</small>
                 </div>
                 <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-secondary mb-0 fw-bold">56</h6>
-                    <small class="fw-bold text-secondary">UnAssigned</small>
+                    <h6 class="text-secondary mb-0 fw-bold">@model.Unassigned</h6>
+                    <small class="fw-bold text-secondary"></small>
                 </div>
             </div>
             <div class="d-flex">
                 <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-success mb-0 fw-bold">82</h6>
+                    <h6 class="text-success mb-0 fw-bold">@model.Handled</h6>
                     <small class="fw-bold text-secondary">Completed</small>
                 </div>
                 <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-danger mb-0 fw-bold">41</h6>
+                    <h6 class="text-danger mb-0 fw-bold">@model.Cancelled</h6>
                     <small class="fw-bold text-secondary">Cancelled</small>
                 </div>
             </div>
             <div class="d-flex">
                 <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="mb-0 fw-bold">61</h6>
+                    <h6 class="mb-0 fw-bold">@model.Onspot</h6>
                     <small class="fw-bold text-secondary">by PickupBoy</small>
                 </div>
                 <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="mb-0 fw-bold">71</h6>
+                    <h6 class="mb-0 fw-bold">@model.Rescheduled</h6>
                     <small class="fw-bold text-secondary">Rescheduled</small>
                 </div>
             </div>
         </div>
     </div>
 </div>
+            }
+
+
 @code {
+    private RequestCountModel model;
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        model = await http.GetFromJsonAsync<RequestCountModel>("api/GetRequestCountOfFranchiseModel");
+        base.OnAfterRender(firstRender);
+    }
 
 }
