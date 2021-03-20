@@ -1,17 +1,21 @@
 ﻿@using ChartJs.Blazor.BarChart
 @using System.Drawing
 @using TKW.AdminPortal.Components.SharedComponents 
+@using AdminPortal.Shared.Models
+@inject HttpClient httpclient  
 
-<div class="mb-3">
-    <h6 class="fw-bold text-secondary small">Request Detail</h6>
-    <div class="card rounded-0 border-0 shadow-sm">
-        <div class="card-body py-1">
-            <Chart Config="_config" @ref="_chart"></Chart>
+@if (model != null)
+{
+    <div class="mb-3">
+        <h6 class="fw-bold text-secondary small">Request Detail</h6>
+        <div class="card rounded-0 border-0 shadow-sm">
+            <div class="card-body py-1">
+                <Chart Config="_config" @ref="_chart"></Chart>
+            </div>
+
         </div>
-
     </div>
-</div>
-
+}
 
 
 @code {
@@ -19,48 +23,59 @@
     private BarConfig _config;
     private Random _rng = new Random();
     private Chart _chart;
+    private RequestSourceModel model;
 
-    protected override void OnInitialized()
+    protected async override void OnAfterRender(bool firstRender)
     {
-        _config = new BarConfig(horizontal: true)
+        model = await httpclient.GetFromJsonAsync<RequestSourceModel>("api/GetCancelledRequestCountsOfFranchise");
+
+        base.OnAfterRender(firstRender);
+        await  LoadChartData();
+        StateHasChanged();
+    }
+    protected async Task LoadChartData()
+    {
+        if(model!=null)
         {
-            Options = new BarOptions
+            _config = new BarConfig(horizontal: true)
             {
-                
-                MaintainAspectRatio = true,
-                Responsive = true,
-                
-                Scales = new BarScales
+                Options = new BarOptions
                 {
-                   
-                },
 
-                Title = new OptionsTitle
-                {
-                    Display = true,
-                    Text = "Cancelled Requests"
-                },
+                    MaintainAspectRatio = true,
+                    Responsive = true,
 
-                Legend = new Legend
-                {
-                    Display = false,
-                },
-            }
-        };
+                    Scales = new BarScales
+                    {
 
-        IDataset<int> dataset1 = new BarDataset<int>(SampleUtils.RandomScalingFactor(InitalCount),horizontal: true)
-        {
-            BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.4),
-            BarThickness = 20,
-        };
+                    },
+
+                    Title = new OptionsTitle
+                    {
+                        Display = true,
+                        Text = "Cancelled Requests"
+                    },
+
+                    Legend = new Legend
+                    {
+                        Display = false,
+                    },
+                }
+            };
+            
+            IDataset<int> dataset1 = new BarDataset<int>(new[] {model.UserApp, model.AdminPortal, model.PickupBoyApp }, horizontal: true)
+            {
+
+                BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.4),
+                BarThickness = 20,
+            };
 
 
-        _config.Data.Labels.AddRange(SampleUtils.RequestSource.Take(InitalCount));
-        _config.Data.Datasets.Add(dataset1);
+            _config.Data.Labels.AddRange(SampleUtils.RequestSource.Take(InitalCount));
+            _config.Data.Datasets.Add(dataset1);
+        }
     }
 
 }
 
-@code {
 
-}
