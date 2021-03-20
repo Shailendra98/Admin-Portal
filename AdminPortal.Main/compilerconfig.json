@@ -18,5 +18,9 @@
   {
     "outputFile": "wwwroot/scripts/bootstrap-datetimepicker.es5.js",
     "inputFile": "wwwroot/scripts/bootstrap-datetimepicker.js"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/shimmer.css",
+    "inputFile": "wwwroot/stylesheets/shimmer.scss"
   }
 ]

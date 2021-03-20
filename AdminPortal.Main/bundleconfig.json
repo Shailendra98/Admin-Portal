@@ -97,7 +97,8 @@
     "inputFiles": [
       "wwwroot/stylesheets/homer.css",
       "wwwroot/stylesheets/select2.css",
-      "wwwroot/stylesheets/select2-bootstrap4.css"
+      "wwwroot/stylesheets/select2-bootstrap4.css",
+      "wwwroot/stylesheets/shimmer.css"
     ],
     "minify": {
       "enabled": true
