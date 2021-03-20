@@ -10,6 +10,8 @@ using TKW.ApplicationCore.Contexts.ReportingContext.DTOs;
 using System.Threading;
 using Microsoft.AspNetCore.Authorization;
 using TKW.AdminPortal.Shared.Models;
+using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
+using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
 
 namespace TKW.AdminPortal.Controllers
 {
@@ -20,14 +22,19 @@ namespace TKW.AdminPortal.Controllers
     {
         private readonly IAppUserService _appUser;
         private readonly IDashboardQueries _dashboardQueries;
-        public DashboardController(IAppUserService appUser, IDashboardQueries dashboardQueries)
+        private readonly IPickupSessionQueries _pickupSessionQueries;
+        private readonly IRequestQueries _requestQueries;
+
+        public DashboardController(IAppUserService appUser, IDashboardQueries dashboardQueries,IPickupSessionQueries pickupSessionQueries,IRequestQueries requestQueries)
         {
             _appUser = appUser;
             _dashboardQueries = dashboardQueries;
+            _pickupSessionQueries = pickupSessionQueries;
+            _requestQueries = requestQueries;
         }
 
-        [HttpGet("~/api/GetRequestAddressTypeCountsOfFranchise")]
-        public async Task<VehicleAndpickupBoyModel> GetRequestAddressTypeCountsOfFranchise(CancellationToken cancellationToken)
+        [HttpGet("~/api/GetVehicleAndPickupBoyCountsOfFranchise")]
+        public async Task<VehicleAndpickupBoyModel> GetVehicleAndPickupBoyCountsOfFranchise(CancellationToken cancellationToken)
         {
             
             int? franchiseid = _appUser.Current?.FranchiseId;
@@ -177,6 +184,41 @@ namespace TKW.AdminPortal.Controllers
             };
             return model;
 
+        }
+        [HttpGet("~/api/GetPickupSessionsOfFranchise")]
+        public async Task<List<PickupSessionModel>> GetPickupSessionsOfFranchise(CancellationToken cancellationToken)
+        {
+
+            int? franchiseid = _appUser.Current?.FranchiseId;
+            var pickupSessions = await _pickupSessionQueries.ActivePickupSessionsOfFranchiseAsync(franchiseid.Value, cancellationToken);
+            var requestCounts = await _requestQueries.RequestCountsOfPickupSessionsAsync(pickupSessions.Select(m => m.Id), cancellationToken);
+            List<PickupSessionModel> output = new List<PickupSessionModel>();
+            foreach (var pickupSession in pickupSessions)
+            {
+                var counts = requestCounts.FirstOrDefault(m => m.PickupSessionId == pickupSession.Id);
+                if (counts != null)
+                {
+                    var p = new PickupSessionModel
+                    {
+                        Id = pickupSession.Id,
+                        Cash = pickupSession.Cash,
+                        PickupBoys = pickupSession.PickupBoys.Where(m=>m.EndTime==null).Select(m => new PickupBoyModel
+                        {
+                            Id = m.Id,
+                            MobileNo = m.MobileNo,
+                            Name = m.Name
+                        }).ToList(),
+                        VehicleName = pickupSession.Vehicle.Name,
+                        VehicleNumber = pickupSession.Vehicle.Number,
+                        PendingRequests = counts.Pending,
+                        RescheduledRequests = counts.Rescheduled,
+                        CancelledRequests = counts.Cancelled,
+                        HandledRequests = counts.Handled
+                    };
+                    output.Add(p);
+                }
+            }
+            return output;
         }
     }
 }
