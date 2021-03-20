@@ -394,6 +394,7 @@
     <Folder Include="Pages\Ajax\Request\" />
     <Folder Include="wwwroot\scripts\bootstrap5.0.0\" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\AdminPortal.Components\AdminPortal.Components.csproj" />
     <ProjectReference Include="..\AdminPortal.Shared\AdminPortal.Shared.csproj" />
