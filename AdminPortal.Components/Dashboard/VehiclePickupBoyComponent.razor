@@ -1,53 +1,55 @@
 ﻿@using ChartJs.Blazor.PieChart
-@using AdminPortal.Shared.Models 
-@inject HttpClient http  
-@if(model!=null)
-{ 
-<div class="mb-3">
-    <h6 class="fw-bold text-secondary small">Vehicle & Pickup Boy</h6>
-    <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
-        <div class="card-body pt-4">
-            <div class="mb-2">
-                <div class="pb-2">
-                    <h6 class="fw-bold text-secondary small">Active PickupBoys</h6>
-                    <div class="card border-0 px-2 shadow-sm">
-                        <div class="row">
-                            <div class="col-8 m-auto">
-                                <div class="card-body px-2">
-                                    <small>@model.ActivePickupBoy PickupBoy are active out of @model.TotalVehicle</small>
-                                </div>
-                            </div>
-                            <div class="col-4 m-auto">
+@using AdminPortal.Shared.Models
+@inject HttpClient http
 
-                                <div class="position-relative">
-                                    <Chart Config="_config"></Chart>
-                                    <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                        <span class="h6 fw-bold text-secondary">29</span>
+@if (model != null)
+{
+    <div class="mb-3">
+        <h6 class="fw-bold text-secondary small">Vehicle & Pickup Boy</h6>
+        <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
+            <div class="card-body pt-4">
+                <div class="mb-2">
+                    <div class="pb-2">
+                        <h6 class="fw-bold text-secondary small">Active PickupBoys</h6>
+                        <div class="card border-0 px-2 shadow-sm">
+                            <div class="row">
+                                <div class="col-8 m-auto">
+                                    <div class="card-body px-2">
+                                        <small>@model.ActivePickupBoy PickupBoy are active out of @model.TotalVehicle</small>
                                     </div>
                                 </div>
+                                <div class="col-4 m-auto">
 
+                                    <div class="position-relative">
+                                        <Chart Config="_configPickupBoy"></Chart>
+                                        <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
+                                            <span class="h6 fw-bold text-secondary">@model.ActivePickupBoy</span>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <h6 class="fw-bold text-secondary small">Active Vehicle</h6>
-                    <div class="card border-0 px-2 shadow-sm">
-                        <div class="row">
-                            <div class="col-8 m-auto">
-                                <div class="card-body px-2">
-                                    <small>@model.ActiveVehicle Vehicle are active out of @model.TotalVehicle</small>
-                                </div>
-                            </div>
-                            <div class="col-4 m-auto">
-
-                                <div class="position-relative">
-                                    <Chart Config="_config2"></Chart>
-                                    <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                        <span class="h6 fw-bold text-secondary">29</span>
+                    <div>
+                        <h6 class="fw-bold text-secondary small">Active Vehicle</h6>
+                        <div class="card border-0 px-2 shadow-sm">
+                            <div class="row">
+                                <div class="col-8 m-auto">
+                                    <div class="card-body px-2">
+                                        <small>@model.ActiveVehicle Vehicle are active out of @model.TotalVehicle</small>
                                     </div>
                                 </div>
+                                <div class="col-4 m-auto">
 
+                                    <div class="position-relative">
+                                        <Chart Config="_configVehcle"></Chart>
+                                        <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
+                                            <span class="h6 fw-bold text-secondary">@model.ActiveVehicle</span>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -55,63 +57,40 @@
             </div>
         </div>
     </div>
-</div>
 }
 @code{
 
     VehicleAndpickupBoyModel model;
     private PieConfig _configPickupBoy;
     private PieConfig _configVehcle;
-
-
-   
-    protected async  override void OnAfterRender(bool firstRender)
+    protected async override void OnAfterRender(bool firstRender)
     {
-        model = await http.GetFromJsonAsync<VehicleAndpickupBoyModel>("api/GetRequesAddressTypeCountsOfFranchise");
-        base.OnAfterRender(firstRender);
 
-        if (model != null)
+        model = await http.GetFromJsonAsync<VehicleAndpickupBoyModel>("api/GetRequestAddressTypeCountsOfFranchise");
+        base.OnAfterRender(firstRender);
+        this.LoadChartData();
+        StateHasChanged();
+    }
+    private async Task LoadChartData()
+    {
+        if(model!=null)
         {
             _configPickupBoy = new PieConfig(true)
-
-    private PieConfig _config;
-    private PieConfig _config2;
-
-
-    protected override void OnInitialized()
-    {
-
-        _config = new PieConfig(true)
-        {
-
-
-            Options = new PieOptions
-
             {
-                AspectRatio = 1,
-                MaintainAspectRatio= true,
-                CutoutPercentage = 80,
 
-                Rotation =  181,
 
-                Tooltips = new Tooltips
+                Options = new PieOptions
                 {
-
                     AspectRatio = 1,
                     MaintainAspectRatio = true,
                     CutoutPercentage = 80,
 
-                    Enabled = false,
-                },
-
-                Responsive = true,
-                Legend = new Legend
-                {
-                    Display = false,
-                    Position = Position.Right
-                },
-
                     Rotation = 181,
+
+                    Tooltips = new Tooltips
+                    {
+                        Enabled = false,
+                    },
 
                     Responsive = true,
                     Legend = new Legend
@@ -126,27 +105,21 @@
                         Text = "ChartJs.Blazor Pie Chart"
                     }
 
-
                 }
-
             };
 
-
-
-
-            PieDataset<int> dataset = new PieDataset<int>(new[] { model.TotalPickupBoy - model.ActivePickupBoy, model.ActivePickupBoy })
+            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] { model.TotalPickupBoy - model.ActivePickupBoy, model.ActivePickupBoy })
             {
                 BackgroundColor = new[]
                 {
-            ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
-            ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
-            
-            }
+                 ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
+                  ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
 
+            }
             };
 
-            _configPickupBoy.Data.Datasets.Add(dataset);
 
+            _configPickupBoy.Data.Datasets.Add(PickupBoydataset);
             _configVehcle = new PieConfig(true)
             {
 
@@ -159,6 +132,11 @@
 
                     Rotation = 181,
 
+                    Tooltips = new Tooltips
+                    {
+                        Enabled = false,
+                    },
+
                     Responsive = true,
                     Legend = new Legend
                     {
@@ -172,83 +150,26 @@
                         Text = "ChartJs.Blazor Pie Chart"
                     }
 
-
                 }
             };
-
-            PieDataset<int> dataset1 = new PieDataset<int>(new[] { model.TotalVehicle - model.ActiveVehicle, model.ActiveVehicle })
+            PieDataset<int> Vehicledataset = new PieDataset<int>(new[] { model.TotalVehicle - model.ActiveVehicle, model.ActiveVehicle })
             {
                 BackgroundColor = new[]
-                {
-
-        };
-
-        PieDataset<int> dataset = new PieDataset<int>(new[] {  100- 29,29})
         {
-            BackgroundColor = new[]
-            {
+               ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
+               ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
 
-            ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
-            ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
-            
             }
-
             };
 
-            _configVehcle.Data.Datasets.Add(dataset1);
+            _configPickupBoy.Data.Datasets.Add(Vehicledataset);
         }
 
 
-        StateHasChanged();
     }
 
-        };
-
-        _config.Data.Datasets.Add(dataset);
-
-        _config2 = new PieConfig(true)
-        {
 
 
-            Options = new PieOptions
-            {
-                AspectRatio = 1,
-                MaintainAspectRatio = true,
-                CutoutPercentage = 80,
+}
 
-                Rotation = 181,
 
-                Tooltips = new Tooltips
-                {
-                    Enabled = false,
-                },
-
-                Responsive = true,
-                Legend = new Legend
-                {
-                    Display = false,
-                    Position = Position.Right
-                },
-
-                Title = new ChartJs.Blazor.Common.OptionsTitle
-                {
-                    Display = false,
-                    Text = "ChartJs.Blazor Pie Chart"
-                }
-
-            }
-        };
-
-        PieDataset<int> dataset2 = new PieDataset<int>(new[] { 100 - 29, 29 })
-        {
-            BackgroundColor = new[]
-            {
-            ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
-            ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
-            
-            }
-        };
-
-        _config2.Data.Datasets.Add(dataset2);
-    }
-    }

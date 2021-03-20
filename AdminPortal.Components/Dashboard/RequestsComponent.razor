@@ -1,4 +1,4 @@
-@using AdminPortal.Components.Model
+@using AdminPortal.Shared.Models
 @inject HttpClient http  
 @if(model!=null)
             {
@@ -48,12 +48,13 @@
 
 
 @code {
-    private RequestCountModel model;
+    private RequestCountsModel model;
 
     protected async override void OnAfterRender(bool firstRender)
     {
-        model = await http.GetFromJsonAsync<RequestCountModel>("api/GetRequestCountOfFranchiseModel");
+        model = await http.GetFromJsonAsync<RequestCountsModel>("api/GetRequestCountsOfFranchise");
         base.OnAfterRender(firstRender);
+        StateHasChanged();
     }
 
 }
