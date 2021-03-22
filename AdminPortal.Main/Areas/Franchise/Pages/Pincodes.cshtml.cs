@@ -15,6 +15,7 @@ using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate
 using TKW.AdminPortal.Areas.Franchise.ViewModels;
 using TKW.ApplicationCore.Contexts.AreaContext.Aggregates.Pincode;
 using System.ComponentModel.DataAnnotations;
+using TKW.ApplicationCore.Contexts.AreaContext.Queries;
 
 namespace TKW.AdminPortal.Areas.Franchise.Pages
 {
@@ -23,12 +24,14 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages
         private readonly IFranchiseQueries _franchiseQueries;
         private readonly IEmployeeQueries _employeeQueries;
         private IPincodeService _pincodeService;
+        private readonly IAreaQueries _areaQueries;
 
-        public PincodesModel(IFranchiseQueries franchiseQueries, IPincodeService pincodeService, IEmployeeQueries employeeQueries)
+        public PincodesModel(IFranchiseQueries franchiseQueries, IPincodeService pincodeService, IEmployeeQueries employeeQueries, IAreaQueries areaQueries)
         {
             _employeeQueries = employeeQueries;
             _franchiseQueries = franchiseQueries;
             _pincodeService = pincodeService;
+            _areaQueries = areaQueries;
         }
 
         [BindProperty(SupportsGet =true)]
@@ -36,6 +39,9 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages
 
         public FranchiseModel FranchiseDetail { get; set; }
         public List<PincodeModel> PincodeList { get; set; }
+
+        public List<ApplicationCore.Contexts.AreaContext.DTOs.LocalityModel> Localities { get; set; }
+
    
         [BindProperty]
         public List<AddPincodeModel> AddPincode { get; set; }
@@ -45,12 +51,15 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages
         [Display(Name = "Manager")]
         public int? ManagerId { get; set; }
         public SelectList? Managers { get; set; }
+
+
         public bool IsDone { get; set; }
         public string ErrorMessage { get; set; } 
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             FranchiseDetail = await _franchiseQueries.FranchiseDetailbyIdAsync(Id,cancellationToken);
             PincodeList = await _franchiseQueries.PincodesListOfFranchiseAsync(Id,cancellationToken);
+            Localities = await _areaQueries.LocalitiesByFranchiseIdAsync(Id, cancellationToken);
             ManagerId = PincodeList.FirstOrDefault()?.ManagerId;
             Managers = new SelectList(await _employeeQueries.EmployeesOfFranchiseAsync(Id, new List<int> { UserRole.PickupManager.Id, UserRole.FranchiseAdmin.Id }, new List<int> { EmployeeStatus.Active.Id }, cancellationToken), "Id", "Name", ManagerId);
         }
@@ -59,19 +68,23 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages
             if (ModelState.IsValid)
             {
                 var result = await _pincodeService.UpdatePincodesOfFranchiseAsync(Id, AddPincode.Select(m => (m.Pincode, ManagerId!.Value, new WorkingDays(m.Mon, m.Tue, m.Wed, m.Thu, m.Fri, m.Sat, m.Sun))).ToList(), cancellationToken);
-
                 if (result.IsSuccess)
                 {
                     IsDone = true;
                      
-                    return Content("<div class='alert alert-success alert-dismissable'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Pincodes has been updated!</div>");
+                    return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'> Pincodes has been updated!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>");
                 }
                 ErrorMessage = result.Error.Message;
             }
-            else { 
+            else{ 
                 ErrorMessage = string.Join("; " ,ModelState.Values.SelectMany(m => m.Errors).Select(m => m.ErrorMessage));
             }
-            return Content("<div class='alert alert-danger'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>" + ErrorMessage + "</div>");
+            return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'>" + ErrorMessage + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>");
         }
     } 
 }
+//< div class= "alert alert-warning alert-dismissible fade show" role = "alert" >
+
+//  Pincodes has been updated!  < strong > Holy guacamole! </ strong > You should check in on some of those fields below.
+//  <button type="button" class= "btn-close" data - bs - dismiss = "alert" aria - label = "Close" ></ button >
+//       </ div >
