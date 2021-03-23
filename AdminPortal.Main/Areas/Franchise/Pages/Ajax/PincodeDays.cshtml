@@ -35,23 +35,24 @@
     count = count + 1;
 }
 <script>
-    $(function () {
+      $(function () {
         $("#tableBody tr.pincode-row").click(function (e) {
             if ($(e.target).is('input.day-check') || $(e.target).is('label')) return true;
             $(this).next().collapse('toggle');
+            //var count = $(this).closest("tr.pincode-row").data("count");
+            //$("#collapse" + count).collapse('toggle');
         });
 
-        $('.collapse').on("show.bs.collapse", function () {
-            var trid = "#tr" + $(this).data("count");
-            $(trid).find('.collapse-button i').removeClass('fa-chevron-left').addClass('fa-chevron-down');
+          $('tr.collapse').on("show.bs.collapse", function () {
+              var trid = "#tr" + $(this).attr('data-count');
+            $(trid).find('.collapse-button i').removeClass('fa-chevron-left') .addClass('fa-chevron-down');
         });
 
-        $('.collapse').on("hide.bs.collapse", function () {
-            var trid = "#tr" + $(this).data("count");
+        $('tr.collapse').on("hide.bs.collapse", function () {
+            var trid = "#tr" + $(this).attr('data-count');
             $(trid).find('.collapse-button i').removeClass('fa-chevron-down').addClass('fa-chevron-left');
         });
-    });
-
+      });
 
       function _removeRow(id) {
              var controlToBeRemoved = '#tr' + id;
