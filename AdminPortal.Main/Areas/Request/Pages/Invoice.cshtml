@@ -40,43 +40,45 @@
                 <p class="print-p-t">@Model.Request.Seller.MobileNo</p>
                 <p class="print-p-t"><address addressline="@Model.Request.Address.AddressLine" city="@Model.Request.Address.CityName" locality="@Model.Request.Address.LocalityName" pincode="@Model.Request.Address.Pincode" state="@Model.Request.Address.StateName"></address></p>
             </div>
-            <div class="col-sm-6 col-md-6 col-xs-12 col-print-6 text-right header1 p-tb-md">
+            <div class="col-sm-6 col-md-6 col-xs-12 col-print-6 text-right header1 p-tb-md" style="text-align:right">
                 <p class="print-p-t">Request Id :<b> @Model.Request.Id</b></p>
                 <p class="print-p-t">Date : <b> @String.Format("{0:ddd, MMM d, yyyy}", Model.Request.Completion.HandleEndTime)</b></p>
             </div>
         </div>
-
+        <div class="row" style="margin:10px 0px 10px 0px">
+            <h2 style="text-align:center;background-color:forestgreen;font:bolder;color:white;font-size: 30px;"> Invoice Receipt </h2> 
+        </div>
         <div class="row p-sm">
             <div class="col-xs-12 font">
                 <div class="row b-p-b f-border">
-                    <div class="col-xs-5"><p>MATERIAL</p></div>
-                    <div class="col-xs-2"><p>QUANTITY</p></div>
-                    <div class="col-xs-2"><p>RATE</p></div>
-                    <div class="col-xs-3 text-right"><p>AMOUNT</p></div>
+                    <div class="w-25"><p>MATERIAL</p></div>
+                    <div class="w-25"><p>QUANTITY</p></div>
+                    <div class="w-25"><p>RATE</p></div>
+                    <div class="w-25 text-right"><p>AMOUNT</p></div>
                 </div>
                 @foreach (var m in Model.Request.Completion.Items)
                 {
-                    <div class="row font ">
-                        <div class="col-xs-5 row-1"><p class="h4 no-margins font-extra-bold font">@m.Material.Name</p></div>
-                        <div class="col-xs-2 p-b-r"><span class="h4 no-margins font-extra-bold font">@m.Quantity!.Value.ToString("G29")</span><small class="print-p-t"> @m.Material.UnitName</small></div>
-                        <div class="col-xs-2 row-1 p-b-r"><small>₹ </small><span class="h4 no-margins font-extra-bold font">@m.Rate!.Value.ToString("G29")</span><small class="print-p-t"> / @m.Material.UnitName</small></div>
-                        <div class="col-xs-3 p-b-r"><p class="text-right text"> <small class="print-p-t">₹ </small><span class="h4 no-margins font-extra-bold font"> @((m.Quantity * m.Rate).Value.ToString("0.00"))</span></p></div>
+                    <div class="row font" style="margin-top:10px">
+                        <div @*class="col-xs-2 row-1"*@ class="w-25"><p class="h4 no-margins font-extra-bold font">@m.Material.Name</p></div>
+                        <div @*class="col-xs-2 p-b-r"*@ class="w-25"><span class="h4 no-margins font-extra-bold font">@m.Quantity!.Value.ToString("G29")</span><small class="print-p-t"> @m.Material.UnitName</small></div>
+                        <div @*class="col-xs-2 row-1 p-b-r"*@ class="w-25"><small>₹ </small><span class="h4 no-margins font-extra-bold font">@m.Rate!.Value.ToString("G29")</span><small class="print-p-t"> / @m.Material.UnitName</small></div>
+                        <div @*class="col-xs-3 p-b-r"*@ class="w-25"><p class="text-right text"> <small class="print-p-t">₹ </small><span class="h4 no-margins font-extra-bold font"> @((m.Quantity * m.Rate).Value.ToString("0.00"))</span></p></div>
                     </div>
                 }
 
             </div>
         </div>
         <footer class="f-s ">
-            <div class="container" style="max-width:773px;">
-                <div class="row footer-p">
+            <div class="container" >
+                <div class="row footer-p" >
                     <div class="row font f-border p-b-r">
-                        <div class="col-xs-6"><p>PAYMENT METHOD</p></div>
-                        <div class="col-xs-6 text-right"><p>TOTAL</p></div>
+                        <div @*class="col-xs-3"*@ class="w-50 " style="text-align:left"><p>PAYMENT METHOD</p></div>
+                        <div @*class="col-xs-3 text-right"*@ class="w-50"  style="text-align:right"><p>TOTAL</p></div>
                     </div>
                     <div class="row f-border p-sm">
-                        <div class="col-xs-6 text-left h4 font-extra-bold heading font1"><p>@(Model.Request.Completion.PaymentTransactions.FirstOrDefault()?.MethodName)</p></div>
+                        <div class="w-50 text-left h4 font-extra-bold heading font1" style="text-align:left"><p>@(Model.Request.Completion.PaymentTransactions.FirstOrDefault()?.MethodName)</p></div>
 
-                        <div class="col-xs-6 text-right h4 font-extra-bold heading font1"><p>₹ @Model.Request.Completion.TotalAmount.ToString("G29")</p></div>
+                        <div class="w-50 text-right h4 font-extra-bold heading font1" style="text-align:right"><p>₹ @Model.Request.Completion.TotalAmount.ToString("G29")</p></div>
                     </div>
                 </div>
             </div>
