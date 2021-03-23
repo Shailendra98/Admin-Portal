@@ -2,13 +2,11 @@
 @model TKW.AdminPortal.Areas.Franchise.Pages.PincodesModel
 @{
     ViewBag.Title = "Franchise Pincodes";
-    var name = Html.NameFor(m => m.AddPincode);
-
-    var id = Html.IdFor(m => m.AddPincode);
-    var count = 0;
+    
+  
 }
 <pagetitle title="Franchise Pincodes" description="Manage pincodes of the franchise">
-    <a data-bs-toggle="modal" data-bs-target="#ActionModalPincode" data-load-url="@Url.Page("Ajax/Modal/PincodeNumber",new {Id = Model.Id})" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Pincode</a>
+    <a data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddPincode/SelectPincode",new { Model.Id })" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Pincode</a>
 </pagetitle>
 
 <div class="content">
@@ -40,12 +38,12 @@
                                             </button>
                                         </div>
                                     </div>
-                                       
+
                                 </div>
                             </div>
 
                             <div>
-                                <table class="table-responsive table vertical-mid-table mb-0">
+                                <table class="table-responsive table-hover table vertical-mid-table mb-0">
                                     <thead class="border-bottom border-top pb-1">
                                         <tr>
                                             <th class="text-center align-middle h6" style="width:12%;">Pincode</th>
@@ -105,48 +103,25 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tableBody">
-
-                                        @foreach (var item in Model.PincodeList)
-                                        {
-                                            <tr id="tr@(count)" class="pincode-row">
-                                            <td class="text-center w-sm">@item.Pincode<input class="pincode-field" type="hidden" name="@(name)[@(count)].Pincode" value="@item.Pincode" /></td>
-                                            <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Mon" type="checkbox" name="@(name)[@(count)].Mon" id="@(name)[@(count)]_Mon" value="true" checked="@item.Mon" /><label for="@(name)[@(count)]_Mon"></label></div></td>
-                                            <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Tue" type="checkbox" name="@(name)[@(count)].Tue" id="@(name)[@(count)]_Tue" value="true" checked="@item.Tue" /><label for="@(name)[@(count)]_Tue"></label></div></td>
-                                            <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Wed" type="checkbox" name="@(name)[@(count)].Wed" id="@(name)[@(count)]_Wed" value="true" checked="@item.Wed" /><label for="@(name)[@(count)]_Wed"></label></div></td>
-                                            <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Thu" type="checkbox" name="@(name)[@(count)].Thu" id="@(name)[@(count)]_Thu" value="true" checked="@item.Thu" /><label for="@(name)[@(count)]_Thu"></label></div></td>
-                                            <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Fri" type="checkbox" name="@(name)[@(count)].Fri" id="@(name)[@(count)]_Fri" value="true" checked="@item.Fri" /><label for="@(name)[@(count)]_Fri"></label></div></td>
-                                            <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Sat" type="checkbox" name="@(name)[@(count)].Sat" id="@(name)[@(count)]_Sat" value="true" checked="@item.Sat" /><label for="@(name)[@(count)]_Sat"></label></div></td>
-                                            <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Sun" type="checkbox" name="@(name)[@(count)].Sun" id="@(name)[@(count)]_Sun" value="true" checked="@item.Sun" /><label for="@(name)[@(count)]_Sun"></label></div></td>
-                                            <td class="text-center"><button class="btn-close btn-xs pe-4 btn-light remove-button" onclick="_removeRow(@(count));"></button></td>
-                                            <td class="text-center p-1"><a class="collapse-button" onclick="_checkIcon($('#tr@(count)'));" data-bs-toggle="collapse" data-bs-target="#collapse@(count)" aria-expanded="false" aria-controls="collapse@(count)"><i class="fa fa-chevron-left p-3"></i></a></td>
+                                        <tr>
+                                            <td colspan="10">
+                                                <div class="text-center">
+                                                    <img src="~/images/ripple.gif" alt="Loading.." />
+                                                </div>
+                                            </td>
                                         </tr>
-                                            <tr id="collapse@(count)" class="collapse collapse-row">
-                                                <td colspan="10">
-                                                    <input type="hidden" value="@(count)" />
-                                                    <div class="text-muted fw-bold ps-3 pb-2">Localities <div class="d-inline-block badge badge-info">@Model.Localities.Where(m => m.Pincode == item.Pincode).Count()</div></div>
-                                                    <div class="d-flex flex-wrap mx-2 small localities">
-                                                        @foreach (var l in Model.Localities.Where(m => m.Pincode == item.Pincode))
-                                                        {
-                                                            <span class="borders rounded-pill px-2 m-1 py-1">@l.Name</span>
-                                                        }
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            count = count + 1;
-                                        }
-
                                     </tbody>
                                 </table>
                             </div>
 
                             <div class="p-2">
-                                    <div class="px-3 d-inline-block"><label asp-for="ManagerId" class="col-form-label float-end fw-bold">Default Manager:</label></div>
-                                    <div class="d-inline-block w-25">
-                                        <select class="form-control" asp-for="ManagerId" asp-items="Model.Managers" data-placeholder="Select Manager">
-                                        </select>
-                                        <span asp-validation-for="ManagerId" class="text-danger small"></span>
-                                    </div>
-                                   <button class="btn btn-success me-2 btn-sm float-end" type="submit" style="width:20%;">Update</button>
+                                <div class="px-3 d-inline-block"><label asp-for="ManagerId" class="col-form-label float-end fw-bold">Default Manager:</label></div>
+                                <div class="d-inline-block w-25">
+                                    <select class="form-control" asp-for="ManagerId" asp-items="Model.Managers" data-placeholder="Select Manager">
+                                    </select>
+                                    <span asp-validation-for="ManagerId" class="text-danger small"></span>
+                                </div>
+                                <button class="btn btn-success me-2 float-end" type="submit" style="width:20%;">Update</button>
                             </div>
 
                         </fieldset>
@@ -168,6 +143,12 @@
 @section Scripts{
     <script>
         $(function () {
+              $("#ActionModalContent").on("action.done", function () {
+                  $("#tableBody").load("@Url.Page("Ajax/PincodeDays", new { Model.Id })");
+              });
+
+             $("#tableBody").load("@Url.Page("Ajax/PincodeDays", new { Model.Id })");
+
             $("#@Html.IdFor(m=>m.ManagerId)").select2();
 
             $(".check-all").click(function () {
@@ -186,7 +167,7 @@
                 var searchBox = $(this);
                 var val = searchBox.val();
                 val = val.toLowerCase();
-              
+
                 if ($.isNumeric(val) || val == "") {
                     $("#tableBody tr.pincode-row").each(function (i) {
                         var icon = $(this).find('.collapse-button i');
@@ -229,7 +210,7 @@
                         } else {
                             $(this).show();
                         }
-                        
+
                     });
 
                     $("#tableBody tr.collapse-row").each(function (i) {
@@ -250,7 +231,7 @@
                             if (!matched) {
                                 $(this).removeClass('show');
                             } else {
-                                var trId = $(this).find('input').val();
+                                var trId = $(this).data("count");
                                 $("#tr" + trId).show();
                                 $(this).addClass('show');
                                 if ($.isNumeric(val)) {
@@ -263,94 +244,14 @@
                     });
                 }
             });
+            
         });
-
-
-        function _removeRow(id) {
-             var controlToBeRemoved = '#tr' + id;
-             var collapseToBeRemoved = '#collapse' + id;
-             var i = 0;
-
-             $(controlToBeRemoved).nextAll("tr:odd").each(function (index) {
-                i = parseInt(id) + index;
-                //for pincode row
-                $(this).attr('id', 'tr' + i + '');
-                $(this).find('.pincode-field').attr('name', '@(name)[' + i + '].Pincode');
-                $(this).find('.collapse-button').attr('data-bs-target','#collapse' + i + '');
-                $(this).find('.collapse-button').attr('aria-controls', 'collapse' + i + '');
-                $(this).find('.collapse-button').attr('onclick','_checkIcon($("#tr'+ i +'"))');
-                _changeNameAndIdOfInputAndLabel($(this), "Mon", i);
-                _changeNameAndIdOfInputAndLabel($(this), "Tue", i);
-                _changeNameAndIdOfInputAndLabel($(this), "Wed", i);
-                _changeNameAndIdOfInputAndLabel($(this), "Thu", i);
-                _changeNameAndIdOfInputAndLabel($(this), "Fri", i);
-                _changeNameAndIdOfInputAndLabel($(this), "Sat", i);
-                _changeNameAndIdOfInputAndLabel($(this), "Sun", i);
-                $(this).find('.remove-button').attr('onclick', '_removeRow(' + i + ')');
-
-                //for collapse row
-                $(this).next().attr('id', 'collapse' + i + '');
-                $(this).next().find('input').attr('value', '' + i + '');
-            });
-
-             $(controlToBeRemoved).remove();
-             $(collapseToBeRemoved).remove();
-        }
-
-        function _changeNameAndIdOfInputAndLabel(selector, day, i) {
-            var inside = i + 1;
-            selector.find('input[name="@(name)[' + inside + '].' + day + '"]').attr('name', '@(name)[' + i + '].' + day + '');
-            selector.find('input[id="@(name)[' + inside + ']_' + day + '"]').attr('id', '@(name)[' + i + ']_' + day + '');
-            selector.find('label[for="@(name)[' + inside + ']_' + day + '"]').attr('for', '@(name)[' + i + ']_' + day + '');
-        }
-
-        function _checkIcon(trid) {
-            var icon = trid.find('.collapse-button i');
-            if (icon.hasClass('fa-chevron-left')) {
-                icon.removeClass('fa-chevron-left');
-                icon.addClass('fa-chevron-down');
-            } else {
-                icon.removeClass('fa-chevron-down');
-                icon.addClass('fa-chevron-left');
-            }
-        }
-
-        @*
-    function addRow() {
-            var temp = $("#tableBody").children('tr').length;
-            var select = "<select name='@(name)[" + temp + "].Pincode' placeholder='Select Pincode' class='pincode_field form-control select2-field'></select>";
-            var pincell = "<td class='text-center' style='width: 15%;'>" + select + "</td>";
-            var checks = _generateDayCheckbox("Mon", temp) + _generateDayCheckbox("Tue", temp) + _generateDayCheckbox("Wed", temp) + _generateDayCheckbox("Thu", temp) + _generateDayCheckbox("Fri", temp) + _generateDayCheckbox("Sat", temp) + _generateDayCheckbox("Sun", temp);
-            var removecell = "<td class='text-center' style='width: 5%;'><button class='btn-close btn-xs pe-4 btn-light' onclick='_removeRow(" + temp + ")'></button></td>";
-            var newrow = "<tr id='tr" + temp + "'>" + pincell + checks + removecell + "</tr>";
-            $("#tableBody").append(newrow);
-            $(".select2-field").select2(
-                select2SearchResponseAjaxConfiguration("@Url.Action("Pincodes","Address")", formatPincode, function (pincode) { return pincode.text || pincode.id + ""; }, {id:0, text:"Select pincode"})
-            );
-            function formatPincode(pincode) {
-
-                if (pincode.loading) {
-                    return pincode.text;
-                }
-                var markup = "<div class='media'>"
-                    + "<div class='media-body'>"
-                    + "<div class='media-heading'>" + pincode.id + "</div>"
-                    + "<p class='small'>" + pincode.cityName + ", " + pincode.stateName + "</p>"
-                    + "</div>"
-                    + "</div>";
-                return markup;
-
-            }
-        }
-
-          function _generateDayCheckbox(day, index) {
-            return "<td class='text-center pb-4'><div class='checkbox checkbox-success'><input class='day-check' data-day='"+day+"'  type='checkbox' name='@(name)[" + index + "]."+day+"' id='@(name)[" + index + "]_" + day + "' value='true' checked/><label for='@(name)[" + index + "]_"+ day +"'></label></div></td>";
-        }
-      *@
-
 
     </script>
 }
 @section Footer{
-<modal id="ActionModalPincode" content-id="ActionModalPincodeContent" loader="true"></modal>
+    <modal id="ActionModal" content-id="ActionModalContent" loader="true"></modal>
 }
+@*onclick="_openCollapse($('#tr@(count)'));"*@
+@*onclick="_checkIcon($('#tr@(count)'));*@
+@* data-bs-toggle="collapse" data-bs-target="#collapse@(count)" aria-controls="collapse@(count)" *@

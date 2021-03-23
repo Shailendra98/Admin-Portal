@@ -1,0 +1,95 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.PincodeDaysModel
+@{
+    var name = Html.NameFor(m => m.AddPincode);
+
+    var id = Html.IdFor(m => m.AddPincode);
+    var count = 0;
+}
+
+@foreach (var item in Model.PincodeList)
+{
+    <tr id="tr@(count)" class="pincode-row" data-count="@count">
+        <td class="text-center w-sm">@item.Pincode<input class="pincode-field" type="hidden" name="@(name)[@(count)].Pincode" value="@item.Pincode" /></td>
+        <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Mon" type="checkbox" name="@(name)[@(count)].Mon" id="@(name)[@(count)]_Mon" value="true" checked="@item.Mon" /><label for="@(name)[@(count)]_Mon"></label></div></td>
+        <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Tue" type="checkbox" name="@(name)[@(count)].Tue" id="@(name)[@(count)]_Tue" value="true" checked="@item.Tue" /><label for="@(name)[@(count)]_Tue"></label></div></td>
+        <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Wed" type="checkbox" name="@(name)[@(count)].Wed" id="@(name)[@(count)]_Wed" value="true" checked="@item.Wed" /><label for="@(name)[@(count)]_Wed"></label></div></td>
+        <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Thu" type="checkbox" name="@(name)[@(count)].Thu" id="@(name)[@(count)]_Thu" value="true" checked="@item.Thu" /><label for="@(name)[@(count)]_Thu"></label></div></td>
+        <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Fri" type="checkbox" name="@(name)[@(count)].Fri" id="@(name)[@(count)]_Fri" value="true" checked="@item.Fri" /><label for="@(name)[@(count)]_Fri"></label></div></td>
+        <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Sat" type="checkbox" name="@(name)[@(count)].Sat" id="@(name)[@(count)]_Sat" value="true" checked="@item.Sat" /><label for="@(name)[@(count)]_Sat"></label></div></td>
+        <td class="text-center pb-4"><div class="checkbox checkbox-success"><input class="day-check" data-day="Sun" type="checkbox" name="@(name)[@(count)].Sun" id="@(name)[@(count)]_Sun" value="true" checked="@item.Sun" /><label for="@(name)[@(count)]_Sun"></label></div></td>
+        <td class="text-center"><button class="btn-close p-2 btn-light remove-button" onclick="_removeRow(@(count));"></button></td>
+        <td class="text-center p-1"><a class="collapse-button"><i class="fa fa-chevron-left p-3"></i></a></td>
+    </tr>
+    <tr id="collapse@(count)" class="collapse collapse-row" data-count="@count">
+        <td colspan="10" class="bg-light">
+            <div class="text-muted fw-bold ps-3 pb-2">Localities <div class="d-inline-block badge badge-info">@Model.Localities.Where(m => m.Pincode == item.Pincode).Count()</div></div>
+            <div class="d-flex flex-wrap mx-2 small localities">
+                @foreach (var l in Model.Localities.Where(m => m.Pincode == item.Pincode))
+                {
+                    <span class="borders rounded-pill px-2 m-1 py-1">@l.Name</span>
+                }
+            </div>
+        </td>
+    </tr>
+    count = count + 1;
+}
+<script>
+    $(function () {
+        $("#tableBody tr.pincode-row").click(function (e) {
+            if ($(e.target).is('input.day-check') || $(e.target).is('label')) return true;
+            var count = $(this).closest("tr.pincode-row").data("count");
+            $("#collapse"+count).collapse('toggle');
+        });
+
+        $('.collapse').on("show.bs.collapse", function () {
+            var trid = "#tr" + $(this).data("count");
+            $(trid).find('.collapse-button i').removeClass('fa-chevron-left').addClass('fa-chevron-down');
+        });
+
+        $('.collapse').on("hide.bs.collapse", function () {
+            var trid = "#tr" + $(this).data("count");
+            $(trid).find('.collapse-button i').removeClass('fa-chevron-down').addClass('fa-chevron-left');
+        });
+    });
+
+
+      function _removeRow(id) {
+             var controlToBeRemoved = '#tr' + id;
+             var collapseToBeRemoved = '#collapse' + id;
+             var i = 0;
+
+             $(controlToBeRemoved).nextAll("tr:odd").each(function (index) {
+                i = parseInt(id) + index;
+                //for pincode row
+                 $(this).attr('id', 'tr' + i + '');
+                 $(this).attr('data-count', '' + i + '');
+                $(this).find('.pincode-field').attr('name', '@(name)[' + i + '].Pincode');
+                $(this).attr('data-bs-target','#collapse' + i + '');
+                $(this).attr('aria-controls', 'collapse' + i + '');
+                _changeNameAndIdOfInputAndLabel($(this), "Mon", i);
+                _changeNameAndIdOfInputAndLabel($(this), "Tue", i);
+                _changeNameAndIdOfInputAndLabel($(this), "Wed", i);
+                _changeNameAndIdOfInputAndLabel($(this), "Thu", i);
+                _changeNameAndIdOfInputAndLabel($(this), "Fri", i);
+                _changeNameAndIdOfInputAndLabel($(this), "Sat", i);
+                _changeNameAndIdOfInputAndLabel($(this), "Sun", i);
+                $(this).find('.remove-button').attr('onclick', '_removeRow(' + i + ')');
+
+                //for collapse row
+                $(this).next().attr('id', 'collapse' + i + '');
+                $(this).next().attr('data-count', '' + i + '');
+            });
+
+             $(controlToBeRemoved).remove();
+             $(collapseToBeRemoved).remove();
+    }
+
+      function _changeNameAndIdOfInputAndLabel(selector, day, i) {
+            var inside = i + 1;
+            selector.find('input[name="@(name)[' + inside + '].' + day + '"]').attr('name', '@(name)[' + i + '].' + day + '');
+            selector.find('input[id="@(name)[' + inside + ']_' + day + '"]').attr('id', '@(name)[' + i + ']_' + day + '');
+            selector.find('label[for="@(name)[' + inside + ']_' + day + '"]').attr('for', '@(name)[' + i + ']_' + day + '');
+    }
+
+</script>

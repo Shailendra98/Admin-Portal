@@ -18,7 +18,7 @@ using TKW.Infrastructure.Data.Queries;
 
 namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal
 {
-    public class AddPincodeNumberModel : PageModel
+    public class PincodeDetailsModel : PageModel
     {
         private readonly IEmployeeQueries _employeeQueries;
 
@@ -29,18 +29,21 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal
         [BindProperty]
         public PincodeModel PincodeModel { get; set; }
 
-        public AddPincodeNumberModel(IEmployeeQueries employeeQueries,IAreaQueries areaQueries,IPincodeService pincodeService)
+        public PincodeDetailsModel(IEmployeeQueries employeeQueries,IAreaQueries areaQueries,IPincodeService pincodeService)
         {
             _employeeQueries = employeeQueries;
             _areaQueries = areaQueries;
             _pincodeService = pincodeService;
-            PincodeModel = new PincodeModel() { };
+            
         }
 
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
 
-      
+        [BindProperty(SupportsGet = true)]
+        public int PincodeNo { get; set; }
+
+
         public string ErrorMessage { get; set; }
 
         public List<ApplicationCore.Contexts.AreaContext.DTOs.LocalityModel> Localities { get; set; }
@@ -50,10 +53,12 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal
         public bool IsDone { get; set; }
      
 
-        public async Task<IActionResult> OnGetAsync(int PincodeNo,CancellationToken cancellationToken)
+        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)
         {
-            PincodeModel.Pincode = PincodeNo;
-            
+            PincodeModel = new PincodeModel() {
+                Pincode = PincodeNo,
+            };
+
             Managers = new SelectList(await _employeeQueries.EmployeesOfFranchiseAsync(Id, new List<int> { UserRole.PickupManager.Id, UserRole.FranchiseAdmin.Id }, new List<int> { EmployeeStatus.Active.Id }, cancellationToken), "Id", "Name",PincodeModel.ManagerId);
             Localities = await _areaQueries.LocalitiesByPincodeAsync(PincodeNo, cancellationToken);
             return Page();
@@ -70,6 +75,8 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal
                 }
                 ErrorMessage = newpincodeNumber.Error.Message;     
             }
+            Managers = new SelectList(await _employeeQueries.EmployeesOfFranchiseAsync(Id, new List<int> { UserRole.PickupManager.Id, UserRole.FranchiseAdmin.Id }, new List<int> { EmployeeStatus.Active.Id }, cancellationToken), "Id", "Name", PincodeModel.ManagerId);
+            Localities = await _areaQueries.LocalitiesByPincodeAsync(PincodeNo, cancellationToken);
             return Page();
         }
     }

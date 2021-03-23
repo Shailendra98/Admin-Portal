@@ -75,8 +75,7 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages
                     return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'> Pincodes has been updated!<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>");
                 }
                 ErrorMessage = result.Error.Message;
-            }
-            else{ 
+            }else { 
                 ErrorMessage = string.Join("; " ,ModelState.Values.SelectMany(m => m.Errors).Select(m => m.ErrorMessage));
             }
             return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'>" + ErrorMessage + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>");

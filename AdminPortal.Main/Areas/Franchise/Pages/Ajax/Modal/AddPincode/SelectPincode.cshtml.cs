@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal
 {
-    public class PincodeNumberModel : PageModel
+    public class SelectPincodeModel : PageModel
     {
         [BindProperty]
         [Required(ErrorMessage = "Pincode is required.")]
@@ -22,7 +22,7 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal
         }
         public IActionResult OnPost()
         {
-            if (ModelState.IsValid) return RedirectToPage("AddPincodeNumber", new { Id, PincodeNo });
+            if (ModelState.IsValid) return RedirectToPage("PincodeDetails", new { Id, PincodeNo });
             return Page();
         }
     }

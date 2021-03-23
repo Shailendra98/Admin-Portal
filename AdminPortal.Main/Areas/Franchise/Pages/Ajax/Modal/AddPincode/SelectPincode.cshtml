@@ -1,13 +1,13 @@
 ﻿@page "{Id:int}"
-@model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal.PincodeNumberModel
+@model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal.SelectPincodeModel
 @{
 }
 <modal-header title="Add Pincode" close-button="true"></modal-header>
 <form method="post"
       data-ajax="true"
-      data-ajax-url="@Url.Page("PincodeNumber")"
+      data-ajax-url="@Url.Page("SelectPincode",new { Model.Id })"
       data-ajax-method="POST"
-      data-ajax-update="#ActionModalPincodeContent">
+      data-ajax-update="#ActionModalContent">
     <modal-body>
         <div class="row justify-content-center">
             <div class="col-md-6">
