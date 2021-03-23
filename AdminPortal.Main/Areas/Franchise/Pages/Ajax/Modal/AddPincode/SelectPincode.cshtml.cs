@@ -12,7 +12,7 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal
     {
         [BindProperty]
         [Required(ErrorMessage = "Pincode is required.")]
-        public int PincodeNo { get; set; }
+        public int? PincodeNo { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }

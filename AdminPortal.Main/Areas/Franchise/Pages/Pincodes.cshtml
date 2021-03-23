@@ -6,7 +6,7 @@
   
 }
 <pagetitle title="Franchise Pincodes" description="Manage pincodes of the franchise">
-    <a data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddPincode/SelectPincode",new { Model.Id })" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Pincode</a>
+    <a data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("/Ajax/Modal/AddPincode/SelectPincode",new { Model.Id })" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Pincode</a>
 </pagetitle>
 
 <div class="content">
@@ -144,10 +144,10 @@
     <script>
         $(function () {
               $("#ActionModalContent").on("action.done", function () {
-                  $("#tableBody").load("@Url.Page("Ajax/PincodeDays", new { Model.Id })");
+                  $("#tableBody").load("@Url.Page("/Ajax/PincodeDays", new { Model.Id })");
               });
 
-             $("#tableBody").load("@Url.Page("Ajax/PincodeDays", new { Model.Id })");
+             $("#tableBody").load("@Url.Page("/Ajax/PincodeDays", new { Model.Id })");
 
             $("#@Html.IdFor(m=>m.ManagerId)").select2();
 
