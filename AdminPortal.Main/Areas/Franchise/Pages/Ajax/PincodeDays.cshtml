@@ -38,8 +38,7 @@
     $(function () {
         $("#tableBody tr.pincode-row").click(function (e) {
             if ($(e.target).is('input.day-check') || $(e.target).is('label')) return true;
-            var count = $(this).closest("tr.pincode-row").data("count");
-            $("#collapse"+count).collapse('toggle');
+            $(this).next().collapse('toggle');
         });
 
         $('.collapse').on("show.bs.collapse", function () {
