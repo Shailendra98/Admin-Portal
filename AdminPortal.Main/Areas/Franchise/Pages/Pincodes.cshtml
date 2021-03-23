@@ -2,130 +2,18 @@
 @model TKW.AdminPortal.Areas.Franchise.Pages.PincodesModel
 @{
     ViewBag.Title = "Franchise Pincodes";
-    
-  
+
 }
 <pagetitle title="Franchise Pincodes" description="Manage pincodes of the franchise">
-    <a data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("/Ajax/Modal/AddPincode/SelectPincode",new { Model.Id })" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Pincode</a>
+    <a data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddPincode/SelectPincode",new { Model.Id })" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Pincode</a>
 </pagetitle>
 
 <div class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="hpanel">
-                <div class="panel-body p-0" id="panel">
-                    <span id="return_message" role="dialog" aria-hidden="true"></span>
-                    <form method="post"
-                          data-ajax="true"
-                          data-ajax-method="post"
-                          data-ajax-begin="$('#franchisePincodeFieldset').attr('disabled','');"
-                          data-ajax-complete="$('#franchisePincodeFieldset').removeAttr('disabled');"
-                          data-ajax-update="#return_message">
-                        <fieldset id="franchisePincodeFieldset">
-
-                            <div class="row p-2">
-                                <div class="col-md-9">
-                                    <div class="h3 ps-1">
-                                        @Model.FranchiseDetail.Name
-                                    </div>
-                                </div>
-                                <div class="col-md-3 py-2">
-                                    <div class="input-group">
-                                        <input type="text" placeholder="Search Pincodes and Localities" class="form-control" id="searchPincodeAndLocalities" />
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div>
-                                <table class="table-responsive table-hover table vertical-mid-table mb-0">
-                                    <thead class="border-bottom border-top pb-1">
-                                        <tr>
-                                            <th class="text-center align-middle h6" style="width:12%;">Pincode</th>
-                                            <th class="text-center font-normal pb-4" style="width:11%;">
-                                                Monday
-                                                <div class="checkbox checkbox-success ps-3">
-                                                    <input type="checkbox" value="true" data-day="Mon" class="check-all" id="check_all_Mon" @(Model.PincodeList.All(m => m.Mon) ? "checked" : "") />
-                                                    <label for="check_all_Mon"></label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center font-normal pb-4" style="width:11%;">
-                                                Tuesday
-                                                <div class="checkbox checkbox-success ps-3">
-                                                    <input type="checkbox" value="true" data-day="Tue" class="check-all" id="check_all_Tue" @(Model.PincodeList.All(m => m.Tue) ? "checked" : "") />
-                                                    <label for="check_all_Tue"></label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center font-normal pb-4" style="width:11%;">
-                                                Wednesday
-                                                <div class="checkbox checkbox-success ps-3">
-                                                    <input type="checkbox" value="true" data-day="Wed" class="check-all" id="check_all_Wed" @(Model.PincodeList.All(m => m.Wed) ? "checked" : "") />
-                                                    <label for="check_all_Wed"></label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center font-normal pb-4" style="width:11%;">
-                                                Thursday
-                                                <div class="checkbox checkbox-success ps-3">
-                                                    <input type="checkbox" value="true" data-day="Thu" class="check-all" id="check_all_Thu" @(Model.PincodeList.All(m => m.Thu) ? "checked" : "") />
-                                                    <label for="check_all_Thu"></label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center font-normal pb-4" style="width:11%;">
-                                                Friday
-                                                <div class="checkbox checkbox-success ps-3">
-                                                    <input type="checkbox" value="true" data-day="Fri" class="check-all" id="check_all_Fri" @(Model.PincodeList.All(m => m.Fri) ? "checked" : "") />
-                                                    <label for="check_all_Fri"></label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center font-normal pb-4" style="width:11%;">
-                                                Saturday
-                                                <div class="checkbox checkbox-success ps-3">
-                                                    <input type="checkbox" value="true" data-day="Sat" class="check-all" id="check_all_Sat" @(Model.PincodeList.All(m => m.Sat) ? "checked" : "") />
-                                                    <label for="check_all_Sat"></label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center font-normal pb-4" style="width:11%;">
-                                                Sunday
-                                                <div class="checkbox checkbox-success ps-3">
-                                                    <input type="checkbox" value="true" data-day="Sun" class="check-all" id="check_all_Sun" @(Model.PincodeList.All(m => m.Sun) ? "checked" : "") />
-                                                    <label for="check_all_Sun"></label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center align-middle" style="width:5%;">
-                                                <button class="btn-close btn-xs pe-4 btn-light invisible"></button>
-                                            </th>
-                                            <th class="text-center align-middle h6" style="width:6%;"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tableBody">
-                                        <tr>
-                                            <td colspan="10">
-                                                <div class="text-center">
-                                                    <img src="~/images/ripple.gif" alt="Loading.." />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="p-2">
-                                <div class="px-3 d-inline-block"><label asp-for="ManagerId" class="col-form-label float-end fw-bold">Default Manager:</label></div>
-                                <div class="d-inline-block w-25">
-                                    <select class="form-control" asp-for="ManagerId" asp-items="Model.Managers" data-placeholder="Select Manager">
-                                    </select>
-                                    <span asp-validation-for="ManagerId" class="text-danger small"></span>
-                                </div>
-                                <button class="btn btn-success me-2 float-end" type="submit" style="width:20%;">Update</button>
-                            </div>
-
-                        </fieldset>
-                    </form>
+            <div class="hpanel" id="tablePanel">
+                <div class="text-center">
+                    <img src="~/images/ripple.gif" alt="Loading.." />
                 </div>
             </div>
         </div>
@@ -144,109 +32,10 @@
     <script>
         $(function () {
               $("#ActionModalContent").on("action.done", function () {
-                  $("#tableBody").load("@Url.Page("/Ajax/PincodeDays", new { Model.Id })");
+                  $("#tablePanel").load("@Url.Page("/Ajax/PincodeDays", new { Model.Id })");
               });
-
-             $("#tableBody").load("@Url.Page("/Ajax/PincodeDays", new { Model.Id })");
-
-            $("#@Html.IdFor(m=>m.ManagerId)").select2();
-
-            $(".check-all").click(function () {
-                var day = $(this).attr("data-day");
-                var checked = $(this).is(":checked");
-                $("#tableBody").find(".day-check[data-day='" + day + "']").prop("checked", checked);
-            });
-
-            $("form input").keydown(function (e) {
-                if (e.keyCode == 13) {
-                    e.preventDefault();
-                }
-            });
-
-            $("#searchPincodeAndLocalities").on('keyup', function () {
-                var searchBox = $(this);
-                var val = searchBox.val();
-                val = val.toLowerCase();
-
-                if ($.isNumeric(val) || val == "") {
-                    $("#tableBody tr.pincode-row").each(function (i) {
-                        var icon = $(this).find('.collapse-button i');
-                        icon.removeClass('fa-chevron-down');
-                        icon.addClass('fa-chevron-left');
-                    });
-                } else {
-                    $("#tableBody tr.pincode-row").each(function (i) {
-                        var icon = $(this).find('.collapse-button i');
-                        icon.removeClass('fa-chevron-left');
-                        icon.addClass('fa-chevron-down');
-                    });
-                }
-                if (val == ""){
-                    $("#tableBody tr").each(function (i) {
-                        if ($(this).hasClass('pincode-row')) {
-                            $(this).show();
-                        } else {
-                            $(this).removeClass('show');
-                        }
-                    });
-                } else {
-
-                    $("#tableBody tr.pincode-row").each(function (i) {
-                        var val1 = "";
-                        var matched = false;
-                        var lookinto = [{ elem: "td", type: "text" }];
-                        for (var a in lookinto){
-                            if (lookinto[a].type === 'text') {
-                                val1 = $(this).find(lookinto[a].elem).text();
-                            } else if (lookinto[a].type === 'attr') {
-                                val1 = $(this).find(lookinto[a].elem).attr(lookinto[a].attr);
-                            }
-                            val1 = val1.toLowerCase();
-                            matched = val1.includes(val);
-                            if (matched) break;
-                        }
-                        if (!matched) {
-                            $(this).hide();
-                        } else {
-                            $(this).show();
-                        }
-
-                    });
-
-                    $("#tableBody tr.collapse-row").each(function (i) {
-                        var val1 = "";
-                        var matched = false;
-                        var lookinto = [{ elem: "span", type: "text" }];
-                        for (var a in lookinto) {
-                            if (lookinto[a].type === 'text') {
-                                val1 = $(this).find(lookinto[a].elem).text();
-                            } else if (lookinto[a].type === 'attr') {
-                                val1 = $(this).find(lookinto[a].elem).attr(lookinto[a].attr);
-                            }
-                            val1 = val1.toLowerCase();
-                            matched = val1.includes(val);
-                            if (matched) break;
-                        }
-                        if ($(this).hasClass('collapse')) {
-                            if (!matched) {
-                                $(this).removeClass('show');
-                            } else {
-                                var trId = $(this).data("count");
-                                $("#tr" + trId).show();
-                                $(this).addClass('show');
-                                if ($.isNumeric(val)) {
-                                    var icon = $("#tr" + trId).find('.collapse-button i');
-                                    icon.removeClass('fa-chevron-left');
-                                    icon.addClass('fa-chevron-down');
-                                }
-                            }
-                        }
-                    });
-                }
-            });
-            
+            $("#tablePanel").load("@Url.Page("/Ajax/PincodeDays", new { Model.Id })");
         });
-
     </script>
 }
 @section Footer{
