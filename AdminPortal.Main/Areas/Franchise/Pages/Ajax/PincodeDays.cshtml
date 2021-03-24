@@ -1,8 +1,8 @@
 ﻿@page "{Id:int}"
 @model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.PincodeDaysModel
 @{
-    var name = Html.NameFor(m => m.AddPincode);
-    var id = Html.IdFor(m => m.AddPincode);
+    var name = Html.NameFor(m => m.PincodeList);
+    var id = Html.IdFor(m => m.PincodeList);
     var count = 0;
 }
 
@@ -147,8 +147,6 @@
         $("#tableBody tr.pincode-row").click(function (e) {
             if ($(e.target).is('input.day-check') || $(e.target).is('label')) return true;
             $(this).next().collapse('toggle');
-            //var count = $(this).closest("tr.pincode-row").data("count");
-            //$("#collapse" + count).collapse('toggle');
         });
 
           $('tr.collapse').on("show.bs.collapse", function () {
@@ -200,59 +198,51 @@
                         if ($(this).hasClass('pincode-row')) {
                             $(this).show();
                         } else {
-                            $(this).removeClass('show');
+                            $(this).collapse('hide');
                         }
                     });
                 } else {
 
-                    $("#tableBody tr.pincode-row").each(function (i) {
-                        var val1 = "";
-                        var matched = false;
-                        var lookinto = [{ elem: "td", type: "text" }];
-                        for (var a in lookinto){
-                            if (lookinto[a].type === 'text') {
-                                val1 = $(this).find(lookinto[a].elem).text();
-                            } else if (lookinto[a].type === 'attr') {
-                                val1 = $(this).find(lookinto[a].elem).attr(lookinto[a].attr);
+                     $("#tableBody tr.pincode-row").each(function (i) {
+                         var matched = false;
+                         var val1 = "";
+                         $(this).children().each(function () {
+                             val1 = $(this).text();
+                             matched = val1.includes(val);
+                             val1 = val1.toLowerCase();
+                            if (matched) {
+                                return false;
                             }
-                            val1 = val1.toLowerCase();
-                            matched = val1.includes(val);
-                            if (matched) break;
-                        }
+                        });
                         if (!matched) {
                             $(this).hide();
                         } else {
                             $(this).show();
                         }
-
                     });
 
-                    $("#tableBody tr.collapse-row").each(function (i) {
-                        var val1 = "";
+                     $("#tableBody tr.collapse-row").each(function (i) {
                         var matched = false;
-                        var lookinto = [{ elem: "span", type: "text" }];
-                        for (var a in lookinto) {
-                            if (lookinto[a].type === 'text') {
-                                val1 = $(this).find(lookinto[a].elem).text();
-                            } else if (lookinto[a].type === 'attr') {
-                                val1 = $(this).find(lookinto[a].elem).attr(lookinto[a].attr);
-                            }
-                            val1 = val1.toLowerCase();
+                         var val1 = "";
+                         $(this).find('span').each(function () {
+                             val1 = $(this).text();
+                             val1 = val1.toLowerCase();
                             matched = val1.includes(val);
-                            if (matched) break;
-                        }
-                        if ($(this).hasClass('collapse')) {
-                            if (!matched) {
-                                $(this).removeClass('show');
-                            } else {
-                                var trId = $(this).data("count");
-                                $("#tr" + trId).show();
-                                $(this).addClass('show');
-                                if ($.isNumeric(val)) {
-                                    var icon = $("#tr" + trId).find('.collapse-button i');
-                                    icon.removeClass('fa-chevron-left');
-                                    icon.addClass('fa-chevron-down');
-                                }
+                            if (matched) {
+                                return false;
+                            }
+                        });
+
+                         if (!matched) {
+                             $(this).removeClass('show');
+                        } else {
+                            var trId = $(this).attr('data-count');
+                             $("#tr" + trId).show();
+                             $(this).addClass('show');
+                            if ($.isNumeric(val)) {
+                                var icon = $("#tr" + trId).find('.collapse-button i');
+                                icon.removeClass('fa-chevron-left');
+                                icon.addClass('fa-chevron-down');
                             }
                         }
                     });

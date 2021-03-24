@@ -49,7 +49,6 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax
         public FranchiseModel FranchiseDetail { get; set; }
 
         [BindProperty]
-        public List<AddPincodeModel> AddPincode { get; set; }
 
         public List<PincodeModel> PincodeList { get; set; }
 
@@ -68,7 +67,7 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax
         {
             if (ModelState.IsValid)
             {
-                var result = await _pincodeService.UpdatePincodesOfFranchiseAsync(Id, AddPincode.Select(m => (m.Pincode, ManagerId!.Value, new WorkingDays(m.Mon, m.Tue, m.Wed, m.Thu, m.Fri, m.Sat, m.Sun))).ToList(), cancellationToken);
+                var result = await _pincodeService.UpdatePincodesOfFranchiseAsync(Id, PincodeList.Select(m => (m.Pincode, ManagerId!.Value, new WorkingDays(m.Mon, m.Tue, m.Wed, m.Thu, m.Fri, m.Sat, m.Sun))).ToList(), cancellationToken);
                 if (result.IsSuccess)
                 {
                     IsDone = true;
