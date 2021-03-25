@@ -1,0 +1,43 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal.SelectPincodeModel
+@{
+}
+<modal-header title="Add Pincode" close-button="true"></modal-header>
+<form method="post"
+      data-ajax="true"
+      data-ajax-url="@Url.Page("SelectPincode",new { Model.Id })"
+      data-ajax-method="POST"
+      data-ajax-update="#ActionModalContent">
+    <modal-body>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <label asp-for="PincodeNo" class="col-form-label fw-bold">Pincode</label>
+                <select asp-for="PincodeNo" class="form-control" placeholder="Select Pincode">
+                </select>
+            </div>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="submit" class="btn btn-success">Proceed</button>
+    </modal-footer>
+</form>
+<script>
+    $(function () {
+        $("#@Html.IdFor(m => m.PincodeNo)").select2AutoParent(
+            select2SearchResponseAjaxConfiguration("@Url.Action("Pincodes","Address")", formatPincode, function (pincode) { return pincode.text || pincode.id + ""; }, { id: 0, text: "Select pincode" })
+        );
+    });
+
+    function formatPincode(pincode) {
+        if (pincode.loading) {
+            return pincode.text;
+        }
+        var markup = "<div class='media'>"
+            + "<div class='media-body'>"
+            + "<div class='media-heading'>" + pincode.id + "</div>"
+            + "<p class='small'>" + pincode.cityName + ", " + pincode.stateName + "</p>"
+            + "</div>"
+            + "</div>";
+        return markup;
+    }
+</script>

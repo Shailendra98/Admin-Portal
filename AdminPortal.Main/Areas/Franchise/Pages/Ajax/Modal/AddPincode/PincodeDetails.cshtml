@@ -1,0 +1,110 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Franchise.Pages.Ajax.Modal.PincodeDetailsModel
+
+@{
+    var pincodeNumber = Model.PincodeModel.Pincode;
+}
+
+<modal-header title="Add Pincode" close-button="true"></modal-header>
+
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Pincode has been added.</div>
+        </div>
+    </modal-body>
+    <script>
+        $("#ActionModalContent").trigger(
+            {
+                type: "action.done",
+            });
+    </script>
+
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("PincodeDetails",new { Model.Id })"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <modal-body>
+
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label asp-for="PincodeModel.Pincode" class="col-form-label fw-bold"></label>
+                    <input asp-for="PincodeModel.Pincode" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="mb-2">
+        
+                <div class="text-muted fw-bold ps-1 pb-2">Localities <span class="badge badge-info">@Model.Localities.Where(m => m.Pincode == pincodeNumber).Count()</span></div>
+                <div class="d-flex flex-wrap small">
+                    @foreach (var l in Model.Localities.Where(m => m.Pincode == pincodeNumber))
+                    {
+                        <span class="borders rounded-pill px-2 m-1 py-1">@l.Name</span>
+                    }
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <div class="col-sm-6">
+                    <label class="col-form-label fw-bold">Manager</label>
+                    <select asp-for="PincodeModel.ManagerId" asp-items="Model.Managers" class="form-control" placeholder="Select Manager"></select>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label class="col-form-label fw-bold">Days </label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" asp-for="PincodeModel.Mon" type="checkbox" checked />
+                        <label asp-for="PincodeModel.Mon" class="form-check-label">Mon</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" asp-for="PincodeModel.Tue" type="checkbox" checked />
+                        <label asp-for="PincodeModel.Tue" class="form-check-label">Tue</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" asp-for="PincodeModel.Wed" type="checkbox" checked />
+                        <label asp-for="PincodeModel.Wed" class="form-check-label">Wed</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" asp-for="PincodeModel.Thu" type="checkbox" checked />
+                        <label asp-for="PincodeModel.Thu" class="form-check-label">Thu</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" asp-for="PincodeModel.Fri" type="checkbox" checked />
+                        <label asp-for="PincodeModel.Fri" class="form-check-label">Fri</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" asp-for="PincodeModel.Sat" type="checkbox" checked />
+                        <label asp-for="PincodeModel.Sat" class="form-check-label">Sat</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" asp-for="PincodeModel.Sun" type="checkbox" checked />
+                        <label asp-for="PincodeModel.Sun" class="form-check-label">Sun</label>
+                    </div>
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <button class="btn btn-success" type="submit">Add Pincode</button>
+        </modal-footer>
+    </form>
+    <script>
+        $(function () {
+            $("#@Html.IdFor(m => m.PincodeModel.ManagerId)").select2AutoParent();
+        });
+    </script>
+}
