@@ -3318,6 +3318,9 @@ form.was-validated select:valid ~ .select2-container--bootstrap4 .select2-select
     border-top-left-radius: 200px;
     border-top-right-radius: 200px; }
 
+.text-light-green {
+  color: #62cb31; }
+
 @-webkit-keyframes placeholderShimmer {
   0% {
     background-position: -468px 0; }

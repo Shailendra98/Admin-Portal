@@ -2,78 +2,261 @@
 @using AdminPortal.Shared.Models
 @inject HttpClient http
 
-@if (model != null)
-{
-    <div class="mb-3">
-        <h6 class="fw-bold text-secondary small">Vehicle & Pickup Boy</h6>
-        <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
-            <div class="card-body pt-4">
+
+<div class="mb-3">        
+    <div class="card rounded-0 border-0 shadow-sm mt-1">
+        <div class="card-body p-0">
+
+            @*<ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Unassigned Requests
+                        <div class="position-relative">
+                            @if (model != null)
+                            {
+                                @if (model.Unassigned != 0)
+                                {<Chart Config="_configUnassigned"></Chart>
+                                    <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
+                                        <span class="h6 fw-bold text-secondary">@(model.Unassigned)</span>
+                                    </div>
+                                }
+                                else
+                                { <Chart Config="_successChart"></Chart>
+                                    <div class="position-absolute" style="top:15%; left: 50%; transform: translate(-50%, 50%);">
+                                        <i class="fa fa-4x fa-check-circle text-light-green"></i>
+                                    </div>
+                                }
+
+                            }
+                            else
+                            {
+                                <div class="shimmer circle-sm"></div>
+                            }
+                        </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Idle PickupBoys
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.Unassigned != 0)
+                            {<Chart Config="_configUnassigned"></Chart>
+                                <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@(model.Unassigned)</span>
+                                </div>
+                            }
+                            else
+                            { <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:15%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-4x fa-check-circle text-light-green"></i>
+                                </div>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle-sm"></div>
+                        }
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Idle Vehicles
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.TotalPickupBoy - model.ActivePickupBoy != 0)
+                            {
+                                <Chart Config="_configPickupBoy"></Chart>
+                                <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@(model.TotalPickupBoy - model.ActivePickupBoy)</span>
+                                </div>
+                            }
+                            else
+                            { <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:15%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-4x fa-check-circle text-light-green"></i>
+                                </div>
+                            }
+
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle-sm"></div>
+                        }
+                    </div>
+                </li>
+            </ul>*@
+            <div class="mb-2">
+                    <div class="card border-0 px-2 shadow-sm">
+                        <div class="row">
+                            <div class="col-8 m-auto">
+                                <div class="card-body px-2">
+                                    <div class="card-title fw-bold text-nowrap small">Unassigned Requests</div>
+                                    @if (model != null)
+                                    {<small>@(model.Unassigned) requests are unassigned out of @(model.TodaysRequest)</small>}
+                                    else
+                                    { <small class="shimmer line"></small>
+                                        <small class="shimmer line"></small>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+
+                                <div class="position-relative">
+                                    @if (model != null)
+                                    {
+                                        @if (model.Unassigned != 0)
+                                        {<Chart Config="_configUnassigned"></Chart>
+                                            <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                                <span class="h6 fw-bold text-secondary">@(model.Unassigned)</span>
+                                            </div>
+                                        }
+                                        else
+                                        { <Chart Config="_successChart"></Chart>
+                                            <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                                <i class="fa fa-4x fa-check-circle text-light-green"></i>
+                                            </div>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <div class="shimmer circle-sm"></div>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 <div class="mb-2">
-                    <div class="pb-2">
-                        <h6 class="fw-bold text-secondary small">Active PickupBoys</h6>
                         <div class="card border-0 px-2 shadow-sm">
                             <div class="row">
                                 <div class="col-8 m-auto">
                                     <div class="card-body px-2">
-                                        <small>@model.ActivePickupBoy PickupBoy are active out of @model.TotalVehicle</small>
+                                        <div class="card-title fw-bold text-nowrap small">Idle PickupBoys</div>
+                                        @if (model != null)
+                                        {
+                                            <small>@(model.TotalPickupBoy - model.ActivePickupBoy) PickupBoy are Idle out of @model.TotalPickupBoy</small>
+                                        }
+                                        else
+                                        {
+                                            <small class="shimmer line"></small>
+                                            <small class="shimmer line"></small>
+                                        }
+
                                     </div>
                                 </div>
                                 <div class="col-4 m-auto">
 
                                     <div class="position-relative">
-                                        <Chart Config="_configPickupBoy"></Chart>
-                                        <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                            <span class="h6 fw-bold text-secondary">@model.ActivePickupBoy</span>
-                                        </div>
+                                        @if (model != null)
+                                        {
+                                            @if (model.TotalPickupBoy - model.ActivePickupBoy != 0)
+                                            {
+                                                <Chart Config="_configPickupBoy"></Chart>
+                                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                                    <span class="h6 fw-bold text-secondary">@(model.TotalPickupBoy - model.ActivePickupBoy)</span>
+                                                </div>
+                                            }
+                                            else
+                                            { <Chart Config="_successChart"></Chart>
+                                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                                    <i class="fa fa-4x fa-check-circle text-light-green"></i>
+                                                </div>
+                                            }
+
+
+                                        }
+                                        else
+                                        {
+                                            <div class="shimmer circle-sm"></div>
+                                        }
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    <div>
+                        <div class="card border-0 px-2 shadow-sm">
+                            <div class="row">
+                                <div class="col-8 m-auto">
+                                    <div class="card-body px-2">
+                                        <div class="card-title fw-bold text-nowrap small">Idle Vehicles</div>
+                                        @if (model != null)
+                                        {<small>@(model.TotalVehicle - model.ActiveVehicle) Vehicle are Idle out of @model.TotalVehicle</small> }
+                                    else
+                                    { <small class="shimmer line"></small>
+                                        <small class="shimmer line"></small>
+                                    }
+                                    </div>
+                                </div>
+                                <div class="col-4 m-auto">
+
+                                    <div class="position-relative">
+                                        @if (model != null)
+                                        {
+                                            @if (model.TotalVehicle - model.ActiveVehicle != 0)
+                                            {
+                                                <Chart Config="_configVehicle"></Chart>
+                                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                                    <span class="h6 fw-bold text-secondary">@(model.TotalVehicle - model.ActiveVehicle)</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <Chart Config="_successChart"></Chart>
+                                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                                    <i class="fa fa-2x fa-check text-light-green"></i>
+                                                </div>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <div class="shimmer circle-sm"></div>
+                                        }
+
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <h6 class="fw-bold text-secondary small">Active Vehicle</h6>
-                        <div class="card border-0 px-2 shadow-sm">
-                            <div class="row">
-                                <div class="col-8 m-auto">
-                                    <div class="card-body px-2">
-                                        <small>@model.ActiveVehicle Vehicle are active out of @model.TotalVehicle</small>
-                                    </div>
-                                </div>
-                                <div class="col-4 m-auto">
-
-                                    <div class="position-relative">
-                                        <Chart Config="_configVehcle"></Chart>
-                                        <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                            <span class="h6 fw-bold text-secondary">@model.ActiveVehicle</span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                    <div class="d-flex justify-content-center mt-2">
+                        @if (model != null)
+                        {@if (model.TotalVehicle - model.ActiveVehicle > 0 || model.TotalPickupBoy - model.ActivePickupBoy > 0)
+                            {<a href="/PickupSession" class="btn btn-default btn-xs btn-outline btn-link text-decoration-none">Go to Pickup Session</a>}
+                    }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-}
+</div>
+
 @code{
 
-    VehicleAndpickupBoyModel model;
+    IdleVehiclePickupBoyModel model;
     private PieConfig _configPickupBoy;
-    private PieConfig _configVehcle;
+    private PieConfig _configVehicle;
+    private PieConfig _configUnassigned;
+    private PieConfig _successChart;
     protected async override void OnAfterRender(bool firstRender)
     {
 
-        model = await http.GetFromJsonAsync<VehicleAndpickupBoyModel>("api/GetRequestAddressTypeCountsOfFranchise");
+        model = await http.GetFromJsonAsync<IdleVehiclePickupBoyModel>("api/GetActiveVehiclePickupboyCount");
         base.OnAfterRender(firstRender);
-        this.LoadChartData();
-        StateHasChanged();
+        if (firstRender)
+        {
+            this.LoadChartData();
+            StateHasChanged();
+        }
+
     }
     private async Task LoadChartData()
     {
-        if(model!=null)
+        if (model != null)
         {
             _configPickupBoy = new PieConfig(true)
             {
@@ -85,7 +268,6 @@
                     MaintainAspectRatio = true,
                     CutoutPercentage = 80,
 
-                    Rotation = 181,
 
                     Tooltips = new Tooltips
                     {
@@ -108,19 +290,22 @@
                 }
             };
 
-            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] { model.TotalPickupBoy - model.ActivePickupBoy, model.ActivePickupBoy })
+
+            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] { model.TotalPickupBoy - model.ActivePickupBoy, model.ActiveVehicle })
             {
                 BackgroundColor = new[]
                 {
-                 ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
-                  ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
+                 ColorUtil.ColorString(243, 32, 19, 1),
+                 ColorUtil.ColorString(243, 32, 19, 0),
 
-            }
+                }
             };
 
 
             _configPickupBoy.Data.Datasets.Add(PickupBoydataset);
-            _configVehcle = new PieConfig(true)
+
+
+            _configVehicle = new PieConfig(true)
             {
 
 
@@ -130,7 +315,6 @@
                     MaintainAspectRatio = true,
                     CutoutPercentage = 80,
 
-                    Rotation = 181,
 
                     Tooltips = new Tooltips
                     {
@@ -155,15 +339,109 @@
             PieDataset<int> Vehicledataset = new PieDataset<int>(new[] { model.TotalVehicle - model.ActiveVehicle, model.ActiveVehicle })
             {
                 BackgroundColor = new[]
-        {
-               ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
-               ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
+                 {
+               ColorUtil.ColorString(243, 32, 19, 1), // Slice 1 aka "Red"
+               ColorUtil.ColorString(243, 32, 19, 0), // Slice 2 aka "Yellow"
 
-            }
+                }
             };
 
-            _configPickupBoy.Data.Datasets.Add(Vehicledataset);
+            _configVehicle.Data.Datasets.Add(Vehicledataset);
         }
+
+        _configUnassigned = new PieConfig(true)
+        {
+
+
+            Options = new PieOptions
+            {
+                AspectRatio = 1,
+                MaintainAspectRatio = true,
+                CutoutPercentage = 80,
+
+
+                Tooltips = new Tooltips
+                {
+                    Enabled = false,
+                },
+
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                    Position = Position.Right
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                    Text = "ChartJs.Blazor Pie Chart"
+                }
+
+            }
+        };
+
+
+        PieDataset<int> UnassignedVehicleDataset = new PieDataset<int>(new[] { model.Unassigned, model.TodaysRequest - model.Unassigned })
+        {
+
+            BackgroundColor = new[]
+            {
+                 ColorUtil.ColorString(243, 32, 19, 1),
+                 ColorUtil.ColorString(243, 32, 19, 0),
+
+            }
+        };
+
+
+        _configUnassigned.Data.Datasets.Add(UnassignedVehicleDataset);
+
+        _successChart = new PieConfig(true)
+        {
+
+
+            Options = new PieOptions
+            {
+                AspectRatio = 1,
+                MaintainAspectRatio = true,
+                CutoutPercentage = 80,
+
+
+                Tooltips = new Tooltips
+                {
+                    Enabled = false,
+                },
+
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                    Position = Position.Right
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                    Text = "ChartJs.Blazor Pie Chart"
+                }
+
+            }
+        };
+
+
+        PieDataset<int> SuccessChartDataset = new PieDataset<int>(new[] { 10 })
+        {
+
+            BackgroundColor = new[]
+            {
+                 ColorUtil.ColorString(98, 203, 49, 1),
+                 ColorUtil.ColorString(243, 32, 19, 0),
+
+            }
+        };
+
+
+        _successChart.Data.Datasets.Add(SuccessChartDataset);
 
 
     }
@@ -171,5 +449,6 @@
 
 
 }
+
 
 

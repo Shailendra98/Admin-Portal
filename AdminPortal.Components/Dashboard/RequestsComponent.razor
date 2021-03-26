@@ -1,50 +1,80 @@
 @using AdminPortal.Shared.Models
 @inject HttpClient http  
-@if(model!=null)
-            {
-<div class="mb-3">
-    <h6 class="fw-bold text-secondary">Requests</h6>
 
-    <div class="card border-0 shadow-sm">
+<div class="mb-3">
+    <small class="fw-bold text-secondary">Requests</small>
+
+    <div class="card border-0 shadow-sm mt-2">
         <div class="card-body">
             <div class="text-center">
-                <h3 class="text-secondary fw-bold mb-0"></h3>
-                <small>Today's Request</small>
+                @if (model != null)
+                {
+                    <h2 class="text-secondary fw-bold mb-0">@model.TodaysRequests</h2>
+                    <div>Today's Request</div>
+                }
+                else
+                {
+                    <div class="shimmer line"></div>
+                    <div class="shimmer line"></div>
+                }
+
             </div>
-            <div class="d-flex">
-                <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-warning mb-0 fw-bold">@model.Assigned</h6>
-                    <small class="fw-bold text-secondary">Assigned</small>
+            @if (model != null)
+            {
+                <div class="d-flex">
+                    <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
+                        <h4 class="text-warning mb-0 fw-bold">@model.Assigned</h4>
+                        <small class="fw-bold text-secondary">Assigned</small>
+                    </div>
+                    <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
+                        <h4 class="mb-0 fw-bold">@model.Rescheduled</h4>
+                        <small class="fw-bold text-secondary">Rescheduled</small>
+                    </div>
                 </div>
-                <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-secondary mb-0 fw-bold">@model.Unassigned</h6>
-                    <small class="fw-bold text-secondary"></small>
+            }
+            else
+            {
+                <div class="d-flex">
+                    <div class="card shimmer">
+
+                    </div>
+                    <div class="card shimmer">
+
+                    </div>
+
                 </div>
-            </div>
-            <div class="d-flex">
-                <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-success mb-0 fw-bold">@model.Handled</h6>
-                    <small class="fw-bold text-secondary">Completed</small>
+            }
+
+            @if (model != null)
+            {
+                <div class="d-flex">
+                    <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
+                        <h4 class="text-success mb-0 fw-bold">@(model.Handled + model.Onspot)</h4>
+                        <small class="fw-bold text-secondary text-nowrap">Completed</small>
+                    </div>
+                    <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
+                        <h4 class="text-danger mb-0 fw-bold">@model.Cancelled</h4>
+                        <small class="fw-bold text-secondary">Cancelled</small>
+                    </div>
                 </div>
-                <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="text-danger mb-0 fw-bold">@model.Cancelled</h6>
-                    <small class="fw-bold text-secondary">Cancelled</small>
+            }
+            else
+            {
+                <div class="d-flex">
+                    <div class="card shimmer">
+
+                    </div>
+                    <div class="card shimmer">
+
+                    </div>
+
                 </div>
-            </div>
-            <div class="d-flex">
-                <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="mb-0 fw-bold">@model.Onspot</h6>
-                    <small class="fw-bold text-secondary">by PickupBoy</small>
-                </div>
-                <div class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm">
-                    <h6 class="mb-0 fw-bold">@model.Rescheduled</h6>
-                    <small class="fw-bold text-secondary">Rescheduled</small>
-                </div>
-            </div>
+            }
+
         </div>
     </div>
 </div>
-            }
+
 
 
 @code {

@@ -6,7 +6,7 @@ namespace TKW.AdminPortal.Shared.Models
 {
     public class RequestCountsModel
     {
-        public int Unassigned { get; set; }
+        public int TodaysRequests { get; set; }
         public int Assigned { get; set; }
         public int Cancelled { get; set; }
         public int Handled { get; set; }

@@ -4,10 +4,11 @@ using System.Text;
 
 namespace TKW.AdminPortal.Shared.Models
 {
-    public class PurchaseSellExpenseModel
+    public class ExpenseModel
     {
-        public int PurchaseAmount { get; set; }
-        public int SellAmount { get; set; }
+        public int? ExpenseId { get; set; }
+        public string ExpenseName { get; set; }
+
         public int ExpenseAmount { get; set; }
     }
 }

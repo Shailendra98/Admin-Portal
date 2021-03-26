@@ -2,7 +2,9 @@
 @using TKW.AdminPortal.Components.SharedComponents
 @using System.Linq
 @namespace TKW.AdminPortal.Components.Dashboard
+
 @inject HttpClient http
+
 @if (model == null)
 {
 
@@ -13,10 +15,23 @@ else
         <div class="card-title">
 
         </div>
-        <div class="card-body">
+        <div class="card-body pt-0">
             <div class="float-end">
+
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        @selectedType
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var t in (RequestType[])Enum.GetValues(typeof(RequestType)))
+                        {
+                            <li><a class="dropdown-item" @onclick="()=> updateType(t)">@t</a></li>
+                        }
+                    </ul>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         @getLabelString(selectedLabel)
                     </button>
                     <ul class="dropdown-menu">
@@ -27,25 +42,14 @@ else
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        @selectedType
-                    </button>
-                    <ul class="dropdown-menu">
-                        @foreach (var t in (Type[])Enum.GetValues(typeof(Type)))
-                        {
-                            <li><a class="dropdown-item" @onclick="()=> updateType(t)">@t</a></li>
-                        }
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         @getFilterString(selectedFilterId)
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" @onclick="()=>updateFilterId(null)">All</a></li>
-                        @foreach (var f in selectedLabel == Labels.PaymentMethod ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.PreferredMethodId).Distinct())
+                        @foreach (var f in selectedLabel == Labels.Reason ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.ReasonId).Distinct())
                         {
-                            <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)" href="#">@getFilterString(f)</a></li>
+                            <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)">@getFilterString(f)</a></li>
                         }
                     </ul>
                 </div>
@@ -55,24 +59,26 @@ else
     </div>
 }
 @code {
-    public List<RequestCustomerPaymentModel> model { get; set; }
+    public List<CancelledAndRescheduledRequestModel> model { get; set; }
 
-    public List<RequestCustomerPaymentModel> data { get; set; }
+    public List<CancelledAndRescheduledRequestModel> data { get; set; }
 
-    Type selectedType;
+
+    RequestType selectedType;
 
     Labels selectedLabel;
 
-    string getLabelString(Labels label) => label == Labels.SourceApp ? "Source app" : label == Labels.PaymentMethod ? "Payment Method" : "Customer Type";
+    string getLabelString(Labels label) => label == Labels.SourceApp ? "Source app" : "Reason";
 
     string getFilterString(int? filterId)
     {
         if (filterId == null) return "All";
 
-        if (selectedLabel == Labels.SourceApp || selectedLabel == Labels.PaymentMethod)
-            return data.FirstOrDefault(m => m.CustomerAddressId == filterId)?.CustomerAddressTypeName ?? "";
+        if (selectedLabel == Labels.SourceApp)
+            return data.FirstOrDefault(m => m.ReasonId == filterId)?.ReasonName ?? "";
         else
             return data.FirstOrDefault(m => m.SourceAppId == filterId)?.SourceAppName ?? "";
+
     }
 
     int? selectedFilterId;
@@ -80,10 +86,10 @@ else
     private BarConfig _config;
     private Chart _chart;
 
-    void updateType(Type t)
+    void updateType(RequestType t)
     {
         selectedType = t;
-        data = model.ToList();
+        data = selectedType == RequestType.Cancelled ? model.Where(m => m.IsCancelled).ToList() : model.Where(m => !m.IsCancelled).ToList();
         UpdateData();
     }
 
@@ -107,27 +113,27 @@ else
             await LoadChartData();
 
             selectedLabel = Labels.SourceApp;
-            selectedType = Type.RequestAmount;
-
-            data = model.ToList();
+            selectedType = RequestType.Cancelled;
+            data = model.Where(m => m.IsCancelled).ToList();
 
             UpdateData();
         }
+
+
     }
     private async Task LoadChartData()
     {
 
-        model = await http.GetFromJsonAsync<List<RequestCustomerPaymentModel>>("api/GetRequestCustomerPaymentTypeCount");
+        model = await http.GetFromJsonAsync<List<CancelledAndRescheduledRequestModel>>("api/GetCancelledAndRescheduledRequestDetails");
 
-        _config = new BarConfig
+        _config = new BarConfig(horizontal: true)
         {
             Options = new BarOptions
             {
                 Responsive = true,
                 Legend = new Legend
                 {
-                    Display = true,
-                    Position = Position.Top
+                    Display = false,
                 },
                 Title = new OptionsTitle
                 {
@@ -142,6 +148,22 @@ else
                 {
                     Mode = InteractionMode.Nearest,
                     Intersect = true
+                },
+                Scales = new BarScales
+                {
+                    XAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new LinearCartesianTicks
+                            {
+                                StepSize = 1,
+                                Max = 5,
+                                Min = 0,
+                            }
+                        }
+                        //Ticks = new LinearCartesianTicks { }
+                    }
                 },
             }
         };
@@ -161,38 +183,33 @@ else
             foreach (var l in data.GroupBy(m => m.SourceAppName))
             {
                 _config.Data.Labels.Add(l.Key);
-                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.PreferredMethodId == selectedFilterId));
-            }
-        }
-        else if (selectedLabel == Labels.PaymentMethod)
-        {
-            foreach (var l in data.GroupBy(m => m.PreferredMethodName))
-            {
-                _config.Data.Labels.Add(l.Key);
-                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.SourceAppId == selectedFilterId));
+                dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.ReasonId == selectedFilterId));
+
             }
         }
         else
         {
-            foreach (var l in data.GroupBy(m => m.CustomerAddressTypeName))
+            foreach (var l in data.GroupBy(m => m.ReasonName))
             {
                 _config.Data.Labels.Add(l.Key);
-                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.CustomerAddressId == selectedFilterId));
+                dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.SourceAppId == selectedFilterId));
             }
         }
         _config.Data.Datasets.Add(dataset);
         StateHasChanged();
     }
 
+
     enum Labels
     {
         SourceApp,
-        PaymentMethod,
-        CustomerType
+        Reason
     }
-    enum Type
+    enum RequestType
     {
-        RequestCount,
-        RequestAmount
+        Cancelled,
+        Rescheduled
     }
 }

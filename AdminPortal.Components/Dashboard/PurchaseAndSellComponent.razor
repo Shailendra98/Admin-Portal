@@ -1,0 +1,122 @@
+﻿<div class="mb-3">
+    <small class="fw-bold text-secondary">Purchase and Sell of Material</small>
+    <div class="card rounded-0 border-0 shadow-sm p-0 mt-2">
+        <div class="card-body pt-0">
+            <div class="row border-bottom">
+                <div class="col-6">
+                    <a class="text-decoration-none">
+                        <div class="p-3">
+                            <h6 class="fw-bold text-secondary">Purchase</h6>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-0"><span class="h5 fw-bold"> 7654</span><small> Kg</small></div>
+                                    <div class="text-muted small">Quantity</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-0"><small>₹</small><span class="h5 fw-bold"> 7654</span></div>
+                                    <div class="text-muted small">Amount</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a class="text-decoration-none">
+                        <div class="p-3">
+                            <h6 class="fw-bold text-secondary">Sell</h6>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-0"><span class="h5 fw-bold"> 7654</span><small> Kg</small></div>
+                                    <div class="text-muted small">Quantity</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-0"><small>₹</small><span class="h5 fw-bold"> 7654</span></div>
+                                    <div class="text-muted small">Amount</div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th>Material Name</th>
+                                <th>Amount</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Newspaper</td>
+                                <td><span> 7654</span><small> Kg</small></td>
+                                <td><small>₹</small><span> 7654</span></td>
+                            </tr>
+                            <tr>
+                                <td>Newspaper</td>
+                                <td><span> 7654</span><small> Kg</small></td>
+                                <td><small>₹</small><span> 7654</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th>Material Name</th>
+                                <th>Amount</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Books</td>
+                                <td><span> 7654</span><small> Kg</small></td>
+                                <td><small>₹</small><span> 7654</span></td>
+                            </tr>
+                            <tr>
+                                <td>Books</td>
+                                <td><span> 7654</span><small> Kg</small></td>
+                                <td><small>₹</small><span> 7654</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-top-green {
+        border-top: 5px solid #62cb31
+    }
+</style>
+@code {
+
+    public bool Sell { get; set; }
+
+    public bool Purchase { get; set; }
+
+    private void SellTab()
+    {
+        Purchase = false;
+        Sell = true;
+
+    }
+    private void PurchaseTab()
+    {
+        Sell = false;
+        Purchase = true;
+    }
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Purchase = true;
+        }
+    }
+}

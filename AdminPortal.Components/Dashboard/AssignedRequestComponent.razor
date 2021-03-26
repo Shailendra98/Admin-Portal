@@ -2,8 +2,8 @@
 @using TKW.AdminPortal.Components.SharedComponents
 @namespace TKW.AdminPortal.Components.Dashboard
 <div class="mb-3">
-    <h6 class="fw-bold text-secondary small">Assigned Request</h6>
-    <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
+    <small class="fw-bold text-secondary small">Request Week Trend</small>
+    <div class="card rounded-0 border-0 shadow-sm mt-2">
         <div class="card-body">
             <Chart Config="_config" @ref="_chart"></Chart>
         </div>
@@ -13,7 +13,7 @@
 
 
 @code {
-    private const int InitalCount = 6;
+    private const int DayCount = 6;
     private LineConfig _config;
     private Chart _chart;
 
@@ -24,6 +24,8 @@
             Options = new LineOptions
             {
                 Responsive = true,
+                MaintainAspectRatio = true,
+
                 Legend = new Legend
                 {
                     Display = true,
@@ -44,22 +46,55 @@
                     Mode = InteractionMode.Nearest,
                     Intersect = true
                 },
+                Scales = new Scales
+                {
+                    YAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new LinearCartesianTicks
+                            {
+                                StepSize = 20,
+                            }
+                        }
+                        //Ticks = new LinearCartesianTicks { }
+                    }
+                },
+                
 
 
             }
         };
 
-        IDataset<int> dataset1 = new LineDataset<int>(SampleUtils.RandomScalingFactor(InitalCount))
+        IDataset<int> CancelledRequestDataSet = new LineDataset<int>(SampleUtils.RandomScalingFactor(DayCount))
         {
-            Label = "Request Count",
-            BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.4),
-            BorderColor = ColorUtil.ColorString(92, 198, 65, 1),
+            Label = "Cancelled",
+            BackgroundColor = ColorUtil.ColorString(243, 32, 19, 0.2),
             Fill = true,
+            PointRadius = 0,
+        };
+        IDataset<int> ScheduledRequestDataSet = new LineDataset<int>(SampleUtils.RandomScalingFactor(DayCount))
+        {
+            Label = "Scheduled",
+            BackgroundColor = ColorUtil.ColorString(220, 220, 220, 0.7),
+            Fill = true,
+            PointRadius = 0,
+        };
+        IDataset<int> HandledRequestDataSet = new LineDataset<int>(SampleUtils.RandomScalingFactor(DayCount))
+        {
+            Label = "Handled",
+            BackgroundColor = ColorUtil.ColorString(98, 203, 49, 0.5),
+            Fill = true,
+            PointRadius = 0,
+
         };
 
 
-        _config.Data.Labels.AddRange((SampleUtils.SampleSource.Take(InitalCount)));
-        _config.Data.Datasets.Add(dataset1);
+
+        _config.Data.Labels.AddRange((SampleUtils.SampleSource.Take(DayCount)));
+        _config.Data.Datasets.Add(CancelledRequestDataSet);
+        _config.Data.Datasets.Add(ScheduledRequestDataSet);
+        _config.Data.Datasets.Add(HandledRequestDataSet);
     }
 
 }
