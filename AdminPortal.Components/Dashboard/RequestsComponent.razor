@@ -2,7 +2,6 @@
 @inject HttpClient http  
 
 <div class="mb-3">
-    <small class="fw-bold text-secondary">Requests</small>
 
     <div class="card border-0 shadow-sm mt-2">
         <div class="card-body">
@@ -14,8 +13,7 @@
                 }
                 else
                 {
-                    <div class="shimmer line"></div>
-                    <div class="shimmer line"></div>
+                    <div class="shimmer box-wide"></div>
                 }
 
             </div>
@@ -34,15 +32,9 @@
             }
             else
             {
-                <div class="d-flex">
-                    <div class="card shimmer">
+                    <div class="shimmer box-wide">
 
                     </div>
-                    <div class="card shimmer">
-
-                    </div>
-
-                </div>
             }
 
             @if (model != null)
@@ -60,15 +52,7 @@
             }
             else
             {
-                <div class="d-flex">
-                    <div class="card shimmer">
-
-                    </div>
-                    <div class="card shimmer">
-
-                    </div>
-
-                </div>
+                    <div class="shimmer box-wide"></div>
             }
 
         </div>

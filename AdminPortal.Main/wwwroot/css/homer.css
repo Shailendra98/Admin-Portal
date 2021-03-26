@@ -3312,6 +3312,15 @@ form.was-validated select:valid ~ .select2-container--bootstrap4 .select2-select
   .shimmer.box-sm {
     height: 40px;
     width: 40px; }
+  .shimmer.box-wide {
+    height: 77px;
+    width: 371px; }
+  .shimmer.box-chart-md {
+    height: 257px;
+    width: 541px; }
+  .shimmer.box-chart-sm {
+    height: 185px;
+    width: 370px; }
   .shimmer.circle-half {
     height: 100px;
     width: 200px;

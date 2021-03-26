@@ -1,0 +1,84 @@
+﻿@namespace TKW.AdminPortal.Components.Dashboard
+@inject HttpClient http
+<div class="mb-3">
+    <div class="card rounded-0 border-0 shadow-sm p-0 mt-2">
+        <div class="card-body">
+                <h6 class="fw-bold text-secondary">Purchase</h6>
+                <div class="row mb-3">
+                    @if (model != null)
+                    {
+                        <div class="col-6">
+                            @{ double totalQuantity = 0;
+                                foreach (var i in model.PurchaseList)
+                                {
+
+                                    totalQuantity = totalQuantity + i.MaterialQuantity;
+
+                                }
+                            }
+                            <div class="mb-0"><span class="h5 fw-bold"> @totalQuantity </span><small> Kg</small></div>
+                            <div class="text-muted small">Quantity</div>
+                        </div>
+                        <div class="col-6">
+                            @{ double totalAmount = 0;
+                                foreach (var i in model.PurchaseList)
+                                {
+
+                                    totalAmount = totalQuantity + i.MaterialAmount;
+
+                                }
+                            }
+                            <div class="mb-0"><small>₹</small><span class="h5 fw-bold"> @totalAmount</span></div>
+                            <div class="text-muted small">Amount</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="shimmer box-wide"></div>
+                    }
+
+                </div>
+                @if (model != null)
+                {
+                    <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn mb-0">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th>Material Name</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @foreach (var j in model.PurchaseList)
+                            {
+                                <tr>
+                                    <td>@j.MaterialName</td>
+                                    <td><span> @j.MaterialQuantity</span><small> Kg</small></td>
+                                    <td><small>₹</small><span> @j.MaterialAmount</span></td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="shimmer box-chart-sm"></div>
+                }
+        </div>
+    </div>
+</div>
+
+@code {
+
+    PurchaseAndSellMaterialList model;
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        model = await http.GetFromJsonAsync<PurchaseAndSellMaterialList>("api/GetPurchaseAndSellMaterialList");
+        base.OnAfterRender(firstRender);
+        StateHasChanged();
+
+    }
+}

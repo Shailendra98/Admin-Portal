@@ -7,14 +7,23 @@
 
 @if (model == null)
 {
+<div class="mb-3">
+    <small class="fw-bold text-secondary small">Cancelled And Rescheduled Requests</small>
+    <div class="card mt-2">
+        <div class="card-body">
+            <div class="shimmer line mb-3">
 
+            </div>
+            <div class="shimmer box-chart-sm"></div>
+        </div>
+    </div>
+</div>
 }
 else
 {
-    <div class="card">
-        <div class="card-title">
-
-        </div>
+<div class="mb-3">
+    <small class="fw-bold text-secondary small">Cancelled And Rescheduled Requests</small>
+    <div class="card mt-2">
         <div class="card-body pt-0">
             <div class="float-end">
 
@@ -57,6 +66,7 @@ else
             <Chart Config="_config" @ref="_chart"></Chart>
         </div>
     </div>
+</div>
 }
 @code {
     public List<CancelledAndRescheduledRequestModel> model { get; set; }

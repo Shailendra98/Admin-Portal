@@ -1,18 +1,32 @@
 ﻿@using ChartJs.Blazor.LineChart
 @using TKW.AdminPortal.Components.SharedComponents
 @namespace TKW.AdminPortal.Components.Dashboard
-<div class="mb-3">
-    <small class="fw-bold text-secondary small">Request Week Trend</small>
-    <div class="card rounded-0 border-0 shadow-sm mt-2">
-        <div class="card-body">
-            <Chart Config="_config" @ref="_chart"></Chart>
+
+@if (model != null && false)
+{
+    <div class="mb-3">
+        <div class="card rounded-0 border-0 shadow-sm mt-2">
+            <div class="card-body">
+                <Chart Config="_config" @ref="_chart"></Chart>
+            </div>
         </div>
     </div>
-</div>
+
+} else {
+    <div class="mb-3">
+        <div class="card rounded-0 border-0 shadow-sm mt-2">
+            <div class="card-body">
+                <div class="shimmer box-chart-md"></div>
+            </div>
+        </div>
+    </div>
+
+}
 
 
 
 @code {
+    RequestWeekTrendList model;
     private const int DayCount = 6;
     private LineConfig _config;
     private Chart _chart;
@@ -34,7 +48,6 @@
                 Title = new OptionsTitle
                 {
                     Display = false,
-                    Text = "ChartJs.Blazor Line Chart"
                 },
                 Tooltips = new Tooltips
                 {
@@ -49,7 +62,7 @@
                 Scales = new Scales
                 {
                     YAxes = new List<CartesianAxis>
-                    {
+                {
                         new LinearCartesianAxis
                         {
                             Ticks = new LinearCartesianTicks
@@ -57,14 +70,14 @@
                                 StepSize = 20,
                             }
                         }
-                        //Ticks = new LinearCartesianTicks { }
                     }
                 },
-                
+
 
 
             }
         };
+
 
         IDataset<int> CancelledRequestDataSet = new LineDataset<int>(SampleUtils.RandomScalingFactor(DayCount))
         {

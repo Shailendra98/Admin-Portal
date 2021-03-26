@@ -4,31 +4,34 @@
 @using AdminPortal.Shared.Models
 @inject HttpClient http
 
-@if (model != null) {
+
     <div class="mb-3">
     <small class="fw-bold text-secondary">Expenses</small>
     <div class="card rounded-0 border-0 shadow-sm mt-2">
         <div class="card-body">
-                    <div class="position-relative">
-                        <Chart Config="_config"></Chart>
-                        <div class="position-absolute" style="top: 35%; left: 34%; transform: translate(-50%, 50%);">
-                                <span class="fw-bold text-secondary h4">₹ 789 </span>
-                        </div>
+            @if (model != null)
+            {
+                <div class="position-relative">
+                    <Chart Config="_config"></Chart>
+                    <div class="position-absolute" style="top: 35%; left: 34%; transform: translate(-50%, 50%);">
+                        <span class="fw-bold text-secondary h4">₹ 789 </span>
                     </div>
+                </div>
+            } else {
+                <div class="shimmer circle-md"></div>
+            }
             </div>
         </div>
     </div>
 
-}
+
 
 @code {
-    private ExpenseDetailsList model;
-    private ExpenseModel model2;
+    private List<ExpenseModel> model;
     private PieConfig _config;
 
     protected async override void OnAfterRender(bool firstRender)
     {
-        model = await http.GetFromJsonAsync<ExpenseDetailsList>("api/GetExpenseDetailsList");
         if (firstRender)
         {
             base.OnAfterRender(firstRender);
@@ -40,6 +43,7 @@
 
     private async Task LoadChartData()
     {
+        model = await http.GetFromJsonAsync<List<ExpenseModel>>("api/GetExpenseDetailsList");
 
         _config = new PieConfig(true)
         {
@@ -59,17 +63,10 @@
                 {
                     Display = false,
                 }
-
-
             }
         };
 
-        foreach (string color in new[] { "Stationary", "Paper", "Newspaper" })
-        {
-            _config.Data.Labels.Add(color);
-        }
-
-        PieDataset<int> dataset = new PieDataset<int>(new[] { 3, 4, 7 })
+        PieDataset<int> dataset = new PieDataset<int>()
         {
             BackgroundColor = new[]
             {
@@ -80,6 +77,11 @@
             }
         };
 
+        foreach (var expense in model)
+        {
+            _config.Data.Labels.Add(expense.ExpenseName);
+            dataset.Add(expense.ExpenseAmount);
+        }
         _config.Data.Datasets.Add(dataset);
     }
     }

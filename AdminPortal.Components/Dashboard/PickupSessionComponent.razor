@@ -7,9 +7,6 @@
         {
             @foreach (var a in model)
             {
-                @if (count == 2) { break; }
-                else
-                {
                     <div class="card mb-2 pt-1 rounded-0 border-0 shadow-sm">
                         <div class="card-body px-3 py-2">
                             <div class="row">
@@ -74,13 +71,9 @@
                             </div>
                         </div>
                     </div>
-                }
-             count ++;
+                
 
             }
-            <div class="d-flex d-inline-block justify-content-center">
-                <a class="small text-secondary text-decoration-none" href="/PickupSession">View more...</a>
-            </div>
         }
         else
         {
@@ -99,9 +92,6 @@
                     </div>
                     <div class="shimmer line" style="height: 0.4rem;"></div>
                 </div>
-            </div>
-            <div class="d-flex d-inline-block justify-content-center w-25 align-self-center">
-                <a class="small shimmer line"></a>
             </div>
         }
 

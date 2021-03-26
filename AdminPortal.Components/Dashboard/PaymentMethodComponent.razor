@@ -3,20 +3,31 @@
 @using System.Linq
 @namespace TKW.AdminPortal.Components.Dashboard
 @inject HttpClient http
+
 @if (model == null)
 {
 
+<div class="mb-3">
+    <small class="fw-bold text-secondary small">Payment Method</small>
+    <div class="card mt-2">
+        <div class="card-body">
+            <div class="shimmer line mb-3">
+
+            </div>
+            <div class="shimmer box-chart-sm"></div>
+        </div>
+    </div>
+</div>
 }
 else
 {
-    <div class="card">
-        <div class="card-title">
-
-        </div>
-        <div class="card-body">
+<div class="mb-3">
+    <small class="fw-bold text-secondary small">Payment Method</small>
+    <div class="card mt-2">
+        <div class="card-body pt-0">
             <div class="float-end">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         @getLabelString(selectedLabel)
                     </button>
                     <ul class="dropdown-menu">
@@ -27,18 +38,18 @@ else
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         @selectedType
                     </button>
                     <ul class="dropdown-menu">
                         @foreach (var t in (Type[])Enum.GetValues(typeof(Type)))
                         {
-                            <li><a class="dropdown-item" @onclick="()=> updateType(t)">@t</a></li>
+                            <li><a class="dropdown-item" @onclick="()=> updateType(t)">@getLabelStringForAmount(t)</a></li>
                         }
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         @getFilterString(selectedFilterId)
                     </button>
                     <ul class="dropdown-menu">
@@ -53,6 +64,7 @@ else
             <Chart Config="_config" @ref="_chart"></Chart>
         </div>
     </div>
+</div>
 }
 @code {
     public List<RequestCustomerPaymentModel> model { get; set; }
@@ -64,6 +76,7 @@ else
     Labels selectedLabel;
 
     string getLabelString(Labels label) => label == Labels.SourceApp ? "Source app" : label == Labels.PaymentMethod ? "Payment Method" : "Customer Type";
+    string getLabelStringForAmount(Type label) => label == Type.RequestAmount ? "Request Amount" : "Request Count";
 
     string getFilterString(int? filterId)
     {
@@ -119,15 +132,14 @@ else
 
         model = await http.GetFromJsonAsync<List<RequestCustomerPaymentModel>>("api/GetRequestCustomerPaymentTypeCount");
 
-        _config = new BarConfig
+        _config = new BarConfig(horizontal: true)
         {
             Options = new BarOptions
             {
                 Responsive = true,
                 Legend = new Legend
                 {
-                    Display = true,
-                    Position = Position.Top
+                    Display = false,
                 },
                 Title = new OptionsTitle
                 {
@@ -142,6 +154,21 @@ else
                 {
                     Mode = InteractionMode.Nearest,
                     Intersect = true
+                },
+                Scales = new BarScales
+                {
+                    XAxes = new List<CartesianAxis>
+                    {
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new LinearCartesianTicks
+                            {
+                                StepSize = 1,
+                                Max = 5,
+                                Min = 0,
+                            }
+                        }
+                    }
                 },
             }
         };
@@ -161,6 +188,7 @@ else
             foreach (var l in data.GroupBy(m => m.SourceAppName))
             {
                 _config.Data.Labels.Add(l.Key);
+                dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
                 dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.PreferredMethodId == selectedFilterId));
             }
         }
@@ -169,6 +197,7 @@ else
             foreach (var l in data.GroupBy(m => m.PreferredMethodName))
             {
                 _config.Data.Labels.Add(l.Key);
+                dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
                 dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.SourceAppId == selectedFilterId));
             }
         }
@@ -177,6 +206,7 @@ else
             foreach (var l in data.GroupBy(m => m.CustomerAddressTypeName))
             {
                 _config.Data.Labels.Add(l.Key);
+                dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
                 dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.CustomerAddressId == selectedFilterId));
             }
         }
