@@ -23,7 +23,7 @@
                         <a href="@Url.Page("/Index",new Dictionary<string, string>{ {"area","Request"},{"Filter.DateType",DateType.Assigned.ToString() },{ "Filter.StartDate",Dt.Now.ToString("dd-MM-yyyy") },{"Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Assigned.Id.ToString()},{"pageSize", "50"} })">
                             <div style="opacity: 1; background: rgba(108, 117, 125, 0.125);" class="panel-body text-center no-padding">
                                 <div class="text-primary p-b-xs">
-                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Assigned ?? 0) </h2>
+                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Pending ?? 0) </h2>
                                     <small class="font-extra-bold">Assigned</small>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                         <a href="@Url.Page("/Index",new Dictionary<string, string>() { {"area","Request"},{"Filter.DateType", DateType.Visiting.ToString() },{"Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Submitted.Id.ToString()},{"Filter.Status[1]",RequestStatus.Rescheduled.Id.ToString() },{"pageSize", "50"} })">
                             <div style="opacity: 1; background: rgba(0, 123, 255, 0.125);" class="panel-body text-center no-padding">
                                 <div class="text-info p-b-xs">
-                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Unassigned ?? 0)</h2>
+                                    <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Pending ?? 0)</h2>
                                     <small class="font-extra-bold">Unassigned</small>
                                 </div>
                             </div>

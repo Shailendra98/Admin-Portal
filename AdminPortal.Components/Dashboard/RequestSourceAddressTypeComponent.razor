@@ -1,0 +1,197 @@
+﻿@using ChartJs.Blazor.BarChart
+@using TKW.AdminPortal.Components.SharedComponents
+@using System.Linq
+@namespace TKW.AdminPortal.Components.Dashboard
+@inject HttpClient http
+@if (model == null)
+{
+
+}
+else
+{
+    <div class="card">
+        <div class="card-title">
+        </div>
+        <div class="card-body">
+            <div class="float-end">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        @getLabelString(selectedLabel)
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var l in (Labels[])Enum.GetValues(typeof(Labels)))
+                        {
+                            <li><a class="dropdown-item" @onclick="()=>updateLabel(l)" href="#">@getLabelString(l)</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        @selectedType
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var t in (Type[])Enum.GetValues(typeof(Type)))
+                        {
+                            <li><a class="dropdown-item" @onclick="()=> updateType(t)" href="#">@t</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        @getFilterString(selectedFilterId)
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" @onclick="()=>updateFilterId(null)" href="#">All</a></li>
+                        @foreach (var f in selectedLabel == Labels.PaymentMethod ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.PreferredMethodId).Distinct())
+                        {
+                            <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)" href="#">@getFilterString(f)</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <Chart Config="_config" @ref="_chart"></Chart>
+        </div>
+    </div>
+}
+@code {
+    public List<RequestCustomerPaymentModel> model { get; set; }
+
+    public List<RequestCustomerPaymentModel> data { get; set; }
+
+    Type selectedType;
+
+    Labels selectedLabel;
+
+    string getLabelString(Labels label) => label == Labels.SourceApp ? "Source app" : label == Labels.PaymentMethod ? "Payment Method" : "Customer Type";
+
+    string getFilterString(int? filterId)
+    {
+        if (filterId == null) return "All";
+
+        if (selectedLabel == Labels.SourceApp || selectedLabel == Labels.PaymentMethod)
+            return data.FirstOrDefault(m => m.CustomerAddressId == filterId)?.CustomerAddressTypeName ?? "";
+        else
+            return data.FirstOrDefault(m => m.SourceAppId == filterId)?.SourceAppName ?? "";
+    }
+
+    int? selectedFilterId;
+
+    private BarConfig _config;
+    private Chart _chart;
+
+    void updateType(Type t)
+    {
+        selectedType = t;
+        data = model.ToList();
+        UpdateData();
+    }
+
+    void updateLabel(Labels t)
+    {
+        selectedLabel = t;
+        UpdateData();
+    }
+
+    void updateFilterId(int? filterId)
+    {
+        selectedFilterId = filterId;
+        UpdateData();
+    }
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            await LoadChartData();
+
+            selectedLabel = Labels.SourceApp;
+            selectedType = Type.RequestAmount;
+
+            data = model.ToList();
+
+            UpdateData();
+        }
+    }
+    private async Task LoadChartData()
+    {
+
+        model = await http.GetFromJsonAsync<List<RequestCustomerPaymentModel>>("api/GetRequestCustomerPaymentTypeCount");
+
+        _config = new BarConfig
+        {
+            Options = new BarOptions
+            {
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = true,
+                    Position = Position.Top
+                },
+                Title = new OptionsTitle
+                {
+                    Display = false,
+                },
+                Tooltips = new Tooltips
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Hover = new Hover
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+            }
+        };
+
+    }
+
+    public void UpdateData()
+    {
+        _config.Data.Labels.Clear();
+        _config.Data.Datasets.Clear();
+
+
+        var dataset = new BarDataset<int>(true);
+
+        if (selectedLabel == Labels.SourceApp)
+        {
+            foreach (var l in data.GroupBy(m => m.SourceAppName))
+            {
+                _config.Data.Labels.Add(l.Key);
+                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.PreferredMethodId == selectedFilterId));
+            }
+        }
+        else if(selectedLabel == Labels.PaymentMethod)
+        {
+            foreach (var l in data.GroupBy(m => m.PreferredMethodName))
+            {
+                _config.Data.Labels.Add(l.Key);
+                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.SourceAppId == selectedFilterId));
+            }
+        }
+        else
+        {
+            foreach (var l in data.GroupBy(m => m.CustomerAddressTypeName))
+            {
+                _config.Data.Labels.Add(l.Key);
+                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.CustomerAddressId == selectedFilterId));
+            }
+        }
+        _config.Data.Datasets.Add(dataset);
+        StateHasChanged();
+    }
+
+    enum Labels
+    {
+        SourceApp,
+        PaymentMethod,
+        CustomerType
+    }
+    enum Type
+    {
+        RequestCount,
+        RequestAmount
+    }
+}

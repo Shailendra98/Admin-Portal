@@ -10,7 +10,6 @@ namespace TKW.AdminPortal.Shared.Models
         public DateTime Date { get; set; }
         public int ScheduledRequestCount { get; set; }
         public int HandledRequestCount { get; set; }
-
         public int CancelledRequestCount { get; set; }
     }
 }
