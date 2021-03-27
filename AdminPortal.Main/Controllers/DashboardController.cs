@@ -51,18 +51,18 @@ namespace TKW.AdminPortal.Controllers
         }
 
         [HttpGet("~/api/GetActiveVehiclePickupboyCount")]
-        public async Task<IdleVehiclePickupBoyModel> GetActiveVehiclePickupboyCount(CancellationToken cancellationToken)
+        public async Task<VehiclePickupBoyUnassignedRequestCounts> GetActiveVehiclePickupboyCount(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
             var data = await _dashboardQueries.VehicleAndPickupBoyAndUnassignedCountsOfFranchiseAsync(franchiseId.Value, cancellationToken);
 
-            IdleVehiclePickupBoyModel model = new IdleVehiclePickupBoyModel
+            VehiclePickupBoyUnassignedRequestCounts model = new VehiclePickupBoyUnassignedRequestCounts
             {
                 FreeVehicle = data.FreeVehicles,
                 TotalVehicle = data.TotalVehicles,
                 FreePickupBoy = data.FreePickupBoys,
                 TotalPickupBoy = data.TotalPickupBoys,
-                Unassigned = data.UnassignedRequests,
+                UnassignedRequest = data.UnassignedRequests,
                 TodaysRequest = data.PendingRequests,
             };
             return model;
