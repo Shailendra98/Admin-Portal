@@ -1,0 +1,178 @@
+﻿@namespace TKW.AdminPortal.Components.Dashboard
+@inject HttpClient http
+<div class="col-6">
+    <div class="mb-3">
+        <small class="fw-bold text-secondary ml-3 text-uppercase">Purchase Detail</small>
+        <div class="card shadow-sm p-0 mt-1">
+            <div class="card-body">
+                <div class="row mb-3">
+                    @if (model != null)
+                    {
+                        <div class="col-6 text-center">
+
+                            <div class="mb-0"><span class="h5 fw-bold"> @totalPurchaseQtyInKg </span><small> Kg </small>@if (@totalPurchaseQtyInPiece !=0 ) { <small> +  @totalPurchaseQtyInPiece pieces </small> }</div>
+                            <div class="text-muted small">Purchase Quantity</div>
+                        </div>
+                        <div class="col-6 text-center">
+                            <div class="mb-0"><small>₹</small><span class="h5 fw-bold ps-1"> @totalPurchaseAmount</span></div>
+                            <div class="text-muted small">Purchase Amount</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-6">
+                            <div class="shimmer w-100" style="height:50px;"></div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="shimmer w-100" style="height:50px;"></div>
+                        </div>
+                    }
+
+                </div>
+                @if (model != null)
+                {
+                    <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn mb-0">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th>Material</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (model.PurchaseList.Count() == 0)
+                            {
+                                <tr class="text-center">
+                                    <td colspan="3">
+                                        <em>There is no material.</em>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var j in model.PurchaseList)
+                                {
+                                    <tr>
+                                        <td>@j.MaterialName</td>
+                                        <td class="text-center"><span> @j.MaterialQuantity</span><small> @j.UnitName</small></td>
+                                        <td class="text-end"><small>₹</small><span> @j.MaterialAmount</span></td>
+                                    </tr>
+                                }
+                            }
+
+
+
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="shimmer w-100" style="height:100px;"></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-6">
+    <div class="mb-3">
+        <small class="fw-bold text-secondary ml-3 text-uppercase">Sell Detail</small>
+        <div class="card shadow-sm p-0 mt-1">
+            <div class="card-body">
+                <div class="row mb-3">
+                    @if (model != null)
+                    {
+                        <div class="col-6 text-center">
+                            <div class="mb-0"><span class="h5 fw-bold"> @totalSellQtyInKg </span><small> Kg </small>@if (@totalSellQtyInPiece != 0 ) { <small> +  @totalSellQtyInPiece pieces </small> }</div>
+                            <div class="text-muted small">Sell Quantity</div>
+                        </div>
+                        <div class="col-6 text-center">
+                            
+                            <div class="mb-0"><small>₹</small><span class="h5 fw-bold ps-1"> @totalSellAmount</span></div>
+                            <div class="text-muted small">Sell Amount</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-6">
+                            <div class="shimmer w-100" style="height:50px;"></div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="shimmer w-100" style="height:50px;"></div>
+                        </div>
+                    }
+
+                </div>
+                @if (model != null)
+                {
+                    <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn mb-0">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th>Material</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                            @if (model.SellList.Count() == 0)
+                            {
+                                <tr class="text-center">
+                                    <td colspan="3">
+                                        <em>There is no material.</em>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var j in model.SellList)
+                                {
+                                    <tr>
+                                        <td>@j.MaterialName</td>
+                                        <td class="text-center"><span> @j.MaterialQuantity</span><small> @j.UnitName</small></td>
+                                        <td class="text-end"><small>₹ </small><span> @j.MaterialAmount</span></td>
+                                    </tr>
+                                }
+                            }
+
+
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="shimmer w-100" style="height:100px;"></div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+    PurchaseAndSellMaterialList model;
+    decimal totalPurchaseQtyInKg = 0;
+    decimal totalPurchaseQtyInPiece = 0;
+    decimal totalSellQtyInKg = 0;
+    decimal totalSellQtyInPiece = 0;
+    decimal totalPurchaseAmount = 0;
+    decimal totalSellAmount = 0;
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            model = await http.GetFromJsonAsync<PurchaseAndSellMaterialList>("api/GetPurchaseAndSellMaterialList");
+            totalPurchaseAmount = model.PurchaseList.Sum(m => m.MaterialAmount);
+            totalSellAmount = model.SellList.Sum(m => m.MaterialAmount);
+            totalPurchaseQtyInKg = model.PurchaseList.Where(m => m.UnitId == 1).Sum(m => m.MaterialQuantity);
+            totalPurchaseQtyInPiece = model.PurchaseList.Where(m => m.UnitId == 2).Sum(m => m.MaterialQuantity);
+            totalSellQtyInKg = model.SellList.Where(m => m.UnitId == 1).Sum(m => m.MaterialQuantity);
+            totalSellQtyInPiece = model.SellList.Where(m => m.UnitId == 2).Sum(m => m.MaterialQuantity);
+            StateHasChanged();
+        }
+    }
+}

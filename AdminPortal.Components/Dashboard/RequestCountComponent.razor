@@ -1,8 +1,7 @@
 @using AdminPortal.Shared.Models
-@inject HttpClient http  
+@inject HttpClient http
 
 <div class="mb-3">
-
     <div class="card shadow-sm mt-2">
         <div class="card-body">
             <div class="text-center">
@@ -12,10 +11,10 @@
                     <div>Today's Request</div>
                 }
                 else
-                {   <div class="d-flex justify-content-center mb-3">
+                { <div class="d-flex justify-content-center mb-3">
                         <div class="shimmer w-50" style="height:60px;"></div>
                     </div>
-                    
+
                 }
 
             </div>
@@ -76,9 +75,6 @@
         </div>
     </div>
 </div>
-
-
-
 @code {
     private RequestCountsModel model;
 

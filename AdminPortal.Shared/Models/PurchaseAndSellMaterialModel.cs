@@ -8,8 +8,8 @@ namespace TKW.AdminPortal.Shared.Models
     {
         public int? MaterialId { get; set; }
         public string MaterialName { get; set; }
-        public double MaterialQuantity { get; set; }
-        public int MaterialAmount { get; set; }
+        public decimal MaterialQuantity { get; set; }
+        public decimal MaterialAmount { get; set; }
         public int? UnitId { get; set; }
         public string UnitName { get; set; }
     }

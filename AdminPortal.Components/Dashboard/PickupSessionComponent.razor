@@ -2,7 +2,7 @@
 
 <div class="mb-3 w-100">
     <small class="fw-bold text-secondary ml-3 text-uppercase">Pickup Sessions</small>
-    <div class="card p-3 shadow-sm mt-1">
+    <div class="card shadow-sm mt-1">
         @if (model != null)
         {
             @if (model.Count() == 0)
@@ -19,8 +19,7 @@
             {
                 @foreach (var a in model)
                 {
-                    <div class="card mb-2 pt-1 rounded-0 border-0 shadow-sm">
-                        <div class="card-body px-3 py-2">
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-2">
                                     <span class="fw-bold text-secondary mb-0 text-nowrap"> @a.VehicleName</span>
@@ -82,7 +81,6 @@
                                 }
                             </div>
                         </div>
-                    </div>
 
 
                 }
