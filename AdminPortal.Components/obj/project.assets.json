@@ -1381,20 +1381,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\Sameer\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\Desktop\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+      "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
       "projectName": "AdminPortal.Components",
-      "projectPath": "C:\\Users\\admin\\Desktop\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\Desktop\\AdminPortal\\AdminPortal.Components\\obj\\",
+      "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+      "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\admin\\Desktop\\AdminPortal\\NuGet.Config",
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\NuGet.Config",
+        "C:\\Users\\Sameer\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1408,8 +1412,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\admin\\Desktop\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
-              "projectPath": "C:\\Users\\admin\\Desktop\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
+            "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+              "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
             }
           }
         }
@@ -1463,7 +1467,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

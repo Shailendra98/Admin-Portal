@@ -8,7 +8,6 @@ namespace TKW.AdminPortal.Shared.Models
     {
         public int? ExpenseId { get; set; }
         public string ExpenseName { get; set; }
-
         public int ExpenseAmount { get; set; }
     }
 }

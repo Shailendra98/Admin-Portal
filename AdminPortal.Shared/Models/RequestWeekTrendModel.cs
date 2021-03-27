@@ -6,7 +6,6 @@ namespace TKW.AdminPortal.Shared.Models
 {
     public class RequestWeekTrendModel
     {
-        
         public DateTime Date { get; set; }
         public int ScheduledRequestCount { get; set; }
         public int HandledRequestCount { get; set; }
