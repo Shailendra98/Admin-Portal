@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using TKW.AdminPortal.Shared.Models;
 using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using TKW.ApplicationCore.Helpers;
 
 namespace TKW.AdminPortal.Controllers
 {
@@ -67,6 +68,29 @@ namespace TKW.AdminPortal.Controllers
             };
             return model;
         }
+
+        [HttpGet("~/api/RequestWeekTrendListData")]
+        public async Task<List<RequestWeekTrendModel>> RequestWeekTrendListData(CancellationToken cancellationToken)
+        {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, cancellationToken);
+            var date = Dt.Today.AddDays(-7);
+            var list = new List<RequestWeekTrendModel>();
+            for (var i = 0; i < 7; i++)
+            {
+                var dayCount = new RequestWeekTrendModel
+                {
+                    Date = date,
+                    HandledRequestCount = data.Where(m => m.HandleDate == date).Select(m => m.RequestId).Distinct().Count(),
+                    CancelledRequestCount = data.Where(m => m.CancelDate == date).Select(m => m.RequestId).Distinct().Count(),
+                    ScheduledRequestCount = data.Where(m => m.ScheduledDate == date && !data.Any(a => a.RequestId == m.RequestId && a.ScheduleUpdateTime >= m.ScheduleUpdateTime && a.ScheduleUpdateTime < m.ScheduledDate)).Select(m => m.RequestId).Distinct().Count()
+                };
+                list.Add(dayCount);
+                date.AddDays(1);
+            }
+            return list;
+        }
+
 
         [HttpGet("~/api/GetRequestCustomerPaymentTypeCount")]
         public async Task<List<RequestCustomerPaymentModel>> GetRequestCustomerPaymentTypeCount(CancellationToken cancellationToken)
@@ -205,14 +229,6 @@ namespace TKW.AdminPortal.Controllers
             return output;
         }
 
-        [HttpGet("~/api/RequestWeekTrendListData")]
-
-        public async Task<List<RequestWeekTrendModel>> RequestWeekTrendListData(CancellationToken cancellationToken)
-        {
-            int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, cancellationToken);
-            return new List<RequestWeekTrendModel>();
-        }
-
+        
     }
 }
