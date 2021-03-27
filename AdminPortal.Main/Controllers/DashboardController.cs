@@ -35,11 +35,11 @@ namespace TKW.AdminPortal.Controllers
         [HttpGet("~/api/GetRequestCountsOfFranchise")]
         public async Task<RequestCountsModel> GetRequestCountsOfFranchise(CancellationToken cancellationToken)
         {
-
             int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RequestCountsOfFranchiseAsync(franchiseid.Value, cancellationToken);
+            var data = await _dashboardQueries.RequestCountsOfFranchiseAsync(franchiseid!.Value, cancellationToken);
             RequestCountsModel model = new RequestCountsModel
             {
+                TodaysRequests = data.TotalScheduled,
                 Pending = data.Pending,
                 Handled = data.Handled,
                 Rescheduled = data.Rescheduled,
@@ -54,7 +54,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<VehiclePickupBoyUnassignedRequestCounts> GetActiveVehiclePickupboyCount(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.VehicleAndPickupBoyAndUnassignedCountsOfFranchiseAsync(franchiseId.Value, cancellationToken);
+            var data = await _dashboardQueries.VehicleAndPickupBoyAndUnassignedCountsOfFranchiseAsync(franchiseId!.Value, cancellationToken);
 
             VehiclePickupBoyUnassignedRequestCounts model = new VehiclePickupBoyUnassignedRequestCounts
             {
@@ -63,7 +63,7 @@ namespace TKW.AdminPortal.Controllers
                 FreePickupBoy = data.FreePickupBoys,
                 TotalPickupBoy = data.TotalPickupBoys,
                 UnassignedRequest = data.UnassignedRequests,
-                TodaysRequest = data.PendingRequests,
+                PendingRequest = data.PendingRequests
             };
             return model;
         }
