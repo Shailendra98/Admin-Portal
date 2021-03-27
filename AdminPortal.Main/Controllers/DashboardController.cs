@@ -73,8 +73,8 @@ namespace TKW.AdminPortal.Controllers
         public async Task<List<RequestWeekTrendModel>> RequestWeekTrendListData(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, cancellationToken);
             var date = Dt.Today.AddDays(-7);
+            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, date,cancellationToken);
             var list = new List<RequestWeekTrendModel>();
             for (var i = 0; i < 7; i++)
             {
@@ -86,7 +86,7 @@ namespace TKW.AdminPortal.Controllers
                     ScheduledRequestCount = data.Where(m => m.ScheduledDate == date && !data.Any(a => a.RequestId == m.RequestId && a.ScheduleUpdateTime >= m.ScheduleUpdateTime && a.ScheduleUpdateTime < m.ScheduledDate)).Select(m => m.RequestId).Distinct().Count()
                 };
                 list.Add(dayCount);
-                date.AddDays(1);
+                date = date.AddDays(1);
             }
             return list;
         }

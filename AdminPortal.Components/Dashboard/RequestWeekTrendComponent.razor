@@ -1,22 +1,24 @@
 ﻿@using ChartJs.Blazor.LineChart
 @using TKW.AdminPortal.Components.SharedComponents
 @namespace TKW.AdminPortal.Components.Dashboard
-
-@if (model != null && false)
+@inject HttpClient http
+@if (model != null)
 {
     <div class="mb-3">
-        <div class="card rounded-0 border-0 shadow-sm mt-2">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <Chart Config="_config" @ref="_chart"></Chart>
             </div>
         </div>
     </div>
 
-} else {
+}
+else
+{
     <div class="mb-3">
-        <div class="card rounded-0 border-0 shadow-sm mt-2">
+        <div class="card shadow-sm">
             <div class="card-body">
-                <div class="shimmer box-chart-md"></div>
+                <div class="shimmer w-100" style="height:250px"></div>
             </div>
         </div>
     </div>
@@ -30,9 +32,20 @@
     private const int DayCount = 6;
     private LineConfig _config;
     private Chart _chart;
-
-    protected override void OnInitialized()
+    protected async override void OnAfterRender(bool firstRender)
     {
+        if (firstRender)
+        {
+            await LoadChartData();
+            StateHasChanged();
+        }
+
+    }
+
+    protected async Task LoadChartData()
+    {
+
+        model = await http.GetFromJsonAsync<List<RequestWeekTrendModel>>("api/RequestWeekTrendListData");
         _config = new LineConfig
         {
             Options = new LineOptions
@@ -62,7 +75,7 @@
                 Scales = new Scales
                 {
                     YAxes = new List<CartesianAxis>
-                {
+{
                         new LinearCartesianAxis
                         {
                             Ticks = new LinearCartesianTicks
@@ -78,36 +91,40 @@
             }
         };
 
-
-        IDataset<int> CancelledRequestDataSet = new LineDataset<int>(SampleUtils.RandomScalingFactor(DayCount))
-        {
-            Label = "Cancelled",
-            BackgroundColor = ColorUtil.ColorString(243, 32, 19, 0.2),
-            Fill = true,
-            PointRadius = 0,
-        };
-        IDataset<int> ScheduledRequestDataSet = new LineDataset<int>(SampleUtils.RandomScalingFactor(DayCount))
+        IDataset<int> ScheduledCountDataset = new LineDataset<int>()
         {
             Label = "Scheduled",
-            BackgroundColor = ColorUtil.ColorString(220, 220, 220, 0.7),
+            BackgroundColor = ColorUtil.ColorString(220, 220, 220, 0.5),
             Fill = true,
             PointRadius = 0,
         };
-        IDataset<int> HandledRequestDataSet = new LineDataset<int>(SampleUtils.RandomScalingFactor(DayCount))
+
+        IDataset<int> HandledCountDataset = new LineDataset<int>()
         {
             Label = "Handled",
             BackgroundColor = ColorUtil.ColorString(98, 203, 49, 0.5),
             Fill = true,
             PointRadius = 0,
-
         };
 
+        IDataset<int> CancelledCountDataset = new LineDataset<int>()
+        {
+            Label = "Cancelled",
+            BackgroundColor = ColorUtil.ColorString(243, 32, 19, 0.5),
+            Fill = true,
+            PointRadius = 0,
+        };
 
+        foreach (var i in model)
+        {
+            _config.Data.Labels.Add(i.Date.DayOfWeek.ToString());
+            ScheduledCountDataset.Add(i.ScheduledRequestCount);
+            CancelledCountDataset.Add(i.CancelledRequestCount);
+            HandledCountDataset.Add(i.HandledRequestCount);
+        }
 
-        _config.Data.Labels.AddRange((SampleUtils.SampleSource.Take(DayCount)));
-        _config.Data.Datasets.Add(CancelledRequestDataSet);
-        _config.Data.Datasets.Add(ScheduledRequestDataSet);
-        _config.Data.Datasets.Add(HandledRequestDataSet);
+        _config.Data.Datasets.Add(ScheduledCountDataset);
+        _config.Data.Datasets.Add(HandledCountDataset);
+        _config.Data.Datasets.Add(CancelledCountDataset);
     }
-
 }

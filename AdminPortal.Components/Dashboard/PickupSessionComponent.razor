@@ -1,39 +1,51 @@
 ﻿@inject HttpClient http
 
 <div class="mb-3 w-100">
-    <h6 class="fw-bold text-secondary small ml-3">Pickup Session</h6>
-    <div class="card p-3 rounded-0 border-0 shadow-sm">
+    <small class="fw-bold text-secondary ml-3 text-uppercase">Pickup Sessions</small>
+    <div class="card p-3 shadow-sm mt-1">
         @if (model != null)
         {
-            @foreach (var a in model)
+            @if (model.Count() == 0)
             {
+                    <div class="card-body text-center">
+                        <h6 class="pb-2">There is no active pickup session.</h6>
+                        <a href="/PickupSession" class="btn btn-sm btn-outline btn-primary">
+                            Go to Pickup Session
+                        </a>
+                    </div>
+                
+            }
+            else
+            {
+                @foreach (var a in model)
+                {
                     <div class="card mb-2 pt-1 rounded-0 border-0 shadow-sm">
                         <div class="card-body px-3 py-2">
                             <div class="row">
                                 <div class="col-2">
-                                    <h6 class="fw-bold text-secondary mb-0 text-nowrap"> @a.VehicleName</h6>
+                                    <span class="fw-bold text-secondary mb-0 text-nowrap"> @a.VehicleName</span>
                                     <small> @a.VehicleNumber </small>
                                 </div>
-                                <div class="col-6 d-flex pt-2">
+                                <div class="col-5 d-flex pt-2 px-0">
                                     <div class="d-flex d-inline-block ps-2">
-                                        <h6 class="fw-bold text-secondary"> @a.HandledRequests </h6>
+                                        <span class="fw-bold text-secondary"> @a.HandledRequests </span>
                                         <small class="ps-1 text-secondary">Completed</small>
                                     </div>
                                     <div class="d-flex d-inline-block ps-2">
-                                        <h6 class="fw-bold text-secondary"> @a.RescheduledRequests </h6>
+                                        <span class="fw-bold text-secondary"> @a.RescheduledRequests </span>
                                         <small class="ps-1 text-secondary">Rescheduled</small>
                                     </div>
                                     <div class="d-flex d-inline-block ps-2">
-                                        <h6 class="fw-bold text-secondary"> @a.CancelledRequests </h6>
+                                        <span class="fw-bold text-secondary"> @a.CancelledRequests </span>
                                         <small class="ps-1 text-secondary">Cancelled</small>
                                     </div>
                                     <div class="d-flex d-inline-block ps-2">
-                                        <h6 class="fw-bold text-secondary"> @a.PendingRequests </h6>
+                                        <span class="fw-bold text-secondary"> @a.PendingRequests </span>
                                         <small class="ps-1 text-secondary">Pending</small>
                                     </div>
                                 </div>
-                                <div class="col-4 d-flex justify-content-around">
-                                    <div class="px-3">
+                                <div class="col-5 d-flex justify-content-around px-0">
+                                    <div>
                                         <h6 class="pt-2 fw-bold">₹ @a.Cash.ToString("G29")</h6>
                                     </div>
                                     <div class="d-flex d-inline-block">
@@ -50,7 +62,7 @@
                                 var pendingpercent = totalreq == 0 ? 0 : (a.PendingRequests * 100 / totalreq);
                                 var reshedulepercent = totalreq == 0 ? 0 : (a.RescheduledRequests * 100 / totalreq);
                             }
-                            <div class="progress" style="height: 0.4rem;">
+                            <div class="progress mt-3" style="height: 0.4rem;">
 
                                 @if (a.HandledRequests != 0)
                                 {
@@ -71,9 +83,11 @@
                             </div>
                         </div>
                     </div>
-                
 
+
+                }
             }
+
         }
         else
         {
@@ -101,16 +115,15 @@
 
 
     @code {
-        public int count = 0;
 
         private List<PickupSessionModel> model;
 
         protected async override void OnAfterRender(bool firstRender)
         {
-            model = await http.GetFromJsonAsync<List<PickupSessionModel>>("api/GetPickupSessionsOfFranchise");
+
             if (firstRender)
             {
-                base.OnAfterRender(firstRender);
+                model = await http.GetFromJsonAsync<List<PickupSessionModel>>("api/GetPickupSessionsOfFranchise");
                 StateHasChanged();
             }
 

@@ -1,142 +1,284 @@
 ﻿@using ChartJs.Blazor.PieChart
 @using AdminPortal.Shared.Models
 @inject HttpClient http
+@*
+    <div class="mb-3"> *@
+<div class="card shadow-sm">
+    <div class="list-group list-group-flush">
+        <div class="list-group-item p-2">
+            <div class="row">
 
+                <div class="col-8">
+                    <div class="ps-2 py-2">
+                        <div class="card-title fw-bold text-nowrap small mb-1">Unassigned Requests</div>
 
-<div class="mb-3">
-    <div class="card rounded-0 border-0 shadow-sm mt-1">
-        <div class="card-body p-0">
-
-            @*<ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Unassigned Requests
-                            <div class="position-relative">
-                                @if (model != null)
-                                {
-                                    @if (model.Unassigned != 0)
-                                    {<Chart Config="_configUnassigned"></Chart>
-                                        <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                            <span class="h6 fw-bold text-secondary">@(model.Unassigned)</span>
-                                        </div>
-                                    }
-                                    else
-                                    { <Chart Config="_successChart"></Chart>
-                                        <div class="position-absolute" style="top:15%; left: 50%; transform: translate(-50%, 50%);">
-                                            <i class="fa fa-4x fa-check-circle text-light-green"></i>
-                                        </div>
-                                    }
-
-                                }
-                                else
-                                {
-                                    <div class="shimmer circle-sm"></div>
-                                }
-                            </div>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Idle PickupBoys
-                        <div class="position-relative">
-                            @if (model != null)
-                            {
-                                @if (model.Unassigned != 0)
-                                {<Chart Config="_configUnassigned"></Chart>
-                                    <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                        <span class="h6 fw-bold text-secondary">@(model.Unassigned)</span>
-                                    </div>
-                                }
-                                else
-                                { <Chart Config="_successChart"></Chart>
-                                    <div class="position-absolute" style="top:15%; left: 50%; transform: translate(-50%, 50%);">
-                                        <i class="fa fa-4x fa-check-circle text-light-green"></i>
-                                    </div>
-                                }
-
-                            }
-                            else
-                            {
-                                <div class="shimmer circle-sm"></div>
-                            }
-                        </div>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Idle Vehicles
-                        <div class="position-relative">
-                            @if (model != null)
-                            {
-                                @if (model.TotalPickupBoy - model.ActivePickupBoy != 0)
-                                {
-                                    <Chart Config="_configPickupBoy"></Chart>
-                                    <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                        <span class="h6 fw-bold text-secondary">@(model.TotalPickupBoy - model.ActivePickupBoy)</span>
-                                    </div>
-                                }
-                                else
-                                { <Chart Config="_successChart"></Chart>
-                                    <div class="position-absolute" style="top:15%; left: 50%; transform: translate(-50%, 50%);">
-                                        <i class="fa fa-4x fa-check-circle text-light-green"></i>
-                                    </div>
-                                }
-
-
-                            }
-                            else
-                            {
-                                <div class="shimmer circle-sm"></div>
-                            }
-                        </div>
-                    </li>
-                </ul>*@
-            <div class="mb-2">
-                <div class="card border-0 px-2 shadow-sm">
-                    <div class="row">
-                        <div class="col-8 m-auto">
-                            <div class="card-body px-2">
-                                <div class="card-title fw-bold text-nowrap small">Unassigned Requests</div>
-                                @if (model != null)
-                                {<small>@(model.Unassigned) requests are unassigned out of @(model.TodaysRequest)</small>}
-                                else
-                                { <small class="shimmer line"></small>
-                                    <small class="shimmer line"></small>
-                                }
-                            </div>
-                        </div>
-                        <div class="col-4 m-auto">
-
-                            <div class="position-relative">
-                                @if (model != null)
-                                {
-                                    @if (model.Unassigned != 0)
-                                    {<Chart Config="_configUnassigned"></Chart>
-                                        <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
-                                            <span class="h6 fw-bold text-secondary">@(model.Unassigned)</span>
-                                        </div>
-                                    }
-                                    else
-                                    { <Chart Config="_successChart"></Chart>
-                                        <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
-                                            <i class="fa fa-4x fa-check-circle text-light-green"></i>
-                                        </div>
-                                    }
-
-                                }
-                                else
-                                {
-                                    <div class="shimmer circle-sm"></div>
-                                }
-                            </div>
-
-                        </div>
+                        @if (model != null)
+                        {<small><strong>@(model.UnassignedRequest)</strong> of <strong>@(model.PendingRequest)</strong> pending requests are unassigned.</small>}
+                        else
+                        { <small class="shimmer line"></small>
+                            <small class="shimmer line"></small>
+                        }
                     </div>
                 </div>
-                <div class="mb-2">
-                    <div class="card border-0 px-2 shadow-sm">
+
+                <div class="col-4 pt-1">
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.UnassignedRequest != 0)
+                            {<Chart Config="_configUnassigned"></Chart>
+                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@(model.UnassignedRequest)</span>
+                                </div>
+                            }
+                            else
+                            { <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-2x fa-check text-light-green"></i>
+                                </div>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle w-100" style="height:60px;"></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list-group-item p-2">
+            <div class="row">
+
+                <div class="col-8">
+                    <div class="ps-2 py-2">
+                        <div class="card-title fw-bold text-nowrap small mb-1">Free Pickup boys</div>
+                        @if (model != null)
+                        {
+                    <small><strong>@(model.TotalPickupBoy - model.FreePickupBoy)</strong> of <strong>@model.TotalPickupBoy</strong> pickup boys are active. </small>
+                        }
+                        else
+                        {
+                            <small class="shimmer line"></small>
+                            <small class="shimmer line"></small>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-4 pt-1">
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.FreePickupBoy != 0)
+                            {
+                                <Chart Config="_configPickupBoy"></Chart>
+                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@model.FreePickupBoy</span>
+                                </div>
+                            }
+                            else
+                            { <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-2x fa-check text-light-green"></i>
+                                </div>
+                            }
+
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle w-100" style="height:60px;"></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list-group-item p-2">
+            <div class="row">
+
+                <div class="col-8">
+                    <div class="ps-2 py-2">
+                        <div class="card-title fw-bold text-nowrap small mb-1">Free Vehicles</div>
+                        @if (model != null)
+                        {<small><strong>@(model.TotalVehicle - model.FreeVehicle)</strong> of <strong>@model.TotalVehicle</strong> vehicles are active.</small> }
+                    else
+                    { <small class="shimmer line"></small>
+                        <small class="shimmer line"></small>
+                    }
+                    </div>
+                </div>
+
+                <div class="col-4 pt-1">
+
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.FreeVehicle != 0)
+                            {
+                                <Chart Config="_configVehicle"></Chart>
+                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@model.FreeVehicle</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-2x fa-check text-light-green"></i>
+                                </div>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle w-100" style="height:60px;"></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (model != null)
+        {@if (model.FreeVehicle > 0 && model.FreePickupBoy > 0)
+            {<a href="/PickupSession" class="list-group-item list-group-item-action text-center btn-outline btn-primary">
+                Go to Pickup Session
+            </a>
+            }
+          }
+    
+    </div>
+    </div>
+
+
+    @*</div>
+    <div class="row list-group-item">
+        <div class="col-8 m-auto">
+            <div class="card-body px-2">
+                <div class="card-title fw-bold text-nowrap small">Unassigned Requests</div>
+                @if (model != null)
+                {<small>@(model.UnassignedRequest) requests are unassigned out of @(model.PendingRequest)</small>}
+                else
+                { <small class="shimmer line"></small>
+                    <small class="shimmer line"></small>
+                }
+            </div>
+        </div>
+        <div class="col-4 m-auto">
+
+            <div class="position-relative">
+                @if (model != null)
+                {
+                    @if (model.UnassignedRequest != 0 && false)
+                    {<Chart Config="_configUnassigned"></Chart>
+                        <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                            <span class="h6 fw-bold text-secondary">@(model.UnassignedRequest)</span>
+                        </div>
+                    }
+                    else
+                    { <Chart Config="_successChart"></Chart>
+                        <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                            <i class="fa fa-2x fa-check text-light-green"></i>
+                        </div>
+                    }
+
+                }
+                else
+                {
+                    <div class="shimmer circle w-100" style="height:60px;"></div>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="row list-group-item">
+        <div class="col-8 m-auto">
+            <div class="card-body px-2">
+                <div class="card-title fw-bold text-nowrap small">Unassigned Requests</div>
+                @if (model != null)
+                {<small>@(model.UnassignedRequest) requests are unassigned out of @(model.PendingRequest)</small>}
+                else
+                { <small class="shimmer line"></small>
+                    <small class="shimmer line"></small>
+                }
+            </div>
+        </div>
+        <div class="col-4 m-auto">
+
+            <div class="position-relative">
+                @if (model != null)
+                {
+                    @if (model.UnassignedRequest != 0 && false)
+                    {<Chart Config="_configUnassigned"></Chart>
+                        <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                            <span class="h6 fw-bold text-secondary">@(model.UnassignedRequest)</span>
+                        </div>
+                    }
+                    else
+                    { <Chart Config="_successChart"></Chart>
+                        <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                            <i class="fa fa-2x fa-check text-light-green"></i>
+                        </div>
+                    }
+
+                }
+                else
+                {
+                    <div class="shimmer circle w-100" style="height:60px;"></div>
+                }
+            </div>
+        </div>
+
+    </div>*@
+    @*  <div class="card-body p-0">
+
+            <div class="card rounded-0">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-8 m-auto">
                                 <div class="card-body px-2">
-                                    <div class="card-title fw-bold text-nowrap small">Idle PickupBoys</div>
+                                    <div class="card-title fw-bold text-nowrap small">Unassigned Requests</div>
+                                    @if (model != null)
+                                    {<small>@(model.UnassignedRequest) requests are unassigned out of @(model.PendingRequest)</small>}
+                                    else
+                                    { <small class="shimmer line"></small>
+                                        <small class="shimmer line"></small>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-4 m-auto">
+
+                                <div class="position-relative">
                                     @if (model != null)
                                     {
-                                        <small>@model.FreePickupBoy PickupBoy are Idle out of @model.TotalPickupBoy</small>
+                                        @if (model.UnassignedRequest != 0 && false)
+                                        {<Chart Config="_configUnassigned"></Chart>
+                                            <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                                <span class="h6 fw-bold text-secondary">@(model.UnassignedRequest)</span>
+                                            </div>
+                                        }
+                                        else
+                                        { <Chart Config="_successChart"></Chart>
+                                            <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                                <i class="fa fa-2x fa-check text-light-green"></i>
+                                            </div>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <div class="shimmer circle w-100" style="height:60px;"></div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded-0 px-2">
+                        <div class="row">
+                            <div class="col-8 m-auto">
+                                <div class="card-body px-2">
+                                    <div class="card-title fw-bold text-nowrap small">Free Pickup boys</div>
+                                    @if (model != null)
+                                    {
+                                        <small>@(model.TotalPickupBoy - model.FreePickupBoy) Pickup boys are Active out of @model.TotalPickupBoy</small>
                                     }
                                     else
                                     {
@@ -161,7 +303,7 @@
                                         else
                                         { <Chart Config="_successChart"></Chart>
                                             <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
-                                                <i class="fa fa-4x fa-check-circle text-light-green"></i>
+                                                <i class="fa fa-2x fa-check text-light-green"></i>
                                             </div>
                                         }
 
@@ -169,7 +311,7 @@
                                     }
                                     else
                                     {
-                                        <div class="shimmer circle-sm"></div>
+                                        <div class="shimmer circle w-100" style="height:60px;"></div>
                                     }
 
                                 </div>
@@ -177,14 +319,13 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="card border-0 px-2 shadow-sm">
+                        <div class="card rounded-0 px-2">
                             <div class="row">
                                 <div class="col-8 m-auto">
                                     <div class="card-body px-2">
-                                        <div class="card-title fw-bold text-nowrap small">Idle Vehicles</div>
+                                        <div class="card-title fw-bold text-nowrap small">Free Vehicles</div>
                                         @if (model != null)
-                                        {<small>@model.FreeVehicle vehicles are idle out of @model.TotalVehicle</small> }
+                                        {<small>@(model.TotalVehicle - model.FreeVehicle) vehicles are free out of @model.TotalVehicle</small> }
                                     else
                                     { <small class="shimmer line"></small>
                                         <small class="shimmer line"></small>
@@ -214,7 +355,7 @@
                                         }
                                         else
                                         {
-                                            <div class="shimmer circle-sm"></div>
+                                            <div class="shimmer circle w-100" style="height:60px;"></div>
                                         }
 
                                     </div>
@@ -222,22 +363,26 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                     <div class="d-flex justify-content-center mt-2">
                         @if (model != null)
                         {@if (model.FreeVehicle > 0 || model.FreePickupBoy > 0)
-                            {<a href="/PickupSession" class="btn btn-default btn-xs btn-outline btn-link text-decoration-none">Go to Pickup Session</a>}
-                    }
+                            {<a href="/PickupSession" class="btn btn-outline btn-primary btn-sm w-100 border-0 py-2 rounded-0">Go to Pickup Session</a>}
+                         }
                     </div>
-                </div>
             </div>
-        </div>
-    </div>
-</div>
+        </div>*@
+@*</div>*@
+
+<style>
+    .text-light-green {
+        color: #62cb31;
+    }
+</style>
+
 
 @code{
 
-    IdleVehiclePickupBoyModel model;
+    VehiclePickupBoyUnassignedRequestCounts model;
     private PieConfig _configPickupBoy;
     private PieConfig _configVehicle;
     private PieConfig _configUnassigned;
@@ -245,7 +390,7 @@
     protected async override void OnAfterRender(bool firstRender)
     {
 
-        model = await http.GetFromJsonAsync<IdleVehiclePickupBoyModel>("api/GetActiveVehiclePickupboyCount");
+        model = await http.GetFromJsonAsync<VehiclePickupBoyUnassignedRequestCounts>("api/GetActiveVehiclePickupboyCount");
         base.OnAfterRender(firstRender);
         if (firstRender)
         {
@@ -285,7 +430,8 @@
                     {
                         Display = false,
                         Text = "ChartJs.Blazor Pie Chart"
-                    }
+                    },
+
 
                 }
             };
@@ -295,7 +441,7 @@
             {
                 BackgroundColor = new[]
                 {
-                 ColorUtil.ColorString(243, 32, 19, 1),
+                 ColorUtil.ColorString(243, 32, 19, 0.6),
                  ColorUtil.ColorString(243, 32, 19, 0),
 
                 }
@@ -340,7 +486,7 @@
             {
                 BackgroundColor = new[]
                  {
-               ColorUtil.ColorString(243, 32, 19, 1), // Slice 1 aka "Red"
+               ColorUtil.ColorString(243, 32, 19, 0.6), // Slice 1 aka "Red"
                ColorUtil.ColorString(243, 32, 19, 0), // Slice 2 aka "Yellow"
 
                 }
@@ -369,25 +515,23 @@
                 Legend = new Legend
                 {
                     Display = false,
-                    Position = Position.Right
                 },
 
                 Title = new ChartJs.Blazor.Common.OptionsTitle
                 {
                     Display = false,
-                    Text = "ChartJs.Blazor Pie Chart"
                 }
 
             }
         };
 
 
-        PieDataset<int> UnassignedVehicleDataset = new PieDataset<int>(new[] { model.Unassigned, model.TodaysRequest - model.Unassigned })
+        PieDataset<int> UnassignedVehicleDataset = new PieDataset<int>(new[] { model.UnassignedRequest, model.PendingRequest - model.UnassignedRequest })
         {
 
             BackgroundColor = new[]
             {
-                 ColorUtil.ColorString(243, 32, 19, 1),
+                 ColorUtil.ColorString(243, 32, 19, 0.6),
                  ColorUtil.ColorString(243, 32, 19, 0),
 
             }

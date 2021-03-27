@@ -18,8 +18,8 @@
     </div>*@
 
     <div class="mb-3">
-        <small class="fw-bold text-secondary">New Customers Today</small>
-        <div class="card border-0 rounded-0 shadow-sm mt-1">
+        <small class="fw-bold text-secondary text-uppercase">Customers Today</small>
+        <div class="card shadow-sm mt-1">
             <div class="card-body text-center">
                 <div class="row mb-3">
                     <div class="col-6 border-right">
@@ -68,15 +68,11 @@
     private PieConfig _config;
     protected async override void OnAfterRender(bool firstRender)
     {
-
-        model = await http.GetFromJsonAsync<NewCustomerModel>("api/GetCustomerCount");
-        base.OnAfterRender(firstRender);
-        //if (firstRender)
-        //{
-        //    this.LoadComponentData();
-        //    StateHasChanged();
-        //}
-        StateHasChanged();
+        if (firstRender)
+        {
+            model = await http.GetFromJsonAsync<NewCustomerModel>("api/GetCustomerCount");
+            StateHasChanged();
+        }
 
     }
 
