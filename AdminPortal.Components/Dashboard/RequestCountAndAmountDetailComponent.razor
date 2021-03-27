@@ -1,0 +1,299 @@
+﻿@using ChartJs.Blazor.BarChart
+@using TKW.AdminPortal.Components.SharedComponents
+@using System.Linq
+@namespace TKW.AdminPortal.Components.Dashboard
+@inject HttpClient http
+
+
+<div class="mb-3">
+    <small class="fw-bold text-secondary small text-uppercase">Request count and amount details</small>
+    <div class="card shadow-sm mt-1">
+        <div class="card-body">
+            @if (model == null)
+            {
+                <div class="shimmer w-100" style="height:20px"></div>
+                <div class="shimmer w-100" style="height:200px"></div>
+            }
+            else if (model.Count() == 0)
+            {
+                <h6 class="p-5 text-center"> No data</h6>
+            }
+            else
+            {
+                <div class="py-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
+                            <small>@getLabelStringForAmount(selectedType)</small>
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach (var t in (Type[])Enum.GetValues(typeof(Type)))
+                            {
+                                <li><a class="dropdown-item" @onclick="()=> updateType(t)">@getLabelStringForAmount(t)</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <small>by</small>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
+                            <small>@getLabelString(selectedLabel)</small>
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach (var l in (Labels[])Enum.GetValues(typeof(Labels)))
+                            {
+                                <li><a class="dropdown-item" @onclick="()=>updateLabel(l)">@getLabelString(l)</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <small>of</small>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
+                            <small class="text-lowercase">@getFilterString(selectedFilterId)</small>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" @onclick="()=>updateFilterId(null)">@getFilterString(null)</a></li>
+                            @{
+                                var filterList = selectedLabel == Labels.CustomerType ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.CustomerAddressId).Distinct();
+                            }
+                            @if (filterList.Count() > 0)
+                            {
+                                <li><hr class="dropdown-divider"></li>
+                                <li><small class="fw-bold text-muted px-2">@(selectedLabel == Labels.CustomerType ? "SOURCE APPS" : "CUSTOMERS")</small></li>
+                            }
+                            @foreach (var f in selectedLabel == Labels.PaymentMethod ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.PreferredMethodId).Distinct())
+                            {
+                                <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)" href="#">@getFilterString(f)</a></li>
+                            }
+                        </ul>
+                    </div>
+                    @if (selectedLabel == Labels.CustomerType)
+                    {
+                        <small> source </small>
+                    }
+                    else
+                    {
+                        <small> customer type </small>
+                    }
+                </div>
+                <Chart Config="_config" @ref="_chart"></Chart>
+            }
+
+        </div>
+    </div>
+</div>
+@code {
+    public List<RequestCustomerPaymentModel> model { get; set; }
+
+    public List<RequestCustomerPaymentModel> data { get; set; }
+
+    Type selectedType;
+
+    Labels selectedLabel;
+
+    string getLabelString(Labels label) => label == Labels.SourceApp ? "source app" : label == Labels.PaymentMethod ? "payment method" : "customer type";
+    string getLabelStringForAmount(Type type) => type == Type.RequestAmount ? "Request amount" : "Request count";
+
+    string getFilterString(int? filterId)
+    {
+
+        if (selectedLabel == Labels.SourceApp || selectedLabel == Labels.PaymentMethod)
+        {
+            if (filterId == null) return "All";
+            return data.FirstOrDefault(m => m.CustomerAddressId == filterId)?.CustomerAddressTypeName ?? "";
+        }
+        else
+        {
+            if (filterId == null) return "All source";
+            return data.FirstOrDefault(m => m.SourceAppId == filterId)?.SourceAppName ?? "";
+        }
+    }
+
+    int? selectedFilterId;
+
+    private BarConfig _config;
+    private Chart _chart;
+
+    void updateType(Type t)
+    {
+        if (selectedType != t)
+        {
+            selectedFilterId = null;
+            selectedType = t;
+            data = model.ToList();
+            UpdateData();
+        }
+    }
+
+    void updateLabel(Labels t)
+    {
+        if (selectedLabel != t)
+        {
+            selectedFilterId = null;
+            selectedLabel = t;
+            UpdateData();
+        }
+    }
+
+    void updateFilterId(int? filterId)
+    {
+        selectedFilterId = filterId;
+        UpdateData();
+    }
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            await LoadChartData();
+
+            selectedLabel = Labels.SourceApp;
+            selectedType = Type.RequestAmount;
+
+            data = model.ToList();
+
+            UpdateData();
+        }
+    }
+    private async Task LoadChartData()
+    {
+
+        model = await http.GetFromJsonAsync<List<RequestCustomerPaymentModel>>("api/GetRequestCustomerPaymentTypeCount");
+
+        _config = new BarConfig(horizontal: true)
+        {
+            Options = new BarOptions
+            {
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                },
+                Title = new OptionsTitle
+                {
+                    Display = false,
+                },
+                Tooltips = new Tooltips
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Hover = new Hover
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Scales = new BarScales
+                {
+                    XAxes = new List<CartesianAxis>
+    {
+                        new LinearCartesianAxis
+                        {
+                            GridLines = new GridLines{
+                            Display = false
+                            },
+                            Ticks = new LinearCartesianTicks
+                            {
+                                StepSize = 1,
+                                Max = 5,
+                                Min = 0,
+                            }
+    }
+                    }
+                },
+            }
+        };
+
+    }
+
+    public void UpdateData()
+    {
+        _config.Data.Labels.Clear();
+        _config.Data.Datasets.Clear();
+
+
+        var dataset = new BarDataset<int>(true);
+        if (selectedType == Type.RequestCount)
+        {
+            if (selectedLabel == Labels.SourceApp)
+            {
+                foreach (var l in data.GroupBy(m => m.SourceAppName))
+                {
+                    _config.Data.Labels.Add(l.Key);
+                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                    dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.CustomerAddressId == selectedFilterId));
+                }
+            }
+            else if (selectedLabel == Labels.PaymentMethod)
+            {
+                var dataset2 = new BarDataset<int>(true);
+                var paymentMethods = data.Where(m => m.PreferredMethodId != null).Select(m => m.PreferredMethodName).Union(data.Where(m => m.PreferredMethodId != null).Select(m => m.ActualMethodName)).Distinct();
+                foreach (var l in paymentMethods)
+                {
+                    _config.Data.Labels.Add(l);
+
+                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                    dataset.Add(selectedFilterId == null ? data.Count(m => m.PreferredMethodName == l) : data.Count(m => m.PreferredMethodName == l && m.CustomerAddressId == selectedFilterId));
+
+                    dataset2.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.7);
+                    dataset2.Add(selectedFilterId == null ? data.Count(m => m.ActualMethodName == l) : data.Count(m => m.ActualMethodName == l && m.CustomerAddressId == selectedFilterId));
+                }
+                _config.Data.Datasets.Add(dataset2);
+            }
+            else
+            {
+                foreach (var l in data.GroupBy(m => m.CustomerAddressTypeName))
+                {
+                    _config.Data.Labels.Add(l.Key);
+                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                    dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.SourceAppId == selectedFilterId));
+                }
+            }
+        }
+        else
+        {
+            if (selectedLabel == Labels.SourceApp)
+            {
+                foreach (var l in data.GroupBy(m => m.SourceAppName))
+                {
+                    _config.Data.Labels.Add(l.Key);
+                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                    dataset.Add(selectedFilterId == null ? (int)l.Sum(m => m.Amount) : (int)l.Where(m => m.CustomerAddressId == selectedFilterId).Sum(m => m.Amount));
+                }
+            }
+            else if (selectedLabel == Labels.PaymentMethod)
+            {
+                foreach (var l in data.GroupBy(m => m.ActualMethodName))
+                {
+                    _config.Data.Labels.Add(l.Key);
+
+                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                    dataset.Add(selectedFilterId == null ? (int)data.Sum(m => m.Amount) : (int)data.Where(m => m.CustomerAddressId == selectedFilterId).Sum(m => m.Amount));
+                }
+            }
+            else
+            {
+                foreach (var l in data.GroupBy(m => m.CustomerAddressTypeName))
+                {
+                    _config.Data.Labels.Add(l.Key);
+                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                    dataset.Add(selectedFilterId == null ? (int)l.Sum(m => m.Amount) : (int)l.Where(m => m.SourceAppId == selectedFilterId).Sum(m => m.Amount));
+                }
+            }
+        }
+        _config.Data.Datasets.Add(dataset);
+        StateHasChanged();
+    }
+
+    enum Labels
+    {
+
+        SourceApp,
+        PaymentMethod,
+        CustomerType
+    }
+    enum Type
+    {
+        RequestCount,
+        RequestAmount
+    }
+}
