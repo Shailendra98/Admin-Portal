@@ -1,73 +1,63 @@
 ﻿@using ChartJs.Blazor.PieChart
 @using System.Drawing
 @using TKW.AdminPortal.Components.SharedComponents
+@inject HttpClient http
+    <div class="mb-3">
+        <small class="fw-bold text-secondary text-uppercase">Customers Today</small>
+        <div class="card shadow-sm mt-1">
+            <div class="card-body text-center">
+                <div class="row mb-3">
+                    <div class="col-6 border-right">
+                        @if (model != null)
+                        {
+                            <div> New Customers </div>
+                            <h2 class="text-light-green fw-bold"> @model.NewCustomers </h2>
+                        }
+                        else
+                        {
+                            <div class="shimmer line"></div>
+                            <h2 class="shimmer line h-50"></h2>
+                        }
 
-<div class="mb-3">
-    <h6 class="fw-bold text-secondary small">New Customers</h6>
-    <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);"> 
-        <div class="card-body py-0">
-            <div class="position-relative">
-                <Chart Config="_config"></Chart>
-            </div>
-            <div class="position-absolute text-center" style="top: 50%; left: 50%; transform: translate(-50%, 50%);">
-                <h6 class="fw-bold text-secondary"> 34.5 %</h6>
-                <span class="fw-bolder">60</span>
+                    </div>
+                    <div class="col-6">
+                        @if (model != null)
+                        {
+                            <div> Total Customers </div>
+                            <h2 class="text-secondary fw-bold"> @model.TotalCustomers </h2>
+                        }
+                        else
+                        {
+                            <div class="shimmer line"></div>
+                            <h2 class="shimmer line h-50"></h2>
+                        }
+
+                    </div>
+
+
+                </div>
+                @if (model != null) { 
+                        var NewCustomerPercent = model.TotalCustomers <= 0 ? 0 : model.NewCustomers * 100 / model.TotalCustomers;
+                <div class="progress mb-0" style="height: 0.4rem">
+                    <div class="progress-bar h-bg-green" role="progressbar" style="width: @NewCustomerPercent%" aria-valuenow="@NewCustomerPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                } else { <div class="progress shimmer line mb-0" style="height: 0.4rem"></div>}
             </div>
         </div>
     </div>
-</div>
+
+
 
 @code {
+    NewCustomerModel model;
     private PieConfig _config;
-
-    protected override void OnInitialized()
+    protected async override void OnAfterRender(bool firstRender)
     {
-
-        _config = new PieConfig(true)
+        if (firstRender)
         {
-
-
-            Options = new PieOptions
-            {
-                AspectRatio = 1,
-                MaintainAspectRatio = true,
-                Responsive = true,
-                CutoutPercentage = 80,
-
-                Rotation = 1 * Math.PI,
-                Circumference = 1 * Math.PI,
-                
-                Legend = new Legend
-                {
-                    Display = false,
-                    Position = Position.Right
-                },
-
-                Title = new ChartJs.Blazor.Common.OptionsTitle
-                {
-                    Display = true,
-                    Text = "New Customers this month"
-                }
-
-
-            }
-        };
-
-        foreach (string color in new[] { "New Customers", "Left" })
-        {
-            _config.Data.Labels.Add(color);
+            model = await http.GetFromJsonAsync<NewCustomerModel>("api/GetCustomerCount");
+            StateHasChanged();
         }
 
-        PieDataset<int> dataset = new PieDataset<int>(new[] { 7, 3 })
-        {
-            BackgroundColor = new[]
-            {
-            ColorUtil.ColorString(92, 198, 65, 1),
-            ColorUtil.ColorString(92, 198, 65, 0.1), 
-
-            }
-        };
-
-        _config.Data.Datasets.Add(dataset);
     }
 }

@@ -2,90 +2,198 @@
 @using AdminPortal.Shared.Models
 @inject HttpClient http
 
-@if (model != null)
-{
-    <div class="mb-3">
-        <h6 class="fw-bold text-secondary small">Vehicle & Pickup Boy</h6>
-        <div class="card rounded-0 border-0" style="box-shadow: 0px 0px 10px rgba(209, 209, 209, 0.25);">
-            <div class="card-body pt-4">
-                <div class="mb-2">
-                    <div class="pb-2">
-                        <h6 class="fw-bold text-secondary small">Active PickupBoys</h6>
-                        <div class="card border-0 px-2 shadow-sm">
-                            <div class="row">
-                                <div class="col-8 m-auto">
-                                    <div class="card-body px-2">
-                                        <small>@model.ActivePickupBoy PickupBoy are active out of @model.TotalVehicle</small>
-                                    </div>
-                                </div>
-                                <div class="col-4 m-auto">
+<div class="card shadow-sm">
+    <div class="list-group list-group-flush">
+        <div class="list-group-item p-2">
+            <div class="row">
 
-                                    <div class="position-relative">
-                                        <Chart Config="_configPickupBoy"></Chart>
-                                        <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                            <span class="h6 fw-bold text-secondary">@model.ActivePickupBoy</span>
-                                        </div>
-                                    </div>
+                <div class="col-8">
+                    <div class="ps-2 py-2">
+                        <div class="card-title fw-bold text-nowrap small mb-1">Unassigned Requests</div>
 
-                                </div>
-                            </div>
-                        </div>
+                        @if (model != null)
+                        {
+                            @if (model.UnassignedRequest == 0)
+                            {<small class="text-success"> All Requests are assigned. </small>}
+                            else
+                            {<small><strong>@(model.UnassignedRequest)</strong> of <strong>@(model.PendingRequest)</strong> pending requests are unassigned.</small>}}
+                        else
+                        { <small class="shimmer line"></small>
+                            <small class="shimmer line"></small>
+                        }
                     </div>
-                    <div>
-                        <h6 class="fw-bold text-secondary small">Active Vehicle</h6>
-                        <div class="card border-0 px-2 shadow-sm">
-                            <div class="row">
-                                <div class="col-8 m-auto">
-                                    <div class="card-body px-2">
-                                        <small>@model.ActiveVehicle Vehicle are active out of @model.TotalVehicle</small>
-                                    </div>
-                                </div>
-                                <div class="col-4 m-auto">
+                </div>
 
-                                    <div class="position-relative">
-                                        <Chart Config="_configVehcle"></Chart>
-                                        <div class="position-absolute" style="top: 15%; left: 50%; transform: translate(-50%, 50%);">
-                                            <span class="h6 fw-bold text-secondary">@model.ActiveVehicle</span>
-                                        </div>
-                                    </div>
-
+                <div class="col-4 pt-1">
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.UnassignedRequest != 0)
+                            {<Chart Config="_configUnassigned"></Chart>
+                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@(model.UnassignedRequest)</span>
                                 </div>
-                            </div>
-                        </div>
+                            }
+                            else
+                            { <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-2x fa-check text-light-green"></i>
+                                </div>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle" style="height: 60px; width: 60px;"></div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
+        <div class="list-group-item p-2">
+            <div class="row">
+
+                <div class="col-8">
+                    <div class="ps-2 py-2">
+                        <div class="card-title fw-bold text-nowrap small mb-1">Free Pickup boys</div>
+                        @if (model != null)
+                        {
+                            @if (model.FreePickupBoy == 0)
+                            {<small class="text-success"> All pickup boys are active. </small>}
+                            else
+                            {<small><strong>@(model.TotalPickupBoy - model.FreePickupBoy)</strong> of <strong>@model.TotalPickupBoy</strong> pickup boys are active.</small>}
+                        }
+                        else
+                        {
+                            <small class="shimmer line"></small>
+                            <small class="shimmer line"></small>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-4 pt-1">
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.FreePickupBoy != 0)
+                            {
+                                <Chart Config="_configPickupBoy"></Chart>
+                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@model.FreePickupBoy</span>
+                                </div>
+                            }
+                            else
+                            { <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-2x fa-check text-light-green"></i>
+                                </div>
+                            }
+
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle" style="height:60px; width:60px;"></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="list-group-item p-2">
+            <div class="row">
+
+                <div class="col-8">
+                    <div class="ps-2 py-2">
+                        <div class="card-title fw-bold text-nowrap small mb-1">Free Vehicles</div>
+                        @if (model != null)
+                        {
+                            @if (model.FreeVehicle == 0)
+                            {<small class="text-success"> All vehicles are active. </small>}
+                            else
+                            {<small><strong>@(model.TotalVehicle - model.FreeVehicle)</strong> of <strong>@model.TotalVehicle</strong> vehicles are active.</small>}
+                        }
+                        else
+                        { <small class="shimmer line"></small>
+                            <small class="shimmer line"></small>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-4 pt-1">
+
+                    <div class="position-relative">
+                        @if (model != null)
+                        {
+                            @if (model.FreeVehicle != 0)
+                            {
+                                <Chart Config="_configVehicle"></Chart>
+                                <div class="position-absolute" style="top: 20%; left: 50%; transform: translate(-50%, 50%);">
+                                    <span class="h6 fw-bold text-secondary">@model.FreeVehicle</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <Chart Config="_successChart"></Chart>
+                                <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
+                                    <i class="fa fa-2x fa-check text-light-green"></i>
+                                </div>
+                            }
+
+                        }
+                        else
+                        {
+                            <div class="shimmer circle w-100" style="height:60px;"></div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if(model != null &&model.FreeVehicle > 0 && model.FreePickupBoy > 0)
+            {
+                <a href="/PickupSession" class="list-group-item list-group-item-action text-center btn-outline btn-primary">
+                    Go to Pickup Session
+                </a>
+             }
+
     </div>
-}
+</div>
+<style>
+    .text-light-green {
+        color: #62cb31;
+    }
+</style>
+
+
 @code{
 
-    VehicleAndpickupBoyModel model;
+    VehiclePickupBoyUnassignedRequestCounts model;
     private PieConfig _configPickupBoy;
-    private PieConfig _configVehcle;
+    private PieConfig _configVehicle;
+    private PieConfig _configUnassigned;
+    private PieConfig _successChart;
     protected async override void OnAfterRender(bool firstRender)
     {
+        if (firstRender)
+        {
+            model = await http.GetFromJsonAsync<VehiclePickupBoyUnassignedRequestCounts>("api/GetActiveVehiclePickupboyCount");
 
-        model = await http.GetFromJsonAsync<VehicleAndpickupBoyModel>("api/GetRequestAddressTypeCountsOfFranchise");
-        base.OnAfterRender(firstRender);
-        this.LoadChartData();
-        StateHasChanged();
+            await LoadChartData();
+            StateHasChanged();
+        }
+
     }
     private async Task LoadChartData()
     {
-        if(model!=null)
+        if (model != null)
         {
             _configPickupBoy = new PieConfig(true)
             {
-
-
                 Options = new PieOptions
                 {
                     AspectRatio = 1,
                     MaintainAspectRatio = true,
-                    CutoutPercentage = 80,
+                    CutoutPercentage = 85,
 
-                    Rotation = 181,
 
                     Tooltips = new Tooltips
                     {
@@ -103,24 +211,29 @@
                     {
                         Display = false,
                         Text = "ChartJs.Blazor Pie Chart"
-                    }
+                    },
+
 
                 }
             };
 
-            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] { model.TotalPickupBoy - model.ActivePickupBoy, model.ActivePickupBoy })
+
+            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] {  model.FreePickupBoy,model.TotalPickupBoy - model.FreePickupBoy })
             {
+                BorderWidth = 0,
                 BackgroundColor = new[]
                 {
-                 ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
-                  ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
+                 ColorUtil.ColorString(243, 32, 19, 0.6),
+                 ColorUtil.ColorString(243, 32, 19, 0),
 
-            }
+                }
             };
 
 
             _configPickupBoy.Data.Datasets.Add(PickupBoydataset);
-            _configVehcle = new PieConfig(true)
+
+
+            _configVehicle = new PieConfig(true)
             {
 
 
@@ -128,9 +241,8 @@
                 {
                     AspectRatio = 1,
                     MaintainAspectRatio = true,
-                    CutoutPercentage = 80,
+                    CutoutPercentage = 85,
 
-                    Rotation = 181,
 
                     Tooltips = new Tooltips
                     {
@@ -152,18 +264,112 @@
 
                 }
             };
-            PieDataset<int> Vehicledataset = new PieDataset<int>(new[] { model.TotalVehicle - model.ActiveVehicle, model.ActiveVehicle })
+            PieDataset<int> Vehicledataset = new PieDataset<int>(new[] { model.FreeVehicle, model.TotalVehicle - model.FreeVehicle })
             {
+                BorderWidth = 0,
                 BackgroundColor = new[]
-        {
-               ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
-               ColorUtil.ColorString(255, 255, 255, 0), // Slice 2 aka "Yellow"
+                 {
+               ColorUtil.ColorString(243, 32, 19, 0.6), // Slice 1 aka "Red"
+               ColorUtil.ColorString(243, 32, 19, 0), // Slice 2 aka "Yellow"
 
-            }
+                }
             };
 
-            _configPickupBoy.Data.Datasets.Add(Vehicledataset);
+            _configVehicle.Data.Datasets.Add(Vehicledataset);
         }
+
+        _configUnassigned = new PieConfig(true)
+        {
+
+
+            Options = new PieOptions
+            {
+                AspectRatio = 1,
+                MaintainAspectRatio = true,
+                CutoutPercentage = 85,
+
+
+                Tooltips = new Tooltips
+                {
+                    Enabled = false,
+                },
+
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                }
+
+            }
+        };
+
+
+        PieDataset<int> UnassignedVehicleDataset = new PieDataset<int>(new[] { model.UnassignedRequest, model.PendingRequest - model.UnassignedRequest })
+        {
+            BorderWidth = 0,
+            BackgroundColor = new[]
+            {
+                 ColorUtil.ColorString(243, 32, 19, 0.6),
+                 ColorUtil.ColorString(243, 32, 19, 0),
+
+            }
+        };
+
+
+        _configUnassigned.Data.Datasets.Add(UnassignedVehicleDataset);
+
+        _successChart = new PieConfig(true)
+        {
+
+
+            Options = new PieOptions
+            {
+                AspectRatio = 1,
+                MaintainAspectRatio = true,
+                CutoutPercentage = 85,
+
+
+                Tooltips = new Tooltips
+                {
+                    Enabled = false,
+                },
+
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                    Position = Position.Right
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                    Text = "ChartJs.Blazor Pie Chart"
+                }
+
+            }
+        };
+
+
+        PieDataset<int> SuccessChartDataset = new PieDataset<int>(new[] { 10 })
+        {
+            BorderWidth = 0,
+
+            BackgroundColor = new[]
+            {
+                 ColorUtil.ColorString(98, 203, 49, 1),
+                 ColorUtil.ColorString(243, 32, 19, 0),
+
+            }
+        };
+
+
+        _successChart.Data.Datasets.Add(SuccessChartDataset);
 
 
     }
@@ -171,5 +377,6 @@
 
 
 }
+
 
 

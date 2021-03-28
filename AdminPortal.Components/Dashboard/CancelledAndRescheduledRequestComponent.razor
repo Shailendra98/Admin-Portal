@@ -1,0 +1,247 @@
+﻿@using ChartJs.Blazor.BarChart
+@using TKW.AdminPortal.Components.SharedComponents
+@using System.Linq
+@namespace TKW.AdminPortal.Components.Dashboard
+@inject HttpClient http
+
+<div class="mb-3">
+    <small class="fw-bold text-secondary small text-uppercase">Cancelled And Rescheduled Requests</small>
+    <div class="card shadow-sm mt-1">
+        <div class="card-body">
+            @if (model == null)
+            {
+                <div class="shimmer w-100" style="height:20px"></div>
+                <div class="shimmer w-100" style="height:200px"></div>
+            }
+            else if (model.Count() == 0)
+            {
+                <h6 class="text-center p-5">No data</h6>
+            }
+            else
+            {
+                <div class="py-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
+                            <small>@getLabelString(selectedLabel)</small>
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach (var l in (Labels[])Enum.GetValues(typeof(Labels)))
+                            {
+                                <li><a class="dropdown-item" @onclick="()=>updateLabel(l)">@getLabelString(l)</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <small class="pe-2"> of </small>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
+                            <small class="text-lowercase">@selectedType</small>
+                        </button>
+                        <ul class="dropdown-menu">
+                            @foreach (var t in (RequestType[])Enum.GetValues(typeof(RequestType)))
+                            {
+                                <li><a class="dropdown-item" @onclick="()=> updateType(t)">@t</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <small class="pe-2">request @(selectedLabel == Labels.SourceApp ?" with":" from") </small>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
+                            <small class="text-lowercase">@getFilterString(selectedFilterId)</small>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" @onclick="()=>updateFilterId(null)">@getFilterString(null)</a></li>
+                            @{
+                                var filterList = selectedLabel == Labels.Reason ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.ReasonId).Distinct();
+                            }
+                            @if (filterList.Count() > 0)
+                            {
+                                <li><hr class="dropdown-divider"></li>
+                                <li><small class="fw-bold text-muted px-2">@(selectedLabel == Labels.Reason ? "SOURCE APPS" : "REASONS")</small></li>
+                            }
+                            @foreach (var f in filterList)
+                            {
+                                <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)">@getFilterString(f)</a></li>
+                            }
+                        </ul>
+                    </div>
+                    @if (selectedLabel == Labels.SourceApp)
+                    {
+                        <small> reason</small>
+                    }
+                </div>
+                <Chart Config="_config" @ref="_chart"></Chart>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    public List<CancelledAndRescheduledRequestModel> model { get; set; }
+
+    public List<CancelledAndRescheduledRequestModel> data { get; set; }
+
+
+    RequestType selectedType;
+
+    Labels selectedLabel;
+
+    string getLabelString(Labels label) => label == Labels.SourceApp ? "Source app" : "Reason";
+
+    string getFilterString(int? filterId)
+    {
+
+        if (selectedLabel == Labels.SourceApp)
+        {
+            if (filterId == null) return "All";
+            else return data.FirstOrDefault(m => m.ReasonId == filterId)?.ReasonName ?? "";
+        }
+        else
+        {
+            if (filterId == null) return "All sources";
+            else return data.FirstOrDefault(m => m.SourceAppId == filterId)?.SourceAppName ?? "";
+        }
+    }
+
+    int? selectedFilterId;
+
+    private BarConfig _config;
+    private Chart _chart;
+
+    void updateType(RequestType t)
+    {
+        if (selectedType != t)
+        {
+            selectedType = t;
+            selectedFilterId = null;
+            data = selectedType == RequestType.Cancelled ? model.Where(m => m.IsCancelled).ToList() : model.Where(m => !m.IsCancelled).ToList();
+            UpdateData();
+        }
+    }
+    void updateLabel(Labels t)
+    {
+        if (selectedLabel != t)
+        {
+            selectedFilterId = null;
+            selectedLabel = t;
+            UpdateData();
+        }
+    }
+
+    void updateFilterId(int? filterId)
+    {
+        selectedFilterId = filterId;
+        UpdateData();
+    }
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (firstRender)
+        {
+            await LoadChartData();
+
+            selectedLabel = Labels.SourceApp;
+            selectedType = RequestType.Cancelled;
+            data = model.Where(m => m.IsCancelled).ToList();
+
+            UpdateData();
+        }
+
+
+    }
+    private async Task LoadChartData()
+    {
+
+        model = await http.GetFromJsonAsync<List<CancelledAndRescheduledRequestModel>>("api/GetCancelledAndRescheduledRequestDetails");
+
+        _config = new BarConfig(horizontal: true)
+        {
+            Options = new BarOptions
+            {
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                },
+                Title = new OptionsTitle
+                {
+                    Display = false,
+                },
+                Tooltips = new Tooltips
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Hover = new Hover
+                {
+                    Mode = InteractionMode.Nearest,
+                    Intersect = true
+                },
+                Scales = new BarScales
+                {
+                    XAxes = new List<CartesianAxis>
+            {
+                        new LinearCartesianAxis
+                        {
+                            GridLines = new GridLines{
+                            Display = false,
+                            OffsetGridLines = false,
+                            },
+                            Ticks = new LinearCartesianTicks
+                            {
+                                MaxTicksLimit = 8,
+                                Precision = 0,
+                                BeginAtZero = true
+                            }
+                        }
+                        //Ticks = new LinearCartesianTicks { }
+                    },
+
+                },
+            }
+        };
+
+    }
+
+    public void UpdateData()
+    {
+        _config.Data.Labels.Clear();
+        _config.Data.Datasets.Clear();
+
+
+        var dataset = new BarDataset<int>(true);
+
+        if (selectedLabel == Labels.SourceApp)
+        {
+            foreach (var l in data.GroupBy(m => m.SourceAppName))
+            {
+                _config.Data.Labels.Add(l.Key);
+                dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.ReasonId == selectedFilterId));
+
+            }
+        }
+        else
+        {
+            foreach (var l in data.GroupBy(m => m.ReasonName))
+            {
+                _config.Data.Labels.Add(l.Key);
+                dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
+                dataset.Add(selectedFilterId == null ? l.Count() : l.Count(m => m.SourceAppId == selectedFilterId));
+            }
+        }
+        _config.Data.Datasets.Add(dataset);
+        StateHasChanged();
+    }
+
+
+    enum Labels
+    {
+        SourceApp,
+        Reason
+    }
+    enum RequestType
+    {
+        Cancelled,
+        Rescheduled
+    }
+}

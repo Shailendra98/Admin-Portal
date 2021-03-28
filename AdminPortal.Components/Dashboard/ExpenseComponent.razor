@@ -1,0 +1,101 @@
+﻿@using ChartJs.Blazor.PieChart
+@using System.Drawing
+@using TKW.AdminPortal.Components.SharedComponents
+@using AdminPortal.Shared.Models
+@inject HttpClient http
+
+
+    <div class="mb-3">
+    <small class="fw-bold text-secondary text-uppercase">Expenses</small>
+    <div class="card rounded-0 border-0 shadow-sm mt-2">
+        <div class="card-body">
+            @if (model != null)
+            {
+                @if (model.Count() == 0) { 
+                    <h6 class="py-3 text-center">There are no expenses.</h6>
+                }
+                else
+                {
+                    <div class="position-relative">
+                        <Chart Config="_config"></Chart>
+                        <div class="position-absolute" style="top: 35%; left: 34%; transform: translate(-50%, 50%);">
+                            <span class="fw-bold text-secondary h4">@totalExpenses </span>
+                        </div>
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="shimmer circle w-75" style="height: 275px;"></div>
+            }
+        </div>
+        </div>
+    </div>
+
+
+
+@code {
+    private List<ExpenseModel> model;
+    private PieConfig _config;
+    public int totalExpenses = 0;
+
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            base.OnAfterRender(firstRender);
+            await LoadChartData();
+            StateHasChanged();
+        }
+
+    }
+
+    private async Task LoadChartData()
+    {
+        model = await http.GetFromJsonAsync<List<ExpenseModel>>("api/GetExpenseDetailsList");
+
+        _config = new PieConfig(true)
+        {
+
+
+            Options = new PieOptions
+            {
+                Responsive = true,
+                CutoutPercentage = 75,
+                Legend = new Legend
+                {
+                    Display = true,
+                    Position = Position.Right
+                },
+
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                }
+            }
+        };
+
+        PieDataset<int> dataset = new PieDataset<int>()
+        {
+            BackgroundColor = new[]
+            {
+            ColorUtil.ColorString(92, 198, 65, 1), // Slice 1 aka "Red"
+            ColorUtil.ColorString(92, 198, 65, 0.1), // Slice 2 aka "Yellow"
+            ColorUtil.ColorString(92, 198, 65, 0.5), // Slice 3 aka "Green"
+
+            }
+        };
+        foreach (var expense in model) {
+            totalExpenses = totalExpenses + expense.ExpenseAmount;
+        }
+
+        foreach (var expense in model)
+        {
+            _config.Data.Labels.Add(expense.ExpenseName);
+            dataset.Add(expense.ExpenseAmount);
+        }
+        _config.Data.Datasets.Add(dataset);
+    }
+    }
+

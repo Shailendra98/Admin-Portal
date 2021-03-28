@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using System.Security.Claims;
+using TKW.ApplicationCore.Helpers;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Extensions
@@ -12,7 +13,9 @@ namespace TKW.AdminPortal.Extensions
         {
             if (claimsPrincipal != null)
             {
-                Context.Response.Cookies.Append("User", sessionToken);
+                Context.Response.Cookies.Append("User", sessionToken,new CookieOptions { 
+                Expires = Dt.Now.AddDays(1)
+                });
                 Context.Session.SetAuthTicket(new AuthenticationTicket(claimsPrincipal, AuthScheme.SessionToken_Cookie));
                 ApplyHeaders(Context);
             }

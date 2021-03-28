@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using TKW.AdminPortal.Shared.Models;
 using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using TKW.ApplicationCore.Helpers;
 
 namespace TKW.AdminPortal.Controllers
 {
@@ -32,33 +33,15 @@ namespace TKW.AdminPortal.Controllers
             _pickupSessionQueries = pickupSessionQueries;
             _requestQueries = requestQueries;
         }
-
-        [HttpGet("~/api/GetVehicleAndPickupBoyCountsOfFranchise")]
-        public async Task<VehicleAndpickupBoyModel> GetVehicleAndPickupBoyCountsOfFranchise(CancellationToken cancellationToken)
-        {
-            
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data= await _dashboardQueries.VehicleAndPickupBoyCountsOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            VehicleAndpickupBoyModel model = new VehicleAndpickupBoyModel
-            {
-                ActiveVehicle = data.ActiveVehicle,
-                ActivePickupBoy = data.ActivePickupBoy,
-                TotalPickupBoy = data.TotalPickupBoy,
-                TotalVehicle = data.TotalVehicle
-            };
-            return model;
-
-        }
         [HttpGet("~/api/GetRequestCountsOfFranchise")]
         public async Task<RequestCountsModel> GetRequestCountsOfFranchise(CancellationToken cancellationToken)
         {
-
             int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RequestCountsOfFranchiseAsync(franchiseid.Value, cancellationToken);
+            var data = await _dashboardQueries.RequestCountsOfFranchiseAsync(franchiseid!.Value, cancellationToken);
             RequestCountsModel model = new RequestCountsModel
             {
-                Unassigned = data.Unassigned,
-                Assigned = data.Assigned,
+                TodaysRequests = data.TotalScheduled,
+                Pending = data.Pending,
                 Handled = data.Handled,
                 Rescheduled = data.Rescheduled,
                 Onspot = data.Onspot,
@@ -67,128 +50,153 @@ namespace TKW.AdminPortal.Controllers
             return model;
 
         }
-       
-        [HttpGet("~/api/GetpaymentMethodCountsOfFranchise")]
-        public async Task<PaymentMethodModel> GetpaymentMethodCountsOfFranchise(CancellationToken cancellationToken)
-        {
 
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.PaymentMethodCountOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            PaymentMethodModel model = new PaymentMethodModel
+        [HttpGet("~/api/GetActiveVehiclePickupboyCount")]
+        public async Task<VehiclePickupBoyUnassignedRequestCounts> GetActiveVehiclePickupboyCount(CancellationToken cancellationToken)
+        {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var data = await _dashboardQueries.VehicleAndPickupBoyAndUnassignedCountsOfFranchiseAsync(franchiseId!.Value, cancellationToken);
+
+            VehiclePickupBoyUnassignedRequestCounts model = new VehiclePickupBoyUnassignedRequestCounts
             {
-                PaytmWallet = data.PaytmWallet,
-                UPI = data.UPI,
-                Cash = data.Cash,
-                IMPS = data.IMPS,
-                UserWallet = data.UserWallet
+                FreeVehicle = data.FreeVehicles,
+                TotalVehicle = data.TotalVehicles,
+                FreePickupBoy = data.FreePickupBoys,
+                TotalPickupBoy = data.TotalPickupBoys,
+                UnassignedRequest = data.UnassignedRequests,
+                PendingRequest = data.PendingRequests
             };
             return model;
+        }
+
+        [HttpGet("~/api/RequestWeekTrendListData")]
+        public async Task<List<RequestWeekTrendModel>> RequestWeekTrendListData(CancellationToken cancellationToken)
+        {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var date = Dt.Today.AddDays(-7);
+            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, date,cancellationToken);
+            var list = new List<RequestWeekTrendModel>();
+            for (var i = 0; i < 7; i++)
+            {
+                var dayCount = new RequestWeekTrendModel
+                {
+                    Date = date,
+                    HandledRequestCount = data.Where(m => m.HandleDate == date).Select(m => m.RequestId).Distinct().Count(),
+                    CancelledRequestCount = data.Where(m => m.CancelDate == date).Select(m => m.RequestId).Distinct().Count(),
+                    ScheduledRequestCount = data.Where(m => m.ScheduledDate == date && !data.Any(a => a.RequestId == m.RequestId && a.ScheduleUpdateTime >= m.ScheduleUpdateTime && a.ScheduleUpdateTime < m.ScheduledDate && a.ScheduledDate != m.ScheduledDate)).Select(m => m.RequestId).Distinct().Count()
+                };
+                list.Add(dayCount);
+                date = date.AddDays(1);
+            }
+            return list;
+        }
+
+
+        [HttpGet("~/api/GetRequestCustomerPaymentTypeCount")]
+        public async Task<List<RequestCustomerPaymentModel>> GetRequestCustomerPaymentTypeCount(CancellationToken cancellationToken)
+        {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var data = await _dashboardQueries.RequestSourceCustomerTypePaymentMethodAsync(franchiseId.Value, cancellationToken);
+
+            if (data == null)
+                return new List<RequestCustomerPaymentModel>();
+            return data.Select(m => new RequestCustomerPaymentModel {
+                ActualMethodId = m.ActualMethodId,
+                ActualMethodName = m.ActualMethodName,
+                Amount = m.Amount,
+                CustomerAddressId = m.CustomerTypeId,
+                CustomerAddressTypeName = m.CustomerTypeName,
+                PreferredMethodId = m.PrefferedMethodId,
+                PreferredMethodName = m.PrefferedMethodName,
+                SourceAppId = m.SourceAppId,
+                SourceAppName = m.SourceAppName
+            }).ToList();
 
         }
-        [HttpGet("~/api/GetpaymentMethodAmountOfFranchise")]
-        public async Task<PaymentMethodModel> GetpaymentMethodAmountOfFranchise(CancellationToken cancellationToken)
-        {
 
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.PaymentMethodAmountOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            PaymentMethodModel model = new PaymentMethodModel
+        [HttpGet("~/api/GetCustomerCount")]
+        public async Task<NewCustomerModel> GetCustomerCount(CancellationToken cancellationToken)
+        {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var data = await _dashboardQueries.NewAndTotalCustomerCountOfFranchiseAsync(franchiseId.Value, cancellationToken);
+
+            NewCustomerModel model = new NewCustomerModel
             {
-                PaytmWallet = data.PaytmWallet,
-                UPI = data.UPI,
-                Cash = data.Cash,
-                IMPS = data.IMPS,
-                UserWallet = data.UserWallet
+                NewCustomers = data.NewCustomer,
+                OldCustomers = data.TotalCustomer - data.NewCustomer,
+                TotalCustomers = data.TotalCustomer
             };
             return model;
+        }
+
+        [HttpGet("~/api/GetCancelledAndRescheduledRequestDetails")]
+        public async Task<List<CancelledAndRescheduledRequestModel>> GetCancelledAndRescheduledRequestDetails(CancellationToken cancellationToken)
+        {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var data = await _dashboardQueries.CancelledAndRescheduledRequestOfFranchiseAsync(franchiseId.Value, cancellationToken);
+
+            if (data == null)
+                return new List<CancelledAndRescheduledRequestModel>();
+            return data.Select(m => new CancelledAndRescheduledRequestModel {
+                IsCancelled = m.IsCancelled,
+                ReasonId = m.ReasonId,
+                ReasonName = m.ReasonName,
+                RequestId = m.RequestId,
+                SourceAppId = m.SourceAppId,
+                SourceAppName = m.SourceAppName,
+                
+            }).ToList();
+        }
+        [HttpGet("~/api/GetExpenseDetailsList")]
+        public async Task<List<ExpenseModel>> GetExpenseDetailsList(CancellationToken cancellationToken)
+        {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var data = await _dashboardQueries.ExpensesOfFranchiseAsync(franchiseId.Value, cancellationToken);
+
+            if (data == null)
+                return new List<ExpenseModel>();
+            return data.Select(m => new ExpenseModel { 
+                ExpenseAmount = m.TotalAmount,
+                ExpenseName = m.ExpenseTypeName,
+                ExpenseId = m.ExpenseTypeId
+            }).ToList();
 
         }
-        [HttpGet("~/api/GetPurchaseSellExpenseOfFranchise")]
-        public async Task<PurchaseSellExpenseModel> GetPurchaseSellExpenseOfFranchise(CancellationToken cancellationToken)
+        [HttpGet("~/api/GetPurchaseAndSellMaterialList")]
+        public async Task<PurchaseAndSellMaterialList> GetPurchaseAndSellMaterialList(CancellationToken cancellationToken)
         {
+            int? franchiseId = _appUser.Current?.FranchiseId;
+            var purchase = await _dashboardQueries.PurchaseMaterialsOfFranchiseAsync(franchiseId.Value, cancellationToken);
+            var sell = await _dashboardQueries.SellMaterialsOfFranchiseAsync(franchiseId.Value, cancellationToken);
 
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.PurchaseSellExpenseAmountOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            PurchaseSellExpenseModel model = new PurchaseSellExpenseModel
+            PurchaseAndSellMaterialList model = new PurchaseAndSellMaterialList
             {
-                PurchaseAmount = data.PurchaseAmount,
-                SellAmount = data.SellAmount,
-                ExpenseAmount = data.ExpenseAmount
+                PurchaseList = purchase == null ? new List<PurchaseAndSellMaterialModel>() :
+                purchase.Select(m => new PurchaseAndSellMaterialModel {
+
+                    MaterialId = m.MaterialId,
+                    MaterialName = m.MaterialName,
+                    MaterialAmount = m.Amount,
+                    MaterialQuantity = m.Quantity,
+                    UnitId = m.UnitId,
+                    UnitName = m.Unitname,
+                }).ToList(),
+                SellList = sell == null ? new List<PurchaseAndSellMaterialModel>() :
+                 sell.Select(m => new PurchaseAndSellMaterialModel
+                 {
+                     MaterialId = m.MaterialId,
+                     MaterialName = m.MaterialName,
+                     MaterialAmount = m.Amount,
+                     MaterialQuantity = m.Quantity,
+                     UnitId = m.UnitId,
+                     UnitName = m.Unitname,
+                 }).ToList()
             };
             return model;
-
-        }
-        [HttpGet("~/api/GetAddressTypeCountsOfFranchise")]
-        public async Task<AddressTypeModel> GetAddressTypeCountsOfFranchise(CancellationToken cancellationToken)
-        {
-
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.AddressTypeCountsOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            AddressTypeModel model = new AddressTypeModel
-            {
-                Home = data.Home,
-                Shop = data.Shop,
-                Office = data.Other,
-                Other = data.Other,
-                FoodOutlet = data.FoodOutlet,
-                Institute = data.Institute,
-                MallOutlete = data.MallOutlete
-            };
-            return model;
-
-        }
-        [HttpGet("~/api/GetCancelledRequestCountsOfFranchise")]
-        public async Task<RequestSourceModel> GetCancelledRequestCountsOfFranchise(CancellationToken cancellationToken)
-        {
-
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.CancelledRequestCountsOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            RequestSourceModel model = new RequestSourceModel
-            {
-                UserApp = data.UserApp,
-                UserPortal = data.UserPortal,
-                AdminPortal = data.AdminPortal,
-                PickupBoyApp = data.PickupBoyApp
-            };
-            return model;
-
-        }
-        [HttpGet("~/api/GetRescheduleRequestCountsOfFranchise")]
-        public async Task<RequestSourceModel> GetRescheduleRequestCountsOfFranchise(CancellationToken cancellationToken)
-        {
-
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RescheduledRequestCountsOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            RequestSourceModel model = new RequestSourceModel
-            {
-                UserApp = data.UserApp,
-                UserPortal = data.UserPortal,
-                AdminPortal = data.AdminPortal,
-                PickupBoyApp = data.PickupBoyApp
-            };
-            return model;
-
-        }
-       
-        [HttpGet("~/api/GetRequestSourceCountsOfFranchise")]
-        public async Task<RequestSourceModel> GetRequestSourceCountsOfFranchise(CancellationToken cancellationToken)
-        {
-
-            int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RequestSourceCountsOfFranchiseAsync(franchiseid.Value, cancellationToken);
-            RequestSourceModel model = new RequestSourceModel
-            {
-                UserApp = data.UserApp,
-                UserPortal = data.UserPortal,
-                AdminPortal = data.AdminPortal,
-                PickupBoyApp = data.PickupBoyApp
-            };
-            return model;
-
         }
         [HttpGet("~/api/GetPickupSessionsOfFranchise")]
         public async Task<List<PickupSessionModel>> GetPickupSessionsOfFranchise(CancellationToken cancellationToken)
         {
-
             int? franchiseid = _appUser.Current?.FranchiseId;
             var pickupSessions = await _pickupSessionQueries.ActivePickupSessionsOfFranchiseAsync(franchiseid.Value, cancellationToken);
             var requestCounts = await _requestQueries.RequestCountsOfPickupSessionsAsync(pickupSessions.Select(m => m.Id), cancellationToken);
@@ -202,7 +210,7 @@ namespace TKW.AdminPortal.Controllers
                     {
                         Id = pickupSession.Id,
                         Cash = pickupSession.Cash,
-                        PickupBoys = pickupSession.PickupBoys.Where(m=>m.EndTime==null).Select(m => new PickupBoyModel
+                        PickupBoys = pickupSession.PickupBoys.Where(m => m.EndTime == null).Select(m => new PickupBoyModel
                         {
                             Id = m.Id,
                             MobileNo = m.MobileNo,
@@ -220,5 +228,7 @@ namespace TKW.AdminPortal.Controllers
             }
             return output;
         }
+
+        
     }
 }

@@ -44,7 +44,7 @@ namespace TKW.AdminPortal.Components.SharedComponents
             "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
         });
 
-        private static int RandomScalingFactorThreadUnsafe() => _rng.Next(50, 100);
+        private static int RandomScalingFactorThreadUnsafe() => _rng.Next(0, 100);
 
         public static int RandomScalingFactor()
         {

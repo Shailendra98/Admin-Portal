@@ -1,0 +1,138 @@
+﻿@using ChartJs.Blazor.LineChart
+@using TKW.AdminPortal.Components.SharedComponents
+@namespace TKW.AdminPortal.Components.Dashboard
+@inject HttpClient http
+@if (model != null)
+{
+    <div class="mb-3">
+        <div class="card shadow-sm">
+            <div class="card-title fw-bold small pt-3 ps-3 mb-0">Request Trend</div>
+            <div class="card-body pt-0">
+                <Chart Config="_config" @ref="_chart"></Chart>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="shimmer w-100" style="height:250px"></div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+@code {
+    List<RequestWeekTrendModel> model;
+    private LineConfig _config;
+    private Chart _chart;
+    protected async override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadChartData();
+            StateHasChanged();
+        }
+
+    }
+
+    protected async Task LoadChartData()
+    {
+
+        model = await http.GetFromJsonAsync<List<RequestWeekTrendModel>>("api/RequestWeekTrendListData");
+        _config = new LineConfig
+        {
+            Options = new LineOptions
+            {
+                Responsive = true,
+                MaintainAspectRatio = true,
+
+                Legend = new Legend
+                {
+                    Display = true,
+                    Position = Position.Top,
+                },
+                Title = new OptionsTitle
+                {
+                    Display = false,
+                },
+                Tooltips = new Tooltips
+                {
+                    Mode = InteractionMode.X,
+                    Intersect = true,
+                },
+                Hover = new Hover
+                {
+                    Mode = InteractionMode.X,
+                    Intersect = true
+                },
+                Scales = new Scales
+                {
+                    YAxes = new List<CartesianAxis>
+{
+                        new LinearCartesianAxis
+                        {
+                            Ticks = new LinearCartesianTicks
+                            {
+                                BeginAtZero = true,
+                                MaxTicksLimit=7
+                            }
+                        }
+                    }
+                },
+
+
+
+            }
+        };
+
+        IDataset<int> ScheduledCountDataset = new LineDataset<int>()
+        {
+            Label = "Scheduled",
+            BackgroundColor = ColorUtil.ColorString(220, 220, 220, .2),
+            BorderColor = ColorUtil.ColorString(220, 220, 220, 1),
+            Fill = true,
+            PointRadius = 1,
+            BorderWidth = 2
+        };
+
+        IDataset<int> HandledCountDataset = new LineDataset<int>()
+        {
+            Label = "Handled",
+            BackgroundColor = ColorUtil.ColorString(98, 203, 49, .2),
+            BorderColor = ColorUtil.ColorString(98, 203, 49, 1),
+            Fill = true,
+            PointRadius = 1,
+            BorderWidth = 2
+        };
+
+        IDataset<int> CancelledCountDataset = new LineDataset<int>()
+        {
+            Label = "Cancelled",
+
+            BackgroundColor = ColorUtil.ColorString(243, 32, 19, .2),
+            BorderColor = ColorUtil.ColorString(243, 32, 19, 1),
+            Fill = true,
+            PointRadius = 1,
+            BorderWidth = 2
+        };
+
+        foreach (var i in model)
+        {
+            _config.Data.Labels.Add(i.Date.DayOfWeek.ToString());
+            ScheduledCountDataset.Add(i.ScheduledRequestCount);
+            CancelledCountDataset.Add(i.CancelledRequestCount);
+            HandledCountDataset.Add(i.HandledRequestCount);
+        }
+
+        _config.Data.Datasets.Add(ScheduledCountDataset);
+        _config.Data.Datasets.Add(HandledCountDataset);
+        _config.Data.Datasets.Add(CancelledCountDataset);
+    }
+}
