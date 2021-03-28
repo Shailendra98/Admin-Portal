@@ -16,64 +16,67 @@
             }
             else if (model.Count() == 0)
             {
-                <h6 class="p-5 text-center"> No data</h6>
+                <h6 class="p-5 text-center">No data</h6>
             }
             else
             {
-                <div class="py-2">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
-                            <small>@getLabelStringForAmount(selectedType)</small>
-                        </button>
-                        <ul class="dropdown-menu">
-                            @foreach (var t in (Type[])Enum.GetValues(typeof(Type)))
-                            {
-                                <li><a class="dropdown-item" @onclick="()=> updateType(t)">@getLabelStringForAmount(t)</a></li>
-                            }
-                        </ul>
-                    </div>
-                    <small>by</small>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
-                            <small>@getLabelString(selectedLabel)</small>
-                        </button>
-                        <ul class="dropdown-menu">
-                            @foreach (var l in (Labels[])Enum.GetValues(typeof(Labels)))
-                            {
-                                <li><a class="dropdown-item" @onclick="()=>updateLabel(l)">@getLabelString(l)</a></li>
-                            }
-                        </ul>
-                    </div>
-                    <small>of</small>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
-                            <small class="text-lowercase">@getFilterString(selectedFilterId)</small>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" @onclick="()=>updateFilterId(null)">@getFilterString(null)</a></li>
-                            @{
-                                var filterList = selectedLabel == Labels.CustomerType ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.CustomerAddressId).Distinct();
-                            }
-                            @if (filterList.Count() > 0)
-                            {
-                                <li><hr class="dropdown-divider"></li>
-                                <li><small class="fw-bold text-muted px-2">@(selectedLabel == Labels.CustomerType ? "SOURCE APPS" : "CUSTOMERS")</small></li>
-                            }
-                            @foreach (var f in selectedLabel == Labels.PaymentMethod ? data.Select(m => m.SourceAppId).Distinct() : data.Select(m => m.PreferredMethodId).Distinct())
-                            {
-                                <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)" href="#">@getFilterString(f)</a></li>
-                            }
-                        </ul>
-                    </div>
-                    @if (selectedLabel == Labels.CustomerType)
+        <div class="py-2">
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
+                    <small>@getLabelStringForAmount(selectedType)</small>
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach (var t in (Type[])Enum.GetValues(typeof(Type)))
                     {
-                        <small> source </small>
+                        <li><a class="dropdown-item" @onclick="()=> updateType(t)">@getLabelStringForAmount(t)</a></li>
                     }
-                    else
+                </ul>
+            </div>
+            <small class="pe-2">by</small>
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
+                    <small class="text-lowercase">@getLabelString(selectedLabel)</small>
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach (var l in (Labels[])Enum.GetValues(typeof(Labels)))
                     {
-                        <small> customer type </small>
+                        <li><a class="dropdown-item" @onclick="()=>updateLabel(l)">@getLabelString(l)</a></li>
                     }
-                </div>
+                </ul>
+            </div>
+            @if (selectedLabel == Labels.CustomerType)
+            {
+                <small class="pe-2">from</small>
+            }
+            else
+            {
+                <small class="pe-2">of</small>
+            }
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
+                    <small class="text-lowercase">@getFilterString(selectedFilterId)</small>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" @onclick="()=>updateFilterId(null)">@getFilterString(null)</a></li>
+                    @{
+                        var filterList = selectedLabel == Labels.CustomerType ? model.Select(m => m.SourceAppId).Distinct() : model.Select(m => m.CustomerAddressId).Distinct();
+                    }
+                    @if (filterList.Count() > 0)
+                    {
+                        <li><hr class="dropdown-divider"></li>
+                        <li><small class="fw-bold text-muted px-2">@(selectedLabel == Labels.CustomerType ? "SOURCE APPS" : "CUSTOMER TYPES")</small></li>
+                    }
+                    @foreach (var f in filterList)
+                    {
+                        <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)" href="#">@getFilterString(f)</a></li>
+                    }
+                </ul>
+            </div>
+            @if (selectedLabel != Labels.CustomerType)
+            {
+                <small class="text-nowrap"> customer type </small>
+            }
+        </div>
                 <Chart Config="_config" @ref="_chart"></Chart>
             }
 
@@ -83,13 +86,11 @@
 @code {
     public List<RequestCustomerPaymentModel> model { get; set; }
 
-    public List<RequestCustomerPaymentModel> data { get; set; }
-
     Type selectedType;
 
     Labels selectedLabel;
 
-    string getLabelString(Labels label) => label == Labels.SourceApp ? "source app" : label == Labels.PaymentMethod ? "payment method" : "customer type";
+    string getLabelString(Labels label) => label == Labels.SourceApp ? "Source app" : label == Labels.PaymentMethod ? "Payment method" : "Customer type";
     string getLabelStringForAmount(Type type) => type == Type.RequestAmount ? "Request amount" : "Request count";
 
     string getFilterString(int? filterId)
@@ -98,12 +99,12 @@
         if (selectedLabel == Labels.SourceApp || selectedLabel == Labels.PaymentMethod)
         {
             if (filterId == null) return "All";
-            return data.FirstOrDefault(m => m.CustomerAddressId == filterId)?.CustomerAddressTypeName ?? "";
+            return model.FirstOrDefault(m => m.CustomerAddressId == filterId)?.CustomerAddressTypeName ?? "";
         }
         else
         {
-            if (filterId == null) return "All source";
-            return data.FirstOrDefault(m => m.SourceAppId == filterId)?.SourceAppName ?? "";
+            if (filterId == null) return "All sources";
+            return model.FirstOrDefault(m => m.SourceAppId == filterId)?.SourceAppName ?? "";
         }
     }
 
@@ -118,7 +119,6 @@
         {
             selectedFilterId = null;
             selectedType = t;
-            data = model.ToList();
             UpdateData();
         }
     }
@@ -141,16 +141,11 @@
 
     protected async override void OnAfterRender(bool firstRender)
     {
-        base.OnAfterRender(firstRender);
         if (firstRender)
         {
             await LoadChartData();
-
-            selectedLabel = Labels.SourceApp;
-            selectedType = Type.RequestAmount;
-
-            data = model.ToList();
-
+            selectedLabel = Labels.CustomerType;
+            selectedType = Type.RequestCount;
             UpdateData();
         }
     }
@@ -174,12 +169,12 @@
                 },
                 Tooltips = new Tooltips
                 {
-                    Mode = InteractionMode.Nearest,
+                    Mode = InteractionMode.Index,
                     Intersect = true
                 },
                 Hover = new Hover
                 {
-                    Mode = InteractionMode.Nearest,
+                    Mode = InteractionMode.Index,
                     Intersect = true
                 },
                 Scales = new BarScales
@@ -189,13 +184,14 @@
                         new LinearCartesianAxis
                         {
                             GridLines = new GridLines{
-                            Display = false
+                            Display = false,
+                            OffsetGridLines = false,
                             },
                             Ticks = new LinearCartesianTicks
                             {
-                                StepSize = 1,
-                                Max = 5,
-                                Min = 0,
+                                MaxTicksLimit = 8,
+                                Precision = 0,
+                                BeginAtZero = true
                             }
     }
                     }
@@ -216,7 +212,7 @@
         {
             if (selectedLabel == Labels.SourceApp)
             {
-                foreach (var l in data.GroupBy(m => m.SourceAppName))
+                foreach (var l in model.GroupBy(m => m.SourceAppName))
                 {
                     _config.Data.Labels.Add(l.Key);
                     dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
@@ -225,23 +221,28 @@
             }
             else if (selectedLabel == Labels.PaymentMethod)
             {
-                var dataset2 = new BarDataset<int>(true);
-                var paymentMethods = data.Where(m => m.PreferredMethodId != null).Select(m => m.PreferredMethodName).Union(data.Where(m => m.PreferredMethodId != null).Select(m => m.ActualMethodName)).Distinct();
+                var dataset2 = new BarDataset<int>(true) { 
+                    Label = "Actual" 
+                };
+                
+                dataset.Label = "Preferred";
+
+                var paymentMethods = model.Where(m => m.PreferredMethodId != null).Select(m => m.PreferredMethodName).Union(model.Where(m => m.ActualMethodName != null).Select(m => m.ActualMethodName)).Distinct();
                 foreach (var l in paymentMethods)
                 {
                     _config.Data.Labels.Add(l);
 
-                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
-                    dataset.Add(selectedFilterId == null ? data.Count(m => m.PreferredMethodName == l) : data.Count(m => m.PreferredMethodName == l && m.CustomerAddressId == selectedFilterId));
+                    dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.35);
+                    dataset.Add(selectedFilterId == null ? model.Count(m => m.PreferredMethodName == l) : model.Count(m => m.PreferredMethodName == l && m.CustomerAddressId == selectedFilterId));
 
                     dataset2.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.7);
-                    dataset2.Add(selectedFilterId == null ? data.Count(m => m.ActualMethodName == l) : data.Count(m => m.ActualMethodName == l && m.CustomerAddressId == selectedFilterId));
+                    dataset2.Add(selectedFilterId == null ? model.Count(m => m.ActualMethodName == l) : model.Count(m => m.ActualMethodName == l && m.CustomerAddressId == selectedFilterId));
                 }
                 _config.Data.Datasets.Add(dataset2);
             }
             else
             {
-                foreach (var l in data.GroupBy(m => m.CustomerAddressTypeName))
+                foreach (var l in model.GroupBy(m => m.CustomerAddressTypeName))
                 {
                     _config.Data.Labels.Add(l.Key);
                     dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
@@ -253,7 +254,7 @@
         {
             if (selectedLabel == Labels.SourceApp)
             {
-                foreach (var l in data.GroupBy(m => m.SourceAppName))
+                foreach (var l in model.GroupBy(m => m.SourceAppName))
                 {
                     _config.Data.Labels.Add(l.Key);
                     dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
@@ -262,17 +263,17 @@
             }
             else if (selectedLabel == Labels.PaymentMethod)
             {
-                foreach (var l in data.GroupBy(m => m.ActualMethodName))
+                foreach (var l in model.GroupBy(m => m.ActualMethodName))
                 {
                     _config.Data.Labels.Add(l.Key);
 
                     dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
-                    dataset.Add(selectedFilterId == null ? (int)data.Sum(m => m.Amount) : (int)data.Where(m => m.CustomerAddressId == selectedFilterId).Sum(m => m.Amount));
+                    dataset.Add(selectedFilterId == null ? (int)model.Sum(m => m.Amount) : (int)model.Where(m => m.CustomerAddressId == selectedFilterId).Sum(m => m.Amount));
                 }
             }
             else
             {
-                foreach (var l in data.GroupBy(m => m.CustomerAddressTypeName))
+                foreach (var l in model.GroupBy(m => m.CustomerAddressTypeName))
                 {
                     _config.Data.Labels.Add(l.Key);
                     dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);

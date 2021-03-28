@@ -83,7 +83,7 @@ namespace TKW.AdminPortal.Controllers
                     Date = date,
                     HandledRequestCount = data.Where(m => m.HandleDate == date).Select(m => m.RequestId).Distinct().Count(),
                     CancelledRequestCount = data.Where(m => m.CancelDate == date).Select(m => m.RequestId).Distinct().Count(),
-                    ScheduledRequestCount = data.Where(m => m.ScheduledDate == date && !data.Any(a => a.RequestId == m.RequestId && a.ScheduleUpdateTime >= m.ScheduleUpdateTime && a.ScheduleUpdateTime < m.ScheduledDate)).Select(m => m.RequestId).Distinct().Count()
+                    ScheduledRequestCount = data.Where(m => m.ScheduledDate == date && !data.Any(a => a.RequestId == m.RequestId && a.ScheduleUpdateTime >= m.ScheduleUpdateTime && a.ScheduleUpdateTime < m.ScheduledDate && a.ScheduledDate != m.ScheduledDate)).Select(m => m.RequestId).Distinct().Count()
                 };
                 list.Add(dayCount);
                 date = date.AddDays(1);

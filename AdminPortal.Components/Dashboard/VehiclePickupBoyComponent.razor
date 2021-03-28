@@ -44,7 +44,7 @@
                         }
                         else
                         {
-                            <div class="shimmer circle w-100" style="height:60px;"></div>
+                            <div class="shimmer circle" style="height: 60px; width: 60px;"></div>
                         }
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         <div class="card-title fw-bold text-nowrap small mb-1">Free Pickup boys</div>
                         @if (model != null)
                         {
-                            @if ((model.TotalPickupBoy - model.FreePickupBoy) == 0)
+                            @if (model.FreePickupBoy == 0)
                             {<small class="text-success"> All pickup boys are active. </small>}
                             else
                             {<small><strong>@(model.TotalPickupBoy - model.FreePickupBoy)</strong> of <strong>@model.TotalPickupBoy</strong> pickup boys are active.</small>}
@@ -93,7 +93,7 @@
                         }
                         else
                         {
-                            <div class="shimmer circle w-100" style="height:60px;"></div>
+                            <div class="shimmer circle" style="height:60px; width:60px;"></div>
                         }
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         <div class="card-title fw-bold text-nowrap small mb-1">Free Vehicles</div>
                         @if (model != null)
                         {
-                            @if ((model.TotalVehicle - model.FreeVehicle) == 0)
+                            @if (model.FreeVehicle == 0)
                             {<small class="text-success"> All vehicles are active. </small>}
                             else
                             {<small><strong>@(model.TotalVehicle - model.FreeVehicle)</strong> of <strong>@model.TotalVehicle</strong> vehicles are active.</small>}
@@ -148,13 +148,12 @@
                 </div>
             </div>
         </div>
-        @if (model != null)
-        {@if (model.FreeVehicle > 0 && model.FreePickupBoy > 0)
-            {<a href="/PickupSession" class="list-group-item list-group-item-action text-center btn-outline btn-primary">
+        @if(model != null &&model.FreeVehicle > 0 && model.FreePickupBoy > 0)
+            {
+                <a href="/PickupSession" class="list-group-item list-group-item-action text-center btn-outline btn-primary">
                     Go to Pickup Session
                 </a>
-            }
-    }
+             }
 
     </div>
 </div>
@@ -174,12 +173,11 @@
     private PieConfig _successChart;
     protected async override void OnAfterRender(bool firstRender)
     {
-
-        model = await http.GetFromJsonAsync<VehiclePickupBoyUnassignedRequestCounts>("api/GetActiveVehiclePickupboyCount");
-        base.OnAfterRender(firstRender);
         if (firstRender)
         {
-            this.LoadChartData();
+            model = await http.GetFromJsonAsync<VehiclePickupBoyUnassignedRequestCounts>("api/GetActiveVehiclePickupboyCount");
+
+            await LoadChartData();
             StateHasChanged();
         }
 
@@ -190,8 +188,6 @@
         {
             _configPickupBoy = new PieConfig(true)
             {
-
-
                 Options = new PieOptions
                 {
                     AspectRatio = 1,
@@ -222,7 +218,7 @@
             };
 
 
-            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] { model.TotalPickupBoy - model.FreePickupBoy, model.FreePickupBoy })
+            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] {  model.FreePickupBoy,model.TotalPickupBoy - model.FreePickupBoy })
             {
                 BorderWidth = 0,
                 BackgroundColor = new[]
@@ -268,7 +264,7 @@
 
                 }
             };
-            PieDataset<int> Vehicledataset = new PieDataset<int>(new[] { model.TotalVehicle - model.FreeVehicle, model.FreeVehicle })
+            PieDataset<int> Vehicledataset = new PieDataset<int>(new[] { model.FreeVehicle, model.TotalVehicle - model.FreeVehicle })
             {
                 BorderWidth = 0,
                 BackgroundColor = new[]

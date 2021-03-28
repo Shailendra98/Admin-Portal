@@ -15,13 +15,13 @@
             }
             else if (model.Count() == 0)
             {
-                <h6 class="text-center p-5"> No data</h6>
+                <h6 class="text-center p-5">No data</h6>
             }
             else
             {
                 <div class="py-2">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
                             <small>@getLabelString(selectedLabel)</small>
                         </button>
                         <ul class="dropdown-menu">
@@ -31,9 +31,9 @@
                             }
                         </ul>
                     </div>
-                    <small> of </small>
+                    <small class="pe-2"> of </small>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
                             <small class="text-lowercase">@selectedType</small>
                         </button>
                         <ul class="dropdown-menu">
@@ -43,9 +43,9 @@
                             }
                         </ul>
                     </div>
-                    <small>request @(selectedLabel == Labels.SourceApp ?" with":" from") </small>
+                    <small class="pe-2">request @(selectedLabel == Labels.SourceApp ?" with":" from") </small>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none dropdown-toggle pt-0 ps-0" data-bs-toggle="dropdown" aria-expanded="false">
                             <small class="text-lowercase">@getFilterString(selectedFilterId)</small>
                         </button>
                         <ul class="dropdown-menu">
@@ -183,13 +183,14 @@
                         new LinearCartesianAxis
                         {
                             GridLines = new GridLines{
-                            Display = false
+                            Display = false,
+                            OffsetGridLines = false,
                             },
                             Ticks = new LinearCartesianTicks
                             {
-                                StepSize = 1,
-                                Max = 5,
-                                Min = 0,
+                                MaxTicksLimit = 8,
+                                Precision = 0,
+                                BeginAtZero = true
                             }
                         }
                         //Ticks = new LinearCartesianTicks { }

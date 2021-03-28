@@ -30,7 +30,6 @@ else
 
 @code {
     List<RequestWeekTrendModel> model;
-    private const int DayCount = 6;
     private LineConfig _config;
     private Chart _chart;
     protected async override void OnAfterRender(bool firstRender)
@@ -57,7 +56,7 @@ else
                 Legend = new Legend
                 {
                     Display = true,
-                    Position = Position.Top
+                    Position = Position.Top,
                 },
                 Title = new OptionsTitle
                 {
@@ -65,12 +64,12 @@ else
                 },
                 Tooltips = new Tooltips
                 {
-                    Mode = InteractionMode.Nearest,
-                    Intersect = true
+                    Mode = InteractionMode.X,
+                    Intersect = true,
                 },
                 Hover = new Hover
                 {
-                    Mode = InteractionMode.Nearest,
+                    Mode = InteractionMode.X,
                     Intersect = true
                 },
                 Scales = new Scales
@@ -81,7 +80,8 @@ else
                         {
                             Ticks = new LinearCartesianTicks
                             {
-                                StepSize = 20,
+                                BeginAtZero = true,
+                                MaxTicksLimit=7
                             }
                         }
                     }
@@ -95,25 +95,32 @@ else
         IDataset<int> ScheduledCountDataset = new LineDataset<int>()
         {
             Label = "Scheduled",
-            BackgroundColor = ColorUtil.ColorString(220, 220, 220, 0.5),
+            BackgroundColor = ColorUtil.ColorString(220, 220, 220, .2),
+            BorderColor = ColorUtil.ColorString(220, 220, 220, 1),
             Fill = true,
-            PointRadius = 0,
+            PointRadius = 1,
+            BorderWidth = 2
         };
 
         IDataset<int> HandledCountDataset = new LineDataset<int>()
         {
             Label = "Handled",
-            BackgroundColor = ColorUtil.ColorString(98, 203, 49, 0.5),
+            BackgroundColor = ColorUtil.ColorString(98, 203, 49, .2),
+            BorderColor = ColorUtil.ColorString(98, 203, 49, 1),
             Fill = true,
-            PointRadius = 0,
+            PointRadius = 1,
+            BorderWidth = 2
         };
 
         IDataset<int> CancelledCountDataset = new LineDataset<int>()
         {
             Label = "Cancelled",
-            BackgroundColor = ColorUtil.ColorString(243, 32, 19, 0.5),
+
+            BackgroundColor = ColorUtil.ColorString(243, 32, 19, .2),
+            BorderColor = ColorUtil.ColorString(243, 32, 19, 1),
             Fill = true,
-            PointRadius = 0,
+            PointRadius = 1,
+            BorderWidth = 2
         };
 
         foreach (var i in model)

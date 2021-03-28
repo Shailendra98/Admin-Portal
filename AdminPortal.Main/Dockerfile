@@ -15,12 +15,12 @@ RUN apt-get update \
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["src/web/AdminPortal/AdminPortal.csproj", "src/web/AdminPortal/"]
-RUN dotnet restore "src/web/AdminPortal/AdminPortal.csproj"
+COPY ["src/web/AdminPortal/AdminPortal.Main/AdminPortal.csproj", "src/web/AdminPortal/AdminPortal.Main/"]
 COPY src/assemblies src/assemblies/
 COPY src/ApplicationCore src/ApplicationCore/
 COPY src/Infrastructure src/Infrastructure/
 COPY src/web/AdminPortal src/web/AdminPortal/
+RUN dotnet restore "src/web/AdminPortal/AdminPortal.Main/AdminPortal.csproj"
 WORKDIR "/src/src/web/AdminPortal"
 RUN dotnet build "AdminPortal.csproj" -c Release -o /app/build
 

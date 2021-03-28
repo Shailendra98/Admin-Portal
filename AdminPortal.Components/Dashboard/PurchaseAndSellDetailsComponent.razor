@@ -10,7 +10,7 @@
                     {
                         <div class="col-6 text-center">
 
-                            <div class="mb-0"><span class="h5 fw-bold"> @totalPurchaseQtyInKg </span><small> Kg </small>@if (@totalPurchaseQtyInPiece !=0 ) { <small> +  @totalPurchaseQtyInPiece pieces </small> }</div>
+                            <div class="mb-0"><span class="h5 fw-bold"> @totalPurchaseQtyInKg </span><small> Kg </small>@if (@totalPurchaseQtyInPiece !=0 ) { <small> +</small><span class="h6 fw-bold">@totalPurchaseQtyInPiece</span> <small> pieces </small> }</div>
                             <div class="text-muted small">Purchase Quantity</div>
                         </div>
                         <div class="col-6 text-center">
@@ -55,8 +55,8 @@
                                 {
                                     <tr>
                                         <td>@j.MaterialName</td>
-                                        <td class="text-center"><span> @j.MaterialQuantity</span><small> @j.UnitName</small></td>
-                                        <td class="text-end"><small>₹</small><span> @j.MaterialAmount</span></td>
+                                        <td class="text-center"><span>@j.MaterialQuantity</span><small> @j.UnitName</small></td>
+                                        <td class="text-end"><small>₹ </small><span> @j.MaterialAmount</span></td>
                                     </tr>
                                 }
                             }
@@ -83,7 +83,7 @@
                     @if (model != null)
                     {
                         <div class="col-6 text-center">
-                            <div class="mb-0"><span class="h5 fw-bold"> @totalSellQtyInKg </span><small> Kg </small>@if (@totalSellQtyInPiece != 0 ) { <small> +  @totalSellQtyInPiece pieces </small> }</div>
+                            <div class="mb-0"><span class="h5 fw-bold"> @totalSellQtyInKg </span><small> Kg </small>@if (@totalSellQtyInPiece != 0 ) { <small> + </small><span class="h6 fw-bold"> @totalSellQtyInPiece</span><small> pieces </small> }</div>
                             <div class="text-muted small">Sell Quantity</div>
                         </div>
                         <div class="col-6 text-center">
@@ -131,7 +131,7 @@
                                 {
                                     <tr>
                                         <td>@j.MaterialName</td>
-                                        <td class="text-center"><span> @j.MaterialQuantity</span><small> @j.UnitName</small></td>
+                                        <td class="text-center"><span>@j.MaterialQuantity</span><small> @j.UnitName</small></td>
                                         <td class="text-end"><small>₹ </small><span> @j.MaterialAmount</span></td>
                                     </tr>
                                 }

@@ -37,7 +37,7 @@
 
                 </div>
                 @if (model != null) { 
-                        var NewCustomerPercent = model.NewCustomers * 100 / model.TotalCustomers;
+                        var NewCustomerPercent = model.TotalCustomers <= 0 ? 0 : model.NewCustomers * 100 / model.TotalCustomers;
                 <div class="progress mb-0" style="height: 0.4rem">
                     <div class="progress-bar h-bg-green" role="progressbar" style="width: @NewCustomerPercent%" aria-valuenow="@NewCustomerPercent" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
