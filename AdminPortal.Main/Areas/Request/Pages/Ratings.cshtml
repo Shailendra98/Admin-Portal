@@ -1,0 +1,203 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Request.Pages.RatingsModel
+@using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
+@using Newtonsoft.Json
+@{
+    ViewBag.Title = "Ratings";
+}
+<pagetitle title="Ratings" description="List of ratings."></pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <form id="ratingFilterForm"
+                          method="get"
+                          data-ajax="true"
+                          data-ajax-method="get"
+                          data-ajax-url="@Url.Page("Ajax/RequestRatingList")"
+                          data-ajax-update="#requestRatingList"
+                          data-ajax-begin="$('#requestRatingList').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');">
+                        <div class="mb-2">
+                            <h5>
+                                Filters
+                            </h5>
+                            <small>
+                                Rating Filters by options
+                            </small>
+                        </div>
+                        <div class="mb-2">
+                            <label class="fw-bold col-form-label fw-bold col-form-label" asp-for="Filter.Search"></label>
+                            <input class="form-control form-control-sm" placeholder="Search" asp-for="Filter.Search" />
+                        </div>
+                        <div class="mb-2">
+                            <label class="fw-bold col-form-label">
+                                Date
+                            </label>
+                            <div class="mb-2">
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                </div>
+                                <div class="text-center text-muted" style="display:inline-block;width:5%;">
+                                    <span class="bi-dash"></span>
+                                </div>
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                </div>
+                            </div>
+                            <div>
+                                <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<RequestRatingFilterSortModel.DateTypes>()" class="form-select form-select-sm"></select>
+                            </div>
+                        </div>
+
+
+                        <div class="mb-2">
+                            <label class="fw-bold col-form-label">
+                                Rating Stars
+                            </label>
+                            <div class="mb-2">
+                                <div class="d-inline-block" style="width:45%;">
+                                    <select class="form-select form-select-sm" asp-for="Filter.StartRatingStar">
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                                <div class="text-center text-muted d-inline-block" style="width:5%;">
+                                    <span class="bi-dash"></span>
+                                </div>
+                                <div class="d-inline-block" style="width:45%;">
+                                    <select class="form-select form-select-sm" asp-for="Filter.EndRatingStar">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5" selected>5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <select class="form-select form-select-sm" asp-for="Filter.RatingStarType" asp-items="Html.GetEnumSelectList<RequestRatingFilterSortModel.RatingStarTypes>()">
+                                    <option value="null" selected> Both </option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        @*   <div class="mb-2">
+                                <label class="col-form-label fw-bold">Seller</label>
+                                <select class="form-select form-select-sm" multiple asp-for="Filter.SellerIds"></select>
+                            </div>
+                        *@
+
+                        <div class="mb-2">
+                            <label class="col-form-label fw-bold">PickupBoy</label>
+                            <select class="form-control form-control-sm" asp-for="Filter.PickupBoyIds" multiple></select>
+                        </div>
+
+                        <div class="mb-2">
+                            <label class="col-form-label fw-bold">Feedback Options</label>
+                            <div>
+                                @{
+                                    var checkname = Html.NameFor(m => m.Filter.FeedbackOptionIds);
+                                }
+                                @for (int i = 0; i < Model.FeedbackOptions.Count(); i++)
+                                {
+                                    <div class="checkbox checkbox-success p-r-sm d-inline-block p-1">
+                                        <input type="checkbox" name="@checkname" id="check_@i" value="@Model.FeedbackOptions[i].Id" />
+                                        <label for="check_@i" class="p-0">@Model.FeedbackOptions[i].Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-sm" type="submit">Apply</button>
+                            <button class="btn btn-default btn-sm" type="reset" onclick="resetFunction()" value="Reset">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9" id="requestRatingList">
+            <div class="text-center">
+                <img alt="Loading.." src="/images/ripple.gif" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles{
+    <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/js/datetimepicker.min.js" asp-append-version="true" type="text/javascript"></script>
+    <script>
+        $(function () {
+
+            $("#requestRatingList").load("@Url.Page("Ajax/RequestRatingList")");
+
+
+            var model=@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
+            $.ajax({
+                url: '@(Url.Page("Ajax/RequestRatingList"))',
+                data: model,
+                method: 'POST',
+                success: function (data) { $('#requestlist').html(data);}
+            });
+
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            };
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+
+            var startDate = $("[id='@Html.IdFor(m=>m.Filter.StartDate)']");
+            var endDate = $("[id='@Html.IdFor(m=>m.Filter.EndDate)']");
+
+            startDate.on("dp.change", function (e) {
+                endDate.data("DateTimePicker").minDate(e.date);
+            });
+            endDate.on("dp.change", function (e) {
+                startDate.data("DateTimePicker").maxDate(e.date);
+            });
+
+           @*$("#@Html.IdFor(m => m.Filter.SellerIds)").select2AutoParent(
+                select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return  user.name || user.id + ""; }, { id: 0, text: "Select Seller" })
+            );*@
+
+            $("#@Html.IdFor(m => m.Filter.PickupBoyIds)").select2AutoParent(
+                select2SearchResponseAjaxConfiguration("@Url.Action("SearchActivePickupEmployees", "Employee")", format, function (users) { return users.name || users.id + ""; }, { id: 0, text: "Select Pickup Boy" })
+             );
+
+
+
+        });
+
+
+
+        function format(users) {
+            if (users.loading) {
+                return users.text;
+            }
+            var markup = "<div class='small'>" + users.name + "," + users.id + "</div>"
+            return markup;
+        }
+
+
+        function resetFunction() {
+            $("#myForm").trigger("reset");
+            $("#myForm select").trigger("change");
+        }
+    </script>
+
+}
