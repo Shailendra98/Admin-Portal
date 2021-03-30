@@ -15,11 +15,19 @@ RUN apt-get update \
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
+
+COPY ["src/web/AdminPortal/AdminPortal.Main/nuget.config", "src/web/AdminPortal/AdminPortal.Main/"]
+COPY ["src/web/AdminPortal/nuget.config", "src/web/AdminPortal/"]
+COPY ["src/Infrastructure/nuget.config", "src/Infrastructure/"]
+COPY ["src/ApplicationCore/nuget.config", "src/ApplicationCore/"]
 COPY ["src/web/AdminPortal/AdminPortal.Main/AdminPortal.Main.csproj", "src/web/AdminPortal/AdminPortal.Main/"]
-COPY src/ApplicationCore src/ApplicationCore/
-COPY src/Infrastructure src/Infrastructure/
-COPY src/web/AdminPortal src/web/AdminPortal/
+COPY ["src/assemblies", "src/assemblies/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY ["src/ApplicationCore/ApplicationCore.csproj", "src/ApplicationCore/"]
+COPY ["src/web/AdminPortal/AdminPortal.Components/AdminPortal.Components.csproj", "src/web/AdminPortal/AdminPortal.Components/"]
+COPY ["src/web/AdminPortal/AdminPortal.Shared/AdminPortal.Shared.csproj", "src/web/AdminPortal/AdminPortal.Shared/"]
 RUN dotnet restore "src/web/AdminPortal/AdminPortal.Main/AdminPortal.Main.csproj"
+COPY . .
 WORKDIR "/src/src/web/AdminPortal/AdminPortal.Main"
 RUN dotnet build "AdminPortal.Main.csproj" -c Release -o /app/build
 

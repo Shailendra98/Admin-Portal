@@ -68,7 +68,7 @@
                     }
                     @foreach (var f in filterList)
                     {
-                        <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)" href="#">@getFilterString(f)</a></li>
+                        <li><a class="dropdown-item" @onclick="()=>updateFilterId(f)">@getFilterString(f)</a></li>
                     }
                 </ul>
             </div>
@@ -263,7 +263,7 @@
             }
             else if (selectedLabel == Labels.PaymentMethod)
             {
-                foreach (var l in model.GroupBy(m => m.ActualMethodName))
+                foreach (var l in model.Where(m=>m.ActualMethodName != null).GroupBy(m => m.ActualMethodName))
                 {
                     _config.Data.Labels.Add(l.Key);
 

@@ -17,31 +17,33 @@
             }
             else
             {
-                @foreach (var a in model)
+                foreach (var a in model)
                 {
-                        <div class="card-body">
+                        <a href="/PickupSession/Details/@a.Id" class="card-body text-decoration-none">
                             <div class="row">
                                 <div class="col-2">
-                                    <span class="fw-bold text-secondary mb-0 text-nowrap"> @a.VehicleName</span>
+                                    <span class="fw-bold text-secondary mb-0 text-nowrap">@a.VehicleName</span>
                                     <small> @a.VehicleNumber </small>
                                 </div>
-                                <div class="col-5 d-flex pt-2 px-0">
-                                    <div class="d-flex d-inline-block ps-2">
-                                        <span class="fw-bold text-secondary"> @a.HandledRequests </span>
-                                        <small class="ps-1 text-secondary">Completed</small>
-                                    </div>
-                                    <div class="d-flex d-inline-block ps-2">
-                                        <span class="fw-bold text-secondary"> @a.RescheduledRequests </span>
-                                        <small class="ps-1 text-secondary">Rescheduled</small>
-                                    </div>
-                                    <div class="d-flex d-inline-block ps-2">
-                                        <span class="fw-bold text-secondary"> @a.CancelledRequests </span>
-                                        <small class="ps-1 text-secondary">Cancelled</small>
-                                    </div>
-                                    <div class="d-flex d-inline-block ps-2">
-                                        <span class="fw-bold text-secondary"> @a.PendingRequests </span>
+                                <div class="col-5 d-flex px-0">
+                                    <a href="/PickupSession/Details/@a.Id?Tab=pending_request" class="text-center ps-2 text-decoration-none">
+                                        <span class="fw-bold text-secondary">@a.PendingRequests </span>
+                                        <br />
                                         <small class="ps-1 text-secondary">Pending</small>
-                                    </div>
+                                    </a>
+                                    <a href="/PickupSession/Details/@a.Id?Tab=handled_request" class="text-center ps-2 text-decoration-none">
+                                        <span class="fw-bold text-secondary">@a.HandledRequests </span>
+                                        <br /><small class="ps-1 text-secondary">Completed</small>
+                                    </a>
+                                    <a href="/PickupSession/Details/@a.Id?Tab=rescheduled_request" class="text-center ps-2 text-decoration-none">
+                                        <span class="fw-bold text-secondary">@a.RescheduledRequests </span>
+                                        <br /><small class="ps-1 text-secondary">Rescheduled</small>
+                                    </a>
+                                    <a href="/PickupSession/Details/@a.Id?Tab=cancelled_request" class="text-center ps-2 text-decoration-none">
+                                        <span class="fw-bold text-secondary">@a.CancelledRequests </span>
+                                        <br />
+                                        <small class="ps-1 text-secondary">Cancelled</small>
+                                    </a>
                                 </div>
                                 <div class="col-5 d-flex justify-content-around px-0">
                                     <div>
@@ -61,26 +63,26 @@
                                 var pendingpercent = totalreq == 0 ? 0 : (a.PendingRequests * 100 / totalreq);
                                 var reshedulepercent = totalreq == 0 ? 0 : (a.RescheduledRequests * 100 / totalreq);
                             }
-                            <div class="progress mt-3" style="height: 0.4rem;">
+                        <div class="progress mt-3" style="height: 0.4rem;">
+                            @if (a.PendingRequests != 0)
+                            {
+                                <div class="progress-bar bg-secondary" role="progressbar" style="width: @pendingpercent%" aria-valuenow="@pendingpercent" aria-valuemin="0" aria-valuemax="100"></div>
+                            }
+                            @if (a.HandledRequests != 0)
+                            {
+                                <div class="progress-bar h-bg-green" role="progressbar" style="width: @handlepercent%" aria-valuenow="@handlepercent" aria-valuemin="0" aria-valuemax="100"></div>
+                            }
+                            @if (a.RescheduledRequests != 0)
+                            {
+                                <div class="progress-bar bg-info" role="progressbar" style="width: @reshedulepercent%" aria-valuenow="@reshedulepercent" aria-valuemin="0" aria-valuemax="100"></div>
+                            }
+                            @if (a.CancelledRequests != 0)
+                            {
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: @cancelpercent%" aria-valuenow="@cancelpercent" aria-valuemin="0" aria-valuemax="100"></div>
+                            }
 
-                                @if (a.HandledRequests != 0)
-                                {
-                                    <div class="progress-bar h-bg-green" role="progressbar" style="width: @handlepercent%" aria-valuenow="@handlepercent" aria-valuemin="0" aria-valuemax="100"></div>
-                                }
-                                @if (a.RescheduledRequests != 0)
-                                {
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: @reshedulepercent%" aria-valuenow="@reshedulepercent" aria-valuemin="0" aria-valuemax="100"></div>
-                                }
-                                @if (a.CancelledRequests != 0)
-                                {
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: @cancelpercent%" aria-valuenow="@cancelpercent" aria-valuemin="0" aria-valuemax="100"></div>
-                                }
-                                @if (a.PendingRequests != 0)
-                                {
-                                    <div class="progress-bar bg-secondary" role="progressbar" style="width: @pendingpercent%" aria-valuenow="@pendingpercent" aria-valuemin="0" aria-valuemax="100"></div>
-                                }
-                            </div>
                         </div>
+                        </a>
 
 
                 }

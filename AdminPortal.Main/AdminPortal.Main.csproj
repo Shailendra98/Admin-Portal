@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>27a60aa4-6410-4cb1-ba50-8e62f1e6f071</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerfileContext>..\..\..\..</DockerfileContext>
     <RootNamespace>TKW.AdminPortal</RootNamespace>
     <Nullable>enable</Nullable>
     <AssemblyName>AdminPortal</AssemblyName>
@@ -12,28 +12,24 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Employee\Pages\Ajax\Modal\**" />
-    <Compile Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
     <Compile Remove="Areas\Request\Pages\Shared\**" />
     <Compile Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <Compile Remove="Areas\Vehicle\**" />
     <Compile Remove="Controllers\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Areas\Employee\Pages\Ajax\Modal\**" />
-    <Content Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
     <Content Remove="Areas\Request\Pages\Shared\**" />
     <Content Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <Content Remove="Areas\Vehicle\**" />
     <Content Remove="Controllers\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Areas\Employee\Pages\Ajax\Modal\**" />
-    <EmbeddedResource Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
     <EmbeddedResource Remove="Areas\Request\Pages\Shared\**" />
     <EmbeddedResource Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <EmbeddedResource Remove="Areas\Vehicle\**" />
     <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Areas\Employee\Pages\Ajax\Modal\**" />
-    <None Remove="Areas\Franchise\Pages\Ajax\Modal\**" />
     <None Remove="Areas\Request\Pages\Shared\**" />
     <None Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <None Remove="Areas\Vehicle\**" />
@@ -43,6 +39,8 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Employee\ViewModels\EmployeeProfileModel.cs" />
+    <Compile Remove="Areas\Franchise\Pages\Ajax\Modal\Add.cshtml.cs" />
+    <Compile Remove="Areas\Franchise\Pages\Ajax\Modal\Edit.cshtml.cs" />
     <Compile Remove="Areas\PickupSession\Pages\Ajax\CashTransaction.cshtml.cs" />
     <Compile Remove="Areas\PickupSession\Pages\Ajax\PickupSession.cshtml.cs" />
     <Compile Remove="Areas\Request\Pages\Ajax\Modal\Store.cshtml.cs" />
@@ -57,6 +55,10 @@
     <Content Remove="Areas\Area\Pages\_ViewImports.cshtml" />
 
     <Content Remove="Areas\Area\Pages\_ViewStart.cshtml" />
+
+    <Content Remove="Areas\Franchise\Pages\Ajax\Modal\Add.cshtml" />
+
+    <Content Remove="Areas\Franchise\Pages\Ajax\Modal\Edit.cshtml" />
 
     <Content Remove="Areas\PickupSession\Pages\Ajax\CashTransaction.cshtml" />
     <Content Remove="Areas\PickupSession\Pages\Ajax\PickupSession.cshtml" />
@@ -112,6 +114,8 @@
     <None Include="Areas\Expense\Pages\_ViewImports.cshtml" />
     <None Include="Areas\Expense\Pages\_ViewStart.cshtml" />
     <None Include="Areas\Franchise\Pages\Ajax\List.cshtml" />
+    <None Include="Areas\Franchise\Pages\Ajax\Modal\AddPincode\PincodeDetails.cshtml" />
+    <None Include="Areas\Franchise\Pages\Ajax\Modal\AddPincode\SelectPincode.cshtml" />
     <None Include="Areas\Franchise\Pages\Ajax\_ViewStart.cshtml" />
     <None Include="Areas\Franchise\Pages\Index.cshtml" />
     <None Include="Areas\Franchise\Pages\_ViewImports.cshtml" />
@@ -357,13 +361,12 @@
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-    <PackageReference Include="Fingers10.ExcelExport" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
-    <PackageReference Include="TKW.ApplicationCore" Version="1.1.7" />
-    <PackageReference Include="TKW.Infrastructure" Version="1.1.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+	  <PackageReference Include="TKW.ApplicationCore" Version="1.1.7" />
+	  <PackageReference Include="TKW.Infrastructure" Version="1.1.10" />
   </ItemGroup>
 
   <ItemGroup>
@@ -399,7 +402,6 @@
     <ProjectReference Include="..\AdminPortal.Components\AdminPortal.Components.csproj" />
     <ProjectReference Include="..\AdminPortal.Shared\AdminPortal.Shared.csproj" />
   </ItemGroup>
-  <!--<Import Project="..\WebShared\WebShared.projitems" Label="Shared" />-->
 
 
 

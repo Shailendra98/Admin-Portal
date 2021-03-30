@@ -4,7 +4,7 @@
     "profile" : "Thekabadiwala",
     "configuration" : "Release",
     "tag"           : "adminportal:production",
-    "docker-build-working-dir" : "../../../",
+    "docker-build-working-dir" : "../../../../",
     "cluster"                  : "TKW-Production-Cluster",
     "launch-type"              : "EC2",
     "task-definition-name"     : "TKWAdminPortal_Production",

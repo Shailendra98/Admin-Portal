@@ -7,7 +7,7 @@
 
     <div class="mb-3">
     <small class="fw-bold text-secondary text-uppercase">Expenses</small>
-    <div class="card rounded-0 border-0 shadow-sm mt-2">
+    <div class="card shadow-sm mt-1">
         <div class="card-body">
             @if (model != null)
             {
@@ -19,7 +19,7 @@
                     <div class="position-relative">
                         <Chart Config="_config"></Chart>
                         <div class="position-absolute" style="top: 35%; left: 34%; transform: translate(-50%, 50%);">
-                            <span class="fw-bold text-secondary h4">@totalExpenses </span>
+                            <span class="fw-bold text-secondary h4"><small>₹</small> @totalExpenses </span>
                         </div>
                     </div>
                 }

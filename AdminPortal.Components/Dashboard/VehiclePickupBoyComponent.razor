@@ -35,7 +35,7 @@
                                 </div>
                             }
                             else
-                            { <Chart Config="_successChart"></Chart>
+                            { <Chart Config="_configUnassigned"></Chart>
                                 <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
                                     <i class="fa fa-2x fa-check text-light-green"></i>
                                 </div>
@@ -83,7 +83,7 @@
                                 </div>
                             }
                             else
-                            { <Chart Config="_successChart"></Chart>
+                            { <Chart Config="_configPickupBoy"></Chart>
                                 <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
                                     <i class="fa fa-2x fa-check text-light-green"></i>
                                 </div>
@@ -133,7 +133,7 @@
                             }
                             else
                             {
-                                <Chart Config="_successChart"></Chart>
+                                <Chart Config="_configVehicle"></Chart>
                                 <div class="position-absolute" style="top:10%; left: 50%; transform: translate(-50%, 50%);">
                                     <i class="fa fa-2x fa-check text-light-green"></i>
                                 </div>
@@ -148,12 +148,12 @@
                 </div>
             </div>
         </div>
-        @if(model != null &&model.FreeVehicle > 0 && model.FreePickupBoy > 0)
-            {
-                <a href="/PickupSession" class="list-group-item list-group-item-action text-center btn-outline btn-primary">
-                    Go to Pickup Session
-                </a>
-             }
+        @if (model != null && model.FreeVehicle > 0 && model.FreePickupBoy > 0)
+        {
+            <a href="/PickupSession" class="list-group-item list-group-item-action text-center btn-outline btn-primary">
+                Go to Pickup Session
+            </a>
+        }
 
     </div>
 </div>
@@ -164,107 +164,79 @@
 </style>
 
 
-@code{
-
+@code {
     VehiclePickupBoyUnassignedRequestCounts model;
     private PieConfig _configPickupBoy;
     private PieConfig _configVehicle;
     private PieConfig _configUnassigned;
-    private PieConfig _successChart;
+
+
     protected async override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
             model = await http.GetFromJsonAsync<VehiclePickupBoyUnassignedRequestCounts>("api/GetActiveVehiclePickupboyCount");
-
-            await LoadChartData();
+            LoadChartData();
             StateHasChanged();
         }
 
     }
-    private async Task LoadChartData()
+    private void LoadChartData()
     {
         if (model != null)
         {
-            _configPickupBoy = new PieConfig(true)
+            var options = new PieOptions
             {
-                Options = new PieOptions
+                AspectRatio = 1,
+                MaintainAspectRatio = true,
+                CutoutPercentage = 85,
+
+
+                Tooltips = new Tooltips
                 {
-                    AspectRatio = 1,
-                    MaintainAspectRatio = true,
-                    CutoutPercentage = 85,
-
-
-                    Tooltips = new Tooltips
-                    {
-                        Enabled = false,
-                    },
-
-                    Responsive = true,
-                    Legend = new Legend
-                    {
-                        Display = false,
-                        Position = Position.Right
-                    },
-
-                    Title = new ChartJs.Blazor.Common.OptionsTitle
-                    {
-                        Display = false,
-                        Text = "ChartJs.Blazor Pie Chart"
-                    },
-
-
-                }
+                    Enabled = false,
+                },
+                Responsive = true,
+                Legend = new Legend
+                {
+                    Display = false,
+                },
+                Title = new ChartJs.Blazor.Common.OptionsTitle
+                {
+                    Display = false,
+                },
             };
 
+            _configPickupBoy = new PieConfig(true) { Options = options };
+            _configUnassigned = new PieConfig(true) { Options = options };
+            _configVehicle = new PieConfig(true) { Options = options };
 
-            PieDataset<int> PickupBoydataset = new PieDataset<int>(new[] {  model.FreePickupBoy,model.TotalPickupBoy - model.FreePickupBoy })
+            var successDataSet = new PieDataset<int>(new[] { 10 })
+            {
+                BorderWidth = 0,
+
+                BackgroundColor = new[]
+                {
+                 ColorUtil.ColorString(98, 203, 49, 1)
+
+            }
+            };
+
+            PieDataset<int> PickupBoydataset = model.FreePickupBoy == 0 ? successDataSet : new PieDataset<int>(new[] { model.FreePickupBoy, model.TotalPickupBoy - model.FreePickupBoy })
             {
                 BorderWidth = 0,
                 BackgroundColor = new[]
-                {
-                 ColorUtil.ColorString(243, 32, 19, 0.6),
-                 ColorUtil.ColorString(243, 32, 19, 0),
-
-                }
+                    {
+                     ColorUtil.ColorString(243, 32, 19, 0.6),
+                     ColorUtil.ColorString(243, 32, 19, 0),
+                    }
             };
-
 
             _configPickupBoy.Data.Datasets.Add(PickupBoydataset);
 
 
-            _configVehicle = new PieConfig(true)
-            {
 
-
-                Options = new PieOptions
-                {
-                    AspectRatio = 1,
-                    MaintainAspectRatio = true,
-                    CutoutPercentage = 85,
-
-
-                    Tooltips = new Tooltips
-                    {
-                        Enabled = false,
-                    },
-
-                    Responsive = true,
-                    Legend = new Legend
-                    {
-                        Display = false,
-                        Position = Position.Right
-                    },
-
-                    Title = new ChartJs.Blazor.Common.OptionsTitle
-                    {
-                        Display = false,
-                        Text = "ChartJs.Blazor Pie Chart"
-                    }
-
-                }
-            };
-            PieDataset<int> Vehicledataset = new PieDataset<int>(new[] { model.FreeVehicle, model.TotalVehicle - model.FreeVehicle })
+            PieDataset<int> Vehicledataset = model.FreeVehicle == 0 ? successDataSet : new PieDataset<int>(new[] { model.FreeVehicle, model.TotalVehicle - model.FreeVehicle })
             {
                 BorderWidth = 0,
                 BackgroundColor = new[]
@@ -276,107 +248,23 @@
             };
 
             _configVehicle.Data.Datasets.Add(Vehicledataset);
-        }
 
-        _configUnassigned = new PieConfig(true)
-        {
-
-
-            Options = new PieOptions
-            {
-                AspectRatio = 1,
-                MaintainAspectRatio = true,
-                CutoutPercentage = 85,
-
-
-                Tooltips = new Tooltips
+            PieDataset<int> UnassignedVehicleDataset = model.UnassignedRequest == 0 ? successDataSet
+                : new PieDataset<int>(new[] { model.UnassignedRequest, model.PendingRequest - model.UnassignedRequest })
                 {
-                    Enabled = false,
-                },
-
-                Responsive = true,
-                Legend = new Legend
-                {
-                    Display = false,
-                },
-
-                Title = new ChartJs.Blazor.Common.OptionsTitle
-                {
-                    Display = false,
-                }
-
-            }
-        };
-
-
-        PieDataset<int> UnassignedVehicleDataset = new PieDataset<int>(new[] { model.UnassignedRequest, model.PendingRequest - model.UnassignedRequest })
-        {
-            BorderWidth = 0,
-            BackgroundColor = new[]
-            {
+                    BorderWidth = 0,
+                    BackgroundColor = new[]
+               {
                  ColorUtil.ColorString(243, 32, 19, 0.6),
                  ColorUtil.ColorString(243, 32, 19, 0),
 
             }
-        };
+                };
 
+            _configUnassigned.Data.Datasets.Add(UnassignedVehicleDataset);
 
-        _configUnassigned.Data.Datasets.Add(UnassignedVehicleDataset);
-
-        _successChart = new PieConfig(true)
-        {
-
-
-            Options = new PieOptions
-            {
-                AspectRatio = 1,
-                MaintainAspectRatio = true,
-                CutoutPercentage = 85,
-
-
-                Tooltips = new Tooltips
-                {
-                    Enabled = false,
-                },
-
-                Responsive = true,
-                Legend = new Legend
-                {
-                    Display = false,
-                    Position = Position.Right
-                },
-
-                Title = new ChartJs.Blazor.Common.OptionsTitle
-                {
-                    Display = false,
-                    Text = "ChartJs.Blazor Pie Chart"
-                }
-
-            }
-        };
-
-
-        PieDataset<int> SuccessChartDataset = new PieDataset<int>(new[] { 10 })
-        {
-            BorderWidth = 0,
-
-            BackgroundColor = new[]
-            {
-                 ColorUtil.ColorString(98, 203, 49, 1),
-                 ColorUtil.ColorString(243, 32, 19, 0),
-
-            }
-        };
-
-
-        _successChart.Data.Datasets.Add(SuccessChartDataset);
-
-
+        }
     }
 
-
-
 }
-
-
 
