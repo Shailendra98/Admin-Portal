@@ -76,27 +76,41 @@ else
                             <span class="float-end small">( Based on @Model.RatingSummary.SellerCounts.Count() ratings )</span>
                         </div>
                     </div>
-                    @for (var i = 4; i >= 0; i--)
+
+                    @if (SellerDivide != 0)
                     {
-                        var item = Model.RatingSummary.SellerCounts[i];
-                        int widthPer = 0;
-                        @if(SellerDivide != 0)
+                        @for (var i = 4; i >= 0; i--)
                         {
-                            widthPer= item.RatingCount * 100 / SellerDivide;
-                        }
-                        <div class="row h6 mb-0 small">
-                            <div class="col-md-2 font-bold pt-1">@item.Star <i class="fa fa-star"></i></div>
-                            <div class="col-md-8 p-1">
-                                <div class="progress" style="margin-bottom:-1px;height:.7rem;">
-                                    <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"></div>
+                            var item = Model.RatingSummary.SellerCounts[i];
+                            int widthPer = item.RatingCount * 100 / SellerDivide;
+                            <div class="row h6 mb-0 small">
+                                <div class="col-md-2 font-bold pt-1">@item.Star <i class="fa fa-star"></i></div>
+                                <div class="col-md-8 p-1">
+                                    <div class="progress" style="margin-bottom:-1px;height:.7rem;">
+                                        <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"></div>
+                                    </div>
                                 </div>
+                                <div class="col-md-2 font-bold ps-1 text-center pe-4 pt-1"><span> @widthPer %</span></div>
                             </div>
-                            <div class="col-md-2 font-bold ps-1 text-center pe-4 pt-1"><span> @widthPer %</span></div>
-                        </div>
+                        }
                     }
-
-
-
+                    else
+                    {
+                        @for (var i = 4; i >= 0; i--)
+                        {
+                            var item = Model.RatingSummary.SellerCounts[i];
+                            int widthPer = 0;
+                            <div class="row h6 mb-0 small">
+                                <div class="col-md-2 font-bold pt-1">@item.Star <i class="fa fa-star"></i></div>
+                                <div class="col-md-8 p-1">
+                                    <div class="progress" style="margin-bottom:-1px;height:.7rem;">
+                                        <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 font-bold ps-1 text-center pe-4 pt-1"><span> @widthPer %</span></div>
+                            </div>
+                        }
+                    }
                 </div>
 
                 <div class="col-md-6">
@@ -135,6 +149,42 @@ else
 
 
                     </div>
+                    @if (PickupBoyDivide != 0)
+                    {
+                        @for (var i = 4; i >= 0; i--)
+                        {
+                            var item = Model.RatingSummary.PickupBoyCounts[i];
+                            int widthPer = item.RatingCount * 100 / PickupBoyDivide;
+                            <div class="row h6 mb-0 small">
+                                <div class="col-md-2 font-bold pt-1">@item.Star <i class="fa fa-star"></i></div>
+                                <div class="col-md-8 p-1">
+                                    <div class="progress" style="margin-bottom:-1px;height:.7rem;">
+                                        <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 font-bold ps-1 pt-1 text-center pe-4"><span> @widthPer %</span></div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        @for (var i = 4; i >= 0; i--)
+                        {
+                            var item = Model.RatingSummary.PickupBoyCounts[i];
+                            int widthPer = 0;
+                            <div class="row h6 mb-0 small">
+                                <div class="col-md-2 font-bold pt-1">@item.Star <i class="fa fa-star"></i></div>
+                                <div class="col-md-8 p-1">
+                                    <div class="progress" style="margin-bottom:-1px;height:.7rem;">
+                                        <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 font-bold ps-1 pt-1 text-center pe-4"><span> @widthPer %</span></div>
+                            </div>
+                        }
+                    }
 
                     @for (var i = 4; i >= 0; i--)
                     {
