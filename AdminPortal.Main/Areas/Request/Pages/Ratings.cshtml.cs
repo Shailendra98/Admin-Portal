@@ -41,5 +41,20 @@ namespace TKW.AdminPortal.Areas.Request.Pages
         {
 
         }
+
+        public enum DateTypes
+        {
+            [Display(Name ="Seller Rating Date")]
+            SellerRatingDate = 0,
+            [Display(Name = "Pickup Rating Date")]
+            PickupboyRatingDate = 1
+        }
+        public enum RatingStarTypes
+        {
+            [Display(Name ="Seller")]
+            Seller = 0,
+            [Display(Name = "Pickup Boy")]
+            PickupBoy = 1
+        }
     }
 }

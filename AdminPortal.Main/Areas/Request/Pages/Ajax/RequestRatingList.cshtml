@@ -4,22 +4,30 @@
 @using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
 @{
     var route = new RouteValueDictionary();
-    //int SellerCount = 0;
-    //int SellerDivide = 0;
-    //int PickupBoyCount = 0;
-    //int PickupBoyDivide = 0;
-    //foreach (var item in Model.RatingSummary.SellerCounts)
-    //{
-    //    SellerCount = SellerCount + item.RatingCount * item.Star;
-    //    SellerDivide = SellerDivide + item.RatingCount;
-    //}
-    //foreach (var item in Model.RatingSummary.PickupBoyCounts)
-    //{
-    //    PickupBoyCount = PickupBoyCount + item.RatingCount * item.Star;
-    //    PickupBoyDivide=PickupBoyDivide + item.RatingCount;
-    //}
-    //double SellerAverageStar = SellerCount/SellerDivide;
-    //double PickupBoyAverageStar = PickupBoyCount/PickupBoyDivide;
+    int SellerCount = 0;
+    int SellerDivide = 0;
+    int PickupBoyCount = 0;
+    int PickupBoyDivide = 0;
+    foreach (var item in Model.RatingSummary.SellerCounts)
+    {
+        SellerCount = SellerCount + item.RatingCount * item.Star;
+        SellerDivide = SellerDivide + item.RatingCount;
+    }
+    foreach (var item in Model.RatingSummary.PickupBoyCounts)
+    {
+        PickupBoyCount = PickupBoyCount + item.RatingCount * item.Star;
+        PickupBoyDivide = PickupBoyDivide + item.RatingCount;
+    }
+    double SellerAverageStar = 0;
+    double PickupBoyAverageStar = 0;
+    if (SellerCount != 0)
+    {
+        SellerAverageStar = SellerCount / (SellerDivide + 0.0);
+    }
+    if(PickupBoyCount != 0)
+    {
+        PickupBoyAverageStar = PickupBoyCount / (PickupBoyDivide + 0.0);
+    }
     Layout = null;
 }
 @if (Model.Ratings == null || Model.Ratings.Count == 0)
@@ -28,53 +36,62 @@
 }
 else
 {
-@*<div class="hpanel mb-2">
+    <div class="hpanel mb-2">
         <div class="panel-body p-3">
             <div class="row">
+                @{
+                    var sellerAvgStar = Math.Round(SellerAverageStar, 1);
+                    var pickupBoyAvgStar = Math.Round(PickupBoyAverageStar, 1);
+                }
                 <div class="col-md-6 border border-2 border-start-0 border-top-0 border-bottom-0">
 
                     <div class="row p-b-xs">
-                        <div class="col-md-6">
-                            <div class="h5 pt-2">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="h6 font-bold">
                                 Seller reviews
                             </div>
                         </div>
 
                         <div class="col-md-6 m-t-xxs m-b-xs">
-                            <div class="text-end mb-0 pb-1 h5 ">
-                                <span class="fw-bold h4">@SellerAverageStar</span>
-                                @if (SellerAverageStar % 1 == 0)
-                                {
-                                    @for (int i = 1; i <= SellerAverageStar; i++)
+                            <div class="text-end mb-0">
+                                <span class="font-bold h5">@sellerAvgStar</span>
+                                <span class="h6">
+                                    @if (sellerAvgStar % 1 == 0)
                                     {
-                                        <i class="fa fa-star text-warning"></i>
+                                        @for (int i = 1; i <= sellerAvgStar; i++)
+                                        {
+                                            <i class="fa fa-star text-warning"></i>
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    @for (int i = 1; i <= SellerAverageStar; i++)
+                                    else
                                     {
-                                        <i class="fa fa-star text-warning"></i>
+                                        @for (int i = 1; i <= sellerAvgStar; i++)
+                                        {
+                                            <i class="fa fa-star text-warning"></i>
+                                        }
+                                        <i class="fa fa-star-half-empty text-warning"></i>
                                     }
-                                    <i class="fa fa-star-half-empty text-warning"></i>
-                                }
+                                </span>
                             </div>
-                            <span class="float-end">( Based on 68 ratings )</span>
+                            <span class="float-end small">( Based on @Model.RatingSummary.SellerCounts.Count() ratings )</span>
                         </div>
                     </div>
-                    @foreach (var item in Model.RatingSummary.SellerCounts)
+                    @for (var i = 4; i >= 0; i--)
                     {
-                        int widthPer = (int)item.RatingCount / SellerDivide;
-
-                        <div class="row h6 mb-0">
-                            <div class="col-md-2 fw-bold ps-3">@item.Star <i class="fa fa-star"></i></div>
+                        var item = Model.RatingSummary.SellerCounts[i];
+                        int widthPer = 0;
+                        @if(SellerDivide != 0)
+                        {
+                            widthPer= item.RatingCount * 100 / SellerDivide;
+                        }
+                        <div class="row h6 mb-0 small">
+                            <div class="col-md-2 font-bold pt-1">@item.Star <i class="fa fa-star"></i></div>
                             <div class="col-md-8 p-1">
-                                <div class="progress" style="margin-bottom:-1px;height:.8rem;">
-                                    <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar">
-                                    </div>
+                                <div class="progress" style="margin-bottom:-1px;height:.7rem;">
+                                    <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar"></div>
                                 </div>
                             </div>
-                            <div class="col-md-2 fw-bold ps-1 text-center pe-4"><small> @widthPer %</small></div>
+                            <div class="col-md-2 font-bold ps-1 text-center pe-4 pt-1"><span> @widthPer %</span></div>
                         </div>
                     }
 
@@ -86,50 +103,56 @@ else
 
                     <div class="row p-b-xs">
 
-                        <div class="col-md-6">
-                            <div class="h5 pt-2">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="h6 font-bold">
                                 Pickup Boy reviews
                             </div>
                         </div>
 
                         <div class="col-md-6 m-t-xxs m-b-xs">
-                            <div class="text-end mb-0 pb-1 h5 ">
-                                <span class="fw-bold h4">@PickupBoyAverageStar</span>
-                                @if (PickupBoyAverageStar % 1 == 0)
-                                {
-                                    @for (int i = 1; i <= PickupBoyAverageStar; i++)
+                            <div class="text-end mb-0">
+                                <span class="font-bold h5">@pickupBoyAvgStar</span>
+                                <span class="h6">
+                                    @if (pickupBoyAvgStar % 1 == 0)
                                     {
-                                        <i class="fa fa-star text-warning"></i>
+                                        @for (int i = 1; i <= pickupBoyAvgStar; i++)
+                                        {
+                                            <i class="fa fa-star text-warning"></i>
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    @for (int i = 1; i <= PickupBoyAverageStar; i++)
+                                    else
                                     {
-                                        <i class="fa fa-star text-warning"></i>
+                                        @for (int i = 1; i <= pickupBoyAvgStar; i++)
+                                        {
+                                            <i class="fa fa-star text-warning"></i>
+                                        }
+                                        <i class="fa fa-star-half-empty text-warning"></i>
                                     }
-                                    <i class="fa fa-star-half-empty text-warning"></i>
-                                }
+                                </span>
                             </div>
-                            <span class="float-end">( Based on 88 ratings )</span>
+                            <span class="float-end small">( Based on @Model.RatingSummary.PickupBoyCounts.Count() ratings )</span>
                         </div>
 
 
                     </div>
 
-                    @foreach (var item in Model.RatingSummary.PickupBoyCounts)
-                            {
-                                int widthPer = (int) item.RatingCount / PickupBoyDivide;
-
-                        <div class="row h6 mb-0">
-                            <div class="col-md-2 fw-bold ps-3">@item.Star <i class="fa fa-star"></i></div>
+                    @for (var i = 4; i >= 0; i--)
+                    {
+                        var item = Model.RatingSummary.PickupBoyCounts[i];
+                        int widthPer = 0;
+                        @if (PickupBoyDivide != 0)
+                        {
+                            widthPer = item.RatingCount * 100 / PickupBoyDivide;
+                        }
+                        <div class="row h6 mb-0 small">
+                            <div class="col-md-2 font-bold pt-1">@item.Star <i class="fa fa-star"></i></div>
                             <div class="col-md-8 p-1">
-                                <div class="progress" style="margin-bottom:-1px;height:.8rem;">
+                                <div class="progress" style="margin-bottom:-1px;height:.7rem;">
                                     <div class="progress-bar h-bg-green" style="width:@widthPer%;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar">
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2 fw-bold ps-1 text-center pe-4"><small> @widthPer %</small></div>
+                            <div class="col-md-2 font-bold ps-1 pt-1 text-center pe-4"><span> @widthPer %</span></div>
                         </div>
                     }
 
@@ -137,41 +160,34 @@ else
 
             </div>
         </div>
-    </div>*@
+    </div>
 
-
-
-
-@foreach (var item in Model.Ratings)
-{
-    <div class="hpanel mb-2">
-        <div class="panel-body p-3">
+    @foreach (var item in Model.Ratings)
+    {
+    <div class="hpanel mb-2 detailPanel" href="@Url.Page("../Details", new { item.RequestId })" data-id="@item.RequestId">
+        <div class="panel-body p-2">
             <div class="row">
                 <div class="col-md-3 border-end-2 ps-2">
-                    @{
-                        var amount = Math.Round(item.Amount, 1);
-                        var date = item.HandleDateTime.ToString("dd/MM/yyyy");
-                      
-                    }
-                    <div class="d-flex mb-2">
+                    <div class="d-flex mb-2 ms-1">
                         <div class="flex-shrink-0 pe-3">
                             <img src="/images/default/profilex124.png" class="rounded-circle" alt="logo" height="38" width="38">
                         </div>
                         <div class="flex-grow-1">
 
-                            <div class="h6 mb-0">@item.Seller.Name</div>
-                            <div class="fw-light">(@item.Seller.MobileNo)</div>
+                            <div class="font-bold">@item.Seller.Name</div>
+                            <div class="fw-light small">(@item.Seller.MobileNo)</div>
                         </div>
                     </div>
 
-                    <div class="p-b-xs d-flex justify-content-between"><span>#@item.RequestId </span><span class="border-end border-start px-2">₹ @amount </span><span> @item.FranchiseName </span></div>
-                    <div class="small text-right fw-light pb-2 small">Handle Date: @date </div>
+                    <div class="p-b-xs d-flex justify-content-between mx-1"><span>#@item.RequestId </span><span class="border-end border-start px-2">₹ @Math.Round(item.Amount, 0) </span><span> @item.FranchiseName </span></div>
+                    <div class="small fw-light pb-2 text-end"><small>Handle Date: @item.HandleDateTime.ToString("dd/MM/yyyy") (@item.HandleDateTime.ToString("HH:mm tt"))</small></div>
+
                 </div>
 
                 @if (item.SellerRatingStar == null)
                 {
                     <div class="col-md-9">
-                        <div class="pb-1 mb-1 h6">
+                        <div class="font-bold">
                             Pickup Boy <span class="float-end">
 
                                 @if (item.PickupBoyRatingStar < 3)
@@ -202,19 +218,37 @@ else
                                 }
                             </span>
                         </div>
-                        <div class="pb-1 small">
-                            @foreach (var i in item.PickupBoyFeedbackOptions)
-                            {
-                                <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1">@i.Name</div>
-                            }
-                        </div>
-                        <div class="pe-1">
-                            @if (item.PickupBoyRemark != null)
-                            {
+
+                        @if (item.PickupBoyFeedbackOptions.Count() == 0)
+                        {
+                            <div style="min-height:25%;"></div>
+                        }
+                        else
+                        {
+                            <div class="mt-1 small">
+                                @foreach (var i in item.PickupBoyFeedbackOptions)
+                                {
+                                    <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1 small">@i.Name</div>
+                                }
+                            </div>
+                        }
+
+
+
+
+                        @if (item.PickupBoyRemark != null)
+                        {
+                            <div class="pe-1">
                                 <small>@item.PickupBoyRemark</small>
-                            }
-                        </div>
-                        <div class="pt-1 fw-light text-end"><small class="float-start">@item.PickupBoyRatingUpdater.Name</small><small>@item.PickupBoyRatingTime</small></div>
+                            </div>
+                            <div class="pt-1 fw-light text-end small"><small class="float-start">@item.PickupBoyRatingUpdater.Name</small><small> @item.PickupBoyRatingTime </small></div>
+                        }
+                        else
+                        {
+                            <div class="pt-4 fw-light text-end small"><small class="float-start">@item.PickupBoyRatingUpdater.Name</small><small> @item.PickupBoyRatingTime </small></div>
+                        }
+
+
                     </div>
                 }
                 else
@@ -222,9 +256,9 @@ else
 
                     if (item.PickupBoyRatingStar == null)
                     {
-
                         <div class="col-md-9">
-                            <div class="pb-1 mb-1 h6">
+
+                            <div class="font-bold">
                                 Seller <span class="float-end">
                                     @if (item.SellerRatingStar < 3)
                                     {
@@ -252,19 +286,37 @@ else
                                     }
                                 </span>
                             </div>
-                            <div class="pb-1 small">
-                                @foreach (var i in item.SellerFeedbackOptions)
-                                {
-                                    <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1">@i.Name</div>
-                                }
-                            </div>
-                            <div class="pe-1">
-                                @if (item.SellerRemark != null)
-                                {
+
+                            @if (item.SellerFeedbackOptions.Count() == 0)
+                            {
+                                <div style="min-height:25%;"></div>
+                            }
+                            else
+                            {
+                                <div class="pb-1 mt-1 small">
+                                    @foreach (var i in item.SellerFeedbackOptions)
+                                    {
+                                        <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1 small">@i.Name</div>
+                                    }
+                                </div>
+
+                            }
+
+
+
+                            @if (item.SellerRemark != null)
+                            {
+                                <div class="pe-1">
                                     <small>@item.SellerRemark</small>
-                                }
-                            </div>
-                            <div class="pt-1 fw-light text-end"><small>@item.SellerRatingTime</small></div>
+                                </div>
+                                <div class="pt-1 fw-light text-end small"><small>@item.SellerRatingTime</small></div>
+                            }
+                            else
+                            {
+                                <div class="pt-4 fw-light text-end small"><small>@item.SellerRatingTime</small></div>
+                            }
+
+
                         </div>
                     }
                     else
@@ -273,7 +325,7 @@ else
                         <div class="col-md-9">
                             <div class="row">
                                 <div class="col-md-6 pe-2">
-                                    <div class="pb-1 mb-1 h6">
+                                    <div class="font-bold">
                                         Seller <span class="float-end">
                                             @if (item.SellerRatingStar < 3)
                                             {
@@ -301,21 +353,31 @@ else
                                             }
                                         </span>
                                     </div>
-                                    <div class="pb-1 small">
-                                        @foreach (var i in item.SellerFeedbackOptions)
-                                        {
-                                            <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1">@i.Name</div>
-                                        }
-                                    </div>
+
+                                    @if (item.SellerFeedbackOptions.Count() == 0)
+                                    {
+                                        <div style="min-height:25%;"></div>
+                                    }
+                                    else
+                                    {
+                                        <div class="pb-1 mt-1 small">
+                                            @foreach (var i in item.SellerFeedbackOptions)
+                                            {
+                                                <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1 small">@i.Name</div>
+                                            }
+                                        </div>
+                                    }
+
                                     <div class="pe-1">
                                         @if (item.SellerRemark != null)
                                         {
                                             <small>@item.SellerRemark</small>
                                         }
                                     </div>
+
                                 </div>
                                 <div class="col-md-6 ps-2">
-                                    <div class="pb-1 mb-0 h6 ">
+                                    <div class="mb-0 font-bold">
                                         Pickup Boy <span class="float-end">
 
                                             @if (item.PickupBoyRatingStar < 3)
@@ -346,12 +408,21 @@ else
                                             }
                                         </span>
                                     </div>
-                                    <div class="pb-1 small">
-                                        @foreach (var i in item.PickupBoyFeedbackOptions)
-                                        {
-                                            <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1">@i.Name</div>
-                                        }
-                                    </div>
+
+                                    @if (item.PickupBoyFeedbackOptions.Count() == 0)
+                                    {
+                                        <div style="min-height:25%;"></div>
+                                    }
+                                    else
+                                    {
+                                        <div class="pb-1 mt-1 small">
+                                            @foreach (var i in item.PickupBoyFeedbackOptions)
+                                            {
+                                                <div class="border border-dark rounded-pill px-1 d-inline-block mt-1 me-1 small">@i.Name</div>
+                                            }
+                                        </div>
+                                    }
+
                                     <div class="pe-1">
                                         @if (item.PickupBoyRemark != null)
                                         {
@@ -361,10 +432,10 @@ else
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 p-r-xs fw-light text-end">
+                                <div class="col-md-6 small p-r-xs fw-light text-end">
                                     <small>@item.SellerRatingTime</small>
                                 </div>
-                                <div class="col-md-6 p-l-xs fw-light text-end">
+                                <div class="col-md-6 p-l-xs fw-light text-end small">
                                     <small class="float-start">@item.PickupBoyRatingUpdater.Name</small><small class="float-end">@item.PickupBoyRatingTime @*14-Jan-2021(02:30 AM)*@</small>
                                 </div>
                             </div>
@@ -375,15 +446,17 @@ else
             </div>
         </div>
     </div>
-}
-<div class="d-flex justify-content-center pt-4">
-    <pager data-ajax="true"
-           data-ajax-method="get"
-           data-ajax-begin="window.location.hash='requestRatingList'; $('#requestRatingList').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
-           data-ajax-update="#requestRatingList"
-           list="Model.Ratings"
-           url='pageNo => Url.Page("requestRatingList", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Ratings.PageSize })))'></pager>
-</div>
+
+    }
+
+    <div class="d-flex justify-content-center pt-4">
+        <pager data-ajax="true"
+               data-ajax-method="get"
+               data-ajax-begin="window.location.hash='requestRatingList'; $('#requestRatingList').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+               data-ajax-update="#requestRatingList"
+               list="Model.Ratings"
+               url='pageNo => Url.Page("requestRatingList", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Ratings.PageSize })))'></pager>
+    </div>
 
     route["pageSize"] = Model.Ratings.PageSize;
     route["pageNo"] = Model.Ratings.PageNumber;
@@ -397,3 +470,13 @@ else
         border-right: 2px solid lightgrey;
     }
 </style>
+<script>
+    $(function () {
+        $(".detailPanel").css('cursor', 'pointer');
+        $(".detailPanel").click(function (e) {
+            e.preventDefault();
+            $('#DetailsModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/Request/Ajax/Modal/Details/' + $(this).data('id'));
+        });
+    });
+
+</script>

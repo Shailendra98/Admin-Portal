@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div>
-                                <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<RequestRatingFilterSortModel.DateTypes>()" class="form-select form-select-sm"></select>
+                                <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<RatingsModel.DateTypes>()" class="form-select form-select-sm"></select>
                             </div>
                         </div>
 
@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div>
-                                <select class="form-select form-select-sm" asp-for="Filter.RatingStarType" asp-items="Html.GetEnumSelectList<RequestRatingFilterSortModel.RatingStarTypes>()">
+                                <select class="form-select form-select-sm" asp-for="Filter.RatingStarType" asp-items="Html.GetEnumSelectList<RatingsModel.RatingStarTypes>()">
                                     <option value="null" selected> Both </option>
                                 </select>
                             </div>
@@ -87,18 +87,18 @@
 
 
 
-                        @*   <div class="mb-2">
-                                <label class="col-form-label fw-bold">Seller</label>
-                                <select class="form-select form-select-sm" multiple asp-for="Filter.SellerIds"></select>
-                            </div>
-                        *@
-
                         <div class="mb-2">
-                            <label class="col-form-label fw-bold">PickupBoy</label>
-                            <select class="form-control form-control-sm" asp-for="Filter.PickupBoyIds" multiple></select>
+                            <label class="col-form-label fw-bold">Sellers</label>
+                            <select class="form-control form-control-sm w-100" asp-for="Filter.SellerIds" multiple data-placeholder="Select Seller"></select>
                         </div>
 
+
                         <div class="mb-2">
+                            <label class="col-form-label fw-bold">Pickup Boys</label>
+                            <select class="form-control form-control-sm w-100" asp-for="Filter.PickupBoyIds" multiple></select>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="col-form-label fw-bold">Feedback Options</label>
                             <div>
                                 @{
@@ -106,7 +106,7 @@
                                 }
                                 @for (int i = 0; i < Model.FeedbackOptions.Count(); i++)
                                 {
-                                    <div class="checkbox checkbox-success p-r-sm d-inline-block p-1">
+                                    <div class="checkbox checkbox-success p-r-sm d-inline-block p-1 pe-2">
                                         <input type="checkbox" name="@checkname" id="check_@i" value="@Model.FeedbackOptions[i].Id" />
                                         <label for="check_@i" class="p-0">@Model.FeedbackOptions[i].Name</label>
                                     </div>
@@ -129,7 +129,9 @@
         </div>
     </div>
 </div>
+<form id="listform_ajax" method="post">
 
+</form>
 @section Styles{
     <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
     <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
@@ -139,15 +141,19 @@
     <script>
         $(function () {
 
-            $("#requestRatingList").load("@Url.Page("Ajax/RequestRatingList")");
+            @*$("#requestRatingList").load("@Url.Page("Ajax/RequestRatingList")");*@
 
 
             var model=@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
             $.ajax({
                 url: '@(Url.Page("Ajax/RequestRatingList"))',
                 data: model,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#listform_ajax input").val());
+                },
                 method: 'POST',
-                success: function (data) { $('#requestlist').html(data);}
+                success: function (data) { $('#requestRatingList').html(data);}
             });
 
             var options = {
@@ -171,9 +177,10 @@
                 startDate.data("DateTimePicker").maxDate(e.date);
             });
 
-           @*$("#@Html.IdFor(m => m.Filter.SellerIds)").select2AutoParent(
-                select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return  user.name || user.id + ""; }, { id: 0, text: "Select Seller" })
-            );*@
+
+            $("#@Html.IdFor(m => m.Filter.SellerIds)").select2AutoParent(
+                @*select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return  user.name || user.id + ""; }, { id: 0, text: "Select Seller" })*@
+            );
 
             $("#@Html.IdFor(m => m.Filter.PickupBoyIds)").select2AutoParent(
                 select2SearchResponseAjaxConfiguration("@Url.Action("SearchActivePickupEmployees", "Employee")", format, function (users) { return users.name || users.id + ""; }, { id: 0, text: "Select Pickup Boy" })
@@ -199,5 +206,7 @@
             $("#myForm select").trigger("change");
         }
     </script>
-
+}
+@section Footer{
+    <modal content-id="DetailsModalContent" dialog-class="modal-lg" loader="true" id="DetailsModal"></modal>
 }

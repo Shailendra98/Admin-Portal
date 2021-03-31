@@ -26,7 +26,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
             _appUser = appUser;
         }
 
-        //public RequestRatingSummaryModel RatingSummary { get; set; }
+        public RequestRatingSummaryModel RatingSummary { get; set; }
 
 
         [BindProperty(SupportsGet = true)]
@@ -37,19 +37,20 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
 
         public async Task OnGetAsync(int? pageNo, int? pageSize)
         {
-            int size = pageSize == null ? 10 : (pageSize < 5) ? 5 : (pageSize > 100) ? 100 : pageSize.Value;
+            int size = pageSize == null ? 8 : (pageSize < 5) ? 5 : (pageSize > 100) ? 100 : pageSize.Value;
             if (_appUser.Current.FranchiseId.HasValue)
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
              Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
-            //RatingSummary = await _requestQueries.RequestRatingSummaryAsync(Filter,cancellaitonToken);
+            RatingSummary = await _requestQueries.RequestRatingSummaryAsync(Filter);
         }
 
         public async Task OnPostAsync(int? pageNo, int? pageSize)
         {
-            int size = pageSize == null ? 10 : (pageSize < 5) ? 5 : (pageSize > 100) ? 100 : pageSize.Value;
+            int size = pageSize == null ? 8 : (pageSize < 5) ? 5 : (pageSize > 100) ? 100 : pageSize.Value;
             if (_appUser.Current.FranchiseId.HasValue)
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
             Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
+            RatingSummary = await _requestQueries.RequestRatingSummaryAsync(Filter);
 
         }
 
