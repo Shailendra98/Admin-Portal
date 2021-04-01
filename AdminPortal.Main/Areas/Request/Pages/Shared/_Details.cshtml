@@ -309,50 +309,55 @@
                     var labelClass = Model.RatingAndFeedbacks.SellerRating > 3 ? "label-success" : Model.RatingAndFeedbacks.SellerRating < 3 ? "label-danger" : "label-info";
 
                     <div class="col-sm-6">
-                        <h5>Seller Rating</h5>
-                        @for (var i = 1; i <= 5; i++)
-                        {
-                            <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.SellerRating >= i ? "fa-star":"fa-star-o")"></i>
-                        }
-
+                        <div class="h6 font-bold">Seller Rating</div>
+                        <div class="small">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.SellerRating >= i ? "fa-star":"fa-star-o")"></i>
+                            }
+                        </div>
                         @if (Model.RatingAndFeedbacks.SellerFeedbacks != null && Model.RatingAndFeedbacks.SellerFeedbacks.Count > 0)
                         {
-                            <div class="p-t-xs p-b-xs">
-                                @foreach (var f in Model.RatingAndFeedbacks.SellerFeedbacks)
-                                {
-                                    <span class="label @labelClass">@f.Name</span>
-                                }
-                            </div>
+                    <div class="p-t-xs p-b-xs small">
+                        @foreach (var f in Model.RatingAndFeedbacks.SellerFeedbacks)
+                        {
+                            <div class="border border-dark rounded-pill d-inline-block mt-1 me-1 px-1 small">@f.Name</div>
+                            @*<span class="label @labelClass">@f.Name</span>*@
+                        }
+                    </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.SellerRemark))
                         {
-                            <blockquote class="small m-b-none">@Model.RatingAndFeedbacks.SellerRemark</blockquote>
+                            <blockquote class="small mb-0">@Model.RatingAndFeedbacks.SellerRemark</blockquote>
                         }
                     </div>
                 }
                 @if (Model.RatingAndFeedbacks.PickupBoy != null)
                 {
                     var labelClass = Model.RatingAndFeedbacks.PickupBoyRating > 3 ? "label-success" : Model.RatingAndFeedbacks.PickupBoyRating < 3 ? "label-danger" : "label-info";
-                    <div class="col-sm-6">
-                        <h5>Pickup Boy's Rating<br /><small>@(Model.RatingAndFeedbacks.PickupBoy != null ? "(by " + Model.RatingAndFeedbacks.PickupBoy.Name + ")" : "")</small></h5>
-                        @for (var i = 1; i <= 5; i++)
-                        {
-                            <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.PickupBoyRating >= i ? "fa-star":"fa-star-o")"></i>
-                        }
-                        @if (Model.RatingAndFeedbacks.PickupBoyFeedbacks != null && Model.RatingAndFeedbacks.PickupBoyFeedbacks.Count > 0)
-                        {
-                            <div class="p-t-xs p-b-xs">
-                                @foreach (var f in Model.RatingAndFeedbacks.PickupBoyFeedbacks)
-                                {
-                                    <span class="label @labelClass">@f.Name</span>
-                                }
-                            </div>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.PickupBoyRemark))
-                        {
-                            <blockquote class="small m-b-none">@Model.RatingAndFeedbacks.PickupBoyRemark</blockquote>
-                        }
+            <div class="col-sm-6">
+                <div class="h6 font-bold">Pickup Boy's Rating<br /><small>@(Model.RatingAndFeedbacks.PickupBoy != null ? "(by " + Model.RatingAndFeedbacks.PickupBoy.Name + ")" : "")</small></div>
+                   <div class="small">
+                    @for (var i = 1; i <= 5; i++)
+                    {
+                        <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.PickupBoyRating >= i ? "fa-star":"fa-star-o")"></i>
+                    }
                     </div>
+                    @if (Model.RatingAndFeedbacks.PickupBoyFeedbacks != null && Model.RatingAndFeedbacks.PickupBoyFeedbacks.Count > 0)
+                    {
+            <div class="p-t-xs p-b-xs small">
+                @foreach (var f in Model.RatingAndFeedbacks.PickupBoyFeedbacks)
+                {
+                    <div class="border border-dark rounded-pill d-inline-block mt-1 me-1 px-1 small">@f.Name</div>
+                    @*<span class="label @labelClass">@f.Name</span>*@
+                }
+            </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.PickupBoyRemark))
+                    {
+                        <blockquote class="small mb-0">@Model.RatingAndFeedbacks.PickupBoyRemark</blockquote>
+                    }
+                </div>
                 }
             </div>
         </div>

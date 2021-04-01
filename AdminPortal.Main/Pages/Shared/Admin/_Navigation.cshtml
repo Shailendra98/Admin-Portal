@@ -23,6 +23,7 @@
             <ul class="nav nav-second-level">
                 <li class="@Html.IsSelected(page: "/Index",area:"Request")"><a href="@Url.Page("/Index",new { area="Request"})" class="text-decoration-none d-block">View requests</a></li>
                 <li class="@Html.IsSelected(page: "/Add/Index",area:"Request")"><a href="@Url.Page("/Add/Index",new { area="Request"})" class="text-decoration-none d-block">Add request</a></li>
+                <li class="@Html.IsSelected(page: "/Ratings",area:"Request")"><a href="@Url.Page("/Ratings",new { area="Request"})" class="text-decoration-none d-block">Ratings</a></li>
             </ul>
         </li>
         <li class="@Html.IsSelected(area:"PickupSession")">
