@@ -4,30 +4,8 @@
 @using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
 @{
     var route = new RouteValueDictionary();
-    int SellerCount = 0;
-    int SellerDivide = 0;
-    int PickupBoyCount = 0;
-    int PickupBoyDivide = 0;
-    foreach (var item in Model.RatingSummary.SellerCounts)
-    {
-        SellerCount = SellerCount + item.RatingCount * item.Star;
-        SellerDivide = SellerDivide + item.RatingCount;
-    }
-    foreach (var item in Model.RatingSummary.PickupBoyCounts)
-    {
-        PickupBoyCount = PickupBoyCount + item.RatingCount * item.Star;
-        PickupBoyDivide = PickupBoyDivide + item.RatingCount;
-    }
-    double SellerAverageStar = 0;
-    double PickupBoyAverageStar = 0;
-    if (SellerCount != 0)
-    {
-        SellerAverageStar = SellerCount / (SellerDivide + 0.0);
-    }
-    if(PickupBoyCount != 0)
-    {
-        PickupBoyAverageStar = PickupBoyCount / (PickupBoyDivide + 0.0);
-    }
+   
+    
     Layout = null;
 }
 @if (Model.Ratings == null || Model.Ratings.Count == 0)
@@ -36,19 +14,15 @@
 }
 else
 {
-    <div class="hpanel mb-2">
-        <div class="panel-body p-3">
+    <div class="card mb-2">
+        <div class="card-body p-3">
             <div class="row">
-                @{
-                    var sellerAvgStar = Math.Round(SellerAverageStar, 1);
-                    var pickupBoyAvgStar = Math.Round(PickupBoyAverageStar, 1);
-                }
-                <div class="col-md-6 border border-2 border-start-0 border-top-0 border-bottom-0">
+               <div class="col-md-6 border border-2 border-start-0 border-top-0 border-bottom-0">
 
                     <div class="row p-b-xs">
-                        <div class="col-md-6 d-flex align-items-center">
+                        <div class="col-md-6">
                             <div class="h6 font-bold">
-                                Seller reviews
+                                Seller ratings
                             </div>
                         </div>
 
@@ -117,9 +91,9 @@ else
 
                     <div class="row p-b-xs">
 
-                        <div class="col-md-6 d-flex align-items-center">
+                        <div class="col-md-6">
                             <div class="h6 font-bold">
-                                Pickup Boy reviews
+                                Pickup boy ratings
                             </div>
                         </div>
 
@@ -218,33 +192,14 @@ else
                     <div class="col-md-9">
                         <div class="font-bold">
                             Pickup Boy <span class="float-end">
+                                @{ 
+                                    var starClass = item.PickupBoyRatingStar > 3 ? "text-success" : item.PickupBoyRatingStar < 3 ? "text-danger" : "text-warning";
 
-                                @if (item.PickupBoyRatingStar < 3)
-                                {
-                                    @for (int x = 1; x <= item.PickupBoyRatingStar; x++)
+                                    for (int x = 1; x <= item.PickupBoyRatingStar; x++)
                                     {
-                                        <i class="fa fa-star text-danger"></i>
+                                        <i class="fa fa-star @starClass"></i>
                                     }
-                                }
-                                else
-                                {
-                                    @if (item.PickupBoyRatingStar == 3)
-                                    {
-                                        @for (int x = 1; x <= 3; x++)
-                                        {
-                                            <i class="fa fa-star text-warning"></i>
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        @for (int x = 1; x <= item.PickupBoyRatingStar; x++)
-                                        {
-                                            <i class="fa fa-star text-success"></i>
-                                        }
-
-                                    }
-                                }
+                                 }
                             </span>
                         </div>
 
