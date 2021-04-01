@@ -22,11 +22,11 @@
             {
         <div class="d-flex">
             <a href="/Request?Filter.DateType=Visiting&Filter.Status=1&Filter.Status=2&Filter.Status=3&Filter.EndDate=@date&pageSize=50" class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm text-decoration-none">
-                <h4 class="text-warning mb-0 fw-bold">@model.Pending</h4>
+                <h4 class="text-secondary mb-0 fw-bold">@model.Pending</h4>
                 <small class="fw-bold text-secondary">Pending</small>
             </a>
             <a href="/Request?Filter.DateType=Handled&Filter.StartDate=@date&Filter.EndDate=@date&pageSize=50" class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm text-decoration-none">
-                <h4 class="text-success mb-0 fw-bold">@(model.Handled)</h4>
+                <h4 class="text-light-green mb-0 fw-bold">@(model.Handled)</h4>
                 <small class="fw-bold text-secondary text-nowrap">
                     Completed @if (model.Onspot > 0)
                     {<span class="text-muted fw-light">(@model.Onspot onspot)</span>}
@@ -53,7 +53,7 @@
             {
                 <div class="d-flex">
                     <a href="/Request?Filter.DateType=Visiting&Filter.Status=2&Filter.StartDate=@date&Filter.EndDate=@date&pageSize=50" class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm text-decoration-none">
-                        <h4 class="mb-0 fw-bold">@model.Rescheduled</h4>
+                        <h4 class="text-info mb-0 fw-bold">@model.Rescheduled</h4>
                         <small class="fw-bold text-secondary">Rescheduled</small>
                     </a>
                     <a href="/Request?Filter.DateType=Cancelled&Filter.StartDate=@date&Filter.EndDate=@date&pageSize=50" class="card text-center border-0 px-4 py-2 m-2 w-50 shadow-sm text-decoration-none">
