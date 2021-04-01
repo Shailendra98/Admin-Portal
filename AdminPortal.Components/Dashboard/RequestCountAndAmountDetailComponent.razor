@@ -221,13 +221,13 @@
             }
             else if (selectedLabel == Labels.PaymentMethod)
             {
-                var dataset2 = new BarDataset<int>(true) { 
-                    Label = "Actual" 
+                var dataset2 = new BarDataset<int>(true) {
+                    Label = "Actual"
                 };
-                
+
                 dataset.Label = "Preferred";
 
-                var paymentMethods = model.Where(m => m.PreferredMethodId != null).Select(m => m.PreferredMethodName).Union(model.Where(m => m.ActualMethodName != null).Select(m => m.ActualMethodName)).Distinct();
+                var paymentMethods = model.Where(m => m.PreferredMethodId != null).Select(m => m.PreferredMethodName).Union(model.Where(m => m.ActualMethodId != null).Select(m => m.ActualMethodName)).Distinct();
                 foreach (var l in paymentMethods)
                 {
                     _config.Data.Labels.Add(l);
@@ -268,7 +268,7 @@
                     _config.Data.Labels.Add(l.Key);
 
                     dataset.BackgroundColor = ColorUtil.ColorString(92, 198, 65, 0.5);
-                    dataset.Add(selectedFilterId == null ? (int)model.Sum(m => m.Amount) : (int)model.Where(m => m.CustomerAddressId == selectedFilterId).Sum(m => m.Amount));
+                    dataset.Add(selectedFilterId == null ? (int)l.Sum(m => m.Amount) : (int)l.Where(m => m.CustomerAddressId == selectedFilterId).Sum(m => m.Amount));
                 }
             }
             else

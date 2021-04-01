@@ -32,20 +32,20 @@
                                         <small class="ps-1 text-secondary">Pending</small>
                                     </a>
                                     <a href="/PickupSession/Details/@a.Id?Tab=handled_request" class="text-center ps-2 text-decoration-none">
-                                        <span class="fw-bold text-secondary">@a.HandledRequests </span>
+                                        <span class="fw-bold text-light-green">@a.HandledRequests </span>
                                         <br /><small class="ps-1 text-secondary">Completed</small>
                                     </a>
                                     <a href="/PickupSession/Details/@a.Id?Tab=rescheduled_request" class="text-center ps-2 text-decoration-none">
-                                        <span class="fw-bold text-secondary">@a.RescheduledRequests </span>
+                                        <span class="fw-bold text-info">@a.RescheduledRequests </span>
                                         <br /><small class="ps-1 text-secondary">Rescheduled</small>
                                     </a>
                                     <a href="/PickupSession/Details/@a.Id?Tab=cancelled_request" class="text-center ps-2 text-decoration-none">
-                                        <span class="fw-bold text-secondary">@a.CancelledRequests </span>
+                                        <span class="fw-bold text-danger">@a.CancelledRequests </span>
                                         <br />
                                         <small class="ps-1 text-secondary">Cancelled</small>
                                     </a>
                                 </div>
-                                <div class="col-5 d-flex justify-content-around px-0">
+                                <div class="col-5 d-flex justify-content-between">
                                     <div>
                                         <h6 class="pt-2 fw-bold">₹ @a.Cash.ToString("G29")</h6>
                                     </div>
@@ -57,11 +57,12 @@
 
                             </div>
                             @{
-                                var totalreq = a.PendingRequests + a.HandledRequests + a.RescheduledRequests + a.CancelledRequests;
-                                var handlepercent = totalreq == 0 ? 0 : (a.HandledRequests * 100 / totalreq);
-                                var cancelpercent = totalreq == 0 ? 0 : (a.CancelledRequests * 100 / totalreq);
-                                var pendingpercent = totalreq == 0 ? 0 : (a.PendingRequests * 100 / totalreq);
-                                var reshedulepercent = totalreq == 0 ? 0 : (a.RescheduledRequests * 100 / totalreq);
+                                float totalreq = a.PendingRequests + a.HandledRequests + a.RescheduledRequests + a.CancelledRequests;
+                                float handlepercent = totalreq == 0 ? 0 : (a.HandledRequests * 100 / totalreq);
+                                float cancelpercent = totalreq == 0 ? 0 : (a.CancelledRequests * 100 / totalreq);
+                                float pendingpercent = totalreq == 0 ? 0 : (a.PendingRequests * 100 / totalreq);
+                                float reshedulepercent = totalreq == 0 ? 0 : (a.RescheduledRequests * 100 / totalreq);
+                               
                             }
                         <div class="progress mt-3" style="height: 0.4rem;">
                             @if (a.PendingRequests != 0)
