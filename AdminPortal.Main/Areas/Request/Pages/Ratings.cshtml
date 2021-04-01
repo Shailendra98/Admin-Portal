@@ -36,13 +36,13 @@
                             </label>
                             <div class="mb-2">
                                 <div class="d-inline-block" style="width:45%;">
-                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}", Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
                                 </div>
                                 <div class="text-center text-muted" style="display:inline-block;width:5%;">
                                     <span class="bi-dash"></span>
                                 </div>
                                 <div class="d-inline-block" style="width:45%;">
-                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm " value="@(String.Format("{0:dd/MM/yyyy}", Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
                                 </div>
                             </div>
                             <div>
@@ -103,14 +103,14 @@
                             <div>
                                 @{
                                     var checkname = Html.NameFor(m => m.Filter.FeedbackOptionIds);
-                                }
-                                @for (int i = 0; i < Model.FeedbackOptions.Count(); i++)
-                                {
-                                    <div class="checkbox checkbox-success p-r-sm d-inline-block p-1 pe-2">
-                                        <input type="checkbox" name="@checkname" id="check_@i" value="@Model.FeedbackOptions[i].Id" />
-                                        <label for="check_@i" class="p-0">@Model.FeedbackOptions[i].Name</label>
-                                    </div>
-                                }
+                                    for (int i = 0; i < Model.FeedbackOptions.Count; i++)
+                                    {
+                                        <div class="checkbox checkbox-success d-inline-block p-1 pe-2">
+                                            <input type="checkbox" name="@checkname" id="check_@i" value="@Model.FeedbackOptions[i].Id" />
+                                            <label for="check_@i">@Model.FeedbackOptions[i].Name</label>
+                                        </div>
+                                    }
+                                 }
                             </div>
                         </div>
 
@@ -179,14 +179,12 @@
 
 
             $("#@Html.IdFor(m => m.Filter.SellerIds)").select2AutoParent(
-                @*select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return  user.name || user.id + ""; }, { id: 0, text: "Select Seller" })*@
+                select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return  user.name || user.id + ""; }, { id: 0, text: "Select Seller" })
             );
 
             $("#@Html.IdFor(m => m.Filter.PickupBoyIds)").select2AutoParent(
                 select2SearchResponseAjaxConfiguration("@Url.Action("SearchActivePickupEmployees", "Employee")", format, function (users) { return users.name || users.id + ""; }, { id: 0, text: "Select Pickup Boy" })
              );
-
-
 
         });
 
@@ -196,7 +194,7 @@
             if (users.loading) {
                 return users.text;
             }
-            var markup = "<div class='small'>" + users.name + "," + users.id + "</div>"
+            var markup = "<div>" + users.name + "</div>";
             return markup;
         }
 

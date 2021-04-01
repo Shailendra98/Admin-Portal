@@ -20,7 +20,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
 
         private readonly IAppUserService _appUser;
 
-        public RequestRatingListModel(IRequestQueries requestQueries,IAppUserService appUser)
+        public RequestRatingListModel(IRequestQueries requestQueries, IAppUserService appUser)
         {
             _requestQueries = requestQueries;
             _appUser = appUser;
@@ -28,6 +28,11 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
 
         public RequestRatingSummaryModel RatingSummary { get; set; }
 
+        public int TotalSellerRatingCount { get; set; }
+        public int TotalPickupBoyRatingCount { get; set; }
+
+        public decimal SellerRatingStarAverage { get; set; }
+        public decimal PickupBoyRatingStarAverage { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public RequestRatingFilterSortModel Filter { get; set; }
@@ -42,6 +47,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
              Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
             RatingSummary = await _requestQueries.RequestRatingSummaryAsync(Filter);
+            CalculateData();
         }
 
         public async Task OnPostAsync(int? pageNo, int? pageSize)
@@ -51,9 +57,19 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
             Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
             RatingSummary = await _requestQueries.RequestRatingSummaryAsync(Filter);
-
+            CalculateData();
         }
 
-   
+        private void CalculateData()
+        {
+            if (RatingSummary != null)
+            {
+                TotalSellerRatingCount = RatingSummary.SellerCounts.Sum(m => m.RatingCount);
+                TotalPickupBoyRatingCount = RatingSummary.PickupBoyCounts.Sum(m => m.RatingCount);
+                PickupBoyRatingStarAverage = TotalPickupBoyRatingCount == 0 ? 0 : RatingSummary.PickupBoyCounts.Sum(m => m.RatingCount * m.Star) / (decimal)TotalPickupBoyRatingCount;
+                SellerRatingStarAverage = TotalSellerRatingCount == 0 ? 0 : RatingSummary.SellerCounts.Sum(m => m.RatingCount * m.Star) / (decimal)TotalSellerRatingCount;
+            }
+        }
+        
     }
 }
