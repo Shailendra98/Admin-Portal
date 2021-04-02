@@ -22,7 +22,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages
             _requestQueries = requestQueries;
         }
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public RequestRatingFilterSortModel Filter { get; set; }
 
         public List<FeedbackOptionModel> FeedbackOptions { get; set; }

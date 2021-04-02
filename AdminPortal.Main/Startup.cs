@@ -28,6 +28,8 @@ using TKW.Infrastructure;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
 using TKW.ApplicationCore.Contexts.ExpenseContext.Services;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace AdminPortal
 {
@@ -94,9 +96,13 @@ namespace AdminPortal
                     options.Conventions.AuthorizeAreaFolder("Material", "/");
                     options.Conventions.AuthorizeAreaFolder("Sell", "/");
                     options.Conventions.AuthorizeAreaFolder("Expense", "/");
+                }).AddMvcOptions(options=> {
+                    options.ModelBinderProviders.RemoveType<DateTimeModelBinderProvider>();
                 });
             
-            services.AddControllers();
+            services.AddControllers(options=> {
+                options.ModelBinderProviders.RemoveType<DateTimeModelBinderProvider>();
+            });
 
         }
 

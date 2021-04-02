@@ -366,7 +366,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
 	  <PackageReference Include="TKW.ApplicationCore" Version="1.1.7" />
-	  <PackageReference Include="TKW.Infrastructure" Version="1.1.10" />
+	  <PackageReference Include="TKW.Infrastructure" Version="1.1.11-query-fix" />
   </ItemGroup>
 
   <ItemGroup>
