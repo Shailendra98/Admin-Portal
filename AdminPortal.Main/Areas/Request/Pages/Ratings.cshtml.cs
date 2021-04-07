@@ -35,11 +35,21 @@ namespace TKW.AdminPortal.Areas.Request.Pages
 
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
+            Filter = new RequestRatingFilterSortModel() {
+                StartRatingStar = 1,
+                EndRatingStar=5
+            };
+
             FeedbackOptions = await _requestQueries.FeedbackOptionsAsync(cancellationToken);
         }
-        public void Post()
+        public async Task OnPostAsync(CancellationToken cancellationToken)
         {
-
+            Filter = new RequestRatingFilterSortModel()
+            {
+                StartRatingStar = 1,
+                EndRatingStar = 5
+            };
+            FeedbackOptions = await _requestQueries.FeedbackOptionsAsync(cancellationToken);
         }
 
         public enum DateTypes
@@ -51,10 +61,12 @@ namespace TKW.AdminPortal.Areas.Request.Pages
         }
         public enum RatingStarTypes
         {
+            [Display(Name = "Both")]
+            Both = 0,
             [Display(Name ="Seller")]
-            Seller = 0,
+            Seller = 1,
             [Display(Name = "Pickup Boy")]
-            PickupBoy = 1
+            PickupBoy = 2
         }
     }
 }
