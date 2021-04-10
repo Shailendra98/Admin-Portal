@@ -70,6 +70,7 @@ namespace AdminPortal
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IBuyerService, BuyerService>();
             services.AddTransient<ILocalityService, LocalityService>();
             services.AddTransient<IPincodeService, PincodeService>();
             services.AddTransient<IRequestService, RequestService>();

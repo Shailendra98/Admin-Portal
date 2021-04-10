@@ -1,0 +1,23 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer.ContactNumberModel
+@{
+}
+<modal-header title="Add Buyer" close-button="true"></modal-header>
+<form method="post"
+      data-ajax="true"
+      data-ajax-url="@Url.Page("ContactNumber")"
+      data-ajax-method="POST"
+      data-ajax-update="#ActionModalContent">
+    <modal-body>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <label asp-for="OwnerMobileNo" class="col-form-label fw-bold">Mobile Number</label>
+                <input  class="form-control" asp-for="OwnerMobileNo" placeholder="Enter Mobile Number">
+                <span class="text-danger" asp-validation-for="OwnerMobileNo"></span>
+            </div>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <button type="submit" class="btn btn-success">Proceed</button>
+    </modal-footer>
+</form>

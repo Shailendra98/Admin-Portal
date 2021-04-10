@@ -9,11 +9,9 @@
         <a href="#">
             <img src="@urlGenerator.ProfilePic(user?.PictureName,TKW.AdminPortal.Constants.UserPicSize.x80)" class="img-circle m-b" alt="logo" height="76" width="76">
         </a>
-
         <div class="stats-label text-color">
             <span class="font-extra-bold font-uppercase">@(user?.Name)</span>
         </div>
-       
     </div>
     <ul class="nav metismenu flex-sm-column" id="side-menu">
         <li class="@Html.IsSelected(page:"/Dashboard")">
@@ -40,6 +38,9 @@
         </li>
         <li class="@Html.IsSelected(area:"Material")">
             <a href="@Url.Page("/Index", new { area = "Material" })" class="text-decoration-none d-block"><span class="nav-label">Materials</span></a>
+        </li>
+        <li class="@Html.IsSelected(area:"Buyer")">
+            <a href="@Url.Page("/Index", new { area = "Buyer" })" class="text-decoration-none d-block"><span class="nav-label">Buyer</span></a>
         </li>
         @*
         <li class="@Html.IsSelected(area: "Employee")">

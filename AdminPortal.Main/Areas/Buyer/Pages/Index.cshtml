@@ -1,0 +1,39 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Buyer.Pages.IndexModel
+@{
+    ViewBag.Title = "Buyer";
+}
+<pagetitle title="Buyer" description="List of Buyers">
+    <a data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/AddBuyer/ContactNumber")" class="btn btn-primary btn-outline btn-sm"><i class="fa fa-plus"></i> Add Buyer</a>
+</pagetitle>
+
+
+<div class="content">
+    <div class="hpanel">
+            <div id="buyerList" class="tab-pane active" role="tabpanel">
+                <div class="panel-body text-center">
+                    <img src="/images/ripple.gif" alt="Loading.." />
+                </div>
+            </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+     $(function () {
+         $("#buyerList").load("@Url.Page("Ajax/BuyerList")");
+         $("#ActionModalContent").on("action.done", function (data) {
+               $("#buyerList").load("@Url.Page("Ajax/BuyerList")");
+         });
+         $("#DetailModalContent").on("action.update", function (data) {
+             $("#buyerList").load("@Url.Page("Ajax/BuyerList")");
+         });
+     });
+    </script>
+}
+
+@section Footer{
+    <modal id="ActionModal" content-id="ActionModalContent"></modal>
+    <modal id="DetailModal" content-id="DetailModalContent"></modal>
+}
+
