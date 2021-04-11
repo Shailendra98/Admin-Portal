@@ -5,7 +5,7 @@
 }
 <modal-header title="Buyer Details" close-button="true"></modal-header>
 <modal-body>
-    <table class="mx-auto" style="width:75%;">
+    <table class="mx-auto w-100">
         <tr>
             <td class="fw-bold">Name</td>
             <td class="text-end">@Model.Buyer.OwnerName</td>
@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <td class="fw-bold">Address</td>
-            <td class="text-end">@Model.Buyer.AddressLine</td>
+            <td class="text-end">@Model.Buyer.AddressLine @Model.Buyer.LocalityName</td>
         </tr>
     </table>
 </modal-body>
