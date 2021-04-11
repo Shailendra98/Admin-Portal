@@ -51,11 +51,12 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
             }
 
             BuyerInputModel = new BuyerInputModel()
-                {
-                    OwnerName = b.OwnerName,
-                    OwnerMobileNo = b.OwnerMobileNo,
-                    FirmName = b.FirmName,
-                    GSTIN = b.GSTIN,
+            {
+                OwnerName = b.OwnerName,
+                OwnerMobileNo = b.OwnerMobileNo,
+                FirmName = b.FirmName,
+                GSTIN = b.GSTIN,
+                IsActive = b.IsActive,
                     Address = new AdminPortal.ViewModels.AddressModel
                     {
                         IncludeNameMobileNo = false,
@@ -88,7 +89,7 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
                 }      
             }
 
-            BuyerInputModel.Address.OnlyLocalities= true ;
+            BuyerInputModel.Address.OnlyLocalities= _appUser.Current.FranchiseId.HasValue;
             BuyerInputModel.Address.IncludeNameMobileNo = false ;
             BuyerInputModel.Address.IncludeAddressType = false ;
             return Page();
