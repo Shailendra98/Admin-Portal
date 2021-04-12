@@ -35,20 +35,6 @@ namespace TKW.AdminPortal.Areas.Request.Pages
 
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
-            Filter = new RequestRatingFilterSortModel() {
-                StartRatingStar = 1,
-                EndRatingStar=5
-            };
-
-            FeedbackOptions = await _requestQueries.FeedbackOptionsAsync(cancellationToken);
-        }
-        public async Task OnPostAsync(CancellationToken cancellationToken)
-        {
-            Filter = new RequestRatingFilterSortModel()
-            {
-                StartRatingStar = 1,
-                EndRatingStar = 5
-            };
             FeedbackOptions = await _requestQueries.FeedbackOptionsAsync(cancellationToken);
         }
 

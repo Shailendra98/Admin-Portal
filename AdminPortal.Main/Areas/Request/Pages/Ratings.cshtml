@@ -3,6 +3,8 @@
 @using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
 @using Newtonsoft.Json
 @{
+    var data1 = Model?.Filter?.SellerIds;
+
     ViewBag.Title = "Ratings";
 }
 <pagetitle title="Ratings" description="List of ratings."></pagetitle>
@@ -11,16 +13,17 @@
         <div class="col-md-3">
             <div class="hpanel">
                 <div class="panel-body">
-                    <form id="ratingFilterForm" method="post">
 
-                        <div class="mb-2">
-                            <h5>
-                                Filters
-                            </h5>
-                            <small>
-                                Rating Filters by options
-                            </small>
-                        </div>
+                    <div class="mb-2">
+                        <h5>
+                            Filters
+                        </h5>
+                        <small>
+                            Rating Filters by options
+                        </small>
+                    </div>
+
+                    <form id="ratingFilterForm" method="post">
 
                         <div class="mb-2">
                             <label class="fw-bold col-form-label fw-bold col-form-label" asp-for="Filter.Search"></label>
@@ -73,30 +76,47 @@
                                 </div>
                                 <div class="d-inline-block" style="width:45%;">
                                     <select class="form-select form-select-sm" asp-for="Filter.EndRatingStar">
-                                        @for (int i = 1; i <= 5; i++)
+                                        @if (Model?.Filter?.EndRatingStar == null)
                                         {
-
-                                            if (Model?.Filter?.EndRatingStar != null && Model.Filter.EndRatingStar == i)
-                                            {
-                                                <option value="@i" selected>@i</option>
-                                            }
-                                            else
+                                            @for (int i = 1; i <= 4; i++)
                                             {
                                                 <option value="@i">@i</option>
+                                            }
+                                            <option value="5" selected>5</option>
+                                        }
+                                        else
+                                        {
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+
+                                                if (Model?.Filter?.EndRatingStar != null && Model.Filter.EndRatingStar == i)
+                                                {
+                                                    <option value="@i" selected>@i</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
                                             }
                                         }
                                     </select>
                                 </div>
                             </div>
-                            <div>
+                            <div class="mb-2">
                                 <select class="form-select form-select-sm" asp-for="Filter.RatingStarType" asp-items="Html.GetEnumSelectList<RatingsModel.RatingStarTypes>()">
                                 </select>
+                            </div>
+                            <div>
+                                <div class="form-check form-switch ms-2">
+                                    <input class="form-check-input" type="checkbox" asp-for="Filter.ExcludeNoRemarkRating">
+                                    <label class="form-check-label" asp-for="Filter.ExcludeNoRemarkRating"> Exclude No Remark Rating </label>
+                                </div>
                             </div>
                         </div>
 
                         <div class="mb-2">
                             <label class="col-form-label fw-bold">Sellers</label>
-                            <select class="form-control form-control-sm w-100" asp-for="Filter.SellerIds" multiple data-placeholder="Select Seller"></select>
+                            <select class="form-control form-control-sm w-100" asp-for="Filter.SellerIds" multiple></select>
                         </div>
 
                         <div class="mb-2">
@@ -128,18 +148,28 @@
                         </div>
 
                     </form>
+
                 </div>
             </div>
         </div>
+
         <div class="col-md-9">
             <div id="requestRatingSummaryList">
-                <div class="text-center">
-                    <img alt="Loading.." src="/images/ripple.gif" />
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <img alt="Loading.." src="/images/ripple.gif" />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="requestRatingList">
-                <div class="text-center">
-                    <img alt="Loading.." src="/images/ripple.gif" />
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <img alt="Loading.." src="/images/ripple.gif" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,8 +196,8 @@
                 },
                 method: 'POST',
                 success: function (data) { $('#requestRatingList').html(data); }
-            });
 
+            });
             $.ajax({
                 url: '@(Url.Page("Ajax/RequestRatingSummaryList"))',
                 data: model,
@@ -179,8 +209,6 @@
                 success: function (data) { $('#requestRatingSummaryList').html(data); }
             });
 
-
-
             $('#ratingFilterForm').submit(function () {
                 $.ajax({
                     async: true,
@@ -189,7 +217,6 @@
                     data: $(this).serialize(),
                     success: function (data) { $('#requestRatingList').html(data); }
                 });
-
                 $.ajax({
                     async: true,
                     method: 'POST',
@@ -197,7 +224,6 @@
                     data: $(this).serialize(),
                     success: function (data) { $('#requestRatingSummaryList').html(data); }
                 });
-
                 return false;
             });
 
@@ -224,12 +250,13 @@
 
 
             $("#@Html.IdFor(m => m.Filter.SellerIds)").select2AutoParent(
-                select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return user.name || user.id + ""; }, { id: 0, text: "Select Seller" })
+                select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return user.name || user.id + ""; }, "Select Sellers")
             );
 
             $("#@Html.IdFor(m => m.Filter.PickupBoyIds)").select2AutoParent(
-                select2SearchResponseAjaxConfiguration("@Url.Action("SearchActivePickupEmployees", "Employee")", format, function (users) { return users.name || users.id + ""; }, { id: 0, text: "Select Pickup Boy" })
+                select2SearchResponseAjaxConfiguration("@Url.Action("SearchActivePickupEmployees", "Employee")", format, function (users) { return users.name || users.id + ""; }, "Select Pickup Boy")
             );
+
 
             window.onload = function () {
 
@@ -303,7 +330,6 @@
                         }
                     });
                 }
-
             }
 
             window.onbeforeunload = function () {
@@ -314,16 +340,9 @@
                 sessionStorage.setItem("StartRatingStar", $('#@Html.IdFor(m => m.Filter.StartRatingStar) :selected').val());
                 sessionStorage.setItem("EndRatingStar", $('#@Html.IdFor(m => m.Filter.EndRatingStar) :selected').val());
                 sessionStorage.setItem("RatingStarType", $('#@Html.IdFor(m => m.Filter.RatingStarType) :selected').val());
-                @*sessionStorage.setItem("SellerIds", $('#@Html.IdFor(m => m.Filter.SellerIds)').map(function (i, el) { return $(el).val(); }).get());
-                sessionStorage.setItem("PickupBoyIds", $('#@Html.IdFor(m => m.Filter.PickupBoyIds)').map(function (i, el) { return $(el).val(); }).get());*@
             }
 
-
         });
-
-
-
-
 
         function format(users) {
             if (users.loading) {
@@ -332,7 +351,6 @@
             var markup = "<div>" + users.name + "</div>";
             return markup;
         }
-
 
         function resetFunction() {
             $("#myForm").trigger("reset");
