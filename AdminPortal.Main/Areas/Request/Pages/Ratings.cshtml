@@ -76,29 +76,21 @@
                                 </div>
                                 <div class="d-inline-block" style="width:45%;">
                                     <select class="form-select form-select-sm" asp-for="Filter.EndRatingStar">
-                                        @if (Model?.Filter?.EndRatingStar == null)
+                                        @{ var endStar = Model?.Filter?.EndRatingStar ?? 5; }
+
+                                        @for (int i = 1; i <= 5; i++)
                                         {
-                                            @for (int i = 1; i <= 4; i++)
+
+                                            if (endStar == i)
+                                            {
+                                                <option value="@i" selected>@i</option>
+                                            }
+                                            else
                                             {
                                                 <option value="@i">@i</option>
                                             }
-                                            <option value="5" selected>5</option>
                                         }
-                                        else
-                                        {
-                                            @for (int i = 1; i <= 5; i++)
-                                            {
 
-                                                if (Model?.Filter?.EndRatingStar != null && Model.Filter.EndRatingStar == i)
-                                                {
-                                                    <option value="@i" selected>@i</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@i">@i</option>
-                                                }
-                                            }
-                                        }
                                     </select>
                                 </div>
                             </div>
@@ -106,12 +98,7 @@
                                 <select class="form-select form-select-sm" asp-for="Filter.RatingStarType" asp-items="Html.GetEnumSelectList<RatingsModel.RatingStarTypes>()">
                                 </select>
                             </div>
-                            <div>
-                                <div class="form-check form-switch ms-2">
-                                    <input class="form-check-input" type="checkbox" asp-for="Filter.ExcludeNoRemarkRating">
-                                    <label class="form-check-label" asp-for="Filter.ExcludeNoRemarkRating"> Exclude No Remark Rating </label>
-                                </div>
-                            </div>
+
                         </div>
 
                         <div class="mb-2">
@@ -141,7 +128,16 @@
                                 }
                             </div>
                         </div>
-
+                        <div class="mb-3">
+                            <div class="checkbox checkbox-success d-inline-block p-1 pe-2">
+                                <input class="form-check-input" type="checkbox" asp-for="Filter.ExcludeNoRemarkRating">
+                                <label class="form-check-label fw-bold" asp-for="Filter.ExcludeNoRemarkRating">Exclude no remark ratings</label>
+                            </div>
+                            @*<div class="form-check">
+                                <input class="form-check-input" type="checkbox" asp-for="Filter.ExcludeNoRemarkRating">
+                                <label class="form-check-label fw-bold" asp-for="Filter.ExcludeNoRemarkRating">Exclude no remark ratings</label>
+                            </div>*@
+                        </div>
                         <div class="d-grid gap-2">
                             <button class="btn btn-success btn-sm" type="submit">Apply</button>
                             <button class="btn btn-default btn-sm" type="reset" onclick="resetFunction()" value="Reset">Reset</button>
@@ -155,17 +151,11 @@
 
         <div class="col-md-9">
             <div id="requestRatingSummaryList">
-                <div class="hpanel">
-                    <div class="panel-body">
-                        <div class="text-center">
-                            <img alt="Loading.." src="/images/ripple.gif" />
-                        </div>
-                    </div>
-                </div>
+                
             </div>
             <div id="requestRatingList">
-                <div class="hpanel">
-                    <div class="panel-body">
+                <div class="card">
+                    <div class="card-body">
                         <div class="text-center">
                             <img alt="Loading.." src="/images/ripple.gif" />
                         </div>
@@ -210,6 +200,7 @@
             });
 
             $('#ratingFilterForm').submit(function () {
+                $('#requestRatingList').html('<div class="card"><div class="card-body"><div class="text-center"><img alt="Loading.." src="/images/ripple.gif" /></div></div></div>');
                 $.ajax({
                     async: true,
                     method: 'POST',
