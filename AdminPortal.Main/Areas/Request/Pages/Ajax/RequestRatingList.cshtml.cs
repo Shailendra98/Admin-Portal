@@ -26,49 +26,31 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
             _appUser = appUser;
         }
 
-        public RequestRatingSummaryModel RatingSummary { get; set; }
-
-        public int TotalSellerRatingCount { get; set; }
-        public int TotalPickupBoyRatingCount { get; set; }
-
-        public decimal SellerRatingStarAverage { get; set; }
-        public decimal PickupBoyRatingStarAverage { get; set; }
-
         [BindProperty(SupportsGet = true)]
         public RequestRatingFilterSortModel Filter { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int? pageNo { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int? pageSize { get; set; }
+
         public PagedList<RequestRatingListItemModel> Ratings { get; set; }
 
-
-        public async Task OnGetAsync(int? pageNo, int? pageSize)
+        public async Task OnGetAsync()
         {
             int size = pageSize == null ? 8 : (pageSize < 5) ? 5 : (pageSize > 100) ? 100 : pageSize.Value;
             if (_appUser.Current.FranchiseId.HasValue)
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
              Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
-            RatingSummary = await _requestQueries.RequestRatingSummaryAsync(Filter);
-            CalculateData();
         }
 
-        public async Task OnPostAsync(int? pageNo, int? pageSize)
+        public async Task OnPostAsync()
         {
             int size = pageSize == null ? 8 : (pageSize < 5) ? 5 : (pageSize > 100) ? 100 : pageSize.Value;
             if (_appUser.Current.FranchiseId.HasValue)
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
             Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
-            RatingSummary = await _requestQueries.RequestRatingSummaryAsync(Filter);
-            CalculateData();
-        }
-
-        private void CalculateData()
-        {
-            if (RatingSummary != null)
-            {
-                TotalSellerRatingCount = RatingSummary.SellerCounts.Sum(m => m.RatingCount);
-                TotalPickupBoyRatingCount = RatingSummary.PickupBoyCounts.Sum(m => m.RatingCount);
-                PickupBoyRatingStarAverage = TotalPickupBoyRatingCount == 0 ? 0 : RatingSummary.PickupBoyCounts.Sum(m => m.RatingCount * m.Star) / (decimal)TotalPickupBoyRatingCount;
-                SellerRatingStarAverage = TotalSellerRatingCount == 0 ? 0 : RatingSummary.SellerCounts.Sum(m => m.RatingCount * m.Star) / (decimal)TotalSellerRatingCount;
-            }
         }
         
     }
