@@ -3,6 +3,8 @@
 @using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
 @using Newtonsoft.Json
 @{
+    var data1 = Model?.Filter?.SellerIds;
+
     ViewBag.Title = "Ratings";
 }
 <pagetitle title="Ratings" description="List of ratings."></pagetitle>
@@ -11,25 +13,23 @@
         <div class="col-md-3">
             <div class="hpanel">
                 <div class="panel-body">
-                    <form id="ratingFilterForm"
-                          method="get"
-                          data-ajax="true"
-                          data-ajax-method="get"
-                          data-ajax-url="@Url.Page("Ajax/RequestRatingList")"
-                          data-ajax-update="#requestRatingList"
-                          data-ajax-begin="$('#requestRatingList').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');">
-                        <div class="mb-2">
-                            <h5>
-                                Filters
-                            </h5>
-                            <small>
-                                Rating Filters by options
-                            </small>
-                        </div>
+
+                    <div class="mb-2">
+                        <h5>
+                            Filters
+                        </h5>
+                        <small>
+                            Rating Filters by options
+                        </small>
+                    </div>
+
+                    <form id="ratingFilterForm" method="post">
+
                         <div class="mb-2">
                             <label class="fw-bold col-form-label fw-bold col-form-label" asp-for="Filter.Search"></label>
                             <input class="form-control form-control-sm" placeholder="Search" asp-for="Filter.Search" />
                         </div>
+
                         <div class="mb-2">
                             <label class="fw-bold col-form-label">
                                 Date
@@ -50,7 +50,6 @@
                             </div>
                         </div>
 
-
                         <div class="mb-2">
                             <label class="fw-bold col-form-label">
                                 Rating Stars
@@ -58,11 +57,18 @@
                             <div class="mb-2">
                                 <div class="d-inline-block" style="width:45%;">
                                     <select class="form-select form-select-sm" asp-for="Filter.StartRatingStar">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+
+                                            if (Model?.Filter?.StartRatingStar != null && Model.Filter.StartRatingStar == i)
+                                            {
+                                                <option value="@i" selected>@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        }
                                     </select>
                                 </div>
                                 <div class="text-center text-muted d-inline-block" style="width:5%;">
@@ -70,28 +76,35 @@
                                 </div>
                                 <div class="d-inline-block" style="width:45%;">
                                     <select class="form-select form-select-sm" asp-for="Filter.EndRatingStar">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5" selected>5</option>
+                                        @{ var endStar = Model?.Filter?.EndRatingStar ?? 5; }
+
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+
+                                            if (endStar == i)
+                                            {
+                                                <option value="@i" selected>@i</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        }
+
                                     </select>
                                 </div>
                             </div>
-                            <div>
+                            <div class="mb-2">
                                 <select class="form-select form-select-sm" asp-for="Filter.RatingStarType" asp-items="Html.GetEnumSelectList<RatingsModel.RatingStarTypes>()">
-                                    <option value="null" selected> Both </option>
                                 </select>
                             </div>
+
                         </div>
-
-
 
                         <div class="mb-2">
                             <label class="col-form-label fw-bold">Sellers</label>
-                            <select class="form-control form-control-sm w-100" asp-for="Filter.SellerIds" multiple data-placeholder="Select Seller"></select>
+                            <select class="form-control form-control-sm w-100" asp-for="Filter.SellerIds" multiple></select>
                         </div>
-
 
                         <div class="mb-2">
                             <label class="col-form-label fw-bold">Pickup Boys</label>
@@ -100,37 +113,59 @@
 
                         <div class="mb-3">
                             <label class="col-form-label fw-bold">Feedback Options</label>
-                            <div>
+                            <div id="feedbackoption">
                                 @{
+                                    var ischecked = false;
                                     var checkname = Html.NameFor(m => m.Filter.FeedbackOptionIds);
                                     for (int i = 0; i < Model.FeedbackOptions.Count; i++)
                                     {
+                                        ischecked = (Model?.Filter?.FeedbackOptionIds != null && Model.Filter.FeedbackOptionIds.Contains((int)Model.FeedbackOptions[i].Id));
                                         <div class="checkbox checkbox-success d-inline-block p-1 pe-2">
-                                            <input type="checkbox" name="@checkname" id="check_@i" value="@Model.FeedbackOptions[i].Id" />
+                                            <input type="checkbox" name="@checkname" id="check_@i" value="@Model.FeedbackOptions[i].Id" @(ischecked ? "checked" : "") />
                                             <label for="check_@i">@Model.FeedbackOptions[i].Name</label>
                                         </div>
                                     }
-                                 }
+                                }
                             </div>
                         </div>
-
+                        <div class="mb-3">
+                            <div class="checkbox checkbox-success d-inline-block p-1 pe-2">
+                                <input class="form-check-input" type="checkbox" asp-for="Filter.ExcludeNoRemarkRating">
+                                <label class="form-check-label fw-bold" asp-for="Filter.ExcludeNoRemarkRating">Exclude no remark ratings</label>
+                            </div>
+                            @*<div class="form-check">
+                                <input class="form-check-input" type="checkbox" asp-for="Filter.ExcludeNoRemarkRating">
+                                <label class="form-check-label fw-bold" asp-for="Filter.ExcludeNoRemarkRating">Exclude no remark ratings</label>
+                            </div>*@
+                        </div>
                         <div class="d-grid gap-2">
                             <button class="btn btn-success btn-sm" type="submit">Apply</button>
                             <button class="btn btn-default btn-sm" type="reset" onclick="resetFunction()" value="Reset">Reset</button>
                         </div>
+
                     </form>
+
                 </div>
             </div>
         </div>
-        <div class="col-md-9" id="requestRatingList">
-            <div class="text-center">
-                <img alt="Loading.." src="/images/ripple.gif" />
+
+        <div class="col-md-9">
+            <div id="requestRatingSummaryList">
+                
+            </div>
+            <div id="requestRatingList">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img alt="Loading.." src="/images/ripple.gif" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <form id="listform_ajax" method="post">
-
 </form>
 @section Styles{
     <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
@@ -141,10 +176,7 @@
     <script>
         $(function () {
 
-            @*$("#requestRatingList").load("@Url.Page("Ajax/RequestRatingList")");*@
-
-
-            var model=@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
+            var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
             $.ajax({
                 url: '@(Url.Page("Ajax/RequestRatingList"))',
                 data: model,
@@ -153,7 +185,37 @@
                         $("#listform_ajax input").val());
                 },
                 method: 'POST',
-                success: function (data) { $('#requestRatingList').html(data);}
+                success: function (data) { $('#requestRatingList').html(data); }
+
+            });
+            $.ajax({
+                url: '@(Url.Page("Ajax/RequestRatingSummaryList"))',
+                data: model,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#listform_ajax input").val());
+                },
+                method: 'POST',
+                success: function (data) { $('#requestRatingSummaryList').html(data); }
+            });
+
+            $('#ratingFilterForm').submit(function () {
+                $('#requestRatingList').html('<div class="card"><div class="card-body"><div class="text-center"><img alt="Loading.." src="/images/ripple.gif" /></div></div></div>');
+                $.ajax({
+                    async: true,
+                    method: 'POST',
+                    url: '@(Url.Page("Ajax/RequestRatingList"))',
+                    data: $(this).serialize(),
+                    success: function (data) { $('#requestRatingList').html(data); }
+                });
+                $.ajax({
+                    async: true,
+                    method: 'POST',
+                    url: '@(Url.Page("Ajax/RequestRatingSummaryList"))',
+                    data: $(this).serialize(),
+                    success: function (data) { $('#requestRatingSummaryList').html(data); }
+                });
+                return false;
             });
 
             var options = {
@@ -179,16 +241,16 @@
 
 
             $("#@Html.IdFor(m => m.Filter.SellerIds)").select2AutoParent(
-                select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return  user.name || user.id + ""; }, { id: 0, text: "Select Seller" })
+                select2SearchResponseAjaxConfiguration("@Url.Action("Users", "Account")", format, function (users) { return user.name || user.id + ""; }, "Select Sellers")
             );
 
             $("#@Html.IdFor(m => m.Filter.PickupBoyIds)").select2AutoParent(
-                select2SearchResponseAjaxConfiguration("@Url.Action("SearchActivePickupEmployees", "Employee")", format, function (users) { return users.name || users.id + ""; }, { id: 0, text: "Select Pickup Boy" })
-             );
+                select2SearchResponseAjaxConfiguration("@Url.Action("SearchActivePickupEmployees", "Employee")", format, function (users) { return users.name || users.id + ""; }, "Select Pickup Boy")
+            );
+
+
 
         });
-
-
 
         function format(users) {
             if (users.loading) {
@@ -198,13 +260,18 @@
             return markup;
         }
 
-
         function resetFunction() {
             $("#myForm").trigger("reset");
             $("#myForm select").trigger("change");
+            $('#myForm .select2-container').select2('val', '');
+            $("#@Html.IdFor(m => m.Filter.SellerIds)").val('').trigger('change');
+            $('#@Html.IdFor(m => m.Filter.PickupBoyIds)').val('').trigger('change');
         }
+
     </script>
 }
 @section Footer{
     <modal content-id="DetailsModalContent" dialog-class="modal-lg" loader="true" id="DetailsModal"></modal>
 }
+
+ 
