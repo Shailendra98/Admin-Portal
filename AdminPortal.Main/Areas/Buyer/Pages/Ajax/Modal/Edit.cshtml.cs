@@ -88,7 +88,6 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
                     ErrorMessage = buyer.Error.Message;
                 }      
             }
-
             BuyerInputModel.Address.OnlyLocalities= _appUser.Current.FranchiseId.HasValue;
             BuyerInputModel.Address.IncludeNameMobileNo = false ;
             BuyerInputModel.Address.IncludeAddressType = false ;

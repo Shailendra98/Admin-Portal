@@ -12,11 +12,11 @@
     {
 <div class="row">
     @{var j = 0;}
-    @foreach (var t in Model.BuyersWithAddress)
+    @foreach (var t in Model.BuyersWithAddress.OrderByDescending(m => m.IsActive))
     {
         @(j > 0 && j % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
         <div class="col-md-4">
-            <a class="text-decoration-none" href="#DetailModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/Detail", new { BuyerId = t.Id})">
+            <a class="text-decoration-none" href="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/Detail", new { BuyerId = t.Id})">
                 <div class="hpanel mb-2">
                     <div class="panel-body p-3">
                         <div class="my-1">

@@ -8,31 +8,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Buyer.ViewModels;
 using TKW.AdminPortal.ViewModels;
+using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
 using TKW.ApplicationCore.Contexts.AccountContext.Queries;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
+using TKW.ApplicationCore.Contexts.AreaContext.Queries;
 using TKW.ApplicationCore.Contexts.SellContext.DTOs;
 using TKW.ApplicationCore.Contexts.SellContext.Queries;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
 using TKW.ApplicationCore.Identity;
+using TKW.ApplicationCore.SeedWorks;
 
 namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
 {
     public class AddDetailsModel : PageModel
     {
         private readonly IAppUserService _appUser;
+        private readonly IAreaQueries _areaQueries;
         private readonly IUserQueries _userQueries;
         private readonly IBuyerQueries _buyerQueries;
         private readonly IBuyerService _buyerService;
         private readonly IUserService _userService;
 
-        public AddDetailsModel(IAppUserService appUser,IUserQueries userQueries,IBuyerQueries buyerQueries,IBuyerService buyerService,IUserService userService)
+        public AddDetailsModel(IAppUserService appUser,IUserQueries userQueries,IBuyerQueries buyerQueries,IBuyerService buyerService,IUserService userService,IAreaQueries areaQueries)
         {
             _appUser = appUser;
             _userQueries = userQueries;
             _buyerQueries = buyerQueries;
             _buyerService = buyerService;
             _userService = userService;
+            _areaQueries = areaQueries;
         }
 
         [BindProperty]
@@ -73,10 +78,35 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
                     ErrorMessage = buyer.Error.Message;
                 }
             }
-          BuyerInputModel.Address.OnlyLocalities = _appUser.Current.FranchiseId.HasValue;
-          BuyerInputModel.Address.IncludeNameMobileNo = false;
-          BuyerInputModel.Address.IncludeAddressType = false;
-          return Page();                                                                                   
+            
+            BuyerInputModel.Address.AddressTypes = Enumeration.GetAll<AddressType>().ToList();
+            if (BuyerInputModel.Address.LocalityId.HasValue)
+            {
+                var locality = await _areaQueries.LocalityByIdAsync(BuyerInputModel.Address.LocalityId.Value, cancellationToken);
+                BuyerInputModel.Address.LocalityName = locality.Name;
+                BuyerInputModel.Address.LocalityLatitude = locality.Latitude;
+                BuyerInputModel.Address.LocalityLongitude = locality.Longitude;
+            }
+            if (BuyerInputModel.Address.CityId.HasValue)
+            {
+                BuyerInputModel.Address.CityName = (await _areaQueries.CityByIdAsync(BuyerInputModel.Address.CityId.Value, cancellationToken)).Name;
+            }
+            //AddressModel.AddressTypes = Enumeration.GetAll<AddressType>().ToList();
+            //if (AddressModel.LocalityId.HasValue)
+            //{
+            //    var locality = await _areaQueries.LocalityByIdAsync(AddressModel.LocalityId.Value, cancellationToken);
+            //    AddressModel.LocalityName = locality.Name;
+            //    AddressModel.LocalityLatitude = locality.Latitude;
+            //    AddressModel.LocalityLongitude = locality.Longitude;
+            //}
+
+            //if (AddressModel.CityId.HasValue)
+            //    AddressModel.CityName = (await _areaQueries.CityByIdAsync(AddressModel.CityId.Value, cancellationToken)).Name;
+
+            BuyerInputModel.Address.OnlyLocalities = _appUser.Current.FranchiseId.HasValue;
+            BuyerInputModel.Address.IncludeNameMobileNo = false;
+            BuyerInputModel.Address.IncludeAddressType = false;
+            return Page();                                                                                   
         }                                                     
 
     }

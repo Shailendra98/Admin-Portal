@@ -25,7 +25,7 @@ namespace TKW.AdminPortal.Areas.Buyer.ViewModels
         [Display(Name = "Firm Name")]
         public string? FirmName { get; set; }
 
-        [Required(ErrorMessage = "GSTIN name is required.")]
+        //[Required(ErrorMessage = "GSTIN name is required.")]
         public string? GSTIN { get; set; }
 
         [Required(ErrorMessage = "Address is required.")]

@@ -4,7 +4,6 @@
     
 }
 <modal-header title="Edit Details" close-button="true"></modal-header>
-
 @if (Model.IsDone)
 {
     <modal-body>
@@ -15,9 +14,9 @@
         </div>
     </modal-body>
     <script>
-        $("#DetailModalContent").trigger(
+        $("#ActionModalContent").trigger(
             {
-                type: "action.update",
+                type: "action.done",
             });
     </script>
 }
@@ -35,7 +34,7 @@ else
           data-ajax-url="@Url.Page("Edit")"
           data-ajax-begin="$('#addFieldSet1').attr('disabled','');"
           data-ajax-complete="$('#addFieldSet1').removeAttr('disabled');"
-          data-ajax-update="#DetailModalContent">
+          data-ajax-update="#ActionModalContent">
         <fieldset id="addFieldSet1">
             <modal-body>
                 <div class="row">
@@ -79,11 +78,11 @@ else
                 <div class="mb-2">
                     <label class="col-form-label fw-bold">Status</label>
                 <div>
-                        <div class="radio radio-primary" style="display:inline-block">
+                        <div class="radio radio-primary ps-1" style="display:inline-block">
                             <input asp-for="BuyerInputModel.IsActive" id="Active" value="true" type="radio"/>
                             <label for="Active">Active</label>
                         </div>
-                        <div class="radio radio-primary" style="display:inline-block">
+                        <div class="radio radio-primary ps-3" style="display:inline-block">
                             <input asp-for="BuyerInputModel.IsActive" id="InActive" value="false" type="radio" />
                             <label for="InActive">InActive</label>
                         </div>
