@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Buyer.ViewModels;
+using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
+using TKW.ApplicationCore.Contexts.AreaContext.Queries;
 using TKW.ApplicationCore.Contexts.SellContext.DTOs;
 using TKW.ApplicationCore.Contexts.SellContext.Queries;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
 using TKW.ApplicationCore.Identity;
+using TKW.ApplicationCore.SeedWorks;
 
 namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
 {
@@ -20,6 +23,7 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
         private readonly IAppUserService _appUser;
         private readonly IBuyerService _buyerService;
         private readonly IBuyerQueries _buyerQueries;
+        private readonly IAreaQueries _areaQueries;
 
         public EditModel(IAppUserService appUser,IBuyerService buyerService,IBuyerQueries buyerQueries)
         {
@@ -68,7 +72,7 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
                         LocalityName = b.LocalityName,
                         LocalityId = b.LocalityId
                     }
-                };
+            };
 
             return Page();
         } 
@@ -82,11 +86,20 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
                 if (buyer.IsSuccess)
                 {
                     IsDone = true;
+                    return Page();
                 }
                 else
                 {
                     ErrorMessage = buyer.Error.Message;
                 }      
+            }
+            BuyerInputModel.Address.AddressTypes = Enumeration.GetAll<AddressType>().ToList();
+            if (BuyerInputModel.Address.LocalityId.HasValue)
+            {
+                var locality = await _areaQueries.LocalityByIdAsync(BuyerInputModel.Address.LocalityId.Value, cancellationToken);
+                BuyerInputModel.Address.LocalityName = locality.Name;
+                BuyerInputModel.Address.LocalityLatitude = locality.Latitude;
+                BuyerInputModel.Address.LocalityLongitude = locality.Longitude;
             }
             BuyerInputModel.Address.OnlyLocalities= _appUser.Current.FranchiseId.HasValue;
             BuyerInputModel.Address.IncludeNameMobileNo = false ;

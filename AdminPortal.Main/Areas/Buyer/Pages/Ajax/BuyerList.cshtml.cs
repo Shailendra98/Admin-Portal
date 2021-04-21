@@ -23,13 +23,11 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax
             _appUser = appUser;
         }
 
-        public List<BuyerWithAddressModel> BuyersWithAddress { get; set; }
-
-        public int FranchideId { get; set; }
+        public List<BuyerWithAddressModel> Buyers { get; set; }
 
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
-            BuyersWithAddress = await _buyerQueries.BuyersOfFranchiseAsync(_appUser.Current.FranchiseId!.Value, cancellationToken);
+            Buyers = await _buyerQueries.BuyersOfFranchiseAsync(_appUser.Current.FranchiseId!.Value, cancellationToken);
         }
     }
 }

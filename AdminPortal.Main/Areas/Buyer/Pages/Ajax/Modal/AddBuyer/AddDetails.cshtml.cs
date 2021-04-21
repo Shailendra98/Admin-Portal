@@ -72,6 +72,7 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
                 if (buyer.IsSuccess)
                 {
                     IsDone = true;
+                    return Page();
                 }
                 else
                 {
@@ -87,22 +88,6 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
                 BuyerInputModel.Address.LocalityLatitude = locality.Latitude;
                 BuyerInputModel.Address.LocalityLongitude = locality.Longitude;
             }
-            if (BuyerInputModel.Address.CityId.HasValue)
-            {
-                BuyerInputModel.Address.CityName = (await _areaQueries.CityByIdAsync(BuyerInputModel.Address.CityId.Value, cancellationToken)).Name;
-            }
-            //AddressModel.AddressTypes = Enumeration.GetAll<AddressType>().ToList();
-            //if (AddressModel.LocalityId.HasValue)
-            //{
-            //    var locality = await _areaQueries.LocalityByIdAsync(AddressModel.LocalityId.Value, cancellationToken);
-            //    AddressModel.LocalityName = locality.Name;
-            //    AddressModel.LocalityLatitude = locality.Latitude;
-            //    AddressModel.LocalityLongitude = locality.Longitude;
-            //}
-
-            //if (AddressModel.CityId.HasValue)
-            //    AddressModel.CityName = (await _areaQueries.CityByIdAsync(AddressModel.CityId.Value, cancellationToken)).Name;
-
             BuyerInputModel.Address.OnlyLocalities = _appUser.Current.FranchiseId.HasValue;
             BuyerInputModel.Address.IncludeNameMobileNo = false;
             BuyerInputModel.Address.IncludeAddressType = false;

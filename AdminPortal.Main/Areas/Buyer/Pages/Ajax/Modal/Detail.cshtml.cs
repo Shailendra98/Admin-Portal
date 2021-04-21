@@ -23,14 +23,14 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
         [BindProperty(SupportsGet =true)]
         public int BuyerId { get; set; }
 
-        public BuyerViewModel Buyer { get; set; }
+        public BuyerWithAddressModel Buyer { get; set; }
       
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)
         {
                var b = await _buyerQueries.BuyerAsync(BuyerId, cancellationToken);
                if (b == null) return Content(Utils.ModalUtils.GenerateContent("Buyer Details", "<div class='alert alert-danger'>Buyer does not exist any longer.</div>", "").ToString());
 
-            Buyer = new BuyerViewModel()
+            Buyer = new BuyerWithAddressModel()
             {
                 OwnerName = b.OwnerName,
                 OwnerMobileNo = b.OwnerMobileNo,

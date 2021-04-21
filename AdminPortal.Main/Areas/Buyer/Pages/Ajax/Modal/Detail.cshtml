@@ -29,11 +29,11 @@
             </tr>
             <tr>
                 <td class="fw-bold ">Status</td>
-                <td class="text-end  @(Model.Buyer.IsActive ? "text-success": "text-danger")"> @(Model.Buyer.IsActive ? "Active" : "InActive") </td>
+                @(Model.Buyer.IsActive ? Html.Raw("<td class='text-end text-success'>Active</td>") : Html.Raw("<td class='text-end text-danger'>Inactive</td>"))
             </tr>
             <tr>
                 <td class="fw-bold">Address</td>
-                <td class="text-end">@Model.Buyer.AddressLine @Model.Buyer.LocalityName</td>
+                <td class="text-end"><address class="mb-0" addressline="@Model.Buyer.AddressLine" locality="@Model.Buyer.LocalityName"></address></td>
             </tr>
         </tbody>
     </table>

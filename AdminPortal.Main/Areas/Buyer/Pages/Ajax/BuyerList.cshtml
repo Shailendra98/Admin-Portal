@@ -1,7 +1,7 @@
 ﻿@page
 @model TKW.AdminPortal.Areas.Buyer.Pages.Ajax.BuyerListModel
 <div class="panel-body">
-    @if (Model.BuyersWithAddress == null || Model.BuyersWithAddress.Count() == 0)
+    @if (Model.Buyers == null || Model.Buyers.Count() == 0)
     {
         <div class="text-center">
             <h4>No Buyer !</h4>
@@ -12,7 +12,7 @@
     {
 <div class="row">
     @{var j = 0;}
-    @foreach (var t in Model.BuyersWithAddress.OrderByDescending(m => m.IsActive))
+    @foreach (var t in Model.Buyers.OrderByDescending(m => m.IsActive))
     {
         @(j > 0 && j % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
         <div class="col-md-4">
