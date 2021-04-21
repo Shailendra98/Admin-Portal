@@ -27,22 +27,10 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal
       
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)
         {
-               var b = await _buyerQueries.BuyerAsync(BuyerId, cancellationToken);
-               if (b == null) return Content(Utils.ModalUtils.GenerateContent("Buyer Details", "<div class='alert alert-danger'>Buyer does not exist any longer.</div>", "").ToString());
+               Buyer = await _buyerQueries.BuyerAsync(BuyerId, cancellationToken);
+               if (Buyer == null) return Content(Utils.ModalUtils.GenerateContent("Buyer Details", "<div class='alert alert-danger'>Buyer does not exist any longer.</div>", "").ToString());
 
-            Buyer = new BuyerWithAddressModel()
-            {
-                OwnerName = b.OwnerName,
-                OwnerMobileNo = b.OwnerMobileNo,
-                FirmName=b.FirmName,
-                GSTIN=b.GSTIN,
-                IsActive=b.IsActive,
-                AddressLine=b.AddressLine,
-                Pincode=b.Pincode,
-                LocalityName=b.LocalityName,
-            };
-            return Page();
-
+                return Page();
         }
     }
 }
