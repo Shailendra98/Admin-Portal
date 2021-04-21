@@ -42,6 +42,9 @@
         <li class="@Html.IsSelected(area:"Material")">
             <a href="@Url.Page("/Index", new { area = "Material" })" class="text-decoration-none d-block"><span class="nav-label">Materials</span></a>
         </li>
+        <li class="@Html.IsSelected(area:"Incentive")">
+            <a href="@Url.Page("/Index", new { area = "Incentive" })" class="text-decoration-none d-block"><span class="nav-label">Incentive</span></a>
+        </li>
         @*
         <li class="@Html.IsSelected(area: "Employee")">
             <a href="@Url.Page("/Index", new { area = "Employee" })"><span class="nav-label">Employees</span></a>

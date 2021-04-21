@@ -30,6 +30,7 @@ using TKW.ApplicationCore.Contexts.ExpenseContext.Services;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using TKW.ApplicationCore.Contexts.IncentiveContext.Services;
 
 namespace AdminPortal
 {
@@ -82,6 +83,7 @@ namespace AdminPortal
             services.AddTransient<ISellService, SellService>();
             services.AddTransient<IExpenseService, ExpenseService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IIncentiveService, IncentiveService>();
             
             TypeDescriptor.AddAttributes(typeof(DateTime), new TypeConverterAttribute(typeof(TKW.AdminPortal.TypeConverters.DateTimeConverter)));
             TypeDescriptor.AddAttributes(typeof(DateTime?), new TypeConverterAttribute(typeof(TKW.AdminPortal.TypeConverters.DateTimeConverter)));

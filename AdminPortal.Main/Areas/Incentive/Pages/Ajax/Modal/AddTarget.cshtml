@@ -1,0 +1,108 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modals.AddTargetModel
+
+<modal-header title="Add Target" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Incentive Target has been added.</div>
+        </div>
+    </modal-body>
+    <script>
+        $(function () {
+            $("#ActionModalContent").trigger(
+                {
+                    type: "action.done",
+                });
+        });
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(Model.Errormessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.Errormessage
+        </div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("AddTarget")"
+          data-ajax-begin="$('#addTargetForIncentive').attr('disabled','');"
+          data-ajax-complete="$('#addTargetForIncentive').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+         <fieldset id="addTargetForIncentive">
+            <modal-body>
+                <div class="fs-5 py-2 text-center"><span class="fw-bold px-1"> @Model.IncentiveTypeName</span></div>
+                <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="TargetValue" class="col-form-label fw-bold"></label>
+                            <input asp-for="TargetValue" class="form-control" placeholder="Enter Target"/>
+                            <span asp-validation-for="TargetValue" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DefaultReward" class="col-form-label fw-bold"></label>
+                            <input asp-for="DefaultReward" class="form-control" placeholder="Enter Reward"/>
+                            <span asp-validation-for="DefaultReward" class="text-danger small"></span>
+                        </div>
+                 </div>
+                 <div class="row">
+                       <div class="col-md-6" id="radio_box_2">
+                            <div class="col-form-label fw-bold">Global</div>
+                            <div class="form-check d-inline-block pe-2">
+                                <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.IsGlobal)" id="radio1" value="true">
+                                <label class="form-check-label" for="radio1">
+                                    True
+                                </label>
+                            </div>
+                            <div class="form-check d-inline-block">
+                                <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.IsGlobal)" id="radio2" value="false" checked>
+                                <label class="form-check-label" for="radio2">
+                                    False
+                                </label>
+                            </div>
+                       </div>
+                      <div class="col-md-6" id="franchisedropdown">
+                          <label asp-for="SelectedFranchiseIds" class="col-form-label fw-bold">Franchises</label>
+                        <select class="form-control" asp-for="SelectedFranchiseIds" asp-items="Model.FranchiseList" multiple>
+                            <option></option>
+                        </select>
+                        <span asp-validation-for="SelectedFranchiseIds" class="text-danger small"></span>
+                      </div>
+                 </div>
+                <input  asp-for="IncentiveTypeId" hidden/>
+                <input asp-for="IncentiveTypeName" hidden/>
+            </modal-body>
+            <modal-footer>
+              <button class="btn btn-success" type="submit">Add</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}
+
+<script>
+    $(function () {
+
+        $("#@Html.IdFor(m=>m.SelectedFranchiseIds)").select2AutoParent({ placeholder: "Select Franchises" });
+
+        $("#radio_box_2").change(function () {
+            $('#franchisedropdown').toggleClass('d-none');
+        });
+
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

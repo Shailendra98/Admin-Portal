@@ -1,0 +1,146 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal.AddRewardModel
+@{
+
+}
+<modal-header title="Add Reward" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Reward has been added.</div>
+        </div>
+    </modal-body>
+    <script>
+        $(function () {
+            $("#ActionModalContent").trigger(
+                {
+                    type: "action.done",
+                });
+        });
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(Model.Errormessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.Errormessage
+        </div>
+    }
+    <form method="Post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("AddReward")"
+          data-ajax-begin="$('#addRewardForTarget').attr('disabled','');"
+          data-ajax-complete="$('#addRewardForTarget').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="addRewardForTarget">
+            <modal-body>
+                <div class="fs-6 py-2 fw-bold text-center"><span>@Model.IncentiveTypeName</span></div>
+                <div class="fs-6 text-center pb-2">For Target : <span class="fw-bold px-1">@Model.Target</span></div>
+                <div class="row mb-3">
+                    <div class="col-md-5">
+                        <label asp-for="RewardModel.Reward" class="col-form-label fw-bold"></label>
+                        <input asp-for="RewardModel.Reward" class="form-control" placeholder="Enter Reward" autofocus />
+                        <span asp-validation-for="RewardModel.Reward" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <label class="fw-bold col-form-label">
+                                Date
+                            </label>
+                            <div class="mb-2">
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="RewardModel.StartDateTime" class="form-control" value="@(String.Format("{0:dd/MM/yyyy}", Model?.RewardModel?.StartDateTime))" placeholder="Start date" data-dtpicker="true">
+                                </div>
+                                <div class="text-center text-muted" style="display:inline-block;width:5%;">
+                                    <span class="bi-dash"></span>
+                                </div>
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="RewardModel.EndDateTime" class="form-control" value="@(String.Format("{0:dd/MM/yyyy}", Model?.RewardModel?.EndDateTime))" placeholder="End date" data-dtpicker="true">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="RewardModel.StartDateTime" class="col-form-label fw-bold"></label>
+                        <input asp-for="RewardModel.StartDateTime" class="form-control" />
+                        <span asp-validation-for="RewardModel.StartDateTime" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="RewardModel.EndDateTime" class="col-form-label fw-bold"></label>
+                        <input asp-for="RewardModel.EndDateTime" class="form-control" />
+                        <span asp-validation-for="RewardModel.EndDateTime" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>*@
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-5" id="radio_box">
+                        <div class="col-form-label fw-bold">Global</div>
+                        <div class="form-check d-inline-block pe-2">
+                            <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.RewardModel.IsGlobal)" id="radio1" value="true">
+                            <label class="form-check-label" for="radio1">
+                                True
+                            </label>
+                        </div>
+                        <div class="form-check d-inline-block">
+                            <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.RewardModel.IsGlobal)" id="radio2" value="false" checked>
+                            <label class="form-check-label" for="radio2">
+                                False
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-7" id="FranchiseListSelect">
+                        <label asp-for="RewardModel.FranchiseIds" class="col-form-label fw-bold">Franchises</label>
+                        <select class="form-control" asp-for="RewardModel.FranchiseIds" asp-items="Model?.FranchiseList" multiple>
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <input asp-for="Target" hidden />
+                <input asp-for="IncentiveTypeName" hidden />
+            </modal-body>
+            <modal-footer>
+             <button class="btn btn-success" type="submit">Add</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+    <script>
+        $(function () {
+
+            $("#@Html.IdFor(m => m.RewardModel.FranchiseIds)").select2AutoParent({ placeholder: "Select Franchises" });
+
+        
+            $("#radio_box").change(function () {
+                $('#FranchiseListSelect').toggleClass('d-none');
+            });
+
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            }
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+
+            var startDate = $("[id='@Html.IdFor(m=>m.RewardModel.StartDateTime)']");
+            var endDate = $("[id='@Html.IdFor(m=>m.RewardModel.EndDateTime)']");
+
+            startDate.on("dp.change", function (e) {
+                endDate.data("DateTimePicker").minDate(e.date);
+            });
+            endDate.on("dp.change", function (e) {
+                startDate.data("DateTimePicker").maxDate(e.date);
+            });
+
+        });    
+    </script>
+}

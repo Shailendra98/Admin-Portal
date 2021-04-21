@@ -1,0 +1,126 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Incentive.Pages.Ajax.IncentiveListModel
+@{
+
+}
+<div class="row">
+    @{
+        var i = 0;
+        var count = 0;
+    }
+    @foreach (var Incentive in Model.Incentives)
+    {
+        @(i > 0 && i % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+        <div class="col-md-4 @(i > 0 && i % 3 != 0 ? "ps-1" : "")">
+            <div class="hpanel">
+                <div class="panel-body p-3">
+                    <a class="float-end pb-1 btn btn-circle in btn-default" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Modal/AddTarget",new {  IncentiveTypeId = Incentive.IncentiveTypeId , IncentiveTypeName = Incentive.IncentiveTypeName } )"><i class="fa fa-plus"></i></a>
+                    <h5 class="pb-3">@Incentive.IncentiveTypeName</h5>
+                    @foreach (var items in Incentive.Targets)
+                    {
+                        var CurrentReward = items.DefaultReward;
+                        DateTime CurrentDate = DateTime.Now;
+                        @foreach (var k in items.CurrentAndUpcomingRewards)
+                        {
+                            if (CurrentDate >= k.StartDate && CurrentDate <= k.EndDate)
+                            {
+                                CurrentReward = k.Reward;
+                            }
+                        }
+                        <div class="card card-body mb-2 p-2">
+                            <div id="target@(count)" class="target-row" data-count="@count">
+                                <div class="row">
+                                    <div class="col-md-3 text-center px-1">
+                                        <div class="font-bold text-nowrap fs-6">@items.Target</div>
+                                        <div class="font-trans"><small>TARGET</small></div>
+                                    </div>
+                                    <div class="col-md-3 text-center px-1">
+                                        <div class="font-bold text-nowrap fs-6">₹ @CurrentReward</div>
+                                        <div class="font-trans"><small>REWARD</small></div>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center justify-content-center">
+                                        <a data-bs-target="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/ActiveInactive",new { Id = items.Id , Target= items.Target , IncentiveTypeName = Incentive.IncentiveTypeName , Status = items.IsActive})" class="badge rounded-1 ActiveInActiveButton text-decoration-none text-white  @(items.IsActive == true ? "h-bg-green" : "bg-danger") "><span class="@(items.IsActive == true ? "d-inline-block" : "d-none")">Active</span><span class="@(items.IsActive == true ? "d-none" : "d-inline-block")">InActive</span></a>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center justify-content-center">
+                                        <a class="collapse-button"><i class="fa fa-chevron-down"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapse@(count)" data-count="@count" class="reward-row collapse mt-2 border-top pt-2">
+                                <div class="small fw-bold text-success ms-2">
+                                    Rewards
+                                </div>
+                                <div class="row my-2 fw-bold ms-2">
+                                    <div class="col-md-5 fw-bold small text-start ps-0">Default</div>
+                                    <div class="col-md-4 text-center text-success">₹ @items.DefaultReward</div>
+                                    <div class="col-md-3 text-center"><a data-bs-target="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/EditDefaultReward",new { Id = items.Id , DefaultReward = items.DefaultReward ,Target = items.Target , IncentiveTypeName = Incentive.IncentiveTypeName })"><i class="fa fa-pencil fw-bold"></i></a></div>
+                                </div>
+                                <div class="card">
+                                    <div class="d-inline-flex card-header">
+                                        <div class="flex-grow-1 justify-content-start ms-1 fw-bold small">Upcoming</div>
+                                        <div class="justify-content-end ps-2 fw-bold">
+                                            <a class="pe-1" data-bs-target="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/AddReward",new { Id=items.Id , Target = items.Target , IncentiveTypeName = Incentive.IncentiveTypeName })"><i class="fa fa-plus"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        @if (items.CurrentAndUpcomingRewards == null || items.CurrentAndUpcomingRewards.Count() == 0)
+                                        {
+                                            <div class="d-inline-flex list-group-item justify-content-center">
+                                                <i>No Upcomming Rewards</i>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            
+                                            @foreach (var items2 in items.CurrentAndUpcomingRewards)
+                                            {
+                                                <div class="d-inline-flex list-group-item">
+                                                    <div class="flex-grow-1 justify-content-start ms-1 small">
+                                                        <span class="fw-bold text-success pe-1">₹</span><span class="fw-bold">@items2.Reward</span> <span class="font-trans text-nowrap mx-2">( @items2.StartDate.ToShortDateString() - @items2.EndDate.ToShortDateString() )</span>
+                                                    </div>
+                                                    <div class="justify-content-end ms-1 ">
+                                                        <small><a data-bs-target="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/RemoveReward", new { TargetId = items.Id , RewardId = items2.Id , IncentiveTypeName = Incentive.IncentiveTypeName })"><i class="fa fa-trash fw-bold"></i></a></small>
+                                                        <a data-bs-target="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/EditReward", new { TargetId = items.Id , RewardId = items2.Id , IncentiveTypeName = Incentive.IncentiveTypeName })"><i class="small fa fa-pencil fw-bold ms-3"></i></a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        count++;
+                    }
+                </div>
+            </div>
+        </div>
+        i++;
+    }
+</div>
+<script>
+    $(function () {
+
+            $("div.target-row").click(function (e) {
+                if ($(e.target).is('a.ActiveInActiveButton') || $(e.target).is('span')) return true;
+                $(this).next().collapse('toggle');
+            });
+
+            $('div.reward-row').on("show.bs.collapse", function () {
+                var rowId = "#target" + $(this).attr('data-count');
+                $(rowId).find('.collapse-button i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            });
+
+            $('div.reward-row').on("hide.bs.collapse", function () {
+                var rowId = "#target" + $(this).attr('data-count');
+                $(rowId).find('.collapse-button i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            });
+
+            $(".ActiveInActiveButton").hover(function () {
+                $(this).find('span').toggleClass('d-inline-block d-none');
+                $(this).toggleClass('h-bg-green bg-danger');
+            }, function () {
+                $(this).find('span').toggleClass('d-inline-block d-none');
+                $(this).toggleClass('h-bg-green bg-danger');
+            });
+        });
+</script>
