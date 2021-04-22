@@ -14,7 +14,7 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
     public class ActiveInactiveModel : PageModel
     {
         public readonly IIncentiveService _incentiveService;
-        public readonly IIncentiveQueries _incentiveQueries;
+
 
         public ActiveInactiveModel(IIncentiveService incentiveService)
         {
@@ -26,14 +26,16 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
         
         [BindProperty(SupportsGet = true)]
         public bool Status { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int Target { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string IncentiveTypeName { get; set; }
+
         public bool IsDone { get; set; }
         public string Errormessage { get; set; }
 
-        [BindProperty(SupportsGet =true)]
-        public int Target { get; set; }
-
-        [BindProperty(SupportsGet =true)]
-        public string IncentiveTypeName { get; set; }
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {

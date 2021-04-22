@@ -2,18 +2,6 @@
 @model TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal.EditRewardModel
 @{
 
-    DateTime? defaultStartDate = Model?.RewardModel.StartDateTime;
-    DateTime? defaultEndDate = Model?.RewardModel.EndDateTime;
-    if (defaultStartDate == null || defaultStartDate == DateTime.MinValue)
-    {
-        defaultStartDate = Dt.Now;
-    }
-
-    if (defaultEndDate == null || defaultEndDate == DateTime.MinValue)
-    {
-        defaultEndDate = Dt.Now;
-    }
-
 }
 <modal-header title="Edit Reward" close-button="true"></modal-header>
 @if (Model.IsDone)
@@ -44,57 +32,60 @@ else
     <form method="post"
           data-ajax="true"
           data-ajax-url="@Url.Page("EditReward")"
-          data-ajax-begin="$('#EditRewardForTarget').attr('disabled','');"
-          data-ajax-complete="$('#EditRewardForTarget').removeAttr('disabled');"
+          data-ajax-begin="$('#editrewardfieldset').attr('disabled','');"
+          data-ajax-complete="$('#editrewardfieldset').removeAttr('disabled');"
           data-ajax-method="post"
           data-ajax-update="#ActionModalContent">
-        <fieldset id="EditRewardForTarget">
+        <fieldset id="editrewardfieldset">
             <modal-body>
-                <div class="fs-6 py-2 fw-bold text-center"><span>@Model.IncentiveTypeName</span></div>
-                <div class="fs-6 text-center pb-2">From Target : <span class="fw-bold px-1">@Model.TargetValue</span></div>
-                <div class="row mb-3">
-                    <div class="col-md-5">
+                <div class="mb-2 row">
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Incentive Type</label>
+                        <input type="text" readonly class="form-control" asp-for="IncentiveTypeName">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Target</label>
+                        <input type="text" readonly class="form-control" asp-for="TargetValue">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6">
                         <label asp-for="RewardModel.Reward" class="col-form-label fw-bold"></label>
                         <input asp-for="RewardModel.Reward" class="form-control" placeholder="Enter Reward" autofocus />
                         <span asp-validation-for="RewardModel.Reward" class="text-danger small"></span>
                     </div>
-                    <div class="col-md-7">
-                        <div class="row">
-                            <label class="fw-bold col-form-label">
-                                Date
-                            </label>
-                            <div class="mb-2">
-                                <div class="d-inline-block" style="width:45%;">
-                                    <input type="text" asp-for="RewardModel.StartDateTime" class="form-control" placeholder="Start date">
-                                </div>
-                                <div class="text-center text-muted" style="display:inline-block;width:5%;">
-                                    <span class="bi-dash"></span>
-                                </div>
-                                <div class="d-inline-block" style="width:45%;">
-                                    <input type="text" asp-for="RewardModel.EndDateTime" class="form-control" placeholder="End date">
-                                </div>
-                            </div>
-                            <lib name="DatetimePicker" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-md-5" id="radio_box_3">
-                        <div class="col-form-label fw-bold">Global</div>
+                    <div class="col-md-6" id="radio_box_3">
+                        <div class="col-form-label fw-bold mb-2">Global</div>
                         <div class="form-check d-inline-block pe-2">
                             <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.RewardModel.IsGlobal)" id="radio1" value="true" @(Model?.RewardModel?.IsGlobal == true ? "checked" : "")>
                             <label class="form-check-label" for="radio1">
                                 True
                             </label>
                         </div>
-                        <div class="form-check d-inline-block">
+                        <div class="form-check d-inline-block ms-1">
                             <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.RewardModel.IsGlobal)" id="radio2" value="false" @(Model?.RewardModel?.IsGlobal == false ? "checked" : "")>
                             <label class="form-check-label" for="radio2">
                                 False
                             </label>
                         </div>
                     </div>
-                    <div class="col-md-7 @(Model?.RewardModel?.IsGlobal == true ? "d-none" : "")" id="FranchiseListEditDropDown">
+                </div>
+                <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label class="fw-bold col-form-label">
+                                Start Date Time
+                            </label>
+                            <input type="text" asp-for="RewardModel.StartDateTime" class="form-control" value="@Model.RewardModel.StartDateTime.ToString("dd-MM-yyyy hh:mm tt")" placeholder="Start date time" data-dtpicker="true">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-bold col-form-label">
+                                End Date Time
+                            </label>
+                            <input type="text" asp-for="RewardModel.EndDateTime" class="form-control" value="@Model.RewardModel.EndDateTime.ToString("dd-MM-yyyy hh:mm tt")" placeholder="End date time" data-dtpicker="true">
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 @(Model?.RewardModel?.IsGlobal == true ? "d-none" : "")" id="FranchiseListEditDropDown">
                         <label asp-for="RewardModel.FranchiseIds" class="col-form-label fw-bold">Franchises</label>
                         <select class="form-control" asp-for="RewardModel.FranchiseIds" asp-items="Model?.FranchiseList" multiple>
                             <option></option>
@@ -103,10 +94,9 @@ else
                 </div>
                 <input asp-for="TargetId" hidden />
                 <input asp-for="RewardId" hidden />
-                <input asp-for="IncentiveTypeName" hidden />
             </modal-body>
             <modal-footer>
-                <button class="btn btn-success" type="submit">Update</button>
+                <button class="btn btn-success" type="submit">Update Reward</button>
             </modal-footer>
         </fieldset>
     </form>
@@ -119,31 +109,21 @@ else
                       $('#FranchiseListEditDropDown').toggleClass('d-none');
                   });
 
-
-            $("[id='@Html.IdFor(m=>m.RewardModel.StartDateTime)']").datetimepicker({
-            useStrict: true,
-            ignoreReadonly: true,
-            format: "DD-MM-YYYY hh:mm A",
-            sideBySide: true,
-            @if (defaultStartDate != null) {
-                    @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultStartDate)",
-             }
-            });
-
-            $("[id='@Html.IdFor(m=>m.RewardModel.EndDateTime)']").datetimepicker({
-            useStrict: true,
-            ignoreReadonly: true,
-            format: "DD-MM-YYYY hh:mm A",
-            sideBySide: true,
-            @if (defaultEndDate != null) {
-                    @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultEndDate)",
-                }
-            });                    
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY hh:mm A",
+                sideBySide: true,
+            }
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
 
             var startDate = $("[id='@Html.IdFor(m=>m.RewardModel.StartDateTime)']");
             var endDate = $("[id='@Html.IdFor(m=>m.RewardModel.EndDateTime)']");
 
-            startDate.on("dp.change", function (e) {
+             startDate.on("dp.change", function (e) {
                 endDate.data("DateTimePicker").minDate(e.date);
             });
             endDate.on("dp.change", function (e) {

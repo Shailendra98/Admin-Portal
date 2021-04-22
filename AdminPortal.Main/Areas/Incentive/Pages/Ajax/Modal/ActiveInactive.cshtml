@@ -35,12 +35,18 @@ else
           data-ajax-update="#ActionModalContent">
         <fieldset id="changestatus">
             <modal-body>
-                <div class="fs-6">Incentive Type :<span class="fw-bold px-1"> @Model.IncentiveTypeName</span></div>
-                <div class="fs-6 py-1">Target :<span class="fw-bold px-1"> @Model.Target</span></div>
-                <div class="fs-6">Are you sure you want to @(Model.Status ? "inactivate" : "activate") this Target ?</div>
-                <input asp-for="Target" hidden/>
-                <input asp-for="IncentiveTypeName" hidden/>
-                <input asp-for="Status" hidden/>
+                <div class="mb-2 row">
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Incentive Type</label>
+                        <input type="text" readonly class="form-control" asp-for="IncentiveTypeName">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Target</label>
+                        <input type="text" readonly class="form-control" asp-for="Target">
+                    </div>
+                </div>
+                <div class="fs-6 pt-2">Are you sure you want to @(Model.Status ? "inactivate" : "activate") this target ?</div>
+                <input asp-for="Status" hidden />
             </modal-body>
             <modal-footer>
                 <button type="button" class="btn btn-default px-4" data-bs-dismiss="modal" aria-label="close">No</button>

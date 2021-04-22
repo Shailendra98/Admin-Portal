@@ -32,19 +32,30 @@ else
     <form method="post"
           data-ajax="true"
           data-ajax-url="@Url.Page("EditDefaultReward")"
-          data-ajax-begin="$('#changeDefaultReward').attr('disabled','');"
-          data-ajax-complete="$('#changeDefaultReward').removeAttr('disabled');"
+          data-ajax-begin="$('#defaultrewardfieldset').attr('disabled','');"
+          data-ajax-complete="$('#defaultrewardfieldset').removeAttr('disabled');"
           data-ajax-method="post"
           data-ajax-update="#ActionModalContent">
-        <fieldset id="changeDefaultReward">
+        <fieldset id="defaultrewardfieldset">
             <modal-body>
                 <div>
-                    <div class="fs-6">Incentive Type :<span class="fw-bold px-1"> @Model.IncentiveTypeName</span></div>
-                    <div class="fs-6 py-2">Target :<span class="fw-bold px-1"> @Model.Target</span></div>
-                    <div class="fs-6">Default Reward :<span class="fw-bold px-1 d-inline-block"><input class="form-control form-control-sm" asp-for="DefaultReward" placeholder="Enter Default Reward" /> </span></div>
+                    <div class="mb-2 row">
+                        <div class="col-md-6">
+                            <label class="col-form-label fw-bold">Incentive Type</label>
+                            <input type="text" readonly class="form-control" asp-for="IncentiveTypeName">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-form-label fw-bold">Target</label>
+                            <input type="text" readonly class="form-control" asp-for="Target">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-form-label fw-bold" asp-for="DefaultReward">Default Reward</label>
+                            <input class="form-control" asp-for="DefaultReward" placeholder="Enter Default Reward" />
+                        </div>
+                    </div>
                 </div>
-                <input asp-for="Target" hidden/>
-                <input asp-for="IncentiveTypeName" hidden/>
             </modal-body>
             <modal-footer>
                 <button class="btn btn-success px-3" type="submit">Update</button>

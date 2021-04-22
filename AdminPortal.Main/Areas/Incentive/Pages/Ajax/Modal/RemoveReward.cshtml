@@ -15,7 +15,7 @@
         $(function () {
             $("#ActionModalContent").trigger(
                 {
-                   type: "action.done",
+                    type: "action.done",
                 });
         });
     </script>
@@ -37,14 +37,39 @@ else
           data-ajax-update="#ActionModalContent">
         <fieldset id="RemoveRewardFieldSet">
             <modal-body>
-                <div class="fs-6">Incentive Type <span class="fw-bold px-1">@Model.IncentiveTypeName</span></div>
-                <div class="fs-6 py-2">Target <span class="fw-bold px-1">@Model.TargetValue</span></div>
-                <div class="fs-6">Reward <span class="fw-bold px-1">₹ @Model.RewardData.Reward</span></div>
-                <div class="fs-6 py-2">From <span class="fw-bold px-1">@Model.RewardData.StartDate.ToShortDateString()</span> To <span class="fw-bold px-1">@Model.RewardData.EndDate.ToShortDateString()</span></div>
-                <div class="fs-6">Are you sure you want to remove this reward ?</div>
+                <div class="mb-2 row">
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Incentive Type</label>
+                        <input type="text" readonly class="form-control" asp-for="IncentiveTypeName">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Target</label>
+                        <input type="text" readonly class="form-control" asp-for="TargetValue">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-md-6">
+                        <label class="fw-bold col-form-label">
+                            Start Date Time
+                        </label>
+                        <input type="text" asp-for="RewardData.StartDate" class="form-control" placeholder="Start date time" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold col-form-label">
+                            End Date Time
+                        </label>
+                        <input type="text" asp-for="RewardData.EndDate" class="form-control" placeholder="Start date time" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Reward</label>
+                        <input type="text" readonly class="form-control" asp-for="RewardData.Reward">
+                    </div>
+                </div>
+                <div class="fs-6 pt-1">Are you sure you want to remove this reward ?</div>
                 <input asp-for="TargetId" hidden />
                 <input asp-for="RewardId" hidden />
-                <input asp-for="IncentiveTypeName" hidden />
             </modal-body>
             <modal-footer>
                 <button type="button" class="btn btn-default px-4" data-bs-dismiss="modal" aria-label="close">No</button>

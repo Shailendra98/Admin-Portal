@@ -74,14 +74,13 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
                 if (result.IsSuccess)
                 {
                     IsDone = true;
+                    return Page();
                 }
                 else
                 {
                     Errormessage = result.Error.Message;
                 }
             }
-             var r =await _incentiveQueries.GetIncentiveRewardAsync(RewardId, cancellationToken);
-            if(r != null) TargetValue = r.Target.Target;
             FranchiseList = new MultiSelectList(await _franchiseQueries.AllFranchisesAsync(cancellationToken), "Id", "Name", RewardModel.FranchiseIds);
             return Page();
         }

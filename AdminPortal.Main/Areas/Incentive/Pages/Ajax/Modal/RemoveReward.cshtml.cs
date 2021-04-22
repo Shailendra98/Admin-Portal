@@ -65,15 +65,6 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
                     Errormessage = result.Error.Message;
                 }
             }
-            var e = await _incentiveQueries.GetIncentiveRewardAsync(RewardId, cancellationToken);
-            if(e != null)
-            {
-                RewardData.Reward = e.Reward;
-                RewardData.StartDate = e.StartDate;
-                RewardData.EndDate = e.EndDate;
-                RewardData.Target = e.Target;
-                TargetValue = RewardData.Target.Target;
-            }
             return Page();
         }
     }

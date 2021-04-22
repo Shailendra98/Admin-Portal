@@ -16,6 +16,7 @@ using TKW.ApplicationCore.Contexts.IncentiveContext.Queries;
 using TKW.ApplicationCore.Contexts.IncentiveContext.Aggregates;
 using TKW.ApplicationCore.Contexts.IncentiveContext.DTOs;
 using System.ComponentModel.DataAnnotations;
+using TKW.ApplicationCore.SeedWorks;
 
 namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modals
 {
@@ -43,14 +44,14 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modals
         public string IncentiveTypeName { get; set; }
 
         [BindProperty]
-        [Display(Name ="Target Value")]
+        [Display(Name ="Target")]
         [Required(ErrorMessage = "Target is Required")]
-        public int TargetValue { get; set; }
+        public int? TargetValue { get; set; }
 
         [BindProperty]
         [Display(Name ="Default Reward")]
         [Required(ErrorMessage = "Default Reward is Required")]
-        public int DefaultReward { get; set; }
+        public int? DefaultReward { get; set; }
 
         [BindProperty]
         public bool IsGlobal { get; set; }
@@ -66,11 +67,11 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modals
         {
             if (ModelState.IsValid)
             {
-                var type = IncentiveType.FromValue<IncentiveType>(IncentiveTypeId);
-                var result =await _incentiveService.AddIncentiveTargetAsync(type,TargetValue,DefaultReward,IsGlobal,SelectedFranchiseIds,cancellationToken);
+                var result =await _incentiveService.AddIncentiveTargetAsync(Enumeration.FromValue<IncentiveType>(IncentiveTypeId),(int)TargetValue,(int)DefaultReward,IsGlobal,SelectedFranchiseIds,cancellationToken);
                 if (result.IsSuccess)
                 {
                     IsDone = true;
+                    return Page();
                 }
                 else
                 {
