@@ -18,7 +18,7 @@
                 <div class="panel-body p-3">
                     <a class="float-end pb-1 btn btn-circle in btn-default" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Modal/AddTarget",new {  IncentiveTypeId = incentive.IncentiveTypeId , IncentiveTypeName = incentive.IncentiveTypeName } )"><i class="fa fa-plus"></i></a>
                     <h5 class="pb-3">@incentive.IncentiveTypeName</h5>
-                    @foreach (var target in incentive.Targets)
+                    @foreach (var target in incentive.Targets.OrderBy(m => m.Target))
                     {
                         var CurrentReward = target.DefaultReward;
                         DateTime CurrentDate = DateTime.Now;
