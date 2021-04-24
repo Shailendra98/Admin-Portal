@@ -37,7 +37,6 @@ namespace TKW.AdminPortal.ViewModels
         [RegularExpression(@"(\d{10})")]
         public string? MobileNo { get; set; }
 
-        [Required]
         public int? AddressTypeId { get; set; }
 
         /// <summary>
@@ -49,11 +48,13 @@ namespace TKW.AdminPortal.ViewModels
 
         public bool OnlyLocalities { get; set; }
 
+        public bool IncludeAddressType { get; set; }
+
         
         public AddressModel()
         {
 
-           
+            IncludeAddressType = true;
             IncludeNameMobileNo = !string.IsNullOrWhiteSpace(Name) || !string.IsNullOrWhiteSpace(MobileNo);
             AddressTypes = Enumeration.GetAll<AddressType>().ToList();
           

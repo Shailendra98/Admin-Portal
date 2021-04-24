@@ -1,4 +1,4 @@
-﻿@inject TKW.AdminPortal.Utils.SessionData SessionData
+@inject TKW.AdminPortal.Utils.SessionData SessionData
 @inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
 @using TKW.AdminPortal.Extensions
 @{
@@ -46,7 +46,7 @@
             <a href="@Url.Page("/Index", new { area = "Expense" })" class="text-decoration-none d-block"><span class="nav-label">Expenses</span></a>
         </li>
 
-        <li class="@Html.IsSelected(area: "Employee") ">
+        <li class="@Html.IsSelected(area: "Employee")">
             <a href="@Url.Page("/Index", new { area = "Employee" })" class="text-decoration-none d-block"><span class="nav-label">Employees</span></a>
         </li>
 
@@ -56,8 +56,12 @@
         <li class="@Html.IsSelected(area: "Area")">
             <a href="@Url.Page("/Index", new { area = "Area" })" class="text-decoration-none d-block"><span class="nav-label">Area</span></a>
         </li>
-        <li class="@Html.IsSelected(area: "Incentive")">
-            <a href="@Url.Page("/Index", new { area = "Incentive" })" class="text-decoration-none d-block"><span class="nav-label">Incentives</span></a>
+      
+        <li class="@Html.IsSelected(area:"Buyer")">
+            <a href="@Url.Page("/Index",new { area="Buyer" })" class="text-decoration-none d-block"><span class="nav-label">Buyers</span></a>
         </li>
+      <li class="@Html.IsSelected(area: "Incentive")">
+            <a href="@Url.Page("/Index", new { area = "Incentive" })" class="text-decoration-none d-block"><span class="nav-label">Incentives</span></a>
+      </li>
     </ul>
 </div>

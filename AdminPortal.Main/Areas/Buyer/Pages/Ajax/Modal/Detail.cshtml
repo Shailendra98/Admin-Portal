@@ -1,0 +1,43 @@
+﻿@page "{BuyerId:int}"
+@model TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.DetailModel
+@{ 
+   
+}
+<modal-header title="Buyer Details" close-button="true"></modal-header>
+<modal-body>
+    <table class="table mb-0">
+        <tbody>
+            <tr>
+                <td class="fw-bold">Name</td>
+                <td class="text-end">@Model.Buyer.OwnerName</td>
+            </tr>
+            <tr>
+                <td class="fw-bold">ID</td>
+                <td class="text-end">@Model.BuyerId</td>
+            </tr>
+            <tr>
+                <td class="fw-bold">Firm Name</td>
+                <td class="text-end"> @Model.Buyer.FirmName</td>
+            </tr>
+            <tr>
+                <td class="fw-bold">Contact Number</td>
+                <td class="text-end">@Model.Buyer.OwnerMobileNo</td>
+            </tr>
+            <tr>
+                <td class="fw-bold">GSTIN</td>
+                <td class="text-end">@(Model.Buyer.GSTIN !=null ? Model.Buyer.GSTIN + "" : "Not available")</td>
+            </tr>
+            <tr>
+                <td class="fw-bold ">Status</td>
+                @(Model.Buyer.IsActive ? Html.Raw("<td class='text-end text-success'>Active</td>") : Html.Raw("<td class='text-end text-danger'>Inactive</td>"))
+            </tr>
+            <tr>
+                <td class="fw-bold">Address</td>
+                <td class="text-end"><address class="mb-0" addressline="@Model.Buyer.AddressLine" locality="@Model.Buyer.LocalityName"></address></td>
+            </tr>
+        </tbody>
+    </table>
+</modal-body>
+<modal-footer>
+    <button class="btn btn-default" data-modal-href="@Url.Page("Edit",new { BuyerId = Model.BuyerId })" type="button">Edit Details</button>
+</modal-footer>

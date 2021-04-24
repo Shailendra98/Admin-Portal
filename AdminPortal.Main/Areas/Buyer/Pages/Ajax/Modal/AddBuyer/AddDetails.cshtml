@@ -1,0 +1,85 @@
+﻿@page 
+@model TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer.AddDetailsModel
+@{
+
+}
+<modal-header title="Add Buyer" close-button="true"></modal-header>
+
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Buyer has been added.</div>
+        </div>
+    </modal-body>
+    <script>
+        $("#ActionModalContent").trigger(
+            {
+                type: "action.done",
+            });
+    </script>
+}
+else
+{
+
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }      
+
+<form method="post"
+      data-ajax="true"
+      data-ajax-method="post"
+      data-ajax-url="@Url.Page("AddDetails")"
+      data-ajax-begin="$('#addFieldSet2').attr('disabled','');"
+      data-ajax-complete="$('#addFieldSet2').removeAttr('disabled');"
+      data-ajax-update="#ActionModalContent">
+    <fieldset id="addFieldSet2">
+        <modal-body>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-2">
+                        <label class="col-form-label fw-bold" asp-for="BuyerInputModel.OwnerName"> Owner Name</label>
+                        <input asp-for="BuyerInputModel.OwnerName" class="form-control" placeholder="Enter Owner Name" autofocus/>
+                        <span asp-validation-for="BuyerInputModel.OwnerName" class="small text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-2">
+                        <label class="col-form-label fw-bold">Owner Phone Number</label>
+                        <input asp-for="BuyerInputModel.OwnerMobileNo" class="form-control" readonly />
+                        <span asp-validation-for="BuyerInputModel.OwnerMobileNo" class="small text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-2">
+                        <label class="col-form-label fw-bold" asp-for="BuyerInputModel.FirmName"> Firm Name</label>
+                        <input asp-for="BuyerInputModel.FirmName" class="form-control" placeholder=" Enter Firm Name" />
+                        <span asp-validation-for="BuyerInputModel.FirmName" class="small text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-2">
+                        <label class="col-form-label fw-bold">GSTIN Number</label>
+                        <input asp-for="BuyerInputModel.GSTIN" class="form-control" placeholder="Enter GSTIN" />
+                        <span asp-validation-for="BuyerInputModel.GSTIN" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2">
+                    <label class="col-form-label fw-bold">Address</label>
+                    <partial name="_AddressInput" for="BuyerInputModel.Address" />
+                    <span asp-validation-for="BuyerInputModel.Address" class="text-danger small"></span>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <button class="btn btn-success" type="submit">Add Buyer</button>
+        </modal-footer>
+    </fieldset>
+</form>
+}

@@ -1,0 +1,45 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Buyer.Pages.Ajax.BuyerListModel
+<div class="panel-body">
+    @if (Model.Buyers == null || Model.Buyers.Count() == 0)
+    {
+        <div class="text-center">
+            <h4>No Buyer !</h4>
+            <small>There is no buyer </small>
+        </div>
+    }
+    else
+    {
+<div class="row">
+    @{var j = 0;}
+    @foreach (var t in Model.Buyers.OrderByDescending(m => m.IsActive))
+    {
+        @(j > 0 && j % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
+        <div class="col-md-4">
+            <a class="text-decoration-none" href="#ActionModal" data-bs-toggle="modal" data-load-url="@Url.Page("Modal/Detail", new { BuyerId = t.Id})">
+                <div class="hpanel mb-2">
+                    <div class="panel-body p-3">
+                        <div class="my-1">
+                            <div class="h6 mb-0"> @t.OwnerName <span class="fw-light small px-2">( @t.FirmName )</span></div>
+                        </div>
+                        <div>
+                            <span class="fw-light">Contact : @t.OwnerMobileNo</span>
+                            @if (t.IsActive)
+                            {
+                                <label class="badge h-bg-green float-end rounded-1 py-1">Active</label>
+                            }
+                            else
+                            {
+                                <label class="badge bg-danger float-end py-1">Inactive</label>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+    }
+</div>
+
+

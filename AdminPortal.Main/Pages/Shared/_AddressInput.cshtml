@@ -53,26 +53,30 @@
     <input asp-for="AddressLine" class="form-control" placeholder="Eg.- House/Flat No, Society/Apartment Name" />
     <span asp-validation-for="AddressLine" class="text-danger small"></span>
 </div>
+@if(Model.IncludeAddressType)
+{
 <div class="mb-3">
     <div>
         <label class="  col-form-label fw-bold p-r-xs">Type : </label>
         @foreach (var type in Model.AddressTypes)
         {
-    <div class="form-check form-check-inline">
-        @if (Model.AddressTypeId == type.Id)
-        {
-            <input class="form-check-input" id="AddressType_@type.Id" asp-for="AddressTypeId" checked="checked"  value="@type.Id" type="radio" />
+            <div class="form-check form-check-inline">
+                @if (Model.AddressTypeId == type.Id)
+                {
+                    <input class="form-check-input" id="AddressType_@type.Id" asp-for="AddressTypeId" checked="checked" value="@type.Id" type="radio" />
+                }
+                else
+                {
+                    <input class="form-check-input" id="AddressType_@type.Id" asp-for="AddressTypeId" value="@type.Id" type="radio" />
+                }
+                <label for="AddressType_@type.Id" class="form-check-label">@type.Name</label>
+            </div>
         }
-        else
-        {
-            <input class="form-check-input" id="AddressType_@type.Id" asp-for="AddressTypeId" value="@type.Id" type="radio" />
-        }
-        <label for="AddressType_@type.Id" class="form-check-label">@type.Name</label>
-    </div>}
 
     </div>
-
 </div>
+}
+
 @if (Model.IncludeNameMobileNo)
 {
     <div class="row">
