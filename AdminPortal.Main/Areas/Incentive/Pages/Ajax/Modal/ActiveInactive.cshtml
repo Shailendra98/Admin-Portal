@@ -38,13 +38,13 @@ else
                 <div class="mb-2 row">
                     <div class="col-md-6">
                         <label class="col-form-label fw-bold">Incentive Type</label>
-                        <input type="text" readonly class="form-control" asp-for="IncentiveTypeName">
+                        <input type="text" readonly class="form-control-plaintext" asp-for="IncentiveTypeName">
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label fw-bold">Target</label>
-                        <input type="text" readonly class="form-control" asp-for="Target">
+                        <input type="text" readonly class="form-control-plaintext" asp-for="Target">
                     </div>
-                </div>
+                </div><hr />
                 <div class="fs-6 pt-2">Are you sure you want to @(Model.Status ? "inactivate" : "activate") this target ?</div>
                 <input asp-for="Status" hidden />
             </modal-body>
