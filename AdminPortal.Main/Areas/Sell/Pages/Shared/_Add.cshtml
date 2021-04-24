@@ -1,11 +1,11 @@
 ﻿@model TKW.AdminPortal.Areas.Sell.ViewModels.AddSellModel
-@using TKW.ApplicationCore.Helpers
+@using TKW.SharedKernel.Utils
 @inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
 @{
     DateTime? defaultDate = Model?.HandledTime;
     if (defaultDate == null || defaultDate == DateTime.MinValue)
     {
-        defaultDate = Dt.Now;
+        defaultDate = IndianDateTime.Now;
     }
 }
 <div class="row">
@@ -134,7 +134,7 @@
             @if (defaultDate != null) {
                     @: defaultDate: "@string.Format("{0:MM/dd/yyyy hh:mm tt}", defaultDate)",
                     }
-                maxDate:'@string.Format("{0:MM/dd/yyyy hh:mm tt}",Dt.Now)'
+                maxDate:'@string.Format("{0:MM/dd/yyyy hh:mm tt}",IndianDateTime.Now)'
         });
 
         $("#@Html.IdFor(m=>m.WarehouseId)").select2AutoParent({ placeholder: "Warehouse" });

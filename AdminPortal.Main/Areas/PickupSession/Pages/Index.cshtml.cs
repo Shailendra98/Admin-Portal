@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.DTOs;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.PickupSession;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.PickupSession.Pages

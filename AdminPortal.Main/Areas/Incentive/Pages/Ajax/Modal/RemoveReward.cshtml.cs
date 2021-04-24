@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.IncentiveContext.DTOs;
-using TKW.ApplicationCore.Contexts.IncentiveContext.Queries;
+using TKW.Queries.DTOs.Incentive;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.IncentiveContext.Services;
 
 namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal

@@ -10,18 +10,14 @@ using System.Threading.Tasks;
 using TKW.AdminPortal.ViewModels;
 using TKW.ApplicationCore.Constants;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
-using TKW.ApplicationCore.Contexts.MaterialContext.Specifications;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Errors;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Services;
 using TKW.ApplicationCore.Contexts.Shared.Enumerations;
 using TKW.ApplicationCore.Identity;
 using TKW.ApplicationCore.SeedWorks;
+using TKW.Queries.DTOs.Purchase;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Request.Pages.Add
 {
@@ -87,7 +83,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
             }
             if (NewRequestModel.IsNewAddress) { NewRequestModel.Address = new AdminPortal.ViewModels.AddressModel { IncludeNameMobileNo = false, OnlyLocalities = _appUser.Current.FranchiseId.HasValue }; }
             ScheduleModel = new ScheduleModel();
-            var availableSchedule = await _requestService.GetAvailableScheduleForManagerAsync(cancellationToken);
+            var availableSchedule = await _requestQueries.GetAvailableScheduleForManagerAsync(cancellationToken);
             ScheduleModel.AvailableSchedule = new AdminPortal.ViewModels.AvailableScheduleModel
             {
                 Slots = availableSchedule.Slots.ToDictionary(m => m.Id, m => m.Text),
@@ -156,7 +152,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
                                                                               SourceApp.AdminPortal,
                                                                               ScheduleModel.Date.Value,
                                                                               ScheduleModel.TimeSlotId.Value,
-                                                                              Materials == null ? null : Materials.Where(m=>m.Id.HasValue).Select(m=> (m.Id!.Value,m.Rate))
+                                                                              Materials == null ? null : Materials.Where(m => m.Id.HasValue).Select(m => (m.Id!.Value, m.Rate))
                                                                               , null,
                                                                               NewRequestModel.Comment,
                                                                               cancellationToken: cancellationToken);
@@ -173,7 +169,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
                 NewRequestModel.Name = user.Name;
                 NewRequestModel.MobileNo = user.MobileNo;
             }
-            var availableSchedule = await _requestService.GetAvailableScheduleForManagerAsync(cancellationToken);
+            var availableSchedule = await _requestQueries.GetAvailableScheduleForManagerAsync(cancellationToken);
             ScheduleModel.AvailableSchedule = new AdminPortal.ViewModels.AvailableScheduleModel
             {
                 Slots = availableSchedule.Slots.ToDictionary(m => m.Id, m => m.Text),

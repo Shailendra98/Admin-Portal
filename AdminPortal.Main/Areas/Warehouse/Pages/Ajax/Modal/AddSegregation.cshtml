@@ -6,7 +6,7 @@
     DateTime? defaultDate = Model?.HandleTime;
     if (defaultDate == null || defaultDate == DateTime.MinValue)
     {
-        defaultDate = Dt.Now;
+        defaultDate = IndianDateTime.Now;
     }
 }
 
@@ -116,7 +116,7 @@ else
             useStrict: true,
             ignoreReadonly: true,
              format: "DD-MM-YYYY hh:mm A",
-            maxDate: "@string.Format("{0:MM/dd/yyyy}",Dt.Now)",
+            maxDate: "@string.Format("{0:MM/dd/yyyy}",IndianDateTime.Now)",
             @if (defaultDate != null) {
                     @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultDate)",
                     }

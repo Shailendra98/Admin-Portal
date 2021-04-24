@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Services;
 using TKW.ApplicationCore.SeedWorks;
 

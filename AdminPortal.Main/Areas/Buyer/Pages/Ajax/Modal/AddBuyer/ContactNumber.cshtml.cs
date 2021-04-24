@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.ApplicationCore.Constants;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.SellContext.DTOs;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
+using TKW.Queries.DTOs.Account;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Sell;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
 {

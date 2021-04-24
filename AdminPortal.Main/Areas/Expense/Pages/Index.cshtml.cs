@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.ApplicationCore.Contexts.ExpenseContext.Aggregates;
-using TKW.ApplicationCore.Contexts.ExpenseContext.DTOs;
-using TKW.ApplicationCore.Contexts.ExpenseContext.Queries;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.DTOs.Expense;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 using TKW.ApplicationCore.SeedWorks;
 

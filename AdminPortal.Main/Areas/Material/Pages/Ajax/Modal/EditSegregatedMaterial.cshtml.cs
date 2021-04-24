@@ -8,9 +8,9 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading;
 using TKW.ApplicationCore.Identity;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.MaterialContext.Services;
-using TKW.ApplicationCore.Contexts.MaterialContext.DTOs;
+using TKW.Queries.DTOs.Material;
 using TKW.ApplicationCore.Contexts.MaterialContext.Aggregates;
 using TKW.ApplicationCore.SeedWorks;
 

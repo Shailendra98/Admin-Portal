@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.AdminPortal.ViewModels;
 using System.ComponentModel.DataAnnotations;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.DTOs;
+using TKW.Queries.DTOs.PickupSession;
 
 namespace TKW.AdminPortal.Areas.Sell.ViewModels
 {

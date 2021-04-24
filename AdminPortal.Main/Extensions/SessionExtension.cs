@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Text.Json;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
+using TKW.Queries.DTOs.Account;
+using TKW.Queries.DTOs.Franchise;
 
 namespace TKW.AdminPortal.Extensions
 {

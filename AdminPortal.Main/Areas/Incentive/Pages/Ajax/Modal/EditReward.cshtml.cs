@@ -1,17 +1,14 @@
-using System;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.AdminPortal.Areas.Incentive.ViewModels;
-
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
-using TKW.ApplicationCore.Contexts.IncentiveContext.DTOs;
-using TKW.ApplicationCore.Contexts.IncentiveContext.Queries;
 using TKW.ApplicationCore.Contexts.IncentiveContext.Services;
+using TKW.Queries.DTOs.Incentive;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
 {
@@ -21,7 +18,7 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
         public readonly IIncentiveService _incentiveService;
         public readonly IIncentiveQueries _incentiveQueries;
 
-        public EditRewardModel(IFranchiseQueries franchiseQueries, IIncentiveService incentiveService,IIncentiveQueries incentiveQueries)
+        public EditRewardModel(IFranchiseQueries franchiseQueries, IIncentiveService incentiveService, IIncentiveQueries incentiveQueries)
         {
             _incentiveService = incentiveService;
             _incentiveQueries = incentiveQueries;
@@ -49,20 +46,21 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)
         {
 
-            var r =await _incentiveQueries.GetIncentiveRewardAsync(RewardId, cancellationToken);
-            if(r == null)
+            var r = await _incentiveQueries.GetIncentiveRewardAsync(RewardId, cancellationToken);
+            if (r == null)
             {
-               return Content(Utils.ModalUtils.GenerateContent("Edit Employee", "<div class='alert alert-danger'>Reward does not exist any longer.</div>", "").ToString());
+                return Content(Utils.ModalUtils.GenerateContent("Edit Employee", "<div class='alert alert-danger'>Reward does not exist any longer.</div>", "").ToString());
             }
-            RewardModel = new RewardInputModel() {
-                    Reward = r.Reward,
-                    IsGlobal = r.IsGlobal,
-                    StartDateTime = r.StartDate,
-                    EndDateTime = r.EndDate,
-                    FranchiseIds = GetFranchiseIds(r.Franchises),
-             };
+            RewardModel = new RewardInputModel()
+            {
+                Reward = r.Reward,
+                IsGlobal = r.IsGlobal,
+                StartDateTime = r.StartDate,
+                EndDateTime = r.EndDate,
+                FranchiseIds = GetFranchiseIds(r.Franchises),
+            };
             TargetValue = r.Target.Target;
-            FranchiseList = new MultiSelectList(await _franchiseQueries.AllFranchisesAsync(cancellationToken), "Id", "Name",r.Franchises.Select(m => m.Id));
+            FranchiseList = new MultiSelectList(await _franchiseQueries.AllFranchisesAsync(cancellationToken), "Id", "Name", r.Franchises.Select(m => m.Id));
             return Page();
 
         }
@@ -94,5 +92,5 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
             return Ids;
         }
     }
-    
+
 }

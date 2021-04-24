@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.DTOs;
-using TKW.ApplicationCore.Types;
+using System.Threading;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Identity;
+using TKW.Queries.DTOs.PickupSession;
+using TKW.Queries.Interfaces;
+using TKW.SharedKernel.Types;
 
 namespace TKW.AdminPortal.Areas.PickupSession.Pages.Ajax
 {
@@ -36,7 +33,7 @@ namespace TKW.AdminPortal.Areas.PickupSession.Pages.Ajax
             int size = pageSize == null ? 20 : (pageSize < 5) ? 5 : (pageSize > 200) ? 200 : pageSize.Value;
             if (_appUser.Current.FranchiseId.HasValue)
                 Filter.FranchiseId = _appUser.Current.FranchiseId.Value;
-            
+
             PickupSessions = await _pickupSessionQueries.FilteredPickupSessionsAsync(Filter, pageNo ?? 1, size, cancellationToken);
         }
 

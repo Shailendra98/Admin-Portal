@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
-using TKW.ApplicationCore.Contexts.SellContext.DTOs;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Sell;
 using TKW.ApplicationCore.Contexts.Shared.Enumerations;
 
 namespace TKW.AdminPortal.Areas.Sell.Pages.Ajax.Modal

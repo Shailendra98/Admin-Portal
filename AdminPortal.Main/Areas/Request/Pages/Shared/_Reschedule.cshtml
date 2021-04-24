@@ -3,7 +3,7 @@
     DateTime? defaultDate = Model.Date;
     if (defaultDate == null || defaultDate == DateTime.MinValue)
     {
-        defaultDate = Dt.Today;
+        defaultDate = IndianDateTime.Today;
     }
 }
 <div class="row">
@@ -50,7 +50,7 @@
             @if (defaultDate != null) {
                 @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultDate)",
             }
-            minDate:'@string.Format("{0:MM/dd/yyyy}",Dt.Now)'
+            minDate:'@string.Format("{0:MM/dd/yyyy}",IndianDateTime.Now)'
         });
     });
 </script>

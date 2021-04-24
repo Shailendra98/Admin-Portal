@@ -1,7 +1,7 @@
 ﻿@page
 @using Newtonsoft.Json
 @using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
-@using TKW.ApplicationCore.Helpers
+@using TKW.SharedKernel.Utils
 @model IndexModel
 @inject Microsoft.Extensions.Options.IOptions<TKW.ApplicationCore.Settings.PhotoSetting> urlPrefixes
 @{
@@ -262,7 +262,7 @@
                             }
                 $("#@Html.IdFor(m=>m.Filter.SortBy) option[value='@((int)IndexModel.SortBy.PincodeLocalityVisited)']").attr("selected", true);
                 $("#@Html.IdFor(m=>m.Filter.DateType) option[value='0']").attr("selected", true);
-                endDate.data("DateTimePicker").date('@String.Format("{0:dd-MM-yyyy}",Dt.Now)');
+                endDate.data("DateTimePicker").date('@String.Format("{0:dd-MM-yyyy}",IndianDateTime.Now)');
                 startDate.data("DateTimePicker").clear();
                 $('#filtersortform').submit();
             });

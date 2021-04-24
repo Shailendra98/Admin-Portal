@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Services;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
+using TKW.Queries.DTOs.Franchise;
 
 namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax
 {

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.ExpenseContext.Queries;
-using TKW.ApplicationCore.Contexts.ExpenseContext.DTOs;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Expense;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.PickupSession.Pages.Ajax

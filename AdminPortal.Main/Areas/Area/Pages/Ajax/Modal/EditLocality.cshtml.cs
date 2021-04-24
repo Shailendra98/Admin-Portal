@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.AreaContext.Services;
 using TKW.ApplicationCore.Identity;
 

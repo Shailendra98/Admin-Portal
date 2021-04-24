@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Incentive.ViewModels;
-using TKW.ApplicationCore.Contexts.IncentiveContext.DTOs;
-using TKW.ApplicationCore.Contexts.IncentiveContext.Queries;
+using TKW.Queries.DTOs.Incentive;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Incentive.Pages

@@ -4,10 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using TKW.AdminPortal.Constants;
 using TKW.AdminPortal.Responses;
-using TKW.ApplicationCore.Contexts.AreaContext.DTOs;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
 using TKW.ApplicationCore.Identity;
-using TKW.ApplicationCore.Types;
+using TKW.Queries.DTOs.Area;
+using TKW.Queries.Interfaces;
+using TKW.SharedKernel.Types;
 
 namespace TKW.AdminPortal.Controllers
 {

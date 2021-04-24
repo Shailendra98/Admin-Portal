@@ -1,20 +1,17 @@
-using System;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using TKW.AdminPortal.Areas.Franchise.ViewModels;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.Contexts.AreaContext.Aggregates.Pincode;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
 using TKW.ApplicationCore.Contexts.AreaContext.Services;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.DTOs.Franchise;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax
 {
@@ -24,7 +21,7 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax
         private IPincodeService _pincodeService;
         private readonly IAreaQueries _areaQueries;
         private readonly IEmployeeQueries _employeeQueries;
-        public PincodeDaysModel(IFranchiseQueries franchiseQueries,IPincodeService pincodeService,IAreaQueries areaQueries,IEmployeeQueries employeeQueries)
+        public PincodeDaysModel(IFranchiseQueries franchiseQueries, IPincodeService pincodeService, IAreaQueries areaQueries, IEmployeeQueries employeeQueries)
         {
             _franchiseQueries = franchiseQueries;
             _pincodeService = pincodeService;
@@ -32,7 +29,7 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax
             _employeeQueries = employeeQueries;
         }
 
-        [BindProperty(SupportsGet =true)]
+        [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
 
         public bool IsDone { get; set; }
@@ -52,7 +49,7 @@ namespace TKW.AdminPortal.Areas.Franchise.Pages.Ajax
 
         public List<PincodeModel> PincodeList { get; set; }
 
-        public List<ApplicationCore.Contexts.AreaContext.DTOs.LocalityModel> Localities { get; set; }
+        public List<Queries.DTOs.Area.LocalityModel> Localities { get; set; }
 
 
         public async Task OnGetAsync(CancellationToken cancellationToken)

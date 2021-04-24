@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.AdminPortal.Areas.Incentive.ViewModels;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.IncentiveContext.Services;
 using TKW.ApplicationCore.Identity;
 

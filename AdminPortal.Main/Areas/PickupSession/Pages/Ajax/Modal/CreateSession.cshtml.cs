@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.PickupSessionContext.Services;
 using TKW.ApplicationCore.Identity;
 

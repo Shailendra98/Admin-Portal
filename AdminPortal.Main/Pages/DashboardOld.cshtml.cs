@@ -1,19 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.AdminPortal.Charts;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
-using TKW.ApplicationCore.Contexts.ReportingContext.DTOs;
-using TKW.ApplicationCore.Contexts.ReportingContext.Queries;
-using TKW.ApplicationCore.Helpers;
 using TKW.ApplicationCore.Identity;
+using TKW.Queries.DTOs.Purchase;
+using TKW.Queries.DTOs.Reporting;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Pages
 {
@@ -33,7 +28,7 @@ namespace TKW.AdminPortal.Pages
         }
 
         public bool IsFranchise { get; set; }
-        public IEnumerable<ApplicationCore.Contexts.PickupSessionContext.DTOs.PickupSessionModel> PickupSessions { get; set; }
+        public IEnumerable<Queries.DTOs.PickupSession.PickupSessionModel> PickupSessions { get; set; }
 
         public IEnumerable<RequestCountsOfPickupSessionModel> PickupSessionRequestCounts { get; set; }
 

@@ -10,9 +10,9 @@ using TKW.AdminPortal.Utils;
 using TKW.AdminPortal.ViewModels;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.Contexts.AccountContext.Errors;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 using TKW.ApplicationCore.SeedWorks;
 

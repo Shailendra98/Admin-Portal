@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.SellContext.DTOs;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
+using TKW.Queries.DTOs.Sell;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal
 {
@@ -21,7 +21,7 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal
 
         [BindProperty(SupportsGet =true)]
         public int Id { get; set; }
-        public ApplicationCore.Contexts.SellContext.DTOs.SellModel Sell { get; set; }
+        public Queries.DTOs.Sell.SellModel Sell { get; set; }
      
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {

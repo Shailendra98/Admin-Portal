@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TKW.ApplicationCore.Contexts.AreaContext.DTOs;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
+using TKW.Queries.DTOs.Area;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Area.Pages

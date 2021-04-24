@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.SellContext.DTOs;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Identity;
-using TKW.ApplicationCore.Types;
-//using X.PagedList;
+using TKW.Queries.DTOs.Sell;
+using TKW.Queries.Interfaces;
+using TKW.SharedKernel.Types;
+
 
 namespace TKW.AdminPortal.Areas.Sell.Pages.Ajax
 {
@@ -31,7 +28,7 @@ namespace TKW.AdminPortal.Areas.Sell.Pages.Ajax
 
         public PagedList<SellListItemModel> Sells { get; set; }
 
-        public async Task OnGetAsync(int? pageNo,int? pageSize)
+        public async Task OnGetAsync(int? pageNo, int? pageSize)
         {
             int size = pageSize == null ? 20 : (pageSize < 5) ? 5 : (pageSize > 200) ? 200 : pageSize.Value;
             if (_appUser.Current.FranchiseId.HasValue)

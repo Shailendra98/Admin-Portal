@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.ComponentModel.DataAnnotations;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
+using TKW.Queries.DTOs.Account;
 
 namespace TKW.AdminPortal.Areas.Request.ViewModels
 {

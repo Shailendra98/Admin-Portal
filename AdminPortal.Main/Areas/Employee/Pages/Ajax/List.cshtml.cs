@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Employee.ViewModels;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Employee.Pages.Ajax

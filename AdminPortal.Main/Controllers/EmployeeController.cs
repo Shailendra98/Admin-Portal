@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using TKW.AdminPortal.Responses;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates.UserAggregate;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.DTOs.Franchise;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Controllers

@@ -1,23 +1,16 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.AdminPortal.ViewModels;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.InventoryContext.Queries;
 using TKW.ApplicationCore.Contexts.InventoryContext.Services;
-using TKW.ApplicationCore.Contexts.InventoryContext.DTOs;
-using TKW.ApplicationCore.Contexts.MaterialContext.DTOs;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
-using TKW.ApplicationCore.Helpers;
-using TKW.ApplicationCore.SeedWorks;
+using TKW.Queries.DTOs.Account;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal
 {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TKW.AdminPortal.Extensions;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.DTOs.Account;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Franchise;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Utils

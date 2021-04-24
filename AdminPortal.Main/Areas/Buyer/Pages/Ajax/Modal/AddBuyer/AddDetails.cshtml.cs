@@ -1,23 +1,16 @@
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Buyer.ViewModels;
-using TKW.AdminPortal.ViewModels;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
-using TKW.ApplicationCore.Contexts.SellContext.DTOs;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
 using TKW.ApplicationCore.Identity;
 using TKW.ApplicationCore.SeedWorks;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
 {
@@ -30,7 +23,7 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
         private readonly IBuyerService _buyerService;
         private readonly IUserService _userService;
 
-        public AddDetailsModel(IAppUserService appUser,IUserQueries userQueries,IBuyerQueries buyerQueries,IBuyerService buyerService,IUserService userService,IAreaQueries areaQueries)
+        public AddDetailsModel(IAppUserService appUser, IUserQueries userQueries, IBuyerQueries buyerQueries, IBuyerService buyerService, IUserService userService, IAreaQueries areaQueries)
         {
             _appUser = appUser;
             _userQueries = userQueries;
@@ -46,9 +39,9 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
 
         public string? ErrorMessage { get; set; }
 
-        public bool IsDone { get; set; }                       
+        public bool IsDone { get; set; }
 
-        public async Task OnGetAsync(string OwnerMobileNo,CancellationToken cancellationToken)
+        public async Task OnGetAsync(string OwnerMobileNo, CancellationToken cancellationToken)
         {
             BuyerInputModel = new BuyerInputModel()
             {
@@ -56,8 +49,8 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
                 Address = new AdminPortal.ViewModels.AddressModel { IncludeNameMobileNo = false, OnlyLocalities = _appUser.Current.FranchiseId.HasValue, IncludeAddressType = false }
             };
 
-            var u= await _userQueries.UserByMobileNumberAsync(OwnerMobileNo, cancellationToken);
-            if(u != null)
+            var u = await _userQueries.UserByMobileNumberAsync(OwnerMobileNo, cancellationToken);
+            if (u != null)
             {
                 BuyerInputModel.OwnerName = u.Name;
             }
@@ -79,7 +72,7 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
                     ErrorMessage = buyer.Error.Message;
                 }
             }
-            
+
             BuyerInputModel.Address.AddressTypes = Enumeration.GetAll<AddressType>().ToList();
             if (BuyerInputModel.Address.LocalityId.HasValue)
             {
@@ -91,8 +84,8 @@ namespace TKW.AdminPortal.Areas.Buyer.Pages.Ajax.Modal.AddBuyer
             BuyerInputModel.Address.OnlyLocalities = _appUser.Current.FranchiseId.HasValue;
             BuyerInputModel.Address.IncludeNameMobileNo = false;
             BuyerInputModel.Address.IncludeAddressType = false;
-            return Page();                                                                                   
-        }                                                     
+            return Page();
+        }
 
     }
 }

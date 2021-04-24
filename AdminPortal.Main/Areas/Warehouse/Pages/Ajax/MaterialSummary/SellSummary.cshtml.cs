@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.InventoryContext.Queries;
-using TKW.ApplicationCore.Contexts.InventoryContext.DTOs;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Inventory;
 using System.ComponentModel.DataAnnotations;
 
 namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.MaterialSummary

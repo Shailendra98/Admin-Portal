@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TKW.ApplicationCore.Identity;
 using TKW.ApplicationCore.Contexts.MaterialContext.Services;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.AdminPortal.Areas.Material.ViewModels;
 
 namespace TKW.AdminPortal.Areas.Material.Controllers

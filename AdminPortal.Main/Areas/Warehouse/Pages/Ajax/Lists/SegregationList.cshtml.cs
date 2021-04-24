@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.InventoryContext.DTOs;
-using TKW.ApplicationCore.Contexts.InventoryContext.Queries;
-using TKW.ApplicationCore.Types;
+using System.Threading;
+using System.Threading.Tasks;
+using TKW.Queries.DTOs.Inventory;
+using TKW.Queries.Interfaces;
+using TKW.SharedKernel.Types;
 
 namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Lists
 {

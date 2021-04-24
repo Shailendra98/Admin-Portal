@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.MaterialContext.Services;
 using System.Threading;
 using TKW.ApplicationCore.Identity;
 using TKW.AdminPortal.Areas.Material.ViewModels;
-using TKW.ApplicationCore.Contexts.MaterialContext.DTOs;
+using TKW.Queries.DTOs.Material;
 using TKW.ApplicationCore.Contexts.MaterialContext.Aggregates;
 using TKW.ApplicationCore.SeedWorks;
 

@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
+using TKW.Queries.DTOs.Purchase;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Services;
 using TKW.ApplicationCore.Contexts.Shared.Enumerations;
 using TKW.ApplicationCore.SeedWorks;
@@ -83,7 +83,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax.Modal
                 IsHandled = false;
                 var result = await _requestService.HandleRequestAsync(
                      Id,
-                     HandleModel1.Materials.Select(m => new RequestItemInputModel { MaterialId = m.Id.GetValueOrDefault(0), Rate = m.Rate.Value, Quantity = m.Quantity.Value }),
+                     HandleModel1.Materials.Select(m =>(m.Id.GetValueOrDefault(0),m.Rate.Value, m.Quantity.Value)),
                      HandleModel1.HandlerIds,
                      SourceApp.AdminPortal,
                      null,

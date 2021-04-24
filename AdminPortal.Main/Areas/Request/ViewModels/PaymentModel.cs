@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using TKW.ApplicationCore.Constants;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
+using TKW.Queries.DTOs.Account;
 using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates;
 using TKW.ApplicationCore.Contexts.Shared.ValueObjects;
 using TKW.AdminPortal.DataAnnotations;

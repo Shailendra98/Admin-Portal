@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using TKW.AdminPortal.Areas.Request.ViewModels;
 using TKW.ApplicationCore.Constants;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
+using TKW.Queries.DTOs.Purchase;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Errors;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Services;
 using TKW.ApplicationCore.Contexts.Shared.Enumerations;
 using TKW.ApplicationCore.Identity;
@@ -158,12 +158,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
                           SourceApp.AdminPortal,
                           null,
                           HandleModel.HandleEndTime,
-                          HandleModel.Materials.Select(m => new RequestItemInputModel
-                          {
-                              MaterialId = m.Id.Value,
-                              Quantity = m.Quantity.Value,
-                              Rate = m.Rate.Value
-                          }),
+                          HandleModel.Materials.Select(m => (m.Id.Value, m.Rate.Value, m.Quantity.Value)),
                           HandleModel.HandlerIds,
                           null,
                           null,

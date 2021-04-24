@@ -1,18 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading;
-using TKW.ApplicationCore.Identity;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
-using TKW.ApplicationCore.Contexts.MaterialContext.Services;
-using TKW.ApplicationCore.Contexts.MaterialContext.DTOs;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Contexts.MaterialContext.Aggregates;
+using TKW.ApplicationCore.Contexts.MaterialContext.Services;
+using TKW.ApplicationCore.Identity;
 using TKW.ApplicationCore.SeedWorks;
+using TKW.Queries.DTOs.Material;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
 {
@@ -86,8 +85,8 @@ namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
             UnsegregatedMaterial = new SelectList(await _materialQueries.ActivePurchaseStockMaterialsAsync(cancellationToken), nameof(PurchaseStockMaterialModel.Id), nameof(PurchaseStockMaterialModel.Name), material.StockMaterial.Id);
             TypeId = material.TypeId;
             GroupId = material.GroupId;
-            Types = new SelectList(Enumeration.GetAll<MaterialType>().ToList(), "Id", "Name",material.TypeId);
-            Groups = new SelectList(Enumeration.GetAll<MaterialGroup>().ToList(), "Id", "Name",material.GroupId);
+            Types = new SelectList(Enumeration.GetAll<MaterialType>().ToList(), "Id", "Name", material.TypeId);
+            Groups = new SelectList(Enumeration.GetAll<MaterialGroup>().ToList(), "Id", "Name", material.GroupId);
             UnitId = material.UnitId;
             Units = Enumeration.GetAll<MaterialUnit>().ToList();
             GSTPercent = material.GSTPercent;

@@ -31,6 +31,7 @@ using TKW.ApplicationCore.Contexts.FranchiseContext.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using TKW.ApplicationCore.Contexts.IncentiveContext.Services;
+using TKW.Queries;
 
 namespace AdminPortal
 {
@@ -47,6 +48,7 @@ namespace AdminPortal
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddInfrastructureServices(Configuration);
+            services.AddQueries(Configuration);
             services.AddDistributedMemoryCache();
             services.AddSession();
             services

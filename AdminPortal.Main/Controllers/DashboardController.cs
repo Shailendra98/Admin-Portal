@@ -1,22 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using TKW.ApplicationCore.Contexts.ReportingContext.Queries;
-using TKW.ApplicationCore.Identity;
-using TKW.ApplicationCore.Contexts.ReportingContext.DTOs;
 using System.Threading;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 using TKW.AdminPortal.Shared.Models;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
-using TKW.ApplicationCore.Helpers;
+using TKW.ApplicationCore.Identity;
+using TKW.Queries.Interfaces;
+using TKW.SharedKernel.Utils;
 
 namespace TKW.AdminPortal.Controllers
 {
-    
+
     [ApiController]
     [Authorize]
     public class DashboardController : ControllerBase
@@ -26,7 +21,7 @@ namespace TKW.AdminPortal.Controllers
         private readonly IPickupSessionQueries _pickupSessionQueries;
         private readonly IRequestQueries _requestQueries;
 
-        public DashboardController(IAppUserService appUser, IDashboardQueries dashboardQueries,IPickupSessionQueries pickupSessionQueries,IRequestQueries requestQueries)
+        public DashboardController(IAppUserService appUser, IDashboardQueries dashboardQueries, IPickupSessionQueries pickupSessionQueries, IRequestQueries requestQueries)
         {
             _appUser = appUser;
             _dashboardQueries = dashboardQueries;
@@ -73,8 +68,8 @@ namespace TKW.AdminPortal.Controllers
         public async Task<List<RequestWeekTrendModel>> RequestWeekTrendListData(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var date = Dt.Today.AddDays(-7);
-            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, date,cancellationToken);
+            var date = IndianDateTime.Today.AddDays(-7);
+            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, date, cancellationToken);
             var list = new List<RequestWeekTrendModel>();
             for (var i = 0; i < 7; i++)
             {
@@ -100,7 +95,8 @@ namespace TKW.AdminPortal.Controllers
 
             if (data == null)
                 return new List<RequestCustomerPaymentModel>();
-            return data.Select(m => new RequestCustomerPaymentModel {
+            return data.Select(m => new RequestCustomerPaymentModel
+            {
                 ActualMethodId = m.ActualMethodId,
                 ActualMethodName = m.ActualMethodName,
                 Amount = m.Amount,
@@ -137,14 +133,15 @@ namespace TKW.AdminPortal.Controllers
 
             if (data == null)
                 return new List<CancelledAndRescheduledRequestModel>();
-            return data.Select(m => new CancelledAndRescheduledRequestModel {
+            return data.Select(m => new CancelledAndRescheduledRequestModel
+            {
                 IsCancelled = m.IsCancelled,
                 ReasonId = m.ReasonId,
                 ReasonName = m.ReasonName,
                 RequestId = m.RequestId,
                 SourceAppId = m.SourceAppId,
                 SourceAppName = m.SourceAppName,
-                
+
             }).ToList();
         }
         [HttpGet("~/api/GetExpenseDetailsList")]
@@ -155,7 +152,8 @@ namespace TKW.AdminPortal.Controllers
 
             if (data == null)
                 return new List<ExpenseModel>();
-            return data.Select(m => new ExpenseModel { 
+            return data.Select(m => new ExpenseModel
+            {
                 ExpenseAmount = m.TotalAmount,
                 ExpenseName = m.ExpenseTypeName,
                 ExpenseId = m.ExpenseTypeId
@@ -172,7 +170,8 @@ namespace TKW.AdminPortal.Controllers
             PurchaseAndSellMaterialList model = new PurchaseAndSellMaterialList
             {
                 PurchaseList = purchase == null ? new List<PurchaseAndSellMaterialModel>() :
-                purchase.Select(m => new PurchaseAndSellMaterialModel {
+                purchase.Select(m => new PurchaseAndSellMaterialModel
+                {
 
                     MaterialId = m.MaterialId,
                     MaterialName = m.MaterialName,
@@ -229,6 +228,6 @@ namespace TKW.AdminPortal.Controllers
             return output;
         }
 
-        
+
     }
 }

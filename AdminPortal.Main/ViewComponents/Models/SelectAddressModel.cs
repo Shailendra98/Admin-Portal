@@ -1,5 +1,5 @@
 ﻿using System;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
+using TKW.Queries.DTOs.Account;
 
 namespace TKW.AdminPortal.ViewComponents.Models
 {

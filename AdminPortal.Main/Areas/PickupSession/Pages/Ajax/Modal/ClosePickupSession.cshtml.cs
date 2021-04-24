@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.PickupSessionContext.Services;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.DTOs;
+using TKW.Queries.DTOs.PickupSession;
 using System.ComponentModel.DataAnnotations;
 using TKW.ApplicationCore.Identity;
 

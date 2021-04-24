@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.InventoryContext.DTOs;
-using TKW.ApplicationCore.Contexts.InventoryContext.Queries;
+using TKW.Queries.DTOs.Inventory;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal
 {
@@ -20,7 +20,7 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal
         }
         [BindProperty(SupportsGet =true)]
         public int Id { get; set; }
-        public ApplicationCore.Contexts.InventoryContext.DTOs.SegregationModel Segregation { get; set; }
+        public Queries.DTOs.Inventory.SegregationModel Segregation { get; set; }
 
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {

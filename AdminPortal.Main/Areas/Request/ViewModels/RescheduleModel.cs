@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
+using TKW.Queries.DTOs.Purchase;
 
 namespace TKW.AdminPortal.Areas.Request.ViewModels
 {

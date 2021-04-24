@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using TKW.AdminPortal.ViewModels;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Sell.ViewModels;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
+using TKW.AdminPortal.ViewModels;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Sell.Pages.Ajax.Modal
 {
@@ -41,17 +38,18 @@ namespace TKW.AdminPortal.Areas.Sell.Pages.Ajax.Modal
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)
         {
             var Sell = await _sellQueries.SellByIdAsync(Id, cancellationToken);
-            CompleteSellModel = new CompleteSellModel() {
-                
+            CompleteSellModel = new CompleteSellModel()
+            {
+
                 Materials = Sell.Items == null ? null : Sell.Items.Select(m => new SellMaterialRateQuantityInputModel
                 {
                     Id = m.MaterialId,
                     Name = m.MaterialName,
                     Quantity = m.ActualQuantity
                 }).ToList(),
-               
+
             };
-            
+
             CompleteSellModel.IsGST = false;
             return Page();
         }

@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.ApplicationCore.Contexts.PickupSessionContext.Services;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.DTOs;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
+using TKW.Queries.DTOs.PickupSession;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Account;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Franchise;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.Modal

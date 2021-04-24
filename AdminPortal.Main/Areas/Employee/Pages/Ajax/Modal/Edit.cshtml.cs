@@ -8,7 +8,7 @@ using TKW.AdminPortal.Areas.Employee.ViewModels;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Errors;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Services;
 using TKW.ApplicationCore.Identity;
 

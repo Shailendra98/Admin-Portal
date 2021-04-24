@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading;
-using TKW.ApplicationCore.Contexts.InventoryContext.DTOs;
+using TKW.Queries.DTOs.Inventory;
 using System.ComponentModel.DataAnnotations;
 
 namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax

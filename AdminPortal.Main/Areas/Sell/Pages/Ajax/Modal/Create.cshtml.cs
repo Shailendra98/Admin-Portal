@@ -9,11 +9,11 @@ using TKW.AdminPortal.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
-using TKW.ApplicationCore.Contexts.InventoryContext.Queries;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Sell.Pages.Ajax.Modal

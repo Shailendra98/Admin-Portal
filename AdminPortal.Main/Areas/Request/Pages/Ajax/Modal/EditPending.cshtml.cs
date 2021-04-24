@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Request.ViewModels;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.PurchaseContext.Services;
 using TKW.ApplicationCore.Identity;
 

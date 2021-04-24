@@ -1,8 +1,8 @@
 @page
 @model TKW.AdminPortal.Pages.DashboardOldModel
 @using TKW.ApplicationCore.Enums
-@using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs
-@using TKW.ApplicationCore.Helpers
+@using TKW.Queries.DTOs.Purchase
+@using TKW.SharedKernel.Utils
 @using TKW.ApplicationCore.Contexts.PurchaseContext.Aggregates.RequestAggregate
 @inject  TKW.ApplicationCore.Identity.IAppUserService user
 @inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string>{ {"area","Request"},{"Filter.DateType",DateType.Assigned.ToString() },{ "Filter.StartDate",Dt.Now.ToString("dd-MM-yyyy") },{"Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Assigned.Id.ToString()},{"pageSize", "50"} })">
+                        <a href="@Url.Page("/Index",new Dictionary<string, string>{ {"area","Request"},{"Filter.DateType",DateType.Assigned.ToString() },{ "Filter.StartDate",IndianDateTime.Now.ToString("dd-MM-yyyy") },{"Filter.EndDate",IndianDateTime.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Assigned.Id.ToString()},{"pageSize", "50"} })">
                             <div style="opacity: 1; background: rgba(108, 117, 125, 0.125);" class="panel-body text-center no-padding">
                                 <div class="text-primary p-b-xs">
                                     <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Pending ?? 0) </h2>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string> { { "area","Request"},{"Filter.DateType", DateType.Cancelled.ToString() },{ "Filter.StartDate",Dt.Now.ToString("dd-MM-yyyy") },{ "Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy") },{ "pageSize","50" } })">
+                        <a href="@Url.Page("/Index",new Dictionary<string, string> { { "area","Request"},{"Filter.DateType", DateType.Cancelled.ToString() },{ "Filter.StartDate",IndianDateTime.Now.ToString("dd-MM-yyyy") },{ "Filter.EndDate",IndianDateTime.Now.ToString("dd-MM-yyyy") },{ "pageSize","50" } })">
                             <div style="opacity: 1; background: rgba(255, 7, 58, 0.125);" class="panel-body text-center no-padding">
                                 <div class="text-danger p-b-xs">
                                     <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Cancelled ?? 0)</h2>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string> { { "area","Request" },{ "Filter.DateType", DateType.Handled.ToString() },{ "Filter.StartDate",Dt.Now.ToString("dd-MM-yyyy") },{ "Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy") },{ "pageSize","50" } })">
+                        <a href="@Url.Page("/Index",new Dictionary<string, string> { { "area","Request" },{ "Filter.DateType", DateType.Handled.ToString() },{ "Filter.StartDate",IndianDateTime.Now.ToString("dd-MM-yyyy") },{ "Filter.EndDate",IndianDateTime.Now.ToString("dd-MM-yyyy") },{ "pageSize","50" } })">
                             <div style="opacity: 1; background: rgba(40, 167, 69, 0.125);" class="panel-body text-center no-padding">
                                 <div class="p-b-xs text-success">
                                     <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Handled ?? 0)</h2>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="hpanel">
-                        <a href="@Url.Page("/Index",new Dictionary<string, string>() { {"area","Request"},{"Filter.DateType", DateType.Visiting.ToString() },{"Filter.EndDate",Dt.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Submitted.Id.ToString()},{"Filter.Status[1]",RequestStatus.Rescheduled.Id.ToString() },{"pageSize", "50"} })">
+                        <a href="@Url.Page("/Index",new Dictionary<string, string>() { {"area","Request"},{"Filter.DateType", DateType.Visiting.ToString() },{"Filter.EndDate",IndianDateTime.Now.ToString("dd-MM-yyyy")},{ "Filter.Status[0]", RequestStatus.Submitted.Id.ToString()},{"Filter.Status[1]",RequestStatus.Rescheduled.Id.ToString() },{"pageSize", "50"} })">
                             <div style="opacity: 1; background: rgba(0, 123, 255, 0.125);" class="panel-body text-center no-padding">
                                 <div class="text-info p-b-xs">
                                     <h2 class="font-bold">@(Model.RequestCountsOfFranchise?.Pending ?? 0)</h2>
@@ -79,7 +79,7 @@
             <div class="row">
                 @foreach (var pickupSession in Model.PickupSessions)
                 {
-                    var requestCounts = Model.PickupSessionRequestCounts.FirstOrDefault(m => m.PickupSessionId == pickupSession.Id) ?? new TKW.ApplicationCore.Contexts.PurchaseContext.DTOs.RequestCountsOfPickupSessionModel();
+                    var requestCounts = Model.PickupSessionRequestCounts.FirstOrDefault(m => m.PickupSessionId == pickupSession.Id) ?? new TKW.Queries.DTOs.Purchase.RequestCountsOfPickupSessionModel();
                     var lessCash = requestCounts.Pending == 0 ? false : ((pickupSession.Cash / requestCounts.Pending) < 400);
                     @(i > 0 && i % 3 == 0 ? Html.Raw("</div><div class='row'>") : Html.Raw(""))
                     i++;

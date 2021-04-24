@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Utils;
-using TKW.ApplicationCore.Contexts.ExpenseContext.DTOs;
-using TKW.ApplicationCore.Contexts.ExpenseContext.Queries;
+using TKW.Queries.DTOs.Expense;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Expense.Pages.Ajax.Modal
 {

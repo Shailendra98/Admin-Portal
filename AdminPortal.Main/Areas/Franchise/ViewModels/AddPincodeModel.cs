@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TKW.ApplicationCore.Contexts.AreaContext.Aggregates.Pincode;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
+using TKW.Queries.DTOs.Franchise;
 
 namespace TKW.AdminPortal.Areas.Franchise.ViewModels
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Employee.ViewModels;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.Employee.Pages.Ajax.Modal
 {

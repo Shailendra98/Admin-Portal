@@ -1,6 +1,6 @@
 ﻿using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.Contexts.FranchiseContext.Aggregates.EmployeeAggregate;
-using TKW.ApplicationCore.Contexts.FranchiseContext.DTOs;
+using TKW.Queries.DTOs.Franchise;
 
 namespace TKW.AdminPortal.Areas.Employee.ViewModels
 {

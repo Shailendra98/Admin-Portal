@@ -5,11 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.Queries;
-using TKW.ApplicationCore.Contexts.PickupSessionContext.DTOs;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.PickupSession;
 using TKW.ApplicationCore.Contexts.PickupSessionContext.Services;
 
 namespace TKW.AdminPortal.Areas.PickupSession.Pages

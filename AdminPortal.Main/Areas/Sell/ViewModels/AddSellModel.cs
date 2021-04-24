@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TKW.AdminPortal.ViewModels;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.SellContext.DTOs;
+using TKW.Queries.DTOs.Account;
 
 namespace TKW.AdminPortal.Areas.Sell.ViewModels
 {

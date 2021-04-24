@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TKW.AdminPortal.Utils;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Employee.Pages.Ajax.Modal

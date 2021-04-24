@@ -1,17 +1,14 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using TKW.ApplicationCore.Contexts.ExpenseContext.Queries;
 using TKW.ApplicationCore.Contexts.ExpenseContext.Services;
 using TKW.ApplicationCore.Identity;
+using TKW.Queries.Interfaces;
 
 
 

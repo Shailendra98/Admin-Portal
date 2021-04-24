@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
+using TKW.Queries.DTOs.Account;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
 using TKW.ApplicationCore.Identity;
 

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.AreaContext.DTOs;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using TKW.Queries.DTOs.Account;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Area;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
+using TKW.Queries.DTOs.Purchase;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Request.Pages

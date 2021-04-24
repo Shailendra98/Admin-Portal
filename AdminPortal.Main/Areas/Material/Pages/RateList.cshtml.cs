@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Material.ViewModels;
-using TKW.ApplicationCore.Contexts.AppContext.Queries;
-using TKW.ApplicationCore.Contexts.FranchiseContext.Queries;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.MaterialContext.Aggregates;
-using TKW.ApplicationCore.Contexts.MaterialContext.DTOs;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
+using TKW.Queries.DTOs.Material;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Material.Pages

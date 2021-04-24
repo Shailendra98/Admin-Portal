@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using TKW.AdminPortal.ViewModels;
-using TKW.ApplicationCore.Contexts.AccountContext.DTOs;
+using TKW.Queries.DTOs.Account;
 
 namespace TKW.AdminPortal.Areas.Sell.ViewModels
 {

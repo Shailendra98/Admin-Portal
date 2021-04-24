@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.ApplicationCore.Contexts.IncentiveContext.Queries;
+using System.Threading;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Contexts.IncentiveContext.Services;
 
 namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
@@ -23,7 +18,7 @@ namespace TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal
 
         [BindProperty(SupportsGet = true)]
         public int Id { get; set; }
-        
+
         [BindProperty(SupportsGet = true)]
         public bool Status { get; set; }
 

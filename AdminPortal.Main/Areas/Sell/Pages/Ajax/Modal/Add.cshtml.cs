@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.AdminPortal.Areas.Sell.ViewModels;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.InventoryContext.Queries;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.SellContext.Errors;
-using TKW.ApplicationCore.Contexts.SellContext.Queries;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.SellContext.Services;
 using TKW.ApplicationCore.Identity;
 

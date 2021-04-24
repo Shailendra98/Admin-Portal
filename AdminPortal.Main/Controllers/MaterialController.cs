@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TKW.ApplicationCore.Contexts.MaterialContext.DTOs;
-using TKW.ApplicationCore.Contexts.MaterialContext.Queries;
+using TKW.Queries.DTOs.Material;
+using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Controllers
 {

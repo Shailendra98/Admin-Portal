@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
 using TKW.ApplicationCore.Identity;
-using TKW.ApplicationCore.Types;
+using TKW.Queries.DTOs.Purchase;
+using TKW.Queries.Interfaces;
+using TKW.SharedKernel.Types;
 
 namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
 {

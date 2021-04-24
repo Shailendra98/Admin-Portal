@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using TKW.AdminPortal.ViewComponents.Models;
 using TKW.AdminPortal.ViewModels;
-using TKW.ApplicationCore.Contexts.AccountContext.Queries;
-using TKW.ApplicationCore.Contexts.AreaContext.Queries;
+using TKW.Queries.Interfaces;
+using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.ViewComponents

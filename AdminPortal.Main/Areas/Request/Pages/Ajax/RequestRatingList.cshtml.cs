@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TKW.AdminPortal.Areas.Request.ViewModels;
-using TKW.ApplicationCore.Contexts.PurchaseContext.DTOs;
-using TKW.ApplicationCore.Contexts.PurchaseContext.Queries;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Identity;
-using TKW.ApplicationCore.Types;
+using TKW.Queries.DTOs.Purchase;
+using TKW.Queries.Interfaces;
+using TKW.SharedKernel.Types;
 
 namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
 {
@@ -42,7 +38,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
             int size = pageSize == null ? 8 : (pageSize < 5) ? 5 : (pageSize > 100) ? 100 : pageSize.Value;
             if (_appUser.Current.FranchiseId.HasValue)
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
-             Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
+            Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
         }
 
         public async Task OnPostAsync()
@@ -52,6 +48,6 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
                 Filter.FranchiseIds = new List<int> { _appUser.Current.FranchiseId.Value };
             Ratings = await _requestQueries.FilteredAndSortedRequestRatingsAsync(Filter, pageNo ?? 1, size);
         }
-        
+
     }
 }
