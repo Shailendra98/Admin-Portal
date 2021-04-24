@@ -1,0 +1,65 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal.EditDefaultRewardModel
+@{
+
+}
+<modal-header title="Update Default Reward" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Default Reward has been changed.</div>
+        </div>
+    </modal-body>
+    <script>
+        $(function () {
+            $("#ActionModalContent").trigger(
+                {
+                    type: "action.done",
+                });
+        });
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(Model.Errormessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.Errormessage
+        </div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("EditDefaultReward")"
+          data-ajax-begin="$('#defaultrewardfieldset').attr('disabled','');"
+          data-ajax-complete="$('#defaultrewardfieldset').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="defaultrewardfieldset">
+            <modal-body>
+                <div>
+                    <div class="mb-2 row">
+                        <div class="col-md-6">
+                            <label class="col-form-label fw-bold">Incentive Type</label>
+                            <input type="text" readonly class="form-control-plaintext" asp-for="IncentiveTypeName">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="col-form-label fw-bold">Target</label>
+                            <input type="text" readonly class="form-control-plaintext" asp-for="Target">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-form-label fw-bold" asp-for="DefaultReward">Default Reward</label>
+                            <input class="form-control" asp-for="DefaultReward" placeholder="Enter Default Reward" />
+                        </div>
+                    </div>
+                </div>
+            </modal-body>
+            <modal-footer>
+                <button class="btn btn-success px-3" type="submit">Update</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}

@@ -1,0 +1,80 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal.RemoveRewardModel
+@{
+}
+<modal-header title="Remove Reward" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Reward has been removed.</div>
+        </div>
+    </modal-body>
+    <script>
+        $(function () {
+            $("#ActionModalContent").trigger(
+                {
+                    type: "action.done",
+                });
+        });
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(Model.Errormessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.Errormessage
+        </div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("RemoveReward")"
+          data-ajax-begin="$('#RemoveRewardFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#RemoveRewardFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="RemoveRewardFieldSet">
+            <modal-body>
+                <div class="mb-2 row">
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Incentive Type</label>
+                        <input type="text" readonly class="form-control-plaintext" asp-for="IncentiveTypeName">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Target</label>
+                        <input type="text" readonly class="form-control-plaintext" asp-for="TargetValue">
+                    </div>
+                </div>
+                <div class="mb-2 row">
+                    <div class="col-md-6">
+                        <label class="fw-bold col-form-label">
+                            Start Date Time
+                        </label>
+                        <input type="text" asp-for="RewardData.StartDate" class="form-control-plaintext" placeholder="Start date time" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold col-form-label">
+                            End Date Time
+                        </label>
+                        <input type="text" asp-for="RewardData.EndDate" class="form-control-plaintext" placeholder="Start date time" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Reward</label>
+                        <input type="text" readonly class="form-control-plaintext" asp-for="RewardData.Reward">
+                    </div>
+                </div><hr />
+                <div class="fs-6 pt-1">Are you sure you want to remove this reward ?</div>
+                <input asp-for="TargetId" hidden />
+                <input asp-for="RewardId" hidden />
+            </modal-body>
+            <modal-footer>
+                <button type="button" class="btn btn-default px-4" data-bs-dismiss="modal" aria-label="close">No</button>
+                <button class="btn btn-danger px-4" type="submit">Yes</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}

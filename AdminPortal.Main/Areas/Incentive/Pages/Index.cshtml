@@ -1,0 +1,37 @@
+﻿
+@page
+@model TKW.AdminPortal.Areas.Incentive.Pages.IndexModel
+@{
+    ViewBag.Title = "Incentive";
+}
+<pagetitle title="Incentive" description="Edit Incentive of pickup's"></pagetitle>
+<div class="content">
+    <div id="incentiveList">
+        <div class="hpanel">
+            <div class="panel-body text-center">
+                <img src="/images/ripple.gif" alt="Loading.." />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Footer{
+    <modal content-id="ActionModalContent" loader="true" id="ActionModal"></modal>
+    <modal content-id="DetailModalContent" loader="true" id="DetailModal"></modal>
+}
+@section Styles{
+    <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
+    <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/js/datetimepicker.min.js" asp-append-version="true" type="text/javascript"></script>
+    <script>
+        $(function () {
+            $("#incentiveList").load("@Url.Page("Ajax/IncentiveList")");
+
+            $("#ActionModalContent").on("action.done", function () {
+                $("#incentiveList").load("@Url.Page("Ajax/IncentiveList")");
+            });
+        });
+    </script>
+}

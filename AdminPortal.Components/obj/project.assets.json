@@ -353,7 +353,7 @@
       },
       "AdminPortal.Shared/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
+        "framework": ".NETStandard,Version=v2.1",
         "compile": {
           "bin/placeholder/AdminPortal.Shared.dll": {}
         },
@@ -714,7 +714,7 @@
       },
       "AdminPortal.Shared/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
+        "framework": ".NETStandard,Version=v2.1",
         "compile": {
           "bin/placeholder/AdminPortal.Shared.dll": {}
         },
@@ -1381,24 +1381,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Sameer\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+      "projectUniqueName": "D:\\Internship\\NewIncentive\\AdminPortal.Components\\AdminPortal.Components.csproj",
       "projectName": "AdminPortal.Components",
-      "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
-      "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\obj\\",
+      "projectPath": "D:\\Internship\\NewIncentive\\AdminPortal.Components\\AdminPortal.Components.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "D:\\Internship\\NewIncentive\\AdminPortal.Components\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\NuGet.Config",
-        "C:\\Users\\Sameer\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "D:\\Internship\\NewIncentive\\NuGet.Config",
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1412,8 +1408,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
-              "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
+            "D:\\Internship\\NewIncentive\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+              "projectPath": "D:\\Internship\\NewIncentive\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
             }
           }
         }
@@ -1459,7 +1455,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.NETCore.App.Runtime.browser-wasm",
-            "version": "[5.0.4, 5.0.4]"
+            "version": "[5.0.2, 5.0.2]"
           }
         ],
         "frameworkReferences": {
@@ -1467,7 +1463,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

@@ -1,0 +1,134 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.Incentive.Pages.Ajax.Modal.AddRewardModel
+@{
+
+}
+<modal-header title="Add Reward" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Reward has been added.</div>
+        </div>
+    </modal-body>
+    <script>
+        $(function () {
+            $("#ActionModalContent").trigger(
+                {
+                    type: "action.done",
+                });
+        });
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrWhiteSpace(Model.Errormessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.Errormessage
+        </div>
+    }
+    <form method="Post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("AddReward")"
+          data-ajax-begin="$('#addRewardForTarget').attr('disabled','');"
+          data-ajax-complete="$('#addRewardForTarget').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#ActionModalContent">
+        <fieldset id="addRewardForTarget">
+            <modal-body>
+                <div class="mb-2 row">
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Incentive Type</label>
+                        <input type="text" readonly class="form-control-plaintext" asp-for="IncentiveTypeName">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label fw-bold">Target</label>
+                        <input type="text" readonly class="form-control-plaintext" asp-for="Target">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label asp-for="RewardModel.Reward" class="col-form-label fw-bold"></label>
+                        <input asp-for="RewardModel.Reward" class="form-control" placeholder="Enter Reward" autofocus/>
+                        <span asp-validation-for="RewardModel.Reward" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6" id="radio_box">
+                        <div class="col-form-label fw-bold pb-3">Global</div>
+                        <div class="form-check d-inline-block pe-2">
+                            <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.RewardModel.IsGlobal)" id="radio1" value="true">
+                            <label class="form-check-label" for="radio1">
+                                True
+                            </label>
+                        </div>
+                        <div class="form-check d-inline-block ms-1">
+                            <input class="form-check-input" type="radio" name="@Html.NameFor(m => m.RewardModel.IsGlobal)" id="radio2" value="false" checked>
+                            <label class="form-check-label" for="radio2">
+                                False
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label class="fw-bold col-form-label">
+                            Start Date Time
+                        </label>
+                        <input type="text" asp-for="RewardModel.StartDateTime" class="form-control" placeholder="Start date time" data-dtpicker="true">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold col-form-label">
+                            End Date Time
+                        </label>
+                        <input type="text" asp-for="RewardModel.EndDateTime" class="form-control" placeholder="End date time" data-dtpicker="true">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" id="FranchiseListSelect">
+                        <label asp-for="RewardModel.FranchiseIds" class="col-form-label fw-bold">Franchises</label>
+                        <select class="form-control" asp-for="RewardModel.FranchiseIds" asp-items="Model?.FranchiseList" multiple>
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </modal-body>
+            <modal-footer>
+             <button class="btn btn-success" type="submit">Add Reward</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+    <script>
+        $(function () {
+
+            $("#@Html.IdFor(m => m.RewardModel.FranchiseIds)").select2AutoParent({ placeholder: "Select Franchises" });
+
+        
+            $("#radio_box").change(function () {
+                $('#FranchiseListSelect').toggleClass('d-none');
+            });
+
+            var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY hh:mm A",
+                sideBySide: true,
+            }
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+
+            var startDate = $("[id='@Html.IdFor(m=>m.RewardModel.StartDateTime)']");
+            var endDate = $("[id='@Html.IdFor(m=>m.RewardModel.EndDateTime)']");
+
+            startDate.on("dp.change", function (e) {
+                endDate.data("DateTimePicker").minDate(e.date);
+            });
+            endDate.on("dp.change", function (e) {
+                startDate.data("DateTimePicker").maxDate(e.date);
+            });
+
+        });    
+    </script>
+}
