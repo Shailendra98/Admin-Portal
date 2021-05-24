@@ -37,7 +37,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<RequestCountsModel> GetRequestCountsOfFranchise(CancellationToken cancellationToken)
         {
             int? franchiseid = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RequestCountsOfFranchiseAsync(franchiseid!.Value, cancellationToken);
+            var data = await _dashboardQueries.RequestCountsAsync(franchiseid, cancellationToken);
             RequestCountsModel model = new RequestCountsModel
             {
                 TodaysRequests = data.TotalScheduled,
@@ -55,7 +55,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<VehiclePickupBoyUnassignedRequestCounts> GetActiveVehiclePickupboyCount(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.VehicleAndPickupBoyAndUnassignedCountsOfFranchiseAsync(franchiseId!.Value, cancellationToken);
+            var data = await _dashboardQueries.VehicleAndPickupBoyAndUnassignedCountsAsync(franchiseId, cancellationToken);
 
             VehiclePickupBoyUnassignedRequestCounts model = new VehiclePickupBoyUnassignedRequestCounts
             {
@@ -74,7 +74,7 @@ namespace TKW.AdminPortal.Controllers
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
             var date = Dt.Today.AddDays(-7);
-            var data = await _dashboardQueries.RequestTrendOfFranchiseAsync(franchiseId.Value, date,cancellationToken);
+            var data = await _dashboardQueries.RequestTrendAsync(franchiseId, date,cancellationToken);
             var list = new List<RequestWeekTrendModel>();
             for (var i = 0; i < 7; i++)
             {
@@ -96,7 +96,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<List<RequestCustomerPaymentModel>> GetRequestCustomerPaymentTypeCount(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.RequestSourceCustomerTypePaymentMethodAsync(franchiseId.Value, cancellationToken);
+            var data = await _dashboardQueries.RequestSourceCustomerTypePaymentMethodAsync(franchiseId, cancellationToken);
 
             if (data == null)
                 return new List<RequestCustomerPaymentModel>();
@@ -118,7 +118,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<NewCustomerModel> GetCustomerCount(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.NewAndTotalCustomerCountOfFranchiseAsync(franchiseId.Value, cancellationToken);
+            var data = await _dashboardQueries.NewAndTotalCustomerCountAsync(franchiseId, cancellationToken);
 
             NewCustomerModel model = new NewCustomerModel
             {
@@ -133,7 +133,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<List<CancelledAndRescheduledRequestModel>> GetCancelledAndRescheduledRequestDetails(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.CancelledAndRescheduledRequestOfFranchiseAsync(franchiseId.Value, cancellationToken);
+            var data = await _dashboardQueries.CancelledAndRescheduledRequestAsync(franchiseId, cancellationToken);
 
             if (data == null)
                 return new List<CancelledAndRescheduledRequestModel>();
@@ -151,7 +151,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<List<ExpenseModel>> GetExpenseDetailsList(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var data = await _dashboardQueries.ExpensesOfFranchiseAsync(franchiseId.Value, cancellationToken);
+            var data = await _dashboardQueries.ExpensesAsync(franchiseId, cancellationToken);
 
             if (data == null)
                 return new List<ExpenseModel>();
@@ -166,8 +166,8 @@ namespace TKW.AdminPortal.Controllers
         public async Task<PurchaseAndSellMaterialList> GetPurchaseAndSellMaterialList(CancellationToken cancellationToken)
         {
             int? franchiseId = _appUser.Current?.FranchiseId;
-            var purchase = await _dashboardQueries.PurchaseMaterialsOfFranchiseAsync(franchiseId.Value, cancellationToken);
-            var sell = await _dashboardQueries.SellMaterialsOfFranchiseAsync(franchiseId.Value, cancellationToken);
+            var purchase = await _dashboardQueries.PurchaseMaterialsAsync(franchiseId, cancellationToken);
+            var sell = await _dashboardQueries.SellMaterialsAsync(franchiseId, cancellationToken);
 
             PurchaseAndSellMaterialList model = new PurchaseAndSellMaterialList
             {
@@ -198,7 +198,7 @@ namespace TKW.AdminPortal.Controllers
         public async Task<List<PickupSessionModel>> GetPickupSessionsOfFranchise(CancellationToken cancellationToken)
         {
             int? franchiseid = _appUser.Current?.FranchiseId;
-            var pickupSessions = await _pickupSessionQueries.ActivePickupSessionsOfFranchiseAsync(franchiseid.Value, cancellationToken);
+            var pickupSessions = await _pickupSessionQueries.ActivePickupSessionsOfFranchiseAsync(franchiseid, cancellationToken);
             var requestCounts = await _requestQueries.RequestCountsOfPickupSessionsAsync(pickupSessions.Select(m => m.Id), cancellationToken);
             List<PickupSessionModel> output = new List<PickupSessionModel>();
             foreach (var pickupSession in pickupSessions)
