@@ -39,7 +39,7 @@ namespace TKW.AdminPortal.Pages
             IsFranchise = _appUser.Current.FranchiseId.HasValue;
             if (IsFranchise)
             {
-                RequestCountsOfFranchise = await _dashboardQueries.RequestCountsOfFranchiseAsync(_appUser.Current.FranchiseId!.Value, cancellationToken);
+                RequestCountsOfFranchise = await _dashboardQueries.RequestCountsAsync(_appUser.Current.FranchiseId!.Value, cancellationToken);
                 PickupSessions = await _pickupSessionQueries.ActivePickupSessionsOfFranchiseAsync(_appUser.Current.FranchiseId.Value, cancellationToken);
                 PickupSessionRequestCounts = await _requestQueries.RequestCountsOfPickupSessionsAsync(PickupSessions.Select(m => m.Id), cancellationToken);
             }
