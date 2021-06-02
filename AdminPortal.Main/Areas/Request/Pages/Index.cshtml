@@ -59,12 +59,28 @@
                                 <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<IndexModel.DateType>()" class="form-select form-select-sm"></select>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label class="fw-bold col-form-label">
+                                Amount
+                            </label>
+                            <div class="mb-3">
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.MinAmount" class="form-control form-control-sm " placeholder="Min Amount">
+                                </div>
+                                <div class="text-center text-muted" style="display:inline-block;width:5%;">
+                                    <span class="bi-dash"></span>
+                                </div>
+                                <div style="display:inline-block;width:45%;">
+                                    <input type="text" asp-for="Filter.MaxAmount" class="form-control form-control-sm" placeholder="Max Amount">
+                                </div>
+                            </div>
+                        </div>
                         @*<div class="mb-3">
-                            <label asp-for="Filter.User" class="  fw-bold col-form-label"></label>
-                            <select asp-for="Filter.User" class="form-control form-control-sm   select2-field" multiple>
-                                <option></option>
-                            </select>
-                        </div>*@
+            <label asp-for="Filter.User" class="  fw-bold col-form-label"></label>
+            <select asp-for="Filter.User" class="form-control form-control-sm   select2-field" multiple>
+                <option></option>
+            </select>
+        </div>*@
                         <div class="mb-3">
                             <label asp-for="Filter.Status" class="fw-bold col-form-label"></label>
                             <div>
@@ -81,67 +97,84 @@
                                 }
                             </div>
                         </div>
+                         <div class="mb-3">
+                            <label asp-for="Filter.Sources" class="fw-bold col-form-label"></label>
+                            <div>
+                                @{ var isbool = false;
+                                    var checknames = Html.NameFor(m => m.Filter.Sources);
+                                }
+                                @foreach (var a in Model.Sources)
+                                {
+                                    ischecked = (Model?.Filter?.Sources != null && Model.Filter.Sources.Contains(a.Id));
+                                    <div class="checkbox w-xs p-r-sm @(isbool?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                        <input type="checkbox" name="@checknames" value="@a.Id" id="checks_@a.Id" @(isbool ? "checked" : "") />
+                                        <label for="checks_@a.Id">@a.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
 
                         @*@if (Model.FranchiseMode)
+        {
+            <div class="mb-3" id="filterPincodeContainer" @( (!(Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)) || (Model?.Filter?.Locality != null && Model.Filter.Locality.Count > 0) ? "style=display:none;" : "")>
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterCityContainer').show();">City</button>
+                    &bull;
+                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterLocalityContainer').show();">Locality</button>
+                </div>
+                <label class="  fw-bold col-form-label" for="@Html.IdFor(m => m.Filter.Pincode)">Pincode</label>
+                <select asp-for="Filter.Pincode" class="w-100" data-placeholder="Select Pincodes" asp-items="@Model.Pincodes" multiple></select>
+            </div>
+            <div class="mb-3" id="filterLocalityContainer" @((Model?.Filter?.Locality != null && Model.Filter.Locality.Count > 0) ? "" : "style=display:none;")>
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterLocalityContainer').hide(); $('#filterPincodeContainer').show();">Pincode</button>
+                </div>
+                <label for="@Html.IdFor(m => m.Filter.Locality)" class="  fw-bold col-form-label">Locality</label>
+                <select asp-for="Filter.Locality" class="form-select form-select-sm   select2-field" data-placeholder="Select Localities" multiple>
+                    @if (Model?.SelectedLocalities != null && Model.SelectedLocalities.Count > 0)
+                    {
+                        foreach (var locality in Model.SelectedLocalities)
                         {
-                            <div class="mb-3" id="filterPincodeContainer" @( (!(Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)) || (Model?.Filter?.Locality != null && Model.Filter.Locality.Count > 0) ? "style=display:none;" : "")>
-                                <div class="pull-right">
-                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterCityContainer').show();">City</button>
-                                    &bull;
-                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterLocalityContainer').show();">Locality</button>
-                                </div>
-                                <label class="  fw-bold col-form-label" for="@Html.IdFor(m => m.Filter.Pincode)">Pincode</label>
-                                <select asp-for="Filter.Pincode" class="w-100" data-placeholder="Select Pincodes" asp-items="@Model.Pincodes" multiple></select>
-                            </div>
-                            <div class="mb-3" id="filterLocalityContainer" @((Model?.Filter?.Locality != null && Model.Filter.Locality.Count > 0) ? "" : "style=display:none;")>
-                                <div class="pull-right">
-                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterLocalityContainer').hide(); $('#filterPincodeContainer').show();">Pincode</button>
-                                </div>
-                                <label for="@Html.IdFor(m => m.Filter.Locality)" class="  fw-bold col-form-label">Locality</label>
-                                <select asp-for="Filter.Locality" class="form-select form-select-sm   select2-field" data-placeholder="Select Localities" multiple>
-                                    @if (Model?.SelectedLocalities != null && Model.SelectedLocalities.Count > 0)
-                                    {
-                                        foreach (var locality in Model.SelectedLocalities)
-                                        {
-                                            <option selected value="@locality.Id">@locality.Name</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
+                            <option selected value="@locality.Id">@locality.Name</option>
                         }
-                        else
+                    }
+                </select>
+            </div>
+        }
+        else
+        {
+            <div class="mb-3" id="filterCityContainer" @( (Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0) ? "style=display:none" : "")>
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterCityContainer').hide(); $('#filterPincodeContainer').show();">Pincode</button>
+                </div>
+                <label class="  fw-bold col-form-label" for="@Html.IdFor(m=>m.Filter.City)">City</label>
+                <select asp-for="Filter.City" class="w-100" data-placeholder="Select Cities" multiple>
+                    @if (Model?.SelectedCities != null && Model.SelectedCities.Count > 0)
+                    {
+                        foreach (var city in Model.SelectedCities)
                         {
-                            <div class="mb-3" id="filterCityContainer" @( (Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0) ? "style=display:none" : "")>
-                                <div class="pull-right">
-                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterCityContainer').hide(); $('#filterPincodeContainer').show();">Pincode</button>
-                                </div>
-                                <label class="  fw-bold col-form-label" for="@Html.IdFor(m=>m.Filter.City)">City</label>
-                                <select asp-for="Filter.City" class="w-100" data-placeholder="Select Cities" multiple>
-                                    @if (Model?.SelectedCities != null && Model.SelectedCities.Count > 0)
-                                    {
-                                        foreach (var city in Model.SelectedCities)
-                                        {
-                                            <option selected value="@city.Id">@city.Name</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                            <div class="mb-3" id="filterPincodeContainer" @( (!(Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)) ? "style=display:none;" : "")>
-                                <div class="pull-right">
-                                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterCityContainer').show();">City</button>
-                                </div>
-                                <label class="  fw-bold col-form-label" for="@Html.IdFor(m=>m.Filter.Pincode)">Pincode</label>
-                                <select asp-for="Filter.Pincode" class="w-100 select2" data-placeholder="Select Pincodes" multiple>
-                                    @if (Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)
-                                    {
-                                        foreach (var pincode in Model.Filter.Pincode)
-                                        {
-                                            <option selected value="@pincode">@pincode</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        }*@
+                            <option selected value="@city.Id">@city.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="mb-3" id="filterPincodeContainer" @( (!(Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)) ? "style=display:none;" : "")>
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-link" type="button" onclick="$('#filterPincodeContainer').hide(); $('#filterCityContainer').show();">City</button>
+                </div>
+                <label class="  fw-bold col-form-label" for="@Html.IdFor(m=>m.Filter.Pincode)">Pincode</label>
+                <select asp-for="Filter.Pincode" class="w-100 select2" data-placeholder="Select Pincodes" multiple>
+                    @if (Model?.Filter?.Pincode != null && Model.Filter.Pincode.Count > 0)
+                    {
+                        foreach (var pincode in Model.Filter.Pincode)
+                        {
+                            <option selected value="@pincode">@pincode</option>
+                        }
+                    }
+                </select>
+            </div>
+        }*@
+
                         <div class="mb-3">
                             <label class="  fw-bold col-form-label" for="@Html.NameFor(m=>m.Filter.SortBy)">Sort by</label>
                             <select asp-for="Filter.SortBy" asp-items="Html.GetEnumSelectList<IndexModel.SortBy>()" class="form-select form-select-sm"></select>

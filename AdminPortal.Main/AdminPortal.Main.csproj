@@ -365,6 +365,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="TKW.ApplicationCore" Version="1.1.10" />
+    <PackageReference Include="TKW.Infrastructure" Version="1.1.14" />
+    <PackageReference Include="TKW.Queries" Version="0.1.0" />
+    <PackageReference Include="TKW.SharedKernel" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -397,10 +401,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ApplicationCore\ApplicationCore.csproj" />
-    <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\..\..\Queries\Queries.csproj" />
-    <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\source\repos\Queries\Queries.csproj" />
     <ProjectReference Include="..\AdminPortal.Components\AdminPortal.Components.csproj" />
     <ProjectReference Include="..\AdminPortal.Shared\AdminPortal.Shared.csproj" />
   </ItemGroup>

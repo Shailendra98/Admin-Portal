@@ -24,6 +24,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Ajax
         [BindProperty(SupportsGet = true)]
         public RequestFilterSortModel Filter { get; set; }
 
+
         public async Task OnGetAsync(int? pageNo, int? pageSize)
         {
             int size = pageSize == null ? 20 : (pageSize < 5) ? 5 : (pageSize > 200) ? 200 : pageSize.Value;
