@@ -54,11 +54,11 @@
         }
     }
     i = 0;
-    if (filter.Sources != null)
+    if (filter.SourceApps != null)
     {
-        foreach (var a in filter.Sources)
+        foreach (var a in filter.SourceApps)
         {
-            route["Filter.Sources[" + i++ + "]"] = a;
+            route["Filter.SourceApps[" + i++ + "]"] = a;
         }
     }
     i = 0;

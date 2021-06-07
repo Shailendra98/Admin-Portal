@@ -401,7 +401,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\source\repos\Queries\Queries.csproj" />
+    <ProjectReference Include="..\..\Queries\Queries.csproj" />
     <ProjectReference Include="..\AdminPortal.Components\AdminPortal.Components.csproj" />
     <ProjectReference Include="..\AdminPortal.Shared\AdminPortal.Shared.csproj" />
   </ItemGroup>

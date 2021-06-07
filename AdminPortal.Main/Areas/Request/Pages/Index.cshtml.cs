@@ -13,6 +13,9 @@ using TKW.Queries.Interfaces;
 using TKW.Queries.DTOs.Purchase;
 using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
+using TKW.ApplicationCore.SeedWorks;
+using TKW.ApplicationCore.Contexts.Shared.Enumerations;
+using System.Linq;
 
 namespace TKW.AdminPortal.Areas.Request.Pages
 {
@@ -46,7 +49,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages
         public MultiSelectList Franchises { get; set; }
 
         public List<RequestStatusModel> Statuses { get; set; }
-        public List<SourceAppModel> Sources { get; set; }
+        public List<SourceApp> SourceApps { get; set; }
 
         public List<UserModel> SelectedUsers { get; set; }
 
@@ -74,7 +77,7 @@ namespace TKW.AdminPortal.Areas.Request.Pages
             if (Filter?.Locality != null)
                 SelectedLocalities = await _areaQueries.LocalitiesByIdsAsync(Filter.Locality, cancellationToken);
             Statuses = await _requestQueries.RequestStatusesAsync(cancellationToken);
-            Sources = await _requestQueries.RequestSourceAppAsync(cancellationToken);
+            SourceApps = Enumeration.GetAll<SourceApp>().ToList();
             if (Filter?.User != null)
             {
                 SelectedUsers = await _userQueries.UsersByIdsAsync(Filter.User, cancellationToken);

@@ -98,14 +98,14 @@
                             </div>
                         </div>
                          <div class="mb-3">
-                            <label asp-for="Filter.Sources" class="fw-bold col-form-label"></label>
+                            <label asp-for="Filter.SourceApps" class="fw-bold col-form-label"></label>
                             <div>
                                 @{ var isbool = false;
-                                    var checknames = Html.NameFor(m => m.Filter.Sources);
+                                    var checknames = Html.NameFor(m => m.Filter.SourceApps);
                                 }
-                                @foreach (var a in Model.Sources)
+                                @foreach (var a in Model.SourceApps)
                                 {
-                                    ischecked = (Model?.Filter?.Sources != null && Model.Filter.Sources.Contains(a.Id));
+                                    ischecked = (Model?.Filter?.SourceApps != null && Model.Filter.SourceApps.Contains(a.Id));
                                     <div class="checkbox w-xs p-r-sm @(isbool?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
                                         <input type="checkbox" name="@checknames" value="@a.Id" id="checks_@a.Id" @(isbool ? "checked" : "") />
                                         <label for="checks_@a.Id">@a.Name</label>
