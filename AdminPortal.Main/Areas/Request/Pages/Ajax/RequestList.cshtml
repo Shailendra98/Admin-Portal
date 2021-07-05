@@ -11,6 +11,8 @@
     route["Filter.DateType"] = filter.DateType;
     route["Filter.StartDate"] = String.Format("{0:dd/MM/yyyy}", filter.StartDate);
     route["Filter.EndDate"] = String.Format("{0:dd/MM/yyyy}", filter.EndDate);
+    route["Filter.MinAmount"] = filter.MinAmount;
+    route["Filter.MaxAmount"] = filter.MaxAmount;
     var i = 0;
     if (filter.City != null)
     {
@@ -49,6 +51,14 @@
         foreach (var a in filter.Status)
         {
             route["Filter.Status[" + i++ + "]"] = a;
+        }
+    }
+    i = 0;
+    if (filter.SourceApps != null)
+    {
+        foreach (var a in filter.SourceApps)
+        {
+            route["Filter.SourceApps[" + i++ + "]"] = a;
         }
     }
     i = 0;
