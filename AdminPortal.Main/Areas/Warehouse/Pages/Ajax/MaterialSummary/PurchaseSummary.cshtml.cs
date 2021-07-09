@@ -33,7 +33,7 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.MaterialSummary
         [BindProperty(SupportsGet = true)]
         public int PageNo { get; set; } = 1;
 
-        public List<PurchaseMaterialSummaryModel> PurchaseMaterials { get; set; }
+        public List<StockInMaterialSummaryModel> PurchaseMaterials { get; set; }
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             if (Filter.StartDate != null && Filter.EndDate != null)

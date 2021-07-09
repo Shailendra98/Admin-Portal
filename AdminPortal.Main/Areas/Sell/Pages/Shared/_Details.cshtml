@@ -119,7 +119,7 @@
                             <tr><th>Name</th><th>Quantity</th><th>Diff. Qty.</th><th>Rate</th><th class="text-right">Amount</th></tr>
                         </thead>
                         <tbody>
-                            @foreach (var m in Model.Items)
+                            @foreach (var m in Model.Items.Where(m=> m.Rate != null))
                             {
                                 <tr class="border-bottom">
                                     <td>@m.MaterialName</td>

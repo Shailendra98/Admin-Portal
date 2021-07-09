@@ -19,24 +19,27 @@ using TKW.ApplicationCore.Contexts.PurchaseContext.Services;
 using TKW.ApplicationCore.Contexts.Shared.Enumerations;
 using TKW.ApplicationCore.Identity;
 using TKW.ApplicationCore.SeedWorks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates;
 
 namespace TKW.AdminPortal.Areas.Request.Pages.Add
 {
-    public class HandledModel : PageModel
+    public class BulkModel : PageModel
     {
         private readonly IAppUserService _appUser;
         private readonly IUserQueries _userQueries;
         private readonly IRequestQueries _requestQueries;
         private readonly IUserService _userService;
         private readonly IRequestService _requestService;
-
-        public HandledModel(IAppUserService appUser, IUserQueries userQueries, IRequestQueries requestQueries, IUserService userService, IRequestService requestService)
+        private readonly IWarehouseQueries _warehouseQueries;
+        public BulkModel(IAppUserService appUser, IUserQueries userQueries, IRequestQueries requestQueries, IUserService userService, IRequestService requestService, IWarehouseQueries warehouseQueries)
         {
             _appUser = appUser;
             _userQueries = userQueries;
             _requestQueries = requestQueries;
             _userService = userService;
             _requestService = requestService;
+            _warehouseQueries = warehouseQueries;
         }
 
         [BindProperty]
@@ -47,9 +50,13 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
         [Required]
         public HandleModel HandleModel { get; set; }
 
-        //[BindProperty]
-        //[Required]
-        //public PaymentModel PaymentModel { get; set; }
+        [BindProperty]
+        [Required]
+        public PaymentModel PaymentModel { get; set; }
+
+        [BindProperty]
+        [Required]
+        public StoreModel StoreModel { get; set; }
 
         [BindProperty]
         public bool NoSMS { get; set; }
@@ -83,18 +90,24 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
                 NewRequestModel.IsNewUser = true;
             }
             if (NewRequestModel.IsNewAddress) { NewRequestModel.Address = new AdminPortal.ViewModels.AddressModel { IncludeNameMobileNo = false, OnlyLocalities = _appUser.Current.FranchiseId.HasValue }; }
-            //var paymentMethods = await _paymentService.GetAllActiveRequestPaymentMethodsAsync(cancellationToken);
-            //PaymentModel = new PaymentModel
-            //{
-            //    PaymentMethods = new SelectList(paymentMethods, "Id", "Name"),
-            //};
+            
+            PaymentModel = new PaymentModel
+            {
+                PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().Where(m => m.IsActive && m.IsRequestPaymentSupport && !m.IsOnlineMethod), "Id", "Name", PaymentMethod.Cash.Id),
+            };
+
+            var warehouses = await _warehouseQueries.AllActiveWarehousesAsync(cancellationToken);
+            StoreModel = new StoreModel
+            {
+                Warehouses = new SelectList(warehouses, "Id", "Name")
+            };
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
-            var user = await _userQueries.UserByMobileNumberAsync(NewRequestModel.MobileNo, cancellationToken);
+            var user = await _userQueries.UserByMobileNumberAsync(NewRequestModel.MobileNo!, cancellationToken);
             int userId = user?.Id ?? 0;
             if (ModelState.IsValid)
             {
@@ -103,12 +116,12 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
                 {
                     var random = new Random();
                     var r = await _userService.CreateUserAsync(
-                        NewRequestModel.Name,
-                        NewRequestModel.MobileNo,
+                        NewRequestModel.Name!,
+                        NewRequestModel.MobileNo!,
                         UserRole.Seller,
-                        NewRequestModel.Address.AddressLine,
-                        NewRequestModel.Address.LocalityId.Value,
-                        Enumeration.FromValue<AddressType>(NewRequestModel.Address.AddressTypeId.Value),
+                        NewRequestModel.Address!.AddressLine!,
+                        NewRequestModel.Address.LocalityId!.Value,
+                        Enumeration.FromValue<AddressType>(NewRequestModel.Address!.AddressTypeId!.Value),
                         NewRequestModel.Address.Latitude,
                         NewRequestModel.Address.Longitude,
                         null,
@@ -130,9 +143,9 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
                 {
                     var addressResult = await _userService.AddUserAddressAsync(
                         user.Id,
-                        NewRequestModel.Address.AddressLine,
-                        NewRequestModel.Address.LocalityId.Value,
-                        NewRequestModel.Address.AddressTypeId.Value,
+                        NewRequestModel.Address!.AddressLine!,
+                        NewRequestModel.Address.LocalityId!.Value,
+                        NewRequestModel.Address!.AddressTypeId!.Value,
                         NewRequestModel.Address.Name,
                         NewRequestModel.Address.MobileNo,
                         NewRequestModel.Address.Latitude,
@@ -152,20 +165,18 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
 
                 if (isValid)
                 {
-                    var requestResult = await _requestService.AddHandledRequestAsync(
-                          userId,
-                          NewRequestModel.AddressId ?? 0,
-                          SourceApp.AdminPortal,
-                          null,
-                          HandleModel.HandleEndTime,
-                          HandleModel.Materials.Select(m => (m.Id.Value, m.Rate.Value, m.Quantity.Value)),
-                          HandleModel.HandlerIds,
-                          null,
-                          null,
-                          null,
-                          NewRequestModel.Comment,
-                          cancellationToken
-                          );
+                    var requestResult = await _requestService.AddBulkRequestAsync(
+                        userId, NewRequestModel.AddressId!.Value,
+                        SourceApp.AdminPortal,
+                        HandleModel.HandleEndTime,
+                        HandleModel.Materials.Select(m => (m.Id!.Value, m.Rate!.Value, m.Quantity!.Value)),
+                        HandleModel.HandlerIds,
+                        PaymentModel.PaymentMethodId!.Value,
+                        StoreModel.WarehouseId!.Value,
+                        null, null,
+                        NewRequestModel.Comment
+                        );
+
                     if (requestResult.IsSuccess)
                         return RedirectToPage("../Details", new { Id = requestResult.Value.Id });
                     if (requestResult.Error is RequestAlreadySubmittedError e)
@@ -208,6 +219,16 @@ namespace TKW.AdminPortal.Areas.Request.Pages.Add
                     };
                 }
             }
+            PaymentModel = new PaymentModel
+            {
+                PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().Where(m => m.IsActive && m.IsRequestPaymentSupport && !m.IsOnlineMethod), "Id", "Name", PaymentModel.PaymentMethodId),
+            };
+
+            var warehouses = await _warehouseQueries.AllActiveWarehousesAsync(cancellationToken);
+            StoreModel = new StoreModel
+            {
+                Warehouses = new SelectList(warehouses, "Id", "Name", StoreModel.WarehouseId)
+            };
             return Page();
         }
     }

@@ -144,6 +144,7 @@
     <Content Include="Areas\Request\Pages\Shared\_RequestBrief.cshtml" />
     <Content Include="Areas\Request\Pages\Shared\_Payment.cshtml" />
     <Content Include="Areas\Request\Pages\Shared\_EditPending.cshtml" />
+    <Content Include="Areas\Request\Pages\Shared\_Store.cshtml" />
     <None Include="compilerconfig.json" />
     <None Include="Pages\Ajax\Address\Modal\Edit.cshtml" />
     <None Include="Pages\Ajax\Address\Modal\List.cshtml" />
