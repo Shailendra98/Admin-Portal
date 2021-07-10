@@ -1,25 +1,7 @@
 ﻿@model StoreModel
-@inject Microsoft.Extensions.Options.IOptions<TKW.AdminPortal.DTOs.Configuration.PictureUrlPrefixes> urlPrefixes
 @{
-    DateTime? defaultDate = Model?.StoreTime;
-    if (defaultDate == null || defaultDate == DateTime.MinValue)
-    {
-        defaultDate = Dt.Now;
-    }
 }
 <div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label asp-for="StorerId" class="control-label"></label>
-            <select asp-for="StorerId" class="form-control">
-                @if (Model.Storer != null)
-                {
-                    <option selected value="@Model.Storer.Id">@Model.Storer.Name</option>
-                }
-            </select>
-            <span asp-validation-for="Storer" class="text-danger small"></span>
-        </div>
-    </div>
     <div class="col-sm-6">
         <div class="form-group">
             <label asp-for="WarehouseId" class="control-label"></label>
@@ -27,44 +9,4 @@
             <span asp-validation-for="WarehouseId" class="text-danger small"></span>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label asp-for="StoreTime" class="control-label"></label>
-            <input asp-for="StoreTime" placeholder="Store time" class="form-control" type="text" readonly style="background-color:#fff;" />
-            <span class="text-danger small" asp-validation-for="StoreTime"></span>
-        </div>
-    </div>
-</div>
-<script>
-    $(function () {
-        $("#@Html.IdFor(m=>m.StorerId)").select2AutoParent(
-            select2SearchResponseAjaxConfiguration(
-                "@Url.Action("SearchActivePickupEmployees","Employee")",
-                function (user) {
-                    if (user.loading) {
-                        return user.text;
-                    } var markup = "<div class='media'>"
-                        + "<div class='media-left'><img src='" + (user.picture != null && user.picture.length > 0 ? "@(urlPrefixes.Value.Profile)x80/" + user.picture : "/images/default/profilex80.png") + "' alt='User picture' height='50' class='img-circle'></div>"
-                        + "<div class='media-body'>"
-                        + "<div class='media-heading'>" + user.name + "</div>"
-                        + "<p class='small'>" + user.mobileNo + "</p>"
-                        + "</div>"
-                        + "</div>";
-                    return markup;
-                },
-                function (obj) { return obj.text || obj.name; },
-            { id: 0, text: "Select Pickup Boy" }
-            ));
-        $("#@Html.IdFor(m=>m.StoreTime)").datetimepicker({
-            useStrict: true,
-            ignoreReadonly: true,
-            format: "DD-MM-YYYY hh:mm A",
-            @if (defaultDate != null) {
-                    @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultDate)",
-                    }
-                minDate:'@string.Format("{0:MM/dd/yyyy}",Dt.Now)'
-            });
-    });
-</script>
+</div>    

@@ -9,7 +9,7 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal
 {
     public class DetailsModel : PageModel
     {
-        private IWarehouseQueries _warehouseQueries;
+        private readonly IWarehouseQueries _warehouseQueries;
 
         public DetailsModel(IWarehouseQueries warehouseQueries)
         {
@@ -18,7 +18,7 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal
 
         [BindProperty(SupportsGet = true)]
         public int PurchaseStoreId { get; set; }
-        public PurchaseStoreModel Purchase { get; set; }
+        public StockInModel Purchase { get; set; }
 
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {

@@ -29,7 +29,7 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Lists
         [BindProperty(SupportsGet = true)]
         public int PageNo { get; set; } = 1;
 
-        public PagedList<WarehousePurchaseListItemModel?> Purchases { get; set; }
+        public PagedList<WarehouseStockInListItemModel?> Purchases { get; set; }
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             int size = (PageSize < 5) ? 5 : (PageSize > 100) ? 100 : PageSize;

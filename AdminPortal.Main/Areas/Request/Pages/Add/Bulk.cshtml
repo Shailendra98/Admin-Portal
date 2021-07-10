@@ -1,5 +1,5 @@
 ﻿@page
-@model TKW.AdminPortal.Areas.Request.Pages.Add.HandledModel
+@model TKW.AdminPortal.Areas.Request.Pages.Add.BulkModel
 @{
     ViewBag.Title = "Add Handled Request";
     bool HasLastHandledRequest = Model.LastHandledRequest != null;
@@ -21,7 +21,20 @@
                 <form method="post">
                     <partial name="_NewRequest" for="NewRequestModel" />
                     <partial name="_Handle" for="HandleModel" />
-                    @*<partial name="_Payment" for="PaymentModel" />*@
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label fw-bold" asp-for="StoreModel.WarehouseId">Warehouse</label>
+                                <select class="form-control" asp-for="StoreModel.WarehouseId" asp-items="Model.StoreModel.Warehouses"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label fw-bold" asp-for="PaymentModel.PaymentMethodId">Payment method</label>
+                                <select class="form-control" asp-for="PaymentModel.PaymentMethodId" asp-items="Model.PaymentModel.PaymentMethods"></select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mb-3 ">
                         <div id="commentfield" style="display:none">
                             <label asp-for="NewRequestModel.Comment" class="col-form-label fw-bold"></label>
@@ -162,6 +175,14 @@
         }
         </div>
 </div>
+@section Scripts{ 
+    <script>
+    $(function () {
+        $("#@Html.IdFor(m=>m.PaymentModel.PaymentMethodId)").select2();
+        $("#@Html.IdFor(m=>m.StoreModel.WarehouseId)").select2();
+    });
+    </script>
+}
 @section Footer{
     <modal id="AddressModal" loader="true"></modal>
     <modal id="DetailsModal" dialog-class="modal-lg" loader="true"></modal>
