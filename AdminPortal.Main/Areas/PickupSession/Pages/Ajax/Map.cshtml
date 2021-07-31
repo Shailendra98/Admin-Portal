@@ -9,6 +9,8 @@
     var rescheduledRequestType = (int)PickupSessionMapViewModel.Type.RescheduledRequest;
     var cancelledRequestType = (int)PickupSessionMapViewModel.Type.CancelledRequest;
     var handledRequestType = (int)PickupSessionMapViewModel.Type.HandledRequest;
+    //var pickupSessionStartType = (int)PickupSessionMapViewModel.Type.PickupSessinStart;
+    //var pickupSessionEndType = (int)PickupSessionMapViewModel.Type.PickupSessinEnd;
 }
 
 <div class="row p-t-sm">
@@ -69,8 +71,25 @@
             scale: 0.8,
             labelOrigin: new google.maps.Point(0.5, -30)
         }
+        , {
+            path: path,
+            fillOpacity: 1.0,
+            fillColor: '#000000',
+            strokeWeight: 1.5,
+            strokeColor: "#000000",
+            scale: 0.8,
+            labelOrigin: new google.maps.Point(0.5, -30)
+        }, {
+            path: path,
+            fillOpacity: 1.0,
+            fillColor: '#000000',
+            strokeWeight: 1.5,
+            strokeColor: "#000000",
+            scale: 0.8,
+            labelOrigin: new google.maps.Point(0.5, -30)
+        }
     ];
-    var list = @Html.Raw(Json.Serialize(Model.Map));
+    var list = @Html.Raw(Json.Serialize(Model.MapView.Map));
     var polyLinePath = @Html.Raw(Json.Serialize(Model.PolylinePath));
     var map;
     var inforObj;
@@ -106,7 +125,7 @@
                map: map,
                label:
                {
-                   text: data.locationType == 4 ? "E" : data.locationType == 5 ? "S" : "R",
+                   text: data.locationType == 4 ? "E" : data.locationType == 5 ? "S" : data.locationType == 6 ? "Start" : data.locationType == 7 ? "End" : "R",
                    color: "#fff",
                    fontWeight: "700",
                    fontSize: "12px"
@@ -115,15 +134,15 @@
            });
 
             bounds.extend(new google.maps.LatLng(data.latitude, data.longitude));
-        var str = (data.locationType == @expenseType ? '<a href="#ExpenseModal" data-toggle="modal" data-load-url="/Expense/Ajax/Modal/Details/' + data.id + '">'
-                    : data.locationType == @sellType ? '<a href="#DetailModel" data-toggle="modal" data-load-url="/Sell/Ajax/Modal/Details/' + data.id + '">'
+            var str = (data.locationType == @expenseType ? '<a href="#ExpenseModal" data-toggle="modal" data-load-url="/Expense/Ajax/Modal/Details/' + data.id + '">'
+                : data.locationType == @sellType ? '<a href="#DetailModel" data-toggle="modal" data-load-url="/Sell/Ajax/Modal/Details/' + data.id + '">'
                     : '<a href="#DetailsModal" data-toggle="modal" data-load-url="/Request/Ajax/Modal/Details/' + data.id + '">')
                 + "<div style='width:350px; padding-right:15px;'><div class='row p-xxs'>"
                 + "<div class='col-sm-6'>"
                 + "<div class='font-bold p-b-xxs'>" + data.title + "</div>"
                 + "<small class='text-muted'>"
-            + (data.locationType == @sellType ? 'Sell' : data.locationType == @expenseType ? 'Expense' : data.locationType == @handledRequestType ? 'Handled Request' : data.locationType == @rescheduledRequestType ? 'Rescheduled Request' : data.locationType == @cancelledRequestType ? 'Cancelled Request' : 'Pending Request')
-                + " (#"+data.id+")</small>"
+                + (data.locationType == @sellType ? 'Sell' : data.locationType == @expenseType ? 'Expense' : data.locationType == @handledRequestType ? 'Handled Request' : data.locationType == @rescheduledRequestType ? 'Rescheduled Request' : data.locationType == @cancelledRequestType ? 'Cancelled Request' : 'Pending Request')
+            + " (#" + data.id + ")</small>"
             + "</div>"
             + "<div class='col-sm-3 p-t-xs p-l-xxs p-r-xxs'>" + (data.amount !== null ? "<span>₹ <b>" + data.amount + "</b></span>" : "") + "</div>"
             +"<div class='col-sm-3 p-t-xs p-l-xxs p-r-xxs text-right'><small class='font-trans'>"+data.time+"</small></div>"
