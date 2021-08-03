@@ -135,74 +135,74 @@
     <div class="tab-content" id="nav-tabContent">
         @if (Model.Completion != null)
         {
-        <div class="tab-pane active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="tab-pane active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <table class="panel-body table table-hover table-borderless">
+                    <thead class="border-bottom">
+                        <tr><th>Name</th><th>Quantity</th><th>Rate</th><th class="text-right">Amount</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.Completion.Items)
+                        {
+                            <tr class="border-bottom">
+                                <td>@m.Material.Name</td>
+                                <td>@m.Quantity.GetValueOrDefault(0).ToString("0.00") @m.Material.UnitName</td>
+                                <td>₹ @m.Rate.GetValueOrDefault(0).ToString("0.00") / @m.Material.UnitName</td>
+                                <td class="text-right">₹ @(((m.Quantity ?? 0) * (m.Rate ?? 0)).ToString("0.00"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr><td colspan="3" class="text-right"><b>Total Amount</b>:</td><td class="text-right">₹ @Model.Completion.TotalAmount.ToString("0.00")</td></tr>
+                    </tfoot>
+                </table>
+            </div>
+        }
+        <div class="tab-pane @(Model.Completion != null? "":"active")" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             <table class="panel-body table table-hover table-borderless">
-                <thead class="border-bottom">
-                    <tr><th>Name</th><th>Quantity</th><th>Rate</th><th class="text-right">Amount</th></tr>
-                </thead>
-                <tbody>
-                    @foreach (var m in Model.Completion.Items)
-                    {
+                @if (Model.Items != null && Model.Items.Count > 0)
+                {
+                    <thead class="border-bottom">
+                        <tr><th colspan="3">Name</th><th>Rate Quoted</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model.Items)
+                        {
+                            <tr class="border-bottom">
+                                <td colspan="3">@m.Material.Name</td>
+                                @if (!m.Rate.HasValue)
+                                {
+                                    <td>N/A</td>
+                                }
+                                else
+                                {
+                                    <td>₹ @m.Rate.Value.ToString("0.00") / @m.Material.UnitName</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <tbody>
                         <tr class="border-bottom">
-                            <td>@m.Material.Name</td>
-                            <td>@m.Quantity.GetValueOrDefault(0).ToString("0.00") @m.Material.UnitName</td>
-                            <td>₹ @m.Rate.GetValueOrDefault(0).ToString("0.00") / @m.Material.UnitName</td>
-                            <td class="text-right">₹ @(((m.Quantity ?? 0) * (m.Rate ?? 0)).ToString("0.00"))</td>
+                            <td colspan="4" class="text-center border-0">
+                                <em>No item quoted</em>
+                            </td>
                         </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr><td colspan="3" class="text-right"><b>Total Amount</b>:</td><td class="text-right">₹ @Model.Completion.TotalAmount.ToString("0.00")</td></tr>
-                </tfoot>
+                    </tbody>
+                }
+                @if (Model.PaymentMethod != null)
+                {
+                    <tfoot>
+                        <tr>
+                            <td class="text-right" colspan="3"><b>Payment preference</b>:</td>
+                            <td>@Model.PaymentMethod.Name</td>
+                        </tr>
+                    </tfoot>
+                }
             </table>
         </div>
-        }
-    <div class="tab-pane @(Model.Completion != null? "":"active")" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-        <table class="panel-body table table-hover table-borderless">
-            @if (Model.Items != null && Model.Items.Count > 0)
-            {
-                <thead class="border-bottom">
-                    <tr><th colspan="3">Name</th><th>Rate Quoted</th></tr>
-                </thead>
-                <tbody>
-                    @foreach (var m in Model.Items)
-                    {
-                        <tr class="border-bottom">
-                            <td colspan="3">@m.Material.Name</td>
-                            @if (!m.Rate.HasValue)
-                            {
-                                <td>N/A</td>
-                            }
-                            else
-                            {
-                                <td>₹ @m.Rate.Value.ToString("0.00") / @m.Material.UnitName</td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            }
-            else
-            {
-                <tbody>
-                    <tr class="border-bottom">
-                        <td colspan="4" class="text-center border-0">
-                            <em>No item quoted</em>
-                        </td>
-                    </tr>
-                </tbody>
-            }
-            @if (Model.PaymentMethod != null)
-            {
-                <tfoot>
-                    <tr>
-                        <td class="text-right" colspan="3"><b>Payment preference</b>:</td>
-                        <td>@Model.PaymentMethod.Name</td>
-                    </tr>
-                </tfoot>
-            }
-        </table>
     </div>
-        </div>
 </div>
 @if ((user.Current.Role == ApplicationCore.Enums.UserRole.Admin || user.Current.Role == ApplicationCore.Enums.UserRole.TeleCaller) && new List<int> { RequestStatus.Assigned.Id, RequestStatus.Submitted.Id, RequestStatus.Rescheduled.Id }.Contains(Model.Status.Id))
 {
@@ -318,13 +318,13 @@
                         </div>
                         @if (Model.RatingAndFeedbacks.SellerFeedbacks != null && Model.RatingAndFeedbacks.SellerFeedbacks.Count > 0)
                         {
-                    <div class="p-t-xs p-b-xs small">
-                        @foreach (var f in Model.RatingAndFeedbacks.SellerFeedbacks)
-                        {
-                            <div class="border border-dark rounded-pill d-inline-block mt-1 me-1 px-1 small">@f.Name</div>
-                            @*<span class="label @labelClass">@f.Name</span>*@
-                        }
-                    </div>
+                            <div class="p-t-xs p-b-xs small">
+                                @foreach (var f in Model.RatingAndFeedbacks.SellerFeedbacks)
+                                {
+                                    <div class="border border-dark rounded-pill d-inline-block mt-1 me-1 px-1 small">@f.Name</div>
+                                    @*<span class="label @labelClass">@f.Name</span>*@
+                                }
+                            </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.SellerRemark))
                         {
@@ -335,29 +335,29 @@
                 @if (Model.RatingAndFeedbacks.PickupBoy != null)
                 {
                     var labelClass = Model.RatingAndFeedbacks.PickupBoyRating > 3 ? "label-success" : Model.RatingAndFeedbacks.PickupBoyRating < 3 ? "label-danger" : "label-info";
-            <div class="col-sm-6">
-                <div class="h6 font-bold">Pickup Boy's Rating<br /><small>@(Model.RatingAndFeedbacks.PickupBoy != null ? "(by " + Model.RatingAndFeedbacks.PickupBoy.Name + ")" : "")</small></div>
-                   <div class="small">
-                    @for (var i = 1; i <= 5; i++)
-                    {
-                        <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.PickupBoyRating >= i ? "fa-star":"fa-star-o")"></i>
-                    }
+                    <div class="col-sm-6">
+                        <div class="h6 font-bold">Pickup Boy's Rating<br /><small>@(Model.RatingAndFeedbacks.PickupBoy != null ? "(by " + Model.RatingAndFeedbacks.PickupBoy.Name + ")" : "")</small></div>
+                        <div class="small">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <i class="fa fa-2x text-success @(Model.RatingAndFeedbacks.PickupBoyRating >= i ? "fa-star":"fa-star-o")"></i>
+                            }
+                        </div>
+                        @if (Model.RatingAndFeedbacks.PickupBoyFeedbacks != null && Model.RatingAndFeedbacks.PickupBoyFeedbacks.Count > 0)
+                        {
+                            <div class="p-t-xs p-b-xs small">
+                                @foreach (var f in Model.RatingAndFeedbacks.PickupBoyFeedbacks)
+                                {
+                                    <div class="border border-dark rounded-pill d-inline-block mt-1 me-1 px-1 small">@f.Name</div>
+                                    @*<span class="label @labelClass">@f.Name</span>*@
+                                }
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.PickupBoyRemark))
+                        {
+                            <blockquote class="small mb-0">@Model.RatingAndFeedbacks.PickupBoyRemark</blockquote>
+                        }
                     </div>
-                    @if (Model.RatingAndFeedbacks.PickupBoyFeedbacks != null && Model.RatingAndFeedbacks.PickupBoyFeedbacks.Count > 0)
-                    {
-            <div class="p-t-xs p-b-xs small">
-                @foreach (var f in Model.RatingAndFeedbacks.PickupBoyFeedbacks)
-                {
-                    <div class="border border-dark rounded-pill d-inline-block mt-1 me-1 px-1 small">@f.Name</div>
-                    @*<span class="label @labelClass">@f.Name</span>*@
-                }
-            </div>
-                    }
-                    @if (!string.IsNullOrWhiteSpace(Model.RatingAndFeedbacks.PickupBoyRemark))
-                    {
-                        <blockquote class="small mb-0">@Model.RatingAndFeedbacks.PickupBoyRemark</blockquote>
-                    }
-                </div>
                 }
             </div>
         </div>
@@ -453,6 +453,19 @@
                                 <div class="p-b-xs">Payment of <strong>₹ @payment.Amount.ToString("0.00")</strong> in user's wallet by @payment.Updater.Name</div>
                             }
                             <div><span class="pull-right"><b>Status</b>: <span id="paymentStatusText_@payment.Id">@payment.StatusName</span></span><b>Transaction Id</b>: @payment.Id</div>
+                            if (payment.MethodId == PaymentMethod.PaytmWallet.Id)
+                            {
+                                <hr />
+                                <small class="small"><b>Message : </b>@payment.PaytmWalletStatusMessage</small>
+                            }
+                            else if (payment.MethodId == PaymentMethod.UPI.Id)
+                            { <hr />
+                                <small class="small"><b>Message : </b>@payment.UPIStatusMessage</small>
+                            }
+                            else if (payment.MethodId == PaymentMethod.IMPS.Id)
+                            { <hr />
+                                <small class="small"><b>Message : </b>@payment.BankAcoountAndIFSCStatusMessage</small>
+                            }
                             @if (payment.StatusId == PaymentTransactionStatus.Pending.Id)
                             {
                                 <div id="paymentTransactionStatusCheckButtonContainer_@payment.Id">
