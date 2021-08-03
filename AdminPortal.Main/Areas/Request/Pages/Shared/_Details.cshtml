@@ -336,7 +336,7 @@
                 {
                     var labelClass = Model.RatingAndFeedbacks.PickupBoyRating > 3 ? "label-success" : Model.RatingAndFeedbacks.PickupBoyRating < 3 ? "label-danger" : "label-info";
                     <div class="col-sm-6">
-                        <div class="h6 font-bold">Pickup Boy's Rating<br /><small>@(Model.RatingAndFeedbacks.PickupBoy != null ? "(by " + Model.RatingAndFeedbacks.PickupBoy.Name + ")" : "")</small></div>
+                        <div>Pickup Boy's Rating<br /><small>@(Model.RatingAndFeedbacks.PickupBoy != null ? "(by " + Model.RatingAndFeedbacks.PickupBoy.Name + ")" : "")</small></div>
                         <div class="small">
                             @for (var i = 1; i <= 5; i++)
                             {
