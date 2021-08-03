@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "o0RtbCYpNBSs4h/2pFINekJgeoVneV4gJxnHTftSeW+wPUDajlv4AnRlXdLGvT+D+7UtVmgKZGzjIPdCBR6uxw==",
+  "dgSpecHash": "KzDsJfsiz2KqQTh9xuo5Qt3tqI+WtjC3zLnhNKjSmbcFfna5kX7pJWHylv1TEm18w6aCikYdYjSgQH10O65nfg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Pc3\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+  "projectFilePath": "C:\\Users\\Pc3\\source\\repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Pc3\\.nuget\\packages\\chartjs.blazor.fork\\2.0.2\\chartjs.blazor.fork.2.0.2.nupkg.sha512",
     "C:\\Users\\Pc3\\.nuget\\packages\\microsoft.aspnetcore.authorization\\5.0.3\\microsoft.aspnetcore.authorization.5.0.3.nupkg.sha512",
@@ -33,7 +33,7 @@
     "C:\\Users\\Pc3\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
     "C:\\Users\\Pc3\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\Pc3\\.nuget\\packages\\system.net.http.json\\5.0.0\\system.net.http.json.5.0.0.nupkg.sha512",
-    "C:\\Users\\Pc3\\.nuget\\packages\\microsoft.netcore.app.runtime.browser-wasm\\5.0.6\\microsoft.netcore.app.runtime.browser-wasm.5.0.6.nupkg.sha512"
+    "C:\\Users\\Pc3\\.nuget\\packages\\microsoft.netcore.app.runtime.browser-wasm\\5.0.7\\microsoft.netcore.app.runtime.browser-wasm.5.0.7.nupkg.sha512"
   ],
   "logs": []
 }

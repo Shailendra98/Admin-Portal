@@ -9,8 +9,8 @@
     var rescheduledRequestType = (int)PickupSessionMapViewModel.Type.RescheduledRequest;
     var cancelledRequestType = (int)PickupSessionMapViewModel.Type.CancelledRequest;
     var handledRequestType = (int)PickupSessionMapViewModel.Type.HandledRequest;
-    //var pickupSessionStartType = (int)PickupSessionMapViewModel.Type.PickupSessinStart;
-    //var pickupSessionEndType = (int)PickupSessionMapViewModel.Type.PickupSessinEnd;
+    var pickupSessionStartType = (int)PickupSessionMapViewModel.Type.PickupSessionStart;
+    var pickupSessionEndType = (int)PickupSessionMapViewModel.Type.PickupSessionEnd;
 }
 
 <div class="row p-t-sm">
@@ -20,6 +20,7 @@
 </div>
 <script>
     var path = 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z';
+    var Endpath = 'M33 135C33 88.0071 71.0071 50 118 50C164.993 50 203 88.0071 203 135C203 185.636 149.329 255.457 127.35 282.05C122.493 287.879 113.629 287.879 108.771 282.05C86.6714 255.457 33 185.636 33 135ZM87.6431 135C87.6431 151.757 101.243 165.357 118 165.357C134.757 165.357 148.357 151.757 148.357 135C148.357 118.243 134.757 104.643 118 104.643C101.243 104.643 87.6431 118.243 87.6431 135Z';
     var icons = [
         {
             path: path,
@@ -72,25 +73,23 @@
             labelOrigin: new google.maps.Point(0.5, -30)
         }
         , {
-            path: path,
+            path: 'M33 135C33 88.0071 71.0071 50 118 50C164.993 50 203 88.0071 203 135C203 185.636 149.329 255.457 127.35 282.05C122.493 287.879 113.629 287.879 108.771 282.05C86.6714 255.457 33 185.636 33 135ZM87.6431 135C87.6431 151.757 101.243 165.357 118 165.357C134.757 165.357 148.357 151.757 148.357 135C148.357 118.243 134.757 104.643 118 104.643C101.243 104.643 87.6431 118.243 87.6431 135Z',
             fillOpacity: 1.0,
             fillColor: '#000000',
-            strokeWeight: 1.5,
+            strokeWeight: 1,
             strokeColor: "#000000",
-            scale: 0.8,
-            labelOrigin: new google.maps.Point(0.5, -30)
+            scale: 0.1,
         }, {
-            path: path,
+            path: 'M33 135C33 88.0071 71.0071 50 118 50C164.993 50 203 88.0071 203 135C203 185.636 149.329 255.457 127.35 282.05C122.493 287.879 113.629 287.879 108.771 282.05C86.6714 255.457 33 185.636 33 135ZM87.6431 135C87.6431 151.757 101.243 165.357 118 165.357C134.757 165.357 148.357 151.757 148.357 135C148.357 118.243 134.757 104.643 118 104.643C101.243 104.643 87.6431 118.243 87.6431 135Z',
             fillOpacity: 1.0,
-            fillColor: '#000000',
-            strokeWeight: 1.5,
+            fillColor: '#FF0000',
+            strokeWeight: 1,
             strokeColor: "#000000",
-            scale: 0.8,
-            labelOrigin: new google.maps.Point(0.5, -30)
+            scale: 0.1,
         }
     ];
-    var list = @Html.Raw(Json.Serialize(Model.MapView.Map));
-    var polyLinePath = @Html.Raw(Json.Serialize(Model.PolylinePath));
+    var list = @Html.Raw(Json.Serialize(Model.MapList));
+    var polyLinePath = @Html.Raw(Json.Serialize(Model.PolylinePathList));
     var map;
     var inforObj;
     $(function () {
@@ -125,7 +124,7 @@
                map: map,
                label:
                {
-                   text: data.locationType == 4 ? "E" : data.locationType == 5 ? "S" : data.locationType == 6 ? "Start" : data.locationType == 7 ? "End" : "R",
+                   text: data.locationType == 4 ? "E" : data.locationType == 5 ? "S" : data.locationType == 6 ? " " : data.locationType == 7 ? " " : "R",
                    color: "#fff",
                    fontWeight: "700",
                    fontSize: "12px"
