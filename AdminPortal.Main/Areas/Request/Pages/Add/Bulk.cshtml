@@ -1,11 +1,11 @@
 ﻿@page
 @model TKW.AdminPortal.Areas.Request.Pages.Add.BulkModel
 @{
-    ViewBag.Title = "Add Handled Request";
+    ViewBag.Title = "Add Bulk Request";
     bool HasLastHandledRequest = Model.LastHandledRequest != null;
     bool HasPendingRequests = Model.PendingRequests != null && Model.PendingRequests.Count > 0;
 }
-<pagetitle title="Add Handled Request" description="Add request which is already handled.">
+<pagetitle title="Add Bulk Request" description="Add request which is already handled.">
 </pagetitle>
 <div class="content">
     <div class="row">
