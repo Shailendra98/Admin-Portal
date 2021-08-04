@@ -38,7 +38,7 @@
                     <div class="mb-3 ">
                         <div id="commentfield" style="display:none">
                             <label asp-for="NewRequestModel.Comment" class="col-form-label fw-bold"></label>
-                            <input asp-for="NewRequestModel.Comment" class="form-control" placeholder="Comment" />
+                            <textarea rows="3" asp-for="NewRequestModel.Comment" class="form-control" placeholder="Comment"></textarea>
                             <span asp-validation-for="NewRequestModel.Comment" class="text-danger small"></span>
                         </div>
                     </div>
