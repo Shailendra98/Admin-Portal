@@ -75,11 +75,12 @@
                             }
                             else if (c.TypeId == PickupSessionCashTransactionType.Expense.Id)
                             {
-                                <a href="#ExpenseModal" data-load-url="@Url.Page("Modal/Details", new {area = "Expense", id = c.RefId})" data-bs-toogle="modal" class="detailbtn list-group-item">
+                                <a href="#ExpenseModal" class="expdetailbtn list-group-item" data-bs-toggle="modal" data-bs-target="#ExpenseModal" data-load-url="@Url.Page("Modal/Details", new {area = "Expense", c.Id})" data-id="@c.RefId">
+                               
                                     <div class="row">
                                         <div class="w-50">
                                             <div class="fw-bold">@c.Detail</div>
-                                            <div><small class="text-muted">Request (#@c.RefId)</small></div>
+                                            <div><small class="text-muted">Expense (#@c.RefId)</small></div>
                                         </div>
                                         <div class="w-25 d-flex align-items-center">
                                             @if (c.Amount > 0)
@@ -104,7 +105,7 @@
                                     <div class="row">
                                         <div class="w-50">
                                             <div class="fw-bold">@c.Detail</div>
-                                            <div><small class="text-muted">Request (#@c.RefId)</small></div>
+                                            <div><small class="text-muted">Sell (#@c.RefId)</small></div>
                                         </div>
                                         <div class="w-25 d-flex align-items-center">
                                             @if (c.Amount > 0)
@@ -129,7 +130,7 @@
             </div>
         </div>
     </div>
-    <div class="d-inline-block flex-fill">
+    <div class="d-inline-block flex-fill pe-4">
         <div class="hpanel">
             <div class="panel-body p-0">
                 <div class="list-group">
@@ -147,48 +148,89 @@
                     {
                         @foreach (var c in Model.Paytm)
                         {
-                <a href="@Url.Page("../Details", new { area ="Request", c.RequestId})" class="reqdetailbtn list-group-item" data-id="@c.RequestId">
-                    <div class="row">
-                        <div class="w-50">
-                            <div class="fw-bold">@c.PayeeName</div>
-                            <div> <small class="text-muted">Request (#@c.RequestId)</small></div>
-                        </div>
-                        <div class="w-25 d-flex align-items-center">
-                            <div>- ₹<span class="text-danger h6 fw-bold"> @c.Amount.ToString("G29")</span></div>
-                        </div>
-                        <div class="w-25">
-                            <div><small class="font-trans">@String.Format("{0:hh:mm tt}", c.Time)</small></div>
-                            @if (c.StatusId == PaymentTransactionStatus.Successful.Id)
-                            {<span class="badge h-bg-green">Success</span>}
-                            else if (c.StatusId == PaymentTransactionStatus.Failed.Id)
-                            { <span class="badge badge-danger">Failed</span>}
-                            else
-                            {
-                                <span class="badge badge-danger">Pending</span>
-                            }
-                        </div>
+                            <a href="@Url.Page("../Details", new { area ="Request", c.RequestId})" class="reqdetailbtn list-group-item" data-id="@c.RequestId">
+                                <div class="row">
+                                    <div class="w-50">
+                                        <div class="fw-bold">@c.PayeeName</div>
+                                        <div> <small class="text-muted">Request (#@c.RequestId)</small></div>
+                                    </div>
+                                    <div class="w-25 d-flex align-items-center">
+                                        <div>- ₹<span class="text-danger h6 fw-bold"> @c.Amount.ToString("G29")</span></div>
+                                    </div>
+                                    <div class="w-25">
+                                        <div><small class="font-trans">@String.Format("{0:hh:mm tt}", c.Time)</small></div>
+                                        @if (c.StatusId == PaymentTransactionStatus.Successful.Id)
+                                        {<span class="badge h-bg-green">Success</span>}
+                                        else if (c.StatusId == PaymentTransactionStatus.Failed.Id)
+                                        { <span class="badge badge-danger">Failed</span>}
+                                        else
+                                        {
+                                            <span class="badge badge-danger">Pending</span>
+                                        }
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-inline-block flex-fill">
+        <div class="hpanel">
+            <div class="panel-body p-0">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div class="h6 mb-1">Cash</div>
                     </div>
-                    @*<div class="row">
-            <div class="w-50 py-2">
-              <div class="fw-bold">@c.Detail</div>
-                                <div><small class="text-muted">Request (#@c.RefId)</small></div>
-            </div>
-            <div class="w-25 d-flex align-items-center">
-                @if (c.Amount > 0)
-                {
-                    <div>+ ₹<span class="h6 fw-bold" style="color:#62cb31;"> @c.Amount.ToString("G29")</span></div>
-                }
-                else
-                {
-                    <div>- ₹<span class="text-danger h6 fw-bold">@((c.Amount * -1).ToString("G29"))</span></div>
-                }
+                    @if (Model.Upi == null || Model.Upi.Count == 0)
+                    {
+                        <div class="list-group-item">
+                            <div class="text-center p-sm">There is no UPI transaction.</div>
+                        </div>
+                    }
+                    else
+                    {
+                        foreach (var c in Model.Upi)
+                        {
 
-            </div>
-            <div class="w-25 d-flex align-items-center">
-                <small class="font-trans">@String.Format("{0:hh:mm tt}", c.Time)</small><br />
-            </div>
-        </div>*@
-                </a>
+
+                            <a href="@Url.Page("../Details", new { area ="Request", c.RequestId})" class="reqdetailbtn list-group-item" data-id="@c.RequestId">
+                                <div class="row">
+                                    <div class="w-50">
+                                        <div class="fw-bold">@c.PayeeName</div>
+                                        <div><small class="text-muted">Request (#@c.RequestId)</small></div>
+                                    </div>
+                                    <div class="w-25 d-flex align-items-center">
+                                        @if (c.Amount > 0)
+                                        {
+                                            <div>+ ₹<span class="h6 fw-bold text-success"> @c.Amount.ToString("G29")</span></div>
+                                        }
+                                        else
+                                        {
+                                            <div>- ₹<span class="text-danger h6 fw-bold"> @((c.Amount * -1).ToString("G29"))</span></div>
+                                        }
+
+                                    </div>
+                                    <div class="w-25 align-items-center">
+                                        <div><small class="font-trans">@String.Format("{0:hh:mm tt}", c.Time)</small></div>
+                                        <div>
+                                            @if (c.StatusId == PaymentTransactionStatus.Successful.Id)
+                                            {
+                                                <span class="badge badge-success">Success</span>
+                                            }
+                                            else if (c.StatusId == PaymentTransactionStatus.Failed.Id)
+                                            { 
+                                                <small class="badge badge-danger">Failed</small>
+                                                }
+                                            else
+                                            {
+                                                <small class="badge badge-primary">Pending</small>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         }
                     }
                 </div>
@@ -196,63 +238,19 @@
         </div>
     </div>
 </div>
-    @*<div class="col-md-4" style="padding-right:0px">
-        <div class="hpanel">
-            <div class="panel-body">
-                <h4>UPI</h4>
-                @if (Model.Upi == null || Model.Upi.Count == 0)
-                {
-                    <hr class="m-t-sm m-b-sm" />
-                    <h6 class="text-center p-t-sm">There is no transaction. </h6>
-                }
-                else
-                {
-                    @foreach (var c in Model.Upi)
-                    {
-                        <hr class="m-t-sm m-b-sm" />
-                        <a href="@Url.Page("../Details", new { area ="Request", c.RequestId})" class="reqdetailbtn" data-id="@c.RequestId">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <b>@c.PayeeName</b><br />
-                                    <small class="text-muted">Request (#@c.RequestId)</small>
-                                </div>
-                                <div class="col-sm-3 text-right">
-                                    <h5 class="text-success"><small class="text-success">+ ₹</small> @c.Amount.ToString("G29")</h5>
-                                </div>
-                                <div class="col-sm-3 text-right padding-l-r">
-                                    <small class="font-trans">@String.Format("{0:hh:mm tt}", c.Time)</small><br />
-                                    @if (c.StatusId == PaymentTransactionStatus.Successful.Id)
-                                    {<span class="label label-success">Success</span>}
-                                    else if (c.StatusId == PaymentTransactionStatus.Failed.Id)
-                                    { <span class="label label-danger">Failed</span>}
-                                    else
-                                    {
-                                        <span class="label label-warning">Pending</span>
-                                    }
-                                </div>
-                            </div>
-                        </a>
-                    }
-                }
-            </div>
-        </div>
-    </div>*@
 
 <script>
 
     $(function () {
         $(document).on("click", ".reqdetailbtn", function (e) {
-             e.preventDefault();
-             $('#DetailsModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/Request/Ajax/Modal/Details/' + $(this).data('id'));
+            e.preventDefault();
+            $('#DetailsModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/Request/Ajax/Modal/Details/' + $(this).data('id'));
         });
-          //$(document).on("click", ".detailbtn", function (e) {
-          //    e.preventDefault();
-          //    $('#ExpenseModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/ExpenseList' + $(this).data('id'));
-          //});
-          //$(document).on("click", ".selldetailbtn", function (e) {
-          //    e.preventDefault();
-          //    $('#DetailModel').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/SellList' + $(this).data('id'));
-          //});
+
+        $(document).on("click", ".expdetailbtn", function (e) {
+            e.preventDefault();
+            $('#ExpenseModal').modal('show').find('.modal-content').html("<div class='modal-body text-center'><img src='/images/ripple.gif' alt='Loading..'/></div>").load('/Expense/Ajax/Modal/Details/' + $(this).data('id'));
+        });
     });
 
 </script>
