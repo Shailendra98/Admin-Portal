@@ -19,51 +19,31 @@ namespace TKW.AdminPortal.Areas.PickupSession.Pages.Ajax
         {
             _pickupSessionQueries = pickupSessionQueries;
         }
-
-        //public List<MarkerDetailViewModel> Map { get; set; }
-        public List<MarkerDetailViewModel> MapList { get; set; }
-        public MapViewModel MapView { get; set; }
-        public List<LatLng> PolylinePathList { get; set; }
+        public List<MarkerDetailViewModel> Map { get; set; }
+        public List<LatLng> PolylinePath { get; set; }
 
         public async Task OnGetAsync(int id, CancellationToken cancellationToken)
         {
-            MapView = await _pickupSessionQueries.PickupSessionMapDetailsAsync(id, cancellationToken);
+            var model = (await _pickupSessionQueries.PickupSessionMapDetailsAsync(id, cancellationToken))
+                .Where(m => m.Latitude != null && m.Longitude != null);
+            Map = model
+                .Select(m => new MarkerDetailViewModel
+                {
+                    Amount = m.Amount,
+                    Id = m.Id,
+                    Latitude = m.Latitude!.Value,
+                    Longitude = m.Longitude!.Value,
+                    LocationType = m.LocationType,
+                    Title = m.Title,
+                    Time = m.Time.ToString("hh:mm tt")
+                })
+                .ToList();
 
-            var Map = MapView.Map.Where(m => m.Latitude != null && m.Longitude != null).Select(m => new MarkerDetailViewModel
-            {
-                Amount = m.Amount,
-                Id = m.Id,
-                Latitude = m.Latitude!.Value,
-                Longitude = m.Longitude!.Value,
-                LocationType = m.LocationType,
-                Title = m.Title,
-                Time = m.Time.ToString("hh:mm tt")
-            }).ToList();
-
-            List<MarkerDetailViewModel> markerDetailViewModel = new List<MarkerDetailViewModel>();
-            markerDetailViewModel.Add(new MarkerDetailViewModel { Latitude = MapView.StartLatitude!.Value, Longitude = MapView.StartLongitude!.Value,LocationType = PickupSessionMapViewModel.Type.PickupSessionStart });
-
-            List<MarkerDetailViewModel> markerDetailView = new List<MarkerDetailViewModel>();
-            markerDetailView.Add(new MarkerDetailViewModel { Latitude = MapView.EndLatitude!.Value, Longitude = MapView.EndLongitude!.Value,LocationType = PickupSessionMapViewModel.Type.PickupSessionEnd });
-
-            MapList = Map.Concat(markerDetailView).Concat(markerDetailViewModel).ToList();
-
-
-
-            List<LatLng> pickupSessionStart = new List<LatLng>();
-            pickupSessionStart.Add(new LatLng { Lat = MapView.StartLatitude.Value, Lng = MapView.StartLongitude.Value });
-
-            List<LatLng> pickupSessionEnd = new List<LatLng>();
-            pickupSessionEnd.Add(new LatLng { Lat = MapView.EndLatitude.Value, Lng = MapView.EndLongitude.Value });
-
-            var PolylinePath = MapView.Map.Where(m => m.Time != null && m.LocationType != PickupSessionMapViewModel.Type.PendingRequest && m.LocationType != PickupSessionMapViewModel.Type.RescheduledRequest && m.LocationType != PickupSessionMapViewModel.Type.CancelledRequest).OrderBy(m => m.Time).Select(m => new LatLng
+            PolylinePath = model.Where(m => m.Time != null && m.LocationType != PickupSessionMapViewModel.Type.PendingRequest && m.LocationType != PickupSessionMapViewModel.Type.RescheduledRequest && m.LocationType != PickupSessionMapViewModel.Type.CancelledRequest).OrderBy(m => m.Time).Select(m => new LatLng
             {
                 Lat = m.Latitude!.Value,
                 Lng = m.Longitude!.Value
             }).ToList();
-
-            PolylinePathList = PolylinePath.Concat(pickupSessionStart).Concat(pickupSessionEnd).ToList();
-
         }
     }
     public class LatLng

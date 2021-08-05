@@ -88,8 +88,8 @@
             scale: 0.1,
         }
     ];
-    var list = @Html.Raw(Json.Serialize(Model.MapList));
-    var polyLinePath = @Html.Raw(Json.Serialize(Model.PolylinePathList));
+    var list = @Html.Raw(Json.Serialize(Model.Map));
+    var polyLinePath = @Html.Raw(Json.Serialize(Model.PolylinePath));
     var map;
     var inforObj;
     $(function () {
