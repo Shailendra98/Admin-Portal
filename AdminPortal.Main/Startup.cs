@@ -67,6 +67,7 @@ namespace AdminPortal
             services.Configure<PhotoSetting>(Configuration.GetSection("PhotoSetting"));
             services.Configure<PaytmSetting>(Configuration.GetSection("PaytmSetting"));
             services.Configure<MSG91Setting>(Configuration.GetSection("MSG91Setting"));
+            services.AddSingleton(provider => Configuration.GetSection(nameof(GeneralSetting)).Get<GeneralSetting>());
             services.AddScoped<PhotoSetting>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<UrlGenerator>();
