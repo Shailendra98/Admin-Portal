@@ -56,12 +56,15 @@
         <li class="@Html.IsSelected(area: "Area")">
             <a href="@Url.Page("/Index", new { area = "Area" })" class="text-decoration-none d-block"><span class="nav-label">Area</span></a>
         </li>
-      
+
         <li class="@Html.IsSelected(area:"Buyer")">
             <a href="@Url.Page("/Index",new { area="Buyer" })" class="text-decoration-none d-block"><span class="nav-label">Buyers</span></a>
         </li>
-      <li class="@Html.IsSelected(area: "Incentive")">
+        <li class="@Html.IsSelected(area: "Incentive")">
             <a href="@Url.Page("/Index", new { area = "Incentive" })" class="text-decoration-none d-block"><span class="nav-label">Incentives</span></a>
-      </li>
+        </li>
+        <li class="@Html.IsSelected(area: "Report")">
+            <a href="@Url.Page("/Index", new { area = "Report" })" class="text-decoration-none d-block"><span class="nav-label">Data Report</span></a>
+        </li>
     </ul>
 </div>

@@ -161,7 +161,7 @@
                                         <a href="#" data-loaded="false" data-load-url="@Url.Page("../Ajax/Modal/Details", new { r.Id })" data-bs-target="#DetailsModal" class="btn btn-default btn-xs" data-bs-toggle="modal">Details</a>
                                         <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Reschedule", new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Reschedule</a>
                                         <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Assign", new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Assign</a>
-                                        <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Handle", new { r.Id })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Handle</a>
+                                        @*<a href="#" data-load-url="@Url.Page("../Ajax/Modal/Handle", new { r.Id })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Handle</a>*@
                                         <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Cancel", new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Cancel</a>
                                     </div>
                                 </div>
