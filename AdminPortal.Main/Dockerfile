@@ -16,10 +16,10 @@ RUN apt-get update \
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["src/web/AdminPortal/AdminPortal.Main/AdminPortal.Main.csproj", "src/web/AdminPortal/AdminPortal.Main/"]
-COPY src/SharedKernel src/SharedKernel/
-COPY src/ApplicationCore src/ApplicationCore/
-COPY src/Queries src/Queries/
-COPY src/Infrastructure src/Infrastructure/
+#COPY src/SharedKernel src/SharedKernel/
+#COPY src/ApplicationCore src/ApplicationCore/
+#COPY src/Queries src/Queries/
+#COPY src/Infrastructure src/Infrastructure/
 COPY src/web/AdminPortal src/web/AdminPortal/
 RUN dotnet restore "src/web/AdminPortal/AdminPortal.Main/AdminPortal.Main.csproj"
 WORKDIR "/src/src/web/AdminPortal/AdminPortal.Main"

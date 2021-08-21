@@ -366,8 +366,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="TKW.ApplicationCore" Version="1.2.1" />
-    <PackageReference Include="TKW.Infrastructure" Version="1.2.0" />
+    <PackageReference Include="TKW.ApplicationCore" Version="1.2.2" />
+    <PackageReference Include="TKW.Infrastructure" Version="1.2.1" />
     <PackageReference Include="TKW.Queries" Version="1.0.3" />
     <PackageReference Include="TKW.SharedKernel" Version="1.0.0" />
   </ItemGroup>
