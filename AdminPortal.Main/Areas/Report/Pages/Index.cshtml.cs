@@ -26,6 +26,9 @@ namespace TKW.AdminPortal.Areas.Report.Pages
 
         [BindProperty(SupportsGet = true)]
         public PerformanceFilterSortModel Filter { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public CancelledCompleteRequestFilterSortModel FilterRequest { get; set; }
         public List<PickupboyPerformanceModel> PickupboyPerformance { get; set; }
         public List<CancelledCompletedRequestModel> RequestList { get; set; }
 
@@ -46,9 +49,9 @@ namespace TKW.AdminPortal.Areas.Report.Pages
                     }
                     break;
                 case "request":
-                    if (Filter?.StartDate != null && Filter?.EndDate != null)
+                    if (FilterRequest?.StartDate != null && FilterRequest?.EndDate != null)
                     {
-                        RequestList = await _performanceQueries.FiteredAndSortedRequsetPerformanceAsync(Filter, cancellationToken);
+                        RequestList = await _performanceQueries.FiteredAndSortedRequsetPerformanceAsync(FilterRequest, cancellationToken);
                         return this.Excel("RequestSummaryExcel", new ExcelSheetModel<CancelledCompletedRequestModel>(RequestList));
                     }
                     else

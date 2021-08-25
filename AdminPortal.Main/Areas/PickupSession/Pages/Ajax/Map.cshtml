@@ -20,7 +20,6 @@
 </div>
 <script>
     var path = 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z';
-    var Endpath = 'M33 135C33 88.0071 71.0071 50 118 50C164.993 50 203 88.0071 203 135C203 185.636 149.329 255.457 127.35 282.05C122.493 287.879 113.629 287.879 108.771 282.05C86.6714 255.457 33 185.636 33 135ZM87.6431 135C87.6431 151.757 101.243 165.357 118 165.357C134.757 165.357 148.357 151.757 148.357 135C148.357 118.243 134.757 104.643 118 104.643C101.243 104.643 87.6431 118.243 87.6431 135Z';
     var icons = [
         {
             path: path,
@@ -39,7 +38,8 @@
             strokeColor: "#cc9205",
             scale: 0.8,
             labelOrigin: new google.maps.Point(0.5, -30)
-        }, {
+        },
+        {
             path: path,
             fillOpacity: 1.0,
             fillColor: '#e74c3c',
@@ -47,7 +47,8 @@
             strokeColor: "#b93d30",
             scale: 0.8,
             labelOrigin: new google.maps.Point(0.5, -30)
-        }, {
+        },
+        {
             path: path,
             fillOpacity: 1.0,
             fillColor: '#62cb31',
@@ -55,7 +56,8 @@
             strokeColor: "#4ea227",
             scale: 0.8,
             labelOrigin: new google.maps.Point(0.5, -30)
-        }, {
+        },
+        {
             path: path,
             fillOpacity: 1.0,
             fillColor: '#9b59b6',
@@ -63,7 +65,8 @@
             strokeColor: "#7c4792",
             scale: 0.8,
             labelOrigin: new google.maps.Point(0.5, -30)
-        }, {
+        },
+        {
             path: path,
             fillOpacity: 1.0,
             fillColor: '#34495e',
@@ -71,21 +74,24 @@
             strokeColor: "#2a3a4b",
             scale: 0.8,
             labelOrigin: new google.maps.Point(0.5, -30)
-        }
-        , {
-            path: 'M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z',
+        },
+        {
+            path: path /*'M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'*/,
             fillOpacity: 1.0,
             fillColor: '#000000',
             strokeWeight: 3,
             strokeColor: "#000000",
-            scale: 0.9
-        }, {
-            path: 'M33 135C33 88.0071 71.0071 50 118 50C164.993 50 203 88.0071 203 135C203 185.636 149.329 255.457 127.35 282.05C122.493 287.879 113.629 287.879 108.771 282.05C86.6714 255.457 33 185.636 33 135ZM87.6431 135C87.6431 151.757 101.243 165.357 118 165.357C134.757 165.357 148.357 151.757 148.357 135C148.357 118.243 134.757 104.643 118 104.643C101.243 104.643 87.6431 118.243 87.6431 135Z',
+            scale: 0.8,
+            labelOrigin: new google.maps.Point(0.5, -30)
+        },
+        {
+            path: path /* 'M33 135C33 88.0071 71.0071 50 118 50C164.993 50 203 88.0071 203 135C203 185.636 149.329 255.457 127.35 282.05C122.493 287.879 113.629 287.879 108.771 282.05C86.6714 255.457 33 185.636 33 135ZM87.6431 135C87.6431 151.757 101.243 165.357 118 165.357C134.757 165.357 148.357 151.757 148.357 135C148.357 118.243 134.757 104.643 118 104.643C101.243 104.643 87.6431 118.243 87.6431 135Z'*/,
             fillOpacity: 1.0,
-            fillColor: '#FF0000',
+            fillColor: '#000000',
             strokeWeight: 1,
-            strokeColor: "#000000",
-            scale: 0.1
+            strokeColor: "#0000000 ",
+            scale: 0.8,
+            labelOrigin: new google.maps.Point(0.5, -30)
         }
     ];
     var list = @Html.Raw(Json.Serialize(Model.Map));
@@ -124,7 +130,7 @@
                map: map,
                label:
                {
-                   text: data.locationType == 4 ? "E" : data.locationType == 5 ? "S" : data.locationType == 6 ? " " : data.locationType == 7 ? " " : "R",
+                   text: data.locationType == 4 ? "E" : data.locationType == 5 ? "S" : data.locationType == 6 ? "s" : data.locationType == 7 ? "E" : "R",
                    color: "#fff",
                    fontWeight: "700",
                    fontSize: "12px"
@@ -135,15 +141,15 @@
             bounds.extend(new google.maps.LatLng(data.latitude, data.longitude));
             var str = (data.locationType == @expenseType ? '<a href="#ExpenseModal" data-toggle="modal" data-load-url="/Expense/Ajax/Modal/Details/' + data.id + '">'
                 : data.locationType == @sellType ? '<a href="#DetailModel" data-toggle="modal" data-load-url="/Sell/Ajax/Modal/Details/' + data.id + '">'
-                    : '<a href="#DetailsModal" data-toggle="modal" data-load-url="/Request/Ajax/Modal/Details/' + data.id + '">')
+                    : data.locationType == @pickupSessionStartType ? ' ' : data.locationType == @pickupSessionEndType ? ' ' : '<a href="#DetailsModal" data-toggle="modal" data-load-url="/Request/Ajax/Modal/Details/' + data.id + '">')
                 + "<div style='width:350px; padding-right:15px;'><div class='row p-xxs'>"
                 + "<div class='col-sm-6'>"
                 + "<div class='font-bold p-b-xxs'>" + data.title + "</div>"
                 + "<small class='text-muted'>"
-                + (data.locationType == @sellType ? 'Sell' : data.locationType == @expenseType ? 'Expense' : data.locationType == @handledRequestType ? 'Handled Request' : data.locationType == @rescheduledRequestType ? 'Rescheduled Request' : data.locationType == @cancelledRequestType ? 'Cancelled Request' : 'Pending Request')
+                + (data.locationType == @sellType ? 'Sell' : data.locationType == @expenseType ? 'Expense' : data.locationType == @handledRequestType ? 'Handled Request' : data.locationType == @rescheduledRequestType ? 'Rescheduled Request' : data.locationType == @cancelledRequestType ? 'Cancelled Request' : data.locationType == @pickupSessionStartType ? 'Pickup Session start' : data.locationType == @pickupSessionEndType ? 'Pickup Session End' : 'Pending Request')
             + " (#" + data.id + ")</small>"
             + "</div>"
-            + "<div class='col-sm-3 p-t-xs p-l-xxs p-r-xxs'>" + (data.amount !== null ? "<span>₹ <b>" + data.amount + "</b></span>" : "") + "</div>"
+            + "<div class='col-sm-3 p-t-xs p-l-xxs p-r-xxs'>" + (data.amount != null ? "<span>₹ <b>" + data.amount + "</b></span>" : " ") + "</div>"
             +"<div class='col-sm-3 p-t-xs p-l-xxs p-r-xxs text-right'><small class='font-trans'>"+data.time+"</small></div>"
                 + "</div></div>";
 

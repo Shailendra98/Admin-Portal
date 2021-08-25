@@ -7,6 +7,7 @@
     bool QuantityIncluded = ViewData["IncludeQuantity"] == null ? true : (bool)ViewData["IncludeQuantity"];
     bool ShowGSTAmount = ViewData["ShowGSTAmount"] == null ? false : (bool)ViewData["ShowGSTAmount"];
     bool IsSellMaterial = ViewData["IsSellMaterial"] == null ? false : (bool)ViewData["IsSellMaterial"];
+    int? UnsegregatedMaterialId = (int?)ViewData["UnsegregatedMaterialId"];
     int? Pincode = (int?)ViewData["Pincode"];
 }
 <table class="table border border-1 table-borderless">
@@ -167,7 +168,10 @@
     var materialselect2obj = {};
     function getSelect2obj() {
         if (!materialselect2obj_Set) {
-            var materialRemoteUrl=@if (IsSellMaterial) {<text> '@Url.Action("SellMaterials","Material")';</text>} else {<text> '@Url.Action("PurchaseMaterials","Material")';</text>}
+            var materialRemoteUrl =@if (IsSellMaterial) { if (UnsegregatedMaterialId != null) {<text>'@Url.Action("SellMaterials", "Material", new { UnsegregatedMaterialId })';</text> }
+                else
+                { <text> '@Url.Action("SellMaterials", "Material")';</text> }
+            } else {<text> '@Url.Action("PurchaseMaterials","Material")';</text>}
             materialselect2obj = select2ApiDataConfiguration(
                 materialRemoteUrl,
                 formatMaterial,
