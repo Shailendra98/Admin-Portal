@@ -30,10 +30,6 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal.AddSegregation
         }
         public PurchaseStockMaterialFullModel? UnsegregatedMaterial { get; set; }
 
-        [BindProperty]
-        public int SellMaterialId { get; set; }
-        public SelectList Sellmaterials { get; set; }
-
         [BindProperty(SupportsGet = true)]
         [Required(ErrorMessage = "Warehouse is required.")]
         public int? Id { get; set; }
@@ -48,8 +44,13 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal.AddSegregation
         public List<MaterialRateQuantityInputModel> SellMaterials { get; set; }
 
         [BindProperty]
+        [Display(Name = "Waste material")]
+        public decimal WasteMaterial { get; set; }
+
+        [BindProperty]
         [Display(Name = "Handlers")]
         public List<int> HandlerIds { get; set; }
+        public List<UserModel> Handlers { get; set; }
 
         [BindProperty]
         [Display(Name = "Handled Time")]
@@ -60,7 +61,7 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal.AddSegregation
         public string? Comment { get; set; }
         public bool IsDone { get; set; }
         public string ErrorMessage { get; set; }
-        public List<UserModel> Handlers { get; set; }
+     
 
         public async Task OnGetAsync( CancellationToken cancellationToken)
         {
@@ -75,13 +76,19 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal.AddSegregation
 
             if (ModelState.IsValid)
             {
-                 var result = await _warehouseService.AddSegregationAsync(Id!.Value,
+                if (WasteMaterial != null)
+                {
+                    SellMaterials.Add(new MaterialRateQuantityInputModel { Id = 0, Quantity = WasteMaterial, Name = "Waste Material", Rate = null, GSTPercent = null });
+                }
+
+                var result = await _warehouseService.AddSegregationAsync(Id!.Value,
                                                                          PurchaseMaterialId,
                                                                          SellMaterials!.Select(m => (m.Id.Value, m.Quantity!.Value)).ToList(),
                                                                          HandlerIds,
                                                                          HandleTime!.Value,
                                                                          Comment);
 
+              
                 if (result.IsSuccess)
                 {
                     IsDone = true;
@@ -95,9 +102,10 @@ namespace TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal.AddSegregation
 
             if (SellMaterials != null && SellMaterials.Count > 0)
             {
-                var material = await _materialQueries.PurchaseStockMaterialbyIdAsync(PurchaseMaterialId, cancellationToken);
-                foreach (var m in SellMaterials)
-                    m.Name = material!.SellMaterials.FirstOrDefault(a => a.Id == m.Id)?.Name ?? string.Empty;
+                UnsegregatedMaterial = await _materialQueries.PurchaseStockMaterialbyIdAsync(PurchaseMaterialId, cancellationToken);
+      
+                foreach (var m in UnsegregatedMaterial.SellMaterials)
+                    m.Name = UnsegregatedMaterial!.SellMaterials.FirstOrDefault(a => a.Id == m.Id)?.Name ?? string.Empty;
             }
             return Page();
         }

@@ -67,12 +67,13 @@ namespace AdminPortal
             services.Configure<PhotoSetting>(Configuration.GetSection("PhotoSetting"));
             services.Configure<PaytmSetting>(Configuration.GetSection("PaytmSetting"));
             services.Configure<MSG91Setting>(Configuration.GetSection("MSG91Setting"));
+            services.Configure<GeneralSetting>(Configuration.GetSection("GeneralSetting"));
             services.AddScoped<PhotoSetting>();
+            services.AddScoped<GeneralSetting>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<UrlGenerator>();
             services.AddScoped<SessionData>();
             services.AddScoped<IAppUserService, AppUserService>();
-
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IBuyerService, BuyerService>();

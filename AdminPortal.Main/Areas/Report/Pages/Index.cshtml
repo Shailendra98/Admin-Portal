@@ -26,17 +26,16 @@
                                 <div>
                                     <div class="d-inline-block" style="width:48%;">
                                         <label class="col-form-label fw-bold">From</label>
-                                        <input type="text" asp-for="Filter.StartDate" id="pickupboy_start_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                        <input type="text" asp-for="StartDatePickupBoy" id="pickupboy_start_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.StartDatePickupBoy))" placeholder="Start date" data-dtpicker="true">
                                     </div>
                                     <div class="d-inline-block" style="width:48%;">
                                         <label class="col-form-label fw-bold">To</label>
-                                        <input type="text" asp-for="Filter.EndDate" id="pickupboy_end_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                        <input type="text" asp-for="EndDatePickupBoy" id="pickupboy_end_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.EndDatePickupBoy))" placeholder="End date" data-dtpicker="true">
                                     </div>
                                 </div>
                             </div>
                             <div class="d-grid gap-2">
                                 <button class="btn btn-success btn-sm btn-block" type="submit" value="pickupboy" name="submit">Download</button>
-                                <button class="btn btn-default btn-sm btn-block" type="reset">Reset</button>
                             </div>
                         </div>
                     </div>
@@ -60,17 +59,16 @@
                                 <div>
                                     <div class="d-inline-block" style="width:48%;">
                                         <label class="col-form-label fw-bold">From</label>
-                                        <input type="text" asp-for="FilterRequest.StartDate" id="request_start_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.FilterRequest?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                        <input type="text" asp-for="StartDateRequest" id="request_start_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.StartDateRequest))" placeholder="Start date" data-dtpicker="true">
                                     </div>
                                     <div class="d-inline-block" style="width:48%;">
                                         <label class="col-form-label fw-bold">To</label>
-                                        <input type="text" asp-for="FilterRequest.EndDate" id="request_end_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.FilterRequest?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                        <input type="text" asp-for="EndDateRequest" id="request_end_date" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}", Model?.EndDateRequest))" placeholder="End date" data-dtpicker="true">
                                     </div>
                                 </div>
                             </div>
                             <div class="d-grid gap-2">
                                 <button class="btn btn-success btn-sm btn-block" type="submit" value="request" name="submit">Download</button>
-                                <button class="btn btn-default btn-sm btn-block" type="reset">Reset</button>
                             </div>
                         </div>
                     </div>

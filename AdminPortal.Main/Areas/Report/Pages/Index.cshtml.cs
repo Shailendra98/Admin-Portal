@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Extensions;
 using TKW.AdminPortal.ViewModels;
-using TKW.Queries.DTOs.Performance;
+using TKW.Queries.DTOs.Report;
 using TKW.Queries.Interfaces;
 using TKW.SharedKernel.Types;
 
@@ -15,20 +15,26 @@ namespace TKW.AdminPortal.Areas.Report.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IPerformanceQueries _performanceQueries;
-        public IndexModel(IPerformanceQueries performanceQueries)
+        private readonly IReportQueries _reportQueries;
+        public IndexModel(IReportQueries reportQueries)
         {
-            _performanceQueries = performanceQueries;
+            _reportQueries = reportQueries;
         }
 
         public string ErrorMessagePickupboy { get; set; }
         public string ErrorMessageRequest { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public PerformanceFilterSortModel Filter { get; set; }
+        public DateTime? StartDatePickupBoy { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public CancelledCompleteRequestFilterSortModel FilterRequest { get; set; }
+        public DateTime? EndDatePickupBoy { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public DateTime? StartDateRequest { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime? EndDateRequest { get; set; }
+
         public List<PickupboyPerformanceModel> PickupboyPerformance { get; set; }
         public List<CancelledCompletedRequestModel> RequestList { get; set; }
 
@@ -38,9 +44,9 @@ namespace TKW.AdminPortal.Areas.Report.Pages
             switch (submit)
             {
                 case "pickupboy":
-                    if (Filter?.StartDate != null && Filter?.EndDate != null)
+                    if (StartDatePickupBoy != null && EndDatePickupBoy != null)
                     {
-                        PickupboyPerformance = await _performanceQueries.FiteredAndSortedPickupBoyPerformanceAsync(Filter, cancellationToken);
+                        PickupboyPerformance = await _reportQueries.PickupBoyPerformanceListAsync(StartDatePickupBoy, EndDatePickupBoy, cancellationToken);
                         return this.Excel("PurchaseSummaryExcel", new ExcelSheetModel<PickupboyPerformanceModel>(PickupboyPerformance));
                     }
                     else
@@ -49,9 +55,9 @@ namespace TKW.AdminPortal.Areas.Report.Pages
                     }
                     break;
                 case "request":
-                    if (FilterRequest?.StartDate != null && FilterRequest?.EndDate != null)
+                    if (StartDateRequest != null && EndDateRequest != null)
                     {
-                        RequestList = await _performanceQueries.FiteredAndSortedRequsetPerformanceAsync(FilterRequest, cancellationToken);
+                        RequestList = await _reportQueries.CancelledCompletesRequestListAsync(StartDateRequest, EndDateRequest, cancellationToken);
                         return this.Excel("RequestSummaryExcel", new ExcelSheetModel<CancelledCompletedRequestModel>(RequestList));
                     }
                     else

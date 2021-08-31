@@ -39,7 +39,7 @@ namespace TKW.AdminPortal.Areas.PickupSession.Pages.Ajax
                 })
                 .ToList();
 
-            PolylinePath = model.Where(m => m.Time != null && m.LocationType != PickupSessionMapViewModel.Type.PendingRequest && m.LocationType != PickupSessionMapViewModel.Type.RescheduledRequest && m.LocationType != PickupSessionMapViewModel.Type.CancelledRequest).OrderBy(m => m.Time).Select(m => new LatLng
+            PolylinePath = model.Where(m => m.Time != null && m.LocationType != PickupSessionMapViewModel.Type.PendingRequest && m.LocationType != PickupSessionMapViewModel.Type.RescheduledRequest && m.LocationType != PickupSessionMapViewModel.Type.CancelledRequest)/*.OrderBy(m => m.Time)*/.Select(m => new LatLng
             {
                 Lat = m.Latitude!.Value,
                 Lng = m.Longitude!.Value

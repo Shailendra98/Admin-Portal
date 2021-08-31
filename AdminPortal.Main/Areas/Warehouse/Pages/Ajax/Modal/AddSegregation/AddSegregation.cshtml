@@ -51,6 +51,11 @@ else
                     </div>
                     <span asp-validation-for="SellMaterials" class="text-danger small"></span>
                 </div>
+                <div class="mb-3">
+                    <label asp-for="WasteMaterial" class="col-form-label fw-bold"></label>
+                    <input asp-for="WasteMaterial" class="form-control" placeholder="Quantity" type="number" />
+                    <span asp-validation-for="WasteMaterial" class="text-danger small"></span>
+                </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="mb-3">
@@ -91,7 +96,6 @@ else
     <lib name="DatetimePicker" />
     <script>
     $(function () {
-    $("#@Html.IdFor(m => m.SellMaterialId)").select2AutoParent({ placeholder: "Select Unsegregated Material" });
          $("#@Html.IdFor(m=>m.HandlerIds)").select2AutoParent(
             select2SearchResponseAjaxConfiguration(
                 "@Url.Action("SearchActivePickupEmployees","Employee")",
@@ -114,7 +118,7 @@ else
          $("#@Html.IdFor(m=>m.HandleTime)").datetimepicker({
             useStrict: true,
             ignoreReadonly: true,
-             format: "DD-MM-YYYY hh:mm A",
+            format: "DD-MM-YYYY hh:mm A",
             maxDate: "@string.Format("{0:MM/dd/yyyy}",IndianDateTime.Now)",
             @if (defaultDate != null) {
                     @: defaultDate: "@string.Format("{0:MM/dd/yyyy}", defaultDate)",
