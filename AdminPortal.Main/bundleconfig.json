@@ -20,7 +20,7 @@
   {
     "outputFileName": "wwwroot/css/bootstrap-icon.css",
     "inputFiles": [
-      "wwwroot/stylesheets/bootstrap/icon/bootstrap-icon.css"
+      "wwwroot/stylesheets/bootstrap-icons.css"
     ],
     "minify": {
       "enabled": true

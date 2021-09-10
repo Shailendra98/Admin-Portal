@@ -47,6 +47,7 @@
     <Compile Remove="Areas\Sell\Pages\Ajax\BuyerList.cshtml.cs" />
     <Compile Remove="Areas\Sell\Pages\Ajax\Modal\GSTInvoice.cshtml.cs" />
     <Compile Remove="Areas\Sell\Pages\Buyers.cshtml.cs" />
+    <Compile Remove="Areas\Warehouse\Pages\Ajax\Modal\AddSegregation.cshtml.cs" />
     <Compile Remove="Pages\Ajax\Request\OTP.cshtml.cs" />
   </ItemGroup>
 
@@ -68,6 +69,7 @@
     <Content Remove="Areas\Sell\Pages\Buyers.cshtml" />
     <Content Remove="Areas\Sell\Pages\Invoice.cshtml" />
     <Content Remove="Areas\Sell\Pages\Shared\_BuyerInput.cshtml" />
+    <Content Remove="Areas\Warehouse\Pages\Ajax\Modal\AddSegregation.cshtml" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="Pages\Ajax\Request\OTP.cshtml" />
   </ItemGroup>

@@ -5,7 +5,7 @@
     ViewBag.Title = Model.Warehouse.Name + " | Warehouse";
 }
 <pagetitle title="Warehouse Detail " description="Details of the warehouse">
-    <a data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/AddSegregation/AddPurchasematerial",new { Model.Warehouse.Id })" data-bs-target="#ActionModal" class="btn btn-primary btn-outline btn-sm"><i class="fa fa-plus"></i> Add Segregation</a>
+    <a data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/AddSegregation/Step1",new { WarehouseId = Model.Warehouse.Id })" data-bs-target="#ActionModal" class="btn btn-primary btn-outline btn-sm"><i class="fa fa-plus"></i> Add Segregation</a>
 </pagetitle>
 <div class="content">
     <div class="row">

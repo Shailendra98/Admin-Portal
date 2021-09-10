@@ -1,0 +1,30 @@
+﻿@page "{WarehouseId:int}"
+@model TKW.AdminPortal.Areas.Warehouse.Pages.Ajax.Modal.AddSegregation.Step1Model
+@{
+}
+<modal-header title="Add Segregation" close-button="true"></modal-header>
+
+<form method="post"
+      data-ajax="true"
+      data-ajax-url="@Url.Page("Step1", new { Model.WarehouseId })"
+      data-ajax-method="POST"
+      data-ajax-begin="$('#add-segregation-step-1-fieldset').attr('disabled','');"
+      data-ajax-complete="$('#add-segregation-step-1-fieldset').removeAttr('disabled')"
+      data-ajax-update="#ActionModalContent">
+    <fieldset id="add-segregation-step-1-fieldset">
+        <modal-body>
+              <div class="mb-3">
+                       <label asp-for="UnsegregatedMaterialId" class="form-label fw-bold"></label>
+                       <select asp-for="UnsegregatedMaterialId" asp-items="Model.UnsegregatedMaterials" class="form-control"></select>
+                   </div>
+        </modal-body>
+        <modal-footer>
+            <button class="btn btn-primary" type="submit">Proceed</button>
+        </modal-footer>
+    </fieldset>
+</form>
+<script>
+    $(function () {
+        $("#@Html.IdFor(m=>m.UnsegregatedMaterialId)").select2AutoParent();
+    });
+</script>
