@@ -1,21 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj": {}
+    "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj": {
+    "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+        "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
         "projectName": "AdminPortal.Components",
-        "projectPath": "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
-        "packagesPath": "C:\\Users\\Shivani Deshmukh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\obj\\",
+        "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+        "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\NuGet.Config",
-          "C:\\Users\\Shivani Deshmukh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\NuGet.Config",
+          "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\NuGet.Config",
+          "C:\\Users\\Sameer\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -29,8 +33,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
-                "projectPath": "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
+              "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+                "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
               }
             }
           }
@@ -76,7 +80,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.NETCore.App.Runtime.browser-wasm",
-              "version": "[5.0.8, 5.0.8]"
+              "version": "[5.0.9, 5.0.9]"
             }
           ],
           "frameworkReferences": {
@@ -84,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
@@ -93,18 +97,22 @@
         }
       }
     },
-    "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+    "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj",
         "projectName": "AdminPortal.Shared",
-        "projectPath": "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj",
-        "packagesPath": "C:\\Users\\Shivani Deshmukh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\obj\\",
+        "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj",
+        "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Shivani Deshmukh\\Source\\Repos\\AdminPortal\\NuGet.Config",
-          "C:\\Users\\Shivani Deshmukh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\NuGet.Config",
+          "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\NuGet.Config",
+          "C:\\Users\\Sameer\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -144,7 +152,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

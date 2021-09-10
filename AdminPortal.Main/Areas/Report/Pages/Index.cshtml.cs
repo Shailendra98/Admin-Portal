@@ -46,7 +46,7 @@ namespace TKW.AdminPortal.Areas.Report.Pages
                 case "pickupboy":
                     if (StartDatePickupBoy != null && EndDatePickupBoy != null)
                     {
-                        PickupboyPerformance = await _reportQueries.PickupBoyPerformanceListAsync(StartDatePickupBoy, EndDatePickupBoy, cancellationToken);
+                        PickupboyPerformance = await _reportQueries.PickupBoyPerformanceListAsync(StartDatePickupBoy.Value, EndDatePickupBoy.Value, cancellationToken);
                         return this.Excel("PurchaseSummaryExcel", new ExcelSheetModel<PickupboyPerformanceModel>(PickupboyPerformance));
                     }
                     else
@@ -57,7 +57,7 @@ namespace TKW.AdminPortal.Areas.Report.Pages
                 case "request":
                     if (StartDateRequest != null && EndDateRequest != null)
                     {
-                        RequestList = await _reportQueries.CancelledCompletesRequestListAsync(StartDateRequest, EndDateRequest, cancellationToken);
+                        RequestList = await _reportQueries.CancelledCompletesRequestListAsync(StartDateRequest.Value, EndDateRequest.Value, cancellationToken);
                         return this.Excel("RequestSummaryExcel", new ExcelSheetModel<CancelledCompletedRequestModel>(RequestList));
                     }
                     else
@@ -66,7 +66,7 @@ namespace TKW.AdminPortal.Areas.Report.Pages
                     }
                     break;
             }
-            return null;
+            return Page();
         }
     }
 }

@@ -453,10 +453,9 @@
                                 <div class="p-b-xs">Payment of <strong>₹ @payment.Amount.ToString("0.00")</strong> in user's wallet by @payment.Updater.Name</div>
                             }
                             <div><span class="pull-right"><b>Status</b>: <span id="paymentStatusText_@payment.Id">@payment.StatusName</span></span><b>Transaction Id</b>: @payment.Id</div>
-                            if (payment.MethodId == PaymentMethod.PaytmWallet.Id || payment.MethodId == PaymentMethod.UPI.Id || payment.MethodId == PaymentMethod.IMPS.Id)
+                            if (payment.StatusId == PaymentTransactionStatus.Failed.Id && !string.IsNullOrEmpty(payment.StatusMessage))
                             {
-                                <hr />
-                                <small class="small"><b>Message : </b>@payment.StatusMessage</small>
+                                <blockquote class="small m-b-none">@payment.StatusMessage</blockquote>
                             }
                             @if (payment.StatusId == PaymentTransactionStatus.Pending.Id)
                             {
