@@ -1381,20 +1381,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Pc3\\.nuget\\packages\\": {}
+    "C:\\Users\\Sameer\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Pc3\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+      "projectUniqueName": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
       "projectName": "AdminPortal.Components",
-      "projectPath": "C:\\Users\\Pc3\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
-      "packagesPath": "C:\\Users\\Pc3\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Pc3\\Source\\Repos\\AdminPortal\\AdminPortal.Components\\obj\\",
+      "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\AdminPortal.Components.csproj",
+      "packagesPath": "C:\\Users\\Sameer\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Components\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Pc3\\Source\\Repos\\AdminPortal\\NuGet.Config",
-        "C:\\Users\\Pc3\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\NuGet.Config",
+        "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\NuGet.Config",
+        "C:\\Users\\Sameer\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1408,8 +1413,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\Pc3\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
-              "projectPath": "C:\\Users\\Pc3\\Source\\Repos\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
+            "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj": {
+              "projectPath": "C:\\Users\\Sameer\\source\\Repositories\\The-Kabadiwala\\TKW\\src\\web\\AdminPortal\\AdminPortal.Shared\\AdminPortal.Shared.csproj"
             }
           }
         }
@@ -1455,7 +1460,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.NETCore.App.Runtime.browser-wasm",
-            "version": "[5.0.6, 5.0.6]"
+            "version": "[5.0.9, 5.0.9]"
           }
         ],
         "frameworkReferences": {
@@ -1463,7 +1468,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

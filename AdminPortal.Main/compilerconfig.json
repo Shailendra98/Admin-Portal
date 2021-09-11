@@ -1,9 +1,5 @@
 ﻿[
   {
-    "outputFile": "wwwroot/stylesheets/bootstrap.css",
-    "inputFile": "wwwroot/stylesheets/bootstrap.scss"
-  },
-  {
     "outputFile": "wwwroot/stylesheets/invoicestyle.css",
     "inputFile": "wwwroot/stylesheets/invoicestyle.scss"
   },
@@ -12,15 +8,15 @@
     "inputFile": "wwwroot/stylesheets/landing-page.scss"
   },
   {
-    "outputFile": "wwwroot/stylesheets/awesome-bootstrap-checkbox.css",
-    "inputFile": "wwwroot/stylesheets/awesome-bootstrap-checkbox.scss"
-  },
-  {
     "outputFile": "wwwroot/scripts/bootstrap-datetimepicker.es5.js",
     "inputFile": "wwwroot/scripts/bootstrap-datetimepicker.js"
   },
   {
     "outputFile": "wwwroot/stylesheets/shimmer.css",
     "inputFile": "wwwroot/stylesheets/shimmer.scss"
+  },
+  {
+    "outputFile": "wwwroot/stylesheets/bootstrap/bootstrap.css",
+    "inputFile": "wwwroot/stylesheets/bootstrap/bootstrap.scss"
   }
 ]

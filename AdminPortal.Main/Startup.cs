@@ -69,11 +69,11 @@ namespace AdminPortal
             services.Configure<MSG91Setting>(Configuration.GetSection("MSG91Setting"));
             services.AddSingleton(provider => Configuration.GetSection(nameof(GeneralSetting)).Get<GeneralSetting>());
             services.AddScoped<PhotoSetting>();
+            services.AddScoped<GeneralSetting>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<UrlGenerator>();
             services.AddScoped<SessionData>();
             services.AddScoped<IAppUserService, AppUserService>();
-
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IBuyerService, BuyerService>();
