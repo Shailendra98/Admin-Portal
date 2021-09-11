@@ -21,7 +21,7 @@ namespace TKW.AdminPortal.Areas.PickupSession.Pages.Ajax.Requests
 
         [BindProperty(SupportsGet =true)]
         public int Id { get; set; }
-        public List<RequestModel> Requests { get; set; }
+        public List<RequestWithPicturesModel> Requests { get; set; }
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             Requests = await _requestQueries.PendingRequestsOfPickupSessionAsync(Id, cancellationToken);
