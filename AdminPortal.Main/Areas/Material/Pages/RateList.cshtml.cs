@@ -10,7 +10,6 @@ using TKW.Queries.Interfaces;
 using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.MaterialContext.Aggregates;
 using TKW.Queries.DTOs.Material;
-using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Identity;
 
 namespace TKW.AdminPortal.Areas.Material.Pages
@@ -31,13 +30,16 @@ namespace TKW.AdminPortal.Areas.Material.Pages
         public List<PurchaseMaterialModel> Materials { get; set; }
         public bool IsFranchise { get; set; }
 
+       
+
         public async Task OnGetAsync( CancellationToken cancellationToken)
         {
             IsFranchise = _appUser.Current.FranchiseId != null;
-            if (IsFranchise) {
+            if (IsFranchise) 
+            {
                 Materials = await _materialQueries.ActivePurchaseMaterialsAsync(cancellationToken);
                 MaterialRates = await _materialQueries.PurchaseMaterialRatesByFranchiseAsync(_appUser.Current.FranchiseId.Value,  cancellationToken);
-            }
+             }
         }
     }
 } 

@@ -12,24 +12,28 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <Compile Remove="Areas\Material\Pages\Ajax\NewFolder\**" />
     <Compile Remove="Areas\Request\Pages\Shared\**" />
     <Compile Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <Compile Remove="Areas\Vehicle\**" />
     <Compile Remove="Controllers\**" />
     <Compile Remove="wwwroot\lib\**" />
     <Content Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <Content Remove="Areas\Material\Pages\Ajax\NewFolder\**" />
     <Content Remove="Areas\Request\Pages\Shared\**" />
     <Content Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <Content Remove="Areas\Vehicle\**" />
     <Content Remove="Controllers\**" />
     <Content Remove="wwwroot\lib\**" />
     <EmbeddedResource Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <EmbeddedResource Remove="Areas\Material\Pages\Ajax\NewFolder\**" />
     <EmbeddedResource Remove="Areas\Request\Pages\Shared\**" />
     <EmbeddedResource Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <EmbeddedResource Remove="Areas\Vehicle\**" />
     <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
     <None Remove="Areas\Employee\Pages\Ajax\Modal\**" />
+    <None Remove="Areas\Material\Pages\Ajax\NewFolder\**" />
     <None Remove="Areas\Request\Pages\Shared\**" />
     <None Remove="Areas\Sell\Pages\Ajax\Modal\Buyer\**" />
     <None Remove="Areas\Vehicle\**" />
@@ -366,9 +370,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="TKW.ApplicationCore" Version="1.2.2" />
-    <PackageReference Include="TKW.Infrastructure" Version="1.2.1" />
-    <PackageReference Include="TKW.Queries" Version="1.0.3" />
+    <PackageReference Include="TKW.ApplicationCore" Version="1.2.3-ratelist" />
+    <PackageReference Include="TKW.Infrastructure" Version="1.2.2-ratelist" />
+    <PackageReference Include="TKW.Queries" Version="1.0.4-ratelist" />
     <PackageReference Include="TKW.SharedKernel" Version="1.0.0" />
   </ItemGroup>
 

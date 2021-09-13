@@ -1,4 +1,5 @@
 ﻿@page
+@using TKW.AdminPortal.Areas.Material.ViewModels
 @model TKW.AdminPortal.Areas.Material.Pages.RateListModel
 @{
     ViewBag.Title = "Rate list";
@@ -12,87 +13,103 @@
     else
     {
 
-        <div class=" container-fluid row justify-content-center">
+        <div class=" row justify-content-center">
             <div class="col-md-12">
-                <div class="hpanel">
-                    <div class="panel-body">
-                        <div class="table-responsible">
-                            <div id="search_container">
-                                <div class="searchElem border-bottom">
-                                    <input style="width:100%; padding:15px 7px; font-size:14px;" type="text" placeholder="Search Materials" id="searchMaterials" />
-                                    <div class=" ">
-                                        <div class="text-left checkbox checkbox-circle checkbox-success d-inline-block pe-5 pb-2 ms-2">
-                                            <input class="visibility-checkbox " type="checkbox" name="UserRateList" value="true" id="UserRateList" />
-                                             <label for="UserRateList">User Rate List</label>
-                                        </div>
-                                        <div class="text-left checkbox checkbox-circle checkbox-success d-inline-block pe-5 pb-2 ms-2">
-                                            <input class="visibility-checkbox " type="checkbox" name="PickupExecutiveRateList" value="true" id="PickupExecutiveRateList" />
-                                             <label for="PickupExecutiveRateList">Pickup executive Rate List</label>
-                                        </div>
-                                    </div>
+                <div class="row justify-content-center mt-2">
+                    <div class="col-md-12">
+                        <div class="hpanel ">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <span class="input-group col">
+                                        <input class="form-control" type="text" placeholder="Search Materials" id="searchMaterials" />
+                                        <button class="btn btn-default  ">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                    <span class="input-group col">
+                                        <span class="col m-auto text-left form-check form-switch d-flex justify-content-end ">
+
+                                            <input class="visibility-checkbox form-check-input me-2 " type="checkbox" name="UserRateList" value="true" id="UserRateList" />
+                                            <label class="form-check-label fs-6" for="UserRateList">User Rate List</label>
+
+                                        </span>
+                                        <span class="col m-auto text-left form-check form-switch d-flex justify-content-center">
+                                            <input class="visibility-checkbox form-check-input me-2 " type="checkbox" name="PickupExecutiveRateList" value="true" id="PickupExecutiveRateList" />
+                                            <label class="form-check-label fs-6" for="PickupExecutiveRateList">Pickup executive Rate List</label>
+                                        </span>
+
+                                    </span>
                                 </div>
-                                
-                                
                             </div>
-                            <table class="table" id="ratelist_table">
-                                @foreach (var material in Model.Materials)
-                                {
-                                    var rate = Model.MaterialRates.FirstOrDefault(m => m.Id == material.Id);
-                                    <tr class="ratelist_tr">
-                                        <td class="align-middle">
-                                            <div class="h6 mb-0 pe-5">@material.Name</div>
-                                        </td>
-                                        <td> 
-                                            <div class="d-flex justify-content-end  flex-wrap align-items-center" > 
-                                          
-                                                <form  class="d-flex justify-content-end align-items-center flex-wrap item" data-ajax="true"
-                                                       data-ajax-url="@Url.Action("UpdateRateOfFranchise","Rate")"
-                                                       data-ajax-method="post"
-                                                       data-ajax-begin="$('#@(material.Id)_btn').data('state','1'); $('#@(material.Id)_btn').html('Updating').attr('disabled','');"
-                                                       data-ajax-success="$('#@(material.Id)_btn').html('Updated').removeClass('btn-default').addClass('btn-success');"
-                                                       data-ajax-error="$('#@(material.Id)_btn').html('Failed').removeClass('btn-default').addClass('btn-danger');">
-                                                    <div class="col-md-4 d-inline-block justify-content-start overflow-hidden me-4 " >
-                                                        <input name="PurchaseMaterialId" value="@material.Id" type="hidden" />
-                                                        <div class="text-left checkbox checkbox-circle checkbox-success d-inline-block pe-5 pb-2">
-                                                            <input class="visibility-checkbox first " type="checkbox" @(rate?.IncludeInRateList == true ? "checked" : "") name="IncludeInRateList" value="yes" id="@(material.Id)_includeCheckbox" />
-                                                            <label for="@(material.Id)_includeCheckbox">Visible to user</label>
-                                                        </div>
-                                              
-                                                        <div class="text-left checkbox checkbox-circle checkbox-success d-inline-block pe-5 pb-2">
-                                                            <input class="visibility-checkbox second" type="checkbox" @(rate?.IncludeInRateList == true ? "checked" : "") name="IncludeInRateList" value="yes" id="@(material.Id)_includeCheckbox_2" />
-                                                            <label for="@(material.Id)_includeCheckbox_2">Visible to Pickup executive</label>
-                                                        </div>
-                                                    </div> 
-                                                  
-                                                    <div class="col-md-5 d-inline-block d-flex align-items-center flex-wrap align-items-around " style="height: 8rem" >
-                                                        <div class="rate-input-minmax rate-input">
-                                                            <span class="p-r-sm"><small class="font-trans">Min Rate</small></span> <br />
-                                                            <span class="suffix">₹</span>
-                                                            <input class="min" type="number" step="0.01" name="MinRate" data-materialid="@material.Id" id="@(material.Id)_inputIdmin" value="@(rate == null ? "" :rate.MinRate.ToString("0.00"))" placeholder="Rate" />
-                                                        </div>
-                                                        <div class="rate-input-default rate-input">
-                                                            <span class="suffix">₹</span>
-                                                            <input class="defaultvalue" type="number" step="0.01" name="Rate" data-materialid="@material.Id" id="@(material.Id)_inputId" value="@(rate==null ?"":rate.Rate.ToString("0.00"))" placeholder="Rate" />
-                                                        </div>
-                                                        <div class="rate-input-minmax rate-input">
-                                                            <span class="p-r-sm"><small class="font-trans">Max Rate</small></span> <br />
-                                                            <span class="suffix">₹</span>
-                                                            <input class="max" type="number" step="0.01" name="MaxRate" data-materialid="@material.Id" id="@(material.Id)_inputIdmax" value="@(rate==null ? "" :rate.MaxRate.ToString("0.00"))" placeholder="Rate" />
-                                                        </div>
-                                                    </div> 
-                                                    <div class="col-sm d-inline-block d-flex justify-self-end justify-content-center align-items-center p-4 ">
-                                                        <div class="btn-container m-l-md col-3 d-inline-block position-relative">
-                                                            <button type="submit" data-state="0" id="@(material.Id)_btn" class="btn btn-sm btn-default  updatebtn" data-materialid="@material.Id" style="margin-top:-10px">Update</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                           
-                                          </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
                         </div>
+                    </div>
+                </div>
+                <div id="searchbox">
+                    <div class="d-flex flex-wrap justify-content-start ">
+                        @foreach (var material in Model.Materials)
+                        {
+                            var rate = Model.MaterialRates.FirstOrDefault(m => m.Id == material.Id);
+                            var materialInfo = new PurchaseMaterialUpdateModel
+                            {
+                                PurchaseMaterialId = material.Id,
+                                PurchaseMaterialName = material.Name,
+                                Rate = rate?.Rate,
+                                MinRate = rate?.MinRate,
+                                MaxRate = rate?.MaxRate,
+                                IncludeInPickupExecutiveRateList = rate?.IncludeInPickupExecutiveRateList ?? false,
+                                IncludeInSellerRateList = rate?.IncludeInSellerRateList ?? false,
+                                Unit = rate?.UnitName ?? ""
+                            };
+                            <a class="text-decoration-none text-dark item card flex-fill m-2" style="max-width: calc(33.33% - 1rem); min-width: 27.5rem;" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
+                                <div class="card-body">
+                                    <h6>
+                                        @material.Name
+                                        @* <strong class="title-text">@material.Name</strong>*@
+                                    </h6>
+                                    @if (rate == null)
+                                    {
+                                        <div class="text-center py-3 no-rate">
+                                            <em>There is no rate for this material.</em>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="row pt-1">
+                                            <div class="col-6">
+                                                Rates:
+                                                <span class="ps-1">₹</span>
+                                                <span class="fs-6 "><strong>@(rate==null ?"Rate":rate.Rate.ToString("0.00"))</strong></span>
+                                                <small>/@material.UnitName</small>
+                                                <div class="card-text">
+                                                    Range:
+                                                    <span>₹</span>
+                                                    <span><strong>@(rate == null ? "Rate" :rate.MinRate.ToString("0.00"))</strong></span>
+                                                    <small>/@material.UnitName</small>
+                                                    <strong>-</strong>
+                                                    <span>₹</span>
+                                                    <span><strong>@(rate==null ? "Rate" :rate.MaxRate.ToString("0.00"))</strong></span>
+                                                    <small>/@material.UnitName</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 visibility-box pe-0">
+                                                <div class=" user-visibility ">
+                                                    <span>
+                                                        <i class="fa @(rate.IncludeInSellerRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
+                                                    </span>
+                                                    <span class="ps-1">Seller rate list</span>
+                                                </div>
+                                                <div class=" pickup-visibility pt-1">
+                                                    <span>
+                                                        <i class="fa @(rate.IncludeInPickupExecutiveRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
+                                                    </span>
+                                                    <span class="ps-1"> Pickup executive rate list</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
@@ -100,128 +117,109 @@
     }
 </div>
 @section Styles{
-    <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
-    <style>
-      
-        .rate-input-default {
-            display: inline-block;
-            margin-right: 30px;
-            margin-left: 30px;
-            border-bottom: 1px solid #e4e5e7;
-        }
+<link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
+<style>
+    .form-check-input:checked {
+        background-color: #198754;
+        border-color: #198754;
+    }
 
-        .rate-input-minmax {
-            display: inline-block;
-            border-bottom: 1px solid #e4e5e7;
-        }
-
-        .rate-input-default span.suffix {
-            font-size: 14px;
-        }
-
-        .rate-input-minmax span.suffix {
-            font-size: 10px;
-        }
-
-        .rate-input-default input {
-            border: none;
-            font-size: 17px;
-            font-weight: 600;
-            width: 75px;
-            padding-right: 5px;
-            text-align: right;
-            outline: none;
-        }
-
-        .rate-input-minmax input {
-            border: none;
-            font-size: 12px;
-            font-weight: 600;
-            width: 55px;
-            padding-right: 5px;
-            text-align: right;
-            outline: none;
-        }
-
-        .btn-container {
-            display: inline-block;
-        }
-
-        
-    </style>
+    .form-check-input {
+        height: 1rem;
+        width: 2rem;
+    }
+</style>
 }
 @section Scripts{
-    <script src="~/js/searchelem.min.js"></script>
-    <script>
-        $(function () {
-            $('.visibility-checkbox').on('change', function () {
-                var form = $(this).closest('form');
-                var button = form.find("button");
+<script src="~/js/searchelem.min.js"></script>
+<script>
+    $(function () {
+        $('.visibility-checkbox').on('change', function () {
+            var form = $(this).closest('form');
+            var button = form.find("button");
+            button.removeAttr('disabled');
+            if (button.data('state') == "1") {
+                $(this).parents('tr').find('.updatebtn').html('Update').removeClass('btn-success').removeClass('btn-danger').addClass('btn-default').removeAttr('disabled');
+                $(this).data('state', '0');
+            }
+        });
+        $('.rate-input input').on('keyup', function () {
+            var form = $(this).closest('form');
+            var min = parseFloat(form.find("input.min").val());
+            var defaultvalue = parseFloat(form.find("input.defaultvalue").val());
+            var max = parseFloat(form.find("input.max").val());
+            var button = form.find("button");
+            if (isNaN(min) || isNaN(max) || isNaN(defaultvalue) || min > defaultvalue || defaultvalue > max) {
+                button.attr('disabled', '');
+            }
+            else {
                 button.removeAttr('disabled');
-                if (button.data('state') == "1") {
-                    $(this).parents('tr').find('.updatebtn').html('Update').removeClass('btn-success').removeClass('btn-danger').addClass('btn-default').removeAttr('disabled');
-                    $(this).data('state', '0');
-                }
-            });
-            $('.rate-input input').on('keyup', function () {
-                var form = $(this).closest('form');
-                var min = parseFloat(form.find("input.min").val());
-                var defaultvalue = parseFloat(form.find("input.defaultvalue").val());
-                var max = parseFloat(form.find("input.max").val());
-                var button = form.find("button");
-                if (isNaN(min) || isNaN(max) || isNaN(defaultvalue) || min > defaultvalue || defaultvalue > max) {
-                    button.attr('disabled', '');
-                }
-                else {
-                    button.removeAttr('disabled');
-                }
-                if (button.data('state') == "1") {
-                    $(this).parents('tr').find('.updatebtn').html('Update').removeClass('btn-success').removeClass('btn-danger').addClass('btn-default').removeAttr('disabled');
-                    $(this).data('state', '0');
-                }
-            });
-            $("#searchMaterials").SearchElem("#ratelist_table tr.ratelist_tr", [{ elem: "td", type: "text" }], { numberOfResult: 0 });
+            }
+            if (button.data('state') == "1") {
+                $(this).parents('tr').find('.updatebtn').html('Update').removeClass('btn-success').removeClass('btn-danger').addClass('btn-default').removeAttr('disabled');
+                $(this).data('state', '0');
+            }
+        });
+        $("#searchMaterials").SearchElem("#searchbox .item", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
+    });
+
+
+        const USER_FILTER =  document.getElementById("UserRateList");
+        const CARDS = document.querySelectorAll(".item");
+
+         USER_FILTER.addEventListener("change", function(){
+
+            if(USER_FILTER.checked == true)
+            {
+                CARDS.forEach(function(card){
+                    const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-close');
+                    const NO_RATE = card.querySelector('.card-body .no-rate')
+                    if(USER_FLAG != undefined)
+                    {
+                       card.style.display = 'none';
+                    }
+                    if(NO_RATE != undefined)
+                    {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+             if(USER_FILTER.checked == false)
+            {
+                CARDS.forEach(function(card){
+                    const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-check');
+                      card.style.display = 'inline-block';
+                });
+            }
         });
 
-                
-            const USER_FILTER =  document.getElementById("UserRateList");
+        const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
 
-             USER_FILTER.addEventListener("change", function(){
+         PICKUP_EXECUTIVE_FILTER.addEventListener("change", function(){
+            if(PICKUP_EXECUTIVE_FILTER.checked == true)
+            {
+                CARDS.forEach(function(card){
+                    const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-close');
+                    const NO_RATE = card.querySelector('.card-body .no-rate');
+                    if(PICKUP_EXECUTIVE_FLAG != undefined)
+                    {
+                       card.style.display = 'none';
+                    }
+                    if(NO_RATE != undefined)
+                    {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+             if(PICKUP_EXECUTIVE_FILTER.checked == false)
+            {
+                CARDS.forEach(function(card){
+                    const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-check');
+                        card.style.display = 'inline-block';
+                });
+            }
+        });
 
-                if(USER_FILTER.checked == true)
-                {
-                  
-                    const FORMS = document.querySelectorAll(".item");  
-                 
-                    FORMS.forEach(function(form){
-                           ;
-                        const USER_FLAG = form.querySelector('div div .first');
-                        console.log(USER_FLAG.checked);
-                        if(USER_FLAG.checked == false)
-                        {
-                           form.parentElement.parentElement.parentElement.style.display = 'none';
-                        }
-                       
-                    });
-                }
-            });
-
-            const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
-
-             PICKUP_EXECUTIVE_FILTER.addEventListener("change", function(){
-                if(PICKUP_EXECUTIVE_FILTER.checked == true)
-                {
-                    const FORMS = document.querySelectorAll(".item");  
-                    FORMS.forEach(function(form){
-                        const PICKUP_EXECUTIVE_FLAG = form.querySelector('div div .second');
-                        if(PICKUP_EXECUTIVE_FLAG.checked == false)
-                        {
-                           form.parentElement.parentElement.parentElement.style.display = 'none';
-                        }                    
-                    });
-                }
-            });
-
-
-    </script>
+</script>
 }
+<modal id="ActionModal" content-id="ActionModalContent" loader="true"></modal>

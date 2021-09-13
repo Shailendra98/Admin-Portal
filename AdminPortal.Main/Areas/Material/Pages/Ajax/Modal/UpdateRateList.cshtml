@@ -1,0 +1,86 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal.UpdateRateListModel
+@{
+    Layout = null;
+}
+
+<modal-header title="Edit Material Rate" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <h4>Material has been updated.</h4>
+        </div>
+    </modal-body>
+}
+else
+{
+    <form method="post"
+      data-ajax="true"
+      data-ajax-url="@Url.Page("UpdateRateList")"
+      data-ajax-method="POST"
+      data-ajax-update="#ActionModalContent">
+      <fieldset>
+
+     
+        <modal-body>
+
+            <div class="row">
+                <div class="col mb-3">
+                    <input asp-for="Material.PurchaseMaterialId" type="hidden" />
+                    <label class="fw-bold" for="MaterialName">Name </label>
+                    <input class="border-bottom fs-5 form-control-plaintext"  asp-for="Material.PurchaseMaterialName" type="text" readonly/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-7 mb-3">
+                    <label class="form-label fw-bold">Default Rate</label>
+                    <div class="input-group flex-nowrap">
+                        <input class=" fs-5 form-control" style="width:15.5rem" type="number" step="0.01" asp-for="Material.Rate" placeholder="Rate" />
+                        <span class="input-group-text fs-6">/@Model.Material.Unit</span>
+                    </div>
+                </div>
+                <div class="col-5 ps-0 ">
+                    <label for="includeCheckbox" class="fw-bold ps-3 form-label">Visibility </label> <br />
+                    <div class="text-left checkbox checkbox-circle checkbox-success d-inline-block">
+                        <input class="visibility-checkbox first " type="checkbox" asp-for="Material.IncludeInSellerRateList" id="includeCheckbox" />
+                        <label for="includeCheckbox" class="form-label">Seller</label>
+                    </div>
+                
+                  <div class="text-left checkbox checkbox-circle checkbox-success">
+                    <input class="visibility-checkbox second" type="checkbox" asp-for="Material.IncludeInPickupExecutiveRateList" id="includeCheckbox_2" />
+                    <label for="includeCheckbox_2" class="form-label">Pickup executive</label>
+                  </div>
+                </div>
+            </div>
+            
+                <label class="form-label fw-bold" >Rate Range</label>
+                <div class="row mb-3 ">
+                    <div class="col-5">
+                        <div class="input-group flex-nowrap pt-2">
+                            <input class=" fs-6 form-control" style="width:6.5rem" type="number" step="0.01" asp-for="Material.MinRate" placeholder="Min Rate" />
+                            <span class="input-group-text fs-6">/@Model.Material.Unit</span>
+                        </div>
+                    </div>
+                    <div class="col-2 text-center fs-2 my-auto ">-</div>
+                    <div class="col-5 ps-0">
+                        <div class="input-group flex-nowrap pt-2 ps-2">
+                            <input class="fs-6 form-control" style="width:8rem"  type="number" step="0.01" asp-for="Material.MaxRate" placeholder="Max Rate" />
+                            <span class="input-group-text fs-6">/@Model.Material.Unit</span>
+                        </div>
+                    </div>
+                </div>
+              
+        </modal-body>
+        <modal-footer>
+                <button class="btn btn-success" type="submit">Update</button>
+        </modal-footer>
+         </fieldset>
+    </form>
+
+@section Styles{
+<link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
+}
+
+}
