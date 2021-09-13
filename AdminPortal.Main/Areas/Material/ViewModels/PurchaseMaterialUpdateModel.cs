@@ -14,12 +14,15 @@ namespace TKW.AdminPortal.Areas.Material.ViewModels
 
         public string PurchaseMaterialName { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Min Rate is required.")]
         public decimal? MinRate { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Rate is required.")]
         public decimal? Rate { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Max Rate is required.")]
         public decimal? MaxRate { get; set; }
 

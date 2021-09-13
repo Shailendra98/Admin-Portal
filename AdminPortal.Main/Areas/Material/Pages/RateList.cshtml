@@ -12,8 +12,6 @@
     }
     else
     {
-       
-
         <div class=" row justify-content-center">
             <div class="col-md-12">
                 <div class="row justify-content-center mt-2">
@@ -46,7 +44,7 @@
                     </div>
                 </div>
                 <div id="searchbox">
-                    <div class="d-flex flex-wrap justify-content-start ">
+                    <div class="d-flex flex-wrap justify-content-start mx-n2">
                         @foreach (var material in Model.Materials)
                         {
                             var rate = Model.MaterialRates.FirstOrDefault(m => m.Id == material.Id);
@@ -61,10 +59,14 @@
                                 IncludeInSellerRateList = rate?.IncludeInSellerRateList ?? false,
                                 Unit = rate?.UnitName ?? ""
                             };
-                            <a class="text-decoration-none text-dark item card flex-fill m-2" style="max-width: calc(33.33% - 1rem); min-width: 27.5rem;" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
+                            <a class="text-decoration-none text-dark item card m-2 
+
+
+
+
+" style="max-width: calc(33.33% - 1rem); min-width: 22rem;" data-bs-toggle="modal" data-bs-target="#ActionModal" data-load-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
                                 <div class="card-body">
                                     <h6>
-                                        
                                          <strong class="title-text">@material.Name</strong>
                                     </h6>
                                     @if (rate == null)
@@ -79,16 +81,15 @@
                                             <div class="col-6">
                                                 Rates:
                                                 <span class="ps-1">₹</span>
-                                                <span class="fs-6 "><strong>@(rate==null ?"Rate":rate.Rate.ToString("0.00"))</strong></span>
+                                                <span class="fs-6 "><strong>@(rate==null ?"Rate":rate.Rate.ToString("G29"))</strong></span>
                                                 <small>/@material.UnitName</small>
                                                 <div class="card-text">
                                                     Range:
                                                     <span>₹</span>
-                                                    <span><strong>@(rate == null ? "Rate" :rate.MinRate.ToString("0.00"))</strong></span>
-                                                    <small>/@material.UnitName</small>
+                                                    <span><strong>@(rate == null ? "Rate" :rate.MinRate.ToString("G29"))</strong></span>
+                                                    
                                                     <strong>-</strong>
-                                                    <span>₹</span>
-                                                    <span><strong>@(rate==null ? "Rate" :rate.MaxRate.ToString("0.00"))</strong></span>
+                                                    <span><strong>@(rate==null ? "Rate" :rate.MaxRate.ToString("G29"))</strong></span>
                                                     <small>/@material.UnitName</small>
                                                 </div>
                                             </div>
