@@ -405,6 +405,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Material\Controllers\" />
     <Folder Include="Pages\Ajax\Request\" />
     <Folder Include="wwwroot\scripts\bootstrap5.0.0\" />
   </ItemGroup>

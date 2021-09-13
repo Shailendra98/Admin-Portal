@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TKW.AdminPortal.Areas.Material.ViewModels;
 using TKW.Queries.Interfaces;
-using TKW.Queries.Interfaces;
 using TKW.ApplicationCore.Contexts.MaterialContext.Aggregates;
 using TKW.Queries.DTOs.Material;
 using TKW.ApplicationCore.Identity;

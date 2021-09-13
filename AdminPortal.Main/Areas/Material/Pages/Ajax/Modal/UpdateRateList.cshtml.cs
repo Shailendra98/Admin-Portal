@@ -29,7 +29,7 @@ namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
         [BindProperty(SupportsGet = true)]
         public PurchaseMaterialUpdateModel Material { get; set; }
 
-        public string Message { get; set; }
+        public string ErrorMessage { get; set; }
 
         public bool IsDone { get; set; }
 
@@ -42,12 +42,24 @@ namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _materialService.UpdatePurchaseMaterialRateOfFranchiseAsync(Material.PurchaseMaterialId.Value, _appUser.Current.FranchiseId.Value, Material.Rate.Value, Material.MinRate.Value, Material.MaxRate.Value, Material.IncludeInSellerRateList, Material.IncludeInPickupExecutiveRateList, cancellationToken);
+                    var result = await _materialService.UpdatePurchaseMaterialRateOfFranchiseAsync(Material.PurchaseMaterialId.Value, 
+                        _appUser.Current.FranchiseId.Value,
+                        Material.Rate.Value,
+                        Material.MinRate.Value,
+                        Material.MaxRate.Value,
+                        Material.IncludeInSellerRateList,
+                        Material.IncludeInPickupExecutiveRateList,
+                        cancellationToken);
                     if (result.IsSuccess)
                     {
                         IsDone = true;
+
                     }
+                    
+                    
+                    
                 }
+                
             }
         }
     }
