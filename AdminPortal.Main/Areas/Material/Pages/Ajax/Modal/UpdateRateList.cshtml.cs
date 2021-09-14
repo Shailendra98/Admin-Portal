@@ -33,8 +33,6 @@ namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
 
         public bool IsDone { get; set; }
 
-
-
         public async Task OnPostAsync(CancellationToken cancellationToken)
         {
             var franchiseid = _appUser.Current.FranchiseId;
@@ -53,13 +51,8 @@ namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
                     if (result.IsSuccess)
                     {
                         IsDone = true;
-
                     }
-                    
-                    
-                    
                 }
-                
             }
         }
     }

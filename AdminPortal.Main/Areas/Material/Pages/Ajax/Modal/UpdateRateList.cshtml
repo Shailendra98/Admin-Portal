@@ -22,10 +22,7 @@ else
       data-ajax-method="POST"
       data-ajax-update="#ActionModalContent">
       <fieldset>
-
-     
         <modal-body>
-
             <div class="row">
                 <div class="col mb-3">
                     <input asp-for="Material.PurchaseMaterialId" type="hidden" />
@@ -34,44 +31,58 @@ else
                 </div>
             </div>
             <div class="row">
-                <div class="col-7 mb-3">
+                <div class="col-6 mb-3">
                     <label class="form-label fw-bold">Default Rate</label>
-                    <div class="input-group flex-nowrap">
+                    <div class="input-group">
                         <input class="form-control" type="number" step="0.01" asp-for="Material.Rate" placeholder="Rate" />
                         <span class="input-group-text">/@Model.Material.Unit</span>
+                    </div>   
+                        <span asp-validation-for="Material.Rate" class="text-danger small"></span> <br />
+                        @if(Model.Material.Rate < 0)
+                        {
+                            <span class="text-danger small">Rate should be greater than 0.</span>
+                        }
+                    <label class="form-label fw-bold" >Rate Range</label>   
+                        <div class="input-group">
+                            <input class="form-control" type="number" step="0.01" asp-for="Material.MinRate"  placeholder="Min" />                                                                        
+                            <span class="input-group-text">-</span>                                            
+                            <input class="form-control"  type="number" step="0.01" asp-for="Material.MaxRate" placeholder="Max" />                            
+                        </div>
+                        <span asp-validation-for="Material.MinRate" class="text-danger small"></span> <br />
+                        <span asp-validation-for="Material.MaxRate" class="text-danger small"></span>
+                         
+                        @if(Model.Material.MinRate > Model.Material.Rate)
+                        {
+                            <span class="text-danger small">Min Rate should be less than or equal to Default Rate.</span>
+                        }
+                        @if(Model.Material.MinRate < 0)
+                        {
+                            <span class="text-danger small">Min Rate should be greater than 0.</span>
+                        }
+                        @if(Model.Material.MaxRate < Model.Material.Rate)
+                        {
+                            <span class="text-danger small">Max Rate should be greater than or equal to Default Rate.</span>
+                        }
+                        @if(Model.Material.MaxRate < 0)
+                        {
+                            <span class="text-danger small">Max Rate should be greater than 0.</span>
+                        }
+                        
                     </div>
-                </div>
-                <div class="col-5 ps-0 ">
+                <div class="col-6 ps-5 ">
                     <label for="includeCheckbox" class="fw-bold ps-3 form-label">Visibility </label> <br />
                     <div class="text-left checkbox checkbox-circle checkbox-success d-inline-block">
                         <input class="visibility-checkbox first " type="checkbox" asp-for="Material.IncludeInSellerRateList" id="includeCheckbox" />
                         <label for="includeCheckbox" class="form-label">Seller</label>
-                    </div>
-                
+                    </div>                
                   <div class="text-left checkbox checkbox-circle checkbox-success">
-                    <input class="visibility-checkbox second" type="checkbox" asp-for="Material.IncludeInPickupExecutiveRateList" id="includeCheckbox_2" />
+                    <input class="visibility-checkbox second" type="checkbox" asp-for="Material.IncludeInPickupExecutiveRateList"
+                           id="includeCheckbox_2" />
                     <label for="includeCheckbox_2" class="form-label">Pickup executive</label>
                   </div>
                 </div>
             </div>
-            
-                <label class="form-label fw-bold" >Rate Range</label>
-                <div class="row mb-3 ">
-                    <div class="col-3">
-                        <div class="input-group">
-                            <input class="form-control" type="number" step="0.01" asp-for="Material.MinRate" placeholder="Min Rate" />
-                            
-                        </div>
-                    </div>
-                    <span class="col-1 pt-2 fw-bold">-</span>
-                    <div class="col-3 ps-0">
-                        <div class="input-group">
-                            <input class="form-control"  type="number" step="0.01" asp-for="Material.MaxRate" placeholder="Max Rate" />
-                            
-                        </div>
-                    </div>
-                </div>
-              
+                              
         </modal-body>
         <modal-footer>
                 <button class="btn btn-success" type="submit">Update</button>
