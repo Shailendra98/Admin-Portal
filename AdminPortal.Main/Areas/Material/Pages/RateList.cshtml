@@ -14,31 +14,31 @@
     {
         <div class=" row justify-content-center">
             <div class="col-md-12">
-                <div class="row justify-content-center mt-2">                 
-                        <div class="hpanel ">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <span class="input-group col">
-                                        <input class="form-control" type="text" placeholder="Search Materials" id="searchMaterials" />
-                                        <button class="btn btn-default  ">
-                                            <i class="fa fa-search"></i>
-                                        </button>
+                <div class="row justify-content-center mt-2">
+                    <div class="hpanel ">
+                        <div class="panel-body">
+                            <div class="row">
+                                <span class="input-group col">
+                                    <input class="form-control" type="text" placeholder="Search Materials" id="searchMaterials" />
+                                    <button class="btn btn-default  ">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                                <span class="input-group col">
+                                    <span class="col m-auto text-left form-check form-switch d-flex justify-content-end ">
+                                        <input class="visibility-checkbox form-check-input me-2 cursor-pointer"
+                                           type="checkbox" name="UserRateList" value="true" id="UserRateList" />
+                                        <label class="form-check-label fs-6 cursor-pointer" for="UserRateList">User Rate List</label>
                                     </span>
-                                    <span class="input-group col">
-                                        <span class="col m-auto text-left form-check form-switch d-flex justify-content-end ">
-                                            <input class="visibility-checkbox form-check-input me-2 cursor-pointer"
-                                                    type="checkbox" name="UserRateList" value="true" id="UserRateList" />
-                                            <label class="form-check-label fs-6 cursor-pointer" for="UserRateList">User Rate List</label>
-                                        </span>
-                                        <span class="col m-auto text-left form-check form-switch d-flex justify-content-center">
-                                            <input class="visibility-checkbox form-check-input me-2 cursor-pointer" 
-                                            type="checkbox" name="PickupExecutiveRateList" value="true" id="PickupExecutiveRateList" />
-                                            <label class="form-check-label fs-6 cursor-pointer" for="PickupExecutiveRateList">Pickup executive Rate List</label>
-                                        </span>
+                                    <span class="col m-auto text-left form-check form-switch d-flex justify-content-center">
+                                        <input class="visibility-checkbox form-check-input me-2 cursor-pointer"
+                                           type="checkbox" name="PickupExecutiveRateList" value="true" id="PickupExecutiveRateList" />
+                                        <label class="form-check-label fs-6 cursor-pointer" for="PickupExecutiveRateList">Pickup executive Rate List</label>
                                     </span>
-                                </div>
+                                </span>
                             </div>
                         </div>
+                    </div>
                 </div>
                 <div id="searchbox">
                     <div class="d-flex flex-wrap justify-content-start mx-n2">
@@ -57,12 +57,12 @@
                                 Unit = rate?.UnitName ?? ""
                             };
                             <a class="text-decoration-none text-dark item card m-2 flex-fill"
-                                style="max-width: calc(33.33% - 1rem); min-width: 22rem;"
-                                data-bs-toggle="modal" data-bs-target="#ActionModal" 
-                                data-load-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
+                       style="max-width: calc(33.33% - 1rem); min-width: 25rem;"
+                       data-bs-toggle="modal" data-bs-target="#ActionModal"
+                       data-load-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
                                 <div class="card-body">
                                     <h6>
-                                         <strong class="title-text">@material.Name</strong>
+                                        <strong class="title-text">@material.Name</strong>
                                     </h6>
                                     @if (rate == null)
                                     {
@@ -82,7 +82,7 @@
                                                     Range:
                                                     <span>₹</span>
                                                     <span><strong>@(rate == null ? "Rate" :rate.MinRate.ToString("G29"))</strong></span>
-                                                    
+
                                                     <strong>-</strong>
                                                     <span><strong>@(rate==null ? "Rate" :rate.MaxRate.ToString("G29"))</strong></span>
                                                     <small>/@material.UnitName</small>
@@ -131,76 +131,143 @@
 <script src="~/js/searchelem.min.js"></script>
 <script>
     $(function () {
-      
+
         $("#searchMaterials").SearchElem("#searchbox .item", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
     });
 
-        const USER_FILTER =  document.getElementById("UserRateList");
-        const CARDS = document.querySelectorAll(".item");
-        const SEARCH = document.getElementById('searchMaterials');
+        //const USER_FILTER =  document.getElementById("UserRateList");
+        //const CARDS = document.querySelectorAll(".item");
+        //const SEARCH = document.getElementById('searchMaterials');
 
-         USER_FILTER.addEventListener("change", function(){
+        // USER_FILTER.addEventListener("change", function(){
 
+        //    SEARCH.value="";
+
+        ////    if(USER_FILTER.checked == true)
+        ////    {
+        ////        CARDS.forEach(function(card){
+        ////            const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-close');
+        ////            const NO_RATE = card.querySelector('.card-body .no-rate')
+        ////            if(USER_FLAG != undefined)
+        ////            {
+        ////               card.style.display = 'none';
+        ////            }
+        ////            if(NO_RATE != undefined)
+        ////            {
+        ////                card.style.display = 'none';
+        ////            }
+        ////        });
+        ////    }
+        //     if(USER_FILTER.checked == false)
+        //    {
+        //        CARDS.forEach(function(card){
+        //            const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-check');
+        //              card.style.display = 'inline-block';
+        //        });
+        //    }
+        //});
+
+        //const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
+
+        // PICKUP_EXECUTIVE_FILTER.addEventListener("change", function(){
+
+        //    SEARCH.value="";
+
+        //    if(PICKUP_EXECUTIVE_FILTER.checked == true)
+        //    {
+        //        CARDS.forEach(function(card){
+        //            const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-close');
+        //            const NO_RATE = card.querySelector('.card-body .no-rate');
+        //            if(PICKUP_EXECUTIVE_FLAG != undefined)
+        //            {
+        //               card.style.display = 'none';
+        //            }
+        //            if(NO_RATE != undefined)
+        //            {
+        //                card.style.display = 'none';
+        //            }
+        //        });
+        //    }
+        //     if(PICKUP_EXECUTIVE_FILTER.checked == false)
+        //    {
+        //        CARDS.forEach(function(card){
+        //            const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-check');
+        //                card.style.display = 'inline-block';
+        //        });
+        //    }
+        //});
+
+        
+         const USER_FILTER =  document.getElementById("UserRateList");
+         const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
+         const CARDS = document.querySelectorAll(".item");
+         const SEARCH = document.getElementById('searchMaterials');
+
+         USER_FILTER.addEventListener("change", filter);
+         PICKUP_EXECUTIVE_FILTER.addEventListener("change", filter);
+
+         function filter(){
             SEARCH.value="";
+            CARDS.forEach(
+                
+                function(card){
+                if(USER_FILTER.checked == false)
+                {                        
+                          card.style.display = 'inline-block';
+                }
+                 if(PICKUP_EXECUTIVE_FILTER.checked == false)
+                {
+                            card.style.display = 'inline-block';
+                }
+                const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-close');
+                const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-close');
+                const NO_RATE = card.querySelector('.card-body .no-rate');
+                if(USER_FILTER.checked == true && PICKUP_EXECUTIVE_FILTER.checked == false)
+                {
+                        if(USER_FLAG != undefined)
+                        {
+                           card.style.display = 'none';
+                        }
+                        if(NO_RATE != undefined)
+                        {
+                            card.style.display = 'none';
+                        }
+                }
+                if(USER_FILTER.checked == false && PICKUP_EXECUTIVE_FILTER.checked == true)
+                {                        
+                        if(PICKUP_EXECUTIVE_FLAG != undefined)
+                        {
+                           card.style.display = 'none';
+                        }
+                        if(NO_RATE != undefined)
+                        {
+                            card.style.display = 'none';
+                        }
+                }
+                if(USER_FILTER.checked == true && PICKUP_EXECUTIVE_FILTER.checked == true)
+                {                                                
+                        if(PICKUP_EXECUTIVE_FLAG != undefined)
+                        {
+                           card.style.display = 'none';
+                        }
+                        if(USER_FLAG != undefined)
+                        {
+                           card.style.display = 'none';
+                        }
+                        if(NO_RATE != undefined)
+                        {
+                            card.style.display = 'none';
+                        }
+                }
 
-            if(USER_FILTER.checked == true)
-            {
-                CARDS.forEach(function(card){
-                    const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-close');
-                    const NO_RATE = card.querySelector('.card-body .no-rate')
-                    if(USER_FLAG != undefined)
-                    {
-                       card.style.display = 'none';
-                    }
-                    if(NO_RATE != undefined)
-                    {
-                        card.style.display = 'none';
-                    }
-                });
-            }
-             if(USER_FILTER.checked == false)
-            {
-                CARDS.forEach(function(card){
-                    const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-check');
-                      card.style.display = 'inline-block';
-                });
-            }
-        });
-
-        const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
-
-         PICKUP_EXECUTIVE_FILTER.addEventListener("change", function(){
-
-            SEARCH.value="";
-
-            if(PICKUP_EXECUTIVE_FILTER.checked == true)
-            {
-                CARDS.forEach(function(card){
-                    const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-close');
-                    const NO_RATE = card.querySelector('.card-body .no-rate');
-                    if(PICKUP_EXECUTIVE_FLAG != undefined)
-                    {
-                       card.style.display = 'none';
-                    }
-                    if(NO_RATE != undefined)
-                    {
-                        card.style.display = 'none';
-                    }
-                });
-            }
-             if(PICKUP_EXECUTIVE_FILTER.checked == false)
-            {
-                CARDS.forEach(function(card){
-                    const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-check');
-                        card.style.display = 'inline-block';
-                });
-            }
-        });
-
-         SEARCH.addEventListener('keyup', function(){            
-             USER_FILTER.checked=false;
-             PICKUP_EXECUTIVE_FILTER.checked=false;                
          });
+        }
+
+         SEARCH.addEventListener('keyup', function(){
+             USER_FILTER.checked=false;
+             PICKUP_EXECUTIVE_FILTER.checked=false;
+         });
+
 
 </script>
 }

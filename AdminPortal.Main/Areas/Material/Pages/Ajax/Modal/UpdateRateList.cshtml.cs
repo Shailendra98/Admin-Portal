@@ -52,6 +52,10 @@ namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
                     {
                         IsDone = true;
                     }
+                    else
+                    {
+                        ErrorMessage = result.Error.Message;
+                    }
                 }
             }
         }
