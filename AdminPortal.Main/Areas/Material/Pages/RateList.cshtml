@@ -17,7 +17,7 @@
                 <div class="row">
                     <span class="input-group col">
                         <input class="form-control" type="text" placeholder="Search Materials" id="searchMaterials" />
-                        <button class="btn btn-default  ">
+                        <button class="btn btn-default">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
@@ -52,9 +52,10 @@
                         IncludeInSellerRateList = rate?.IncludeInSellerRateList ?? false,
                         Unit = material.UnitName
                     };
-                    <a class="text-decoration-none text-dark item card m-2 flex-fill @(rate==null?"no-rate":"")" id="@(material.Id)-card"
+               <a class="text-decoration-none text-dark item card m-2 flex-fill @(rate==null?"no-rate":"")" id="@(material.Id)-card"
                style="max-width: calc(33.33% - 1rem); min-width: 25rem;"
-               data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList" data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList"
+               data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList" 
+               data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList"
                data-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
                         <div class="card-body">
                             <h6>
@@ -78,7 +79,6 @@
                                             Range:
                                             <span>₹</span>
                                             <span><strong class="min-rate">@rate.MinRate.ToString("G29")</strong></span>
-
                                             <strong>-</strong>
                                             <span><strong class="max-rate">@rate.MaxRate.ToString("G29")</strong></span>
                                             <small>/@material.UnitName</small>
@@ -101,8 +101,6 @@
                 }
             </div>
         </div>
-
-
     }
 </div>
 @section Styles{
@@ -158,7 +156,7 @@
                                                        <small>/${unit}</small>
                                                    </div>
                                                </div>
-                                               <div class="col-6 visibility-box pe-0">
+                                               <div class="col-6 pe-0">
                                                    <div class="seller-visibility">
                                                            <i class="fa ${sellerIconClasses}"></i>
                                                        <span class="ps-1">Seller rate list</span>
