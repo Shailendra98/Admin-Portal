@@ -54,19 +54,19 @@
                                 MaxRate = rate?.MaxRate,
                                 IncludeInPickupExecutiveRateList = rate?.IncludeInPickupExecutiveRateList ?? false,
                                 IncludeInSellerRateList = rate?.IncludeInSellerRateList ?? false,
-                                Unit = rate?.UnitName ?? ""
+                                Unit = material.UnitName
                             };
-                            <a class="text-decoration-none text-dark item card m-2 flex-fill"
+                            <a class="text-decoration-none text-dark item card m-2 flex-fill @(rate==null?"no-rate":"")" id="@(material.Id)-card"
                        style="max-width: calc(33.33% - 1rem); min-width: 25rem;"
-                       data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList"  data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList" 
-                       data-load-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
+                       data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList" data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList"
+                       data-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
                                 <div class="card-body">
                                     <h6>
                                         <strong class="title-text">@material.Name</strong>
                                     </h6>
                                     @if (rate == null)
                                     {
-                                        <div class="text-center py-3 no-rate">
+                                        <div class="text-center py-3">
                                             <em>There is no rate for this material.</em>
                                         </div>
                                     }
@@ -76,30 +76,26 @@
                                             <div class="col-6">
                                                 Rates:
                                                 <span class="ps-1">₹</span>
-                                                <span class="fs-6 "><strong>@rate.Rate.ToString("G29")</strong></span>
+                                                <span class="fs-6 "><strong class="default-rate">@rate.Rate.ToString("G29")</strong></span>
                                                 <small>/@material.UnitName</small>
                                                 <div class="card-text">
                                                     Range:
                                                     <span>₹</span>
-                                                    <span><strong>@rate.MinRate.ToString("G29")</strong></span>
+                                                    <span><strong class="min-rate">@rate.MinRate.ToString("G29")</strong></span>
 
                                                     <strong>-</strong>
-                                                    <span><strong>@rate.MaxRate.ToString("G29")</strong></span>
+                                                    <span><strong class="max-rate">@rate.MaxRate.ToString("G29")</strong></span>
                                                     <small>/@material.UnitName</small>
                                                 </div>
                                             </div>
                                             <div class="col-6 visibility-box pe-0">
-                                                <div class=" user-visibility ">
-                                                    <span>
-                                                        <i class="fa @(rate.IncludeInSellerRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
-                                                    </span>
+                                                <div class="seller-visibility">
+                                                    <i class="fa @(rate.IncludeInSellerRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
                                                     <span class="ps-1">Seller rate list</span>
                                                 </div>
-                                                <div class="pickup-visibility pt-1">
-                                                    <span>
-                                                        <i class="fa @(rate.IncludeInPickupExecutiveRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
-                                                    </span>
-                                                    <span class="ps-1"> Pickup executive rate list</span>
+                                                <div class="pickup-executive-visibility pt-1">
+                                                    <i class="fa @(rate.IncludeInPickupExecutiveRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
+                                                    <span class="ps-1">Pickup executive rate list</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,38 +126,104 @@
 @section Scripts{
 <script src="~/js/searchelem.min.js"></script>
 <script>
-    $(function () {
-        $("#searchMaterials").SearchElem("#searchbox .item", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
+       $(function () {
+           $("#searchMaterials").SearchElem("#searchbox .item", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
+
+           $(".item").click(function(){
+
+               $("#ActionModal").find(".modal-content")
+               .html("<div class='modal-body'><div class='text-center'><img src='/images/ripple.gif' alt='Loading..'/></div></div>")
+               .load($(this).attr("data-url"));
+
+               });
+
+           $("#ActionModal").on("action.done",function(event, id, name, rate, minrate, maxrate, sellervisibility, pickupexecutivevisibility, unit){
+          var card = $("#"+id+"-card");
+               card.attr("data-url","/Material/Ajax/Modal/UpdateRateList?@nameof(PurchaseMaterialUpdateModel.PurchaseMaterialId)="+id+"&@nameof(PurchaseMaterialUpdateModel.PurchaseMaterialName)="+name+"&@nameof(PurchaseMaterialUpdateModel.Rate)="+rate+"&@nameof(PurchaseMaterialUpdateModel.MinRate)="+minrate+"&@nameof(PurchaseMaterialUpdateModel.MaxRate)="+maxrate+"&@nameof(PurchaseMaterialUpdateModel.IncludeInSellerRateList)="+sellervisibility+"&@nameof(PurchaseMaterialUpdateModel.IncludeInPickupExecutiveRateList)="+pickupexecutivevisibility+"&@nameof(PurchaseMaterialUpdateModel.Unit)="+unit);
+
+               if(card.hasClass("no-rate")){
+                   var sellerIconClasses = sellervisibility ? "fa-check text-success":"fa-close text-danger";
+
+                   var pickupExecutiveIconClasses = pickupexecutivevisibility ? "fa-check text-success":"fa-close text-danger";
+
+                   card.html(`<div class="card-body">
+                                       <h6>
+                                           <strong class="title-text">${name}</strong>
+                                       </h6>
+                                       <div class="row pt-1">
+                                              <div class="col-6">
+                                                   Rates:
+                                                   <span class="ps-1">₹</span>
+                                                   <span class="fs-6 "><strong class="default-rate">${rate}</strong></span>
+                                                   <small>/${unit}</small>
+                                                   <div class="card-text">
+                                                       Range:
+                                                       <span>₹</span>
+                                                       <span><strong class="min-rate">${minrate}</strong></span>
+
+                                                       <strong>-</strong>
+                                                       <span><strong class="max-rate">${maxrate}</strong></span>
+                                                       <small>/${unit}</small>
+                                                   </div>
+                                               </div>
+                                               <div class="col-6 visibility-box pe-0">
+                                                   <div class="seller-visibility">
+                                                           <i class="fa ${sellerIconClasses}"></i>
+                                                       <span class="ps-1">Seller rate list</span>
+                                                   </div>
+                                                   <div class="pickup-executive-visibility pt-1">
+                                                       <i class="fa ${pickupExecutiveIconClasses} "></i>
+                                                       <span class="ps-1">Pickup executive rate list</span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           </div>`).removeClass("no-rate");
+               }else{
+               card.find(".default-rate").html(rate);
+               card.find(".min-rate").html(minrate);
+               card.find(".max-rate").html(maxrate);
+               if(sellervisibility){
+                   card.find(".seller-visibility i").removeClass("fa-close text-danger").addClass("fa-check text-success");
+               }else{
+                       card.find(".seller-visibility i").addClass("fa-close text-danger").removeClass("fa-check text-success");
+               }
+               if(pickupexecutivevisibility){
+                   card.find(".pickup-executive-visibility i").removeClass("fa-close text-danger").addClass("fa-check text-success");
+               }else{
+                       card.find(".pickup-executive-visibility i").addClass("fa-close text-danger").removeClass("fa-check text-success");
+               }
+       }
     });
+       });
 
-         const USER_FILTER =  document.getElementById("UserRateList");
-         const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
-         const SEARCH = document.getElementById('searchMaterials');
+            const USER_FILTER =  document.getElementById("UserRateList");
+            const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
+            const SEARCH = document.getElementById('searchMaterials');
 
-         USER_FILTER.addEventListener("change", filter);
-         PICKUP_EXECUTIVE_FILTER.addEventListener("change", filter);
+            USER_FILTER.addEventListener("change", filter);
+            PICKUP_EXECUTIVE_FILTER.addEventListener("change", filter);
 
-         function filter(){
-             
-            SEARCH.value="";
-            if(USER_FILTER.checked && PICKUP_EXECUTIVE_FILTER.checked){
-                $(".item").hide();
-                $('.item[data-seller-ratelist="True"][data-pickup-executive-ratelist="True"]').show();
-            }else if(USER_FILTER.checked){
-                $(".item").hide();
-                $('.item[data-seller-ratelist="True"]').show();
-            }else if(PICKUP_EXECUTIVE_FILTER.checked){
-                $(".item").hide();
-                $('.item[data-pickup-executive-ratelist="True"]').show();
-            }else{
-                $('.item').show();
-            }
-        }
+            function filter(){
 
-         SEARCH.addEventListener('keyup', function(){
-             USER_FILTER.checked=false;
-             PICKUP_EXECUTIVE_FILTER.checked=false;
-         });
+               SEARCH.value="";
+               if(USER_FILTER.checked && PICKUP_EXECUTIVE_FILTER.checked){
+                   $(".item").hide();
+                   $('.item[data-seller-ratelist="True"][data-pickup-executive-ratelist="True"]').show();
+               }else if(USER_FILTER.checked){
+                   $(".item").hide();
+                   $('.item[data-seller-ratelist="True"]').show();
+               }else if(PICKUP_EXECUTIVE_FILTER.checked){
+                   $(".item").hide();
+                   $('.item[data-pickup-executive-ratelist="True"]').show();
+               }else{
+                   $('.item').show();
+               }
+           }
+
+            SEARCH.addEventListener('keyup', function(){
+                USER_FILTER.checked=false;
+                PICKUP_EXECUTIVE_FILTER.checked=false;
+            });
 
 
 </script>
