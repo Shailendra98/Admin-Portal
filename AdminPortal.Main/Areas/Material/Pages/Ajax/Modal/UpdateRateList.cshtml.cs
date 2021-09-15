@@ -48,14 +48,11 @@ namespace TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal
                         Material.IncludeInSellerRateList,
                         Material.IncludeInPickupExecutiveRateList,
                         cancellationToken);
+                
                     if (result.IsSuccess)
-                    {
                         IsDone = true;
-                    }
                     else
-                    {
                         ErrorMessage = result.Error.Message;
-                    }
                 }
             }
         }

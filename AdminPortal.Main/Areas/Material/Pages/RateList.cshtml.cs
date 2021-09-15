@@ -29,7 +29,7 @@ namespace TKW.AdminPortal.Areas.Material.Pages
         public List<PurchaseMaterialModel> Materials { get; set; }
         public bool IsFranchise { get; set; }
 
-        public async Task OnGetAsync( CancellationToken cancellationToken)
+        public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             IsFranchise = _appUser.Current.FranchiseId != null;
             if (IsFranchise) 

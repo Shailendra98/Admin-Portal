@@ -14,7 +14,7 @@
     {
         <div class=" row justify-content-center">
             <div class="col-md-12">
-                <div class="row justify-content-center mt-2">
+                <div class="mt-2">
                     <div class="hpanel ">
                         <div class="panel-body">
                             <div class="row">
@@ -58,7 +58,7 @@
                             };
                             <a class="text-decoration-none text-dark item card m-2 flex-fill"
                        style="max-width: calc(33.33% - 1rem); min-width: 25rem;"
-                       data-bs-toggle="modal" data-bs-target="#ActionModal"
+                       data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList"  data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList" 
                        data-load-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
                                 <div class="card-body">
                                     <h6>
@@ -76,15 +76,15 @@
                                             <div class="col-6">
                                                 Rates:
                                                 <span class="ps-1">₹</span>
-                                                <span class="fs-6 "><strong>@(rate==null ?"Rate":rate.Rate.ToString("G29"))</strong></span>
+                                                <span class="fs-6 "><strong>@rate.Rate.ToString("G29")</strong></span>
                                                 <small>/@material.UnitName</small>
                                                 <div class="card-text">
                                                     Range:
                                                     <span>₹</span>
-                                                    <span><strong>@(rate == null ? "Rate" :rate.MinRate.ToString("G29"))</strong></span>
+                                                    <span><strong>@rate.MinRate.ToString("G29")</strong></span>
 
                                                     <strong>-</strong>
-                                                    <span><strong>@(rate==null ? "Rate" :rate.MaxRate.ToString("G29"))</strong></span>
+                                                    <span><strong>@rate.MaxRate.ToString("G29")</strong></span>
                                                     <small>/@material.UnitName</small>
                                                 </div>
                                             </div>
@@ -95,7 +95,7 @@
                                                     </span>
                                                     <span class="ps-1">Seller rate list</span>
                                                 </div>
-                                                <div class=" pickup-visibility pt-1">
+                                                <div class="pickup-visibility pt-1">
                                                     <span>
                                                         <i class="fa @(rate.IncludeInPickupExecutiveRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
                                                     </span>
@@ -131,136 +131,31 @@
 <script src="~/js/searchelem.min.js"></script>
 <script>
     $(function () {
-
         $("#searchMaterials").SearchElem("#searchbox .item", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
     });
 
-        //const USER_FILTER =  document.getElementById("UserRateList");
-        //const CARDS = document.querySelectorAll(".item");
-        //const SEARCH = document.getElementById('searchMaterials');
-
-        // USER_FILTER.addEventListener("change", function(){
-
-        //    SEARCH.value="";
-
-        ////    if(USER_FILTER.checked == true)
-        ////    {
-        ////        CARDS.forEach(function(card){
-        ////            const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-close');
-        ////            const NO_RATE = card.querySelector('.card-body .no-rate')
-        ////            if(USER_FLAG != undefined)
-        ////            {
-        ////               card.style.display = 'none';
-        ////            }
-        ////            if(NO_RATE != undefined)
-        ////            {
-        ////                card.style.display = 'none';
-        ////            }
-        ////        });
-        ////    }
-        //     if(USER_FILTER.checked == false)
-        //    {
-        //        CARDS.forEach(function(card){
-        //            const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-check');
-        //              card.style.display = 'inline-block';
-        //        });
-        //    }
-        //});
-
-        //const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
-
-        // PICKUP_EXECUTIVE_FILTER.addEventListener("change", function(){
-
-        //    SEARCH.value="";
-
-        //    if(PICKUP_EXECUTIVE_FILTER.checked == true)
-        //    {
-        //        CARDS.forEach(function(card){
-        //            const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-close');
-        //            const NO_RATE = card.querySelector('.card-body .no-rate');
-        //            if(PICKUP_EXECUTIVE_FLAG != undefined)
-        //            {
-        //               card.style.display = 'none';
-        //            }
-        //            if(NO_RATE != undefined)
-        //            {
-        //                card.style.display = 'none';
-        //            }
-        //        });
-        //    }
-        //     if(PICKUP_EXECUTIVE_FILTER.checked == false)
-        //    {
-        //        CARDS.forEach(function(card){
-        //            const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-check');
-        //                card.style.display = 'inline-block';
-        //        });
-        //    }
-        //});
-
-        
          const USER_FILTER =  document.getElementById("UserRateList");
          const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
-         const CARDS = document.querySelectorAll(".item");
          const SEARCH = document.getElementById('searchMaterials');
 
          USER_FILTER.addEventListener("change", filter);
          PICKUP_EXECUTIVE_FILTER.addEventListener("change", filter);
 
          function filter(){
+             
             SEARCH.value="";
-            CARDS.forEach(
-                
-                function(card){
-                if(USER_FILTER.checked == false)
-                {                        
-                          card.style.display = 'inline-block';
-                }
-                 if(PICKUP_EXECUTIVE_FILTER.checked == false)
-                {
-                            card.style.display = 'inline-block';
-                }
-                const USER_FLAG = card.querySelector('.visibility-box .user-visibility .fa-close');
-                const PICKUP_EXECUTIVE_FLAG = card.querySelector('.visibility-box .pickup-visibility .fa-close');
-                const NO_RATE = card.querySelector('.card-body .no-rate');
-                if(USER_FILTER.checked == true && PICKUP_EXECUTIVE_FILTER.checked == false)
-                {
-                        if(USER_FLAG != undefined)
-                        {
-                           card.style.display = 'none';
-                        }
-                        if(NO_RATE != undefined)
-                        {
-                            card.style.display = 'none';
-                        }
-                }
-                if(USER_FILTER.checked == false && PICKUP_EXECUTIVE_FILTER.checked == true)
-                {                        
-                        if(PICKUP_EXECUTIVE_FLAG != undefined)
-                        {
-                           card.style.display = 'none';
-                        }
-                        if(NO_RATE != undefined)
-                        {
-                            card.style.display = 'none';
-                        }
-                }
-                if(USER_FILTER.checked == true && PICKUP_EXECUTIVE_FILTER.checked == true)
-                {                                                
-                        if(PICKUP_EXECUTIVE_FLAG != undefined)
-                        {
-                           card.style.display = 'none';
-                        }
-                        if(USER_FLAG != undefined)
-                        {
-                           card.style.display = 'none';
-                        }
-                        if(NO_RATE != undefined)
-                        {
-                            card.style.display = 'none';
-                        }
-                }
-
-         });
+            if(USER_FILTER.checked && PICKUP_EXECUTIVE_FILTER.checked){
+                $(".item").hide();
+                $('.item[data-seller-ratelist="True"][data-pickup-executive-ratelist="True"]').show();
+            }else if(USER_FILTER.checked){
+                $(".item").hide();
+                $('.item[data-seller-ratelist="True"]').show();
+            }else if(PICKUP_EXECUTIVE_FILTER.checked){
+                $(".item").hide();
+                $('.item[data-pickup-executive-ratelist="True"]').show();
+            }else{
+                $('.item').show();
+            }
         }
 
          SEARCH.addEventListener('keyup', function(){
