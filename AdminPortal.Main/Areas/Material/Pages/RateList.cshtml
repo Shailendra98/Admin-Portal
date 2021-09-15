@@ -12,101 +12,97 @@
     }
     else
     {
-        <div class=" row justify-content-center">
-            <div class="col-md-12">
-                <div class="mt-2">
-                    <div class="hpanel ">
-                        <div class="panel-body">
-                            <div class="row">
-                                <span class="input-group col">
-                                    <input class="form-control" type="text" placeholder="Search Materials" id="searchMaterials" />
-                                    <button class="btn btn-default  ">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                                <span class="input-group col">
-                                    <span class="col m-auto text-left form-check form-switch d-flex justify-content-end ">
-                                        <input class="visibility-checkbox form-check-input me-2 cursor-pointer"
-                                           type="checkbox" name="UserRateList" value="true" id="UserRateList" />
-                                        <label class="form-check-label fs-6 cursor-pointer" for="UserRateList">User Rate List</label>
-                                    </span>
-                                    <span class="col m-auto text-left form-check form-switch d-flex justify-content-center">
-                                        <input class="visibility-checkbox form-check-input me-2 cursor-pointer"
-                                           type="checkbox" name="PickupExecutiveRateList" value="true" id="PickupExecutiveRateList" />
-                                        <label class="form-check-label fs-6 cursor-pointer" for="PickupExecutiveRateList">Pickup executive Rate List</label>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="searchbox">
-                    <div class="d-flex flex-wrap justify-content-start mx-n2">
-                        @foreach (var material in Model.Materials)
-                        {
-                            var rate = Model.MaterialRates.FirstOrDefault(m => m.Id == material.Id);
-                            var materialInfo = new PurchaseMaterialUpdateModel
-                            {
-                                PurchaseMaterialId = material.Id,
-                                PurchaseMaterialName = material.Name,
-                                Rate = rate?.Rate,
-                                MinRate = rate?.MinRate,
-                                MaxRate = rate?.MaxRate,
-                                IncludeInPickupExecutiveRateList = rate?.IncludeInPickupExecutiveRateList ?? false,
-                                IncludeInSellerRateList = rate?.IncludeInSellerRateList ?? false,
-                                Unit = material.UnitName
-                            };
-                            <a class="text-decoration-none text-dark item card m-2 flex-fill @(rate==null?"no-rate":"")" id="@(material.Id)-card"
-                       style="max-width: calc(33.33% - 1rem); min-width: 25rem;"
-                       data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList" data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList"
-                       data-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
-                                <div class="card-body">
-                                    <h6>
-                                        <strong class="title-text">@material.Name</strong>
-                                    </h6>
-                                    @if (rate == null)
-                                    {
-                                        <div class="text-center py-3">
-                                            <em>There is no rate for this material.</em>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="row pt-1">
-                                            <div class="col-6">
-                                                Rates:
-                                                <span class="ps-1">₹</span>
-                                                <span class="fs-6 "><strong class="default-rate">@rate.Rate.ToString("G29")</strong></span>
-                                                <small>/@material.UnitName</small>
-                                                <div class="card-text">
-                                                    Range:
-                                                    <span>₹</span>
-                                                    <span><strong class="min-rate">@rate.MinRate.ToString("G29")</strong></span>
-
-                                                    <strong>-</strong>
-                                                    <span><strong class="max-rate">@rate.MaxRate.ToString("G29")</strong></span>
-                                                    <small>/@material.UnitName</small>
-                                                </div>
-                                            </div>
-                                            <div class="col-6 visibility-box pe-0">
-                                                <div class="seller-visibility">
-                                                    <i class="fa @(rate.IncludeInSellerRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
-                                                    <span class="ps-1">Seller rate list</span>
-                                                </div>
-                                                <div class="pickup-executive-visibility pt-1">
-                                                    <i class="fa @(rate.IncludeInPickupExecutiveRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
-                                                    <span class="ps-1">Pickup executive rate list</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </a>
-                        }
-                    </div>
+        <div class="hpanel ">
+            <div class="panel-body">
+                <div class="row">
+                    <span class="input-group col">
+                        <input class="form-control" type="text" placeholder="Search Materials" id="searchMaterials" />
+                        <button class="btn btn-default  ">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                    <span class="input-group col">
+                        <span class="me-0 m-auto text-left form-check form-switch d-flex justify-content-end ">
+                            <input class="visibility-checkbox form-check-input me-2 cursor-pointer" style="height: 1rem;width: 2rem;"
+                               type="checkbox" name="UserRateList" value="true" id="UserRateList" />
+                            <label class="form-check-label fs-6 cursor-pointer" for="UserRateList">User Rate List</label>
+                        </span>
+                        <span class=" ms-5 me-4 m-auto text-left form-check form-switch d-flex justify-content-center">
+                            <input class="visibility-checkbox form-check-input me-2 cursor-pointer" style="height: 1rem;width: 2rem;"
+                               type="checkbox" name="PickupExecutiveRateList" value="true" id="PickupExecutiveRateList" />
+                            <label class="form-check-label fs-6 cursor-pointer" for="PickupExecutiveRateList">Pickup executive Rate List</label>
+                        </span>
+                    </span>
                 </div>
             </div>
         </div>
+        <div id="searchbox">
+            <div class="d-flex flex-wrap justify-content-start mx-n2">
+                @foreach (var material in Model.Materials)
+                {
+                    var rate = Model.MaterialRates.FirstOrDefault(m => m.Id == material.Id);
+                    var materialInfo = new PurchaseMaterialUpdateModel
+                    {
+                        PurchaseMaterialId = material.Id,
+                        PurchaseMaterialName = material.Name,
+                        Rate = rate?.Rate,
+                        MinRate = rate?.MinRate,
+                        MaxRate = rate?.MaxRate,
+                        IncludeInPickupExecutiveRateList = rate?.IncludeInPickupExecutiveRateList ?? false,
+                        IncludeInSellerRateList = rate?.IncludeInSellerRateList ?? false,
+                        Unit = material.UnitName
+                    };
+                    <a class="text-decoration-none text-dark item card m-2 flex-fill @(rate==null?"no-rate":"")" id="@(material.Id)-card"
+               style="max-width: calc(33.33% - 1rem); min-width: 25rem;"
+               data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList" data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList"
+               data-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
+                        <div class="card-body">
+                            <h6>
+                                <strong class="title-text">@material.Name</strong>
+                            </h6>
+                            @if (rate == null)
+                            {
+                                <div class="text-center py-3">
+                                    <em>There is no rate for this material.</em>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row pt-1">
+                                    <div class="col-6">
+                                        Rates:
+                                        <span class="ps-1">₹</span>
+                                        <span class="fs-6 "><strong class="default-rate">@rate.Rate.ToString("G29")</strong></span>
+                                        <small>/@material.UnitName</small>
+                                        <div class="card-text">
+                                            Range:
+                                            <span>₹</span>
+                                            <span><strong class="min-rate">@rate.MinRate.ToString("G29")</strong></span>
+
+                                            <strong>-</strong>
+                                            <span><strong class="max-rate">@rate.MaxRate.ToString("G29")</strong></span>
+                                            <small>/@material.UnitName</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 pe-0">
+                                        <div class="seller-visibility">
+                                            <i class="fa @(rate.IncludeInSellerRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
+                                            <span class="ps-1">Seller rate list</span>
+                                        </div>
+                                        <div class="pickup-executive-visibility pt-1">
+                                            <i class="fa @(rate.IncludeInPickupExecutiveRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
+                                            <span class="ps-1">Pickup executive rate list</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+
+
     }
 </div>
 @section Styles{
@@ -117,10 +113,6 @@
         border-color: #198754;
     }
 
-    .form-check-input {
-        height: 1rem;
-        width: 2rem;
-    }
 </style>
 }
 @section Scripts{
