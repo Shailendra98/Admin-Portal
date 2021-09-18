@@ -1,11 +1,11 @@
 ﻿@page
 @model TKW.AdminPortal.Areas.Request.Pages.Add.BulkModel
 @{
-    ViewBag.Title = "Add Handled Request";
+    ViewBag.Title = "Add Bulk Request";
     bool HasLastHandledRequest = Model.LastHandledRequest != null;
     bool HasPendingRequests = Model.PendingRequests != null && Model.PendingRequests.Count > 0;
 }
-<pagetitle title="Add Handled Request" description="Add request which is already handled.">
+<pagetitle title="Add Bulk Request" description="Add request which is already handled.">
 </pagetitle>
 <div class="content">
     <div class="row">
@@ -38,7 +38,7 @@
                     <div class="mb-3 ">
                         <div id="commentfield" style="display:none">
                             <label asp-for="NewRequestModel.Comment" class="col-form-label fw-bold"></label>
-                            <input asp-for="NewRequestModel.Comment" class="form-control" placeholder="Comment" />
+                            <textarea rows="3" asp-for="NewRequestModel.Comment" class="form-control" placeholder="Comment"></textarea>
                             <span asp-validation-for="NewRequestModel.Comment" class="text-danger small"></span>
                         </div>
                     </div>
@@ -82,8 +82,8 @@
                                         </div><div class="p-1">
                                             <b>Total Amount:</b> ₹@Model.LastHandledRequest.TotalAmount.ToString("0.0")
                                         </div><div class="p-t-md p-r-xxs">
-                                            <a href="#" data-loaded="false" data-load-url="@Url.Page("../Ajax/Modal/Details", new { Model.LastHandledRequest.Id })" data-target="#DetailsModal" class="btn btn-default btn-xs" data-toggle="modal">Details</a>
-                                        </div>
+    <a href="#" data-loaded="false" data-load-url="@Url.Page("../Ajax/Modal/Details", new { Model.LastHandledRequest.Id })" data-bs-target="#DetailsModal" class="btn btn-default btn-xs" data-bs-toggle="modal">Details</a>
+</div>
                                     </div>
                                 </div>
                                 @*<div class="media">
@@ -161,7 +161,7 @@
                                         <a href="#" data-loaded="false" data-load-url="@Url.Page("../Ajax/Modal/Details", new { r.Id })" data-bs-target="#DetailsModal" class="btn btn-default btn-xs" data-bs-toggle="modal">Details</a>
                                         <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Reschedule", new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Reschedule</a>
                                         <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Assign", new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Assign</a>
-                                        <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Handle", new { r.Id })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Handle</a>
+                                        @*<a href="#" data-load-url="@Url.Page("../Ajax/Modal/Handle", new { r.Id })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Handle</a>*@
                                         <a href="#" data-load-url="@Url.Page("../Ajax/Modal/Cancel", new { Ids = new List<long> { r.Id } })" data-bs-target="#ActionModal" data-bs-toggle="modal" class="btn btn-default btn-xs">Cancel</a>
                                     </div>
                                 </div>

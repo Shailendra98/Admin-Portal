@@ -146,7 +146,7 @@ else
                                     }
 
                                     <div class="pe-1">
-                                        @if (!string.IsNullOrWhiteSpace(item.SellerRemark))
+                                        @if (item.SellerRemark != null)
                                         {
                                             <small>@item.SellerRemark</small>
                                         }
@@ -205,7 +205,7 @@ else
                                     }
 
                                     <div class="pe-1">
-                                        @if (!string.IsNullOrWhiteSpace(item.PickupBoyRemark))
+                                        @if (item.PickupBoyRemark != null )
                                         {
                                             <small>@item.PickupBoyRemark</small>
                                         }

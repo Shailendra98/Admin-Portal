@@ -32,5 +32,15 @@ namespace TKW.AdminPortal.Controllers
             List<SellMaterialModel> materials = await _materialQueries.ActiveSellMaterialsAsync(cancellationToken);
             return Json(materials);
         }
+
+        [HttpGet]
+        [Route("~/ajax/materials/sell/{unsegregatedMaterialId}")]
+        public async Task<IActionResult> SellMaterials(int unsegregatedMaterialId, CancellationToken cancellationToken)
+        {
+            var unsegregatedMaterial = await _materialQueries.PurchaseStockMaterialbyIdAsync(unsegregatedMaterialId, cancellationToken);
+            if (unsegregatedMaterial == null) return Json(null);
+            List<SellMaterialModel> materials = unsegregatedMaterial!.SellMaterials;
+            return Json(materials);
+        }
     }
 }

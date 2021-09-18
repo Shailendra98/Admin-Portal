@@ -51,6 +51,7 @@
     <Compile Remove="Areas\Sell\Pages\Ajax\BuyerList.cshtml.cs" />
     <Compile Remove="Areas\Sell\Pages\Ajax\Modal\GSTInvoice.cshtml.cs" />
     <Compile Remove="Areas\Sell\Pages\Buyers.cshtml.cs" />
+    <Compile Remove="Areas\Warehouse\Pages\Ajax\Modal\AddSegregation.cshtml.cs" />
     <Compile Remove="Pages\Ajax\Request\OTP.cshtml.cs" />
   </ItemGroup>
 
@@ -72,6 +73,7 @@
     <Content Remove="Areas\Sell\Pages\Buyers.cshtml" />
     <Content Remove="Areas\Sell\Pages\Invoice.cshtml" />
     <Content Remove="Areas\Sell\Pages\Shared\_BuyerInput.cshtml" />
+    <Content Remove="Areas\Warehouse\Pages\Ajax\Modal\AddSegregation.cshtml" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="Pages\Ajax\Request\OTP.cshtml" />
   </ItemGroup>
@@ -270,23 +272,6 @@
     <None Include="wwwroot\scripts\sweet-alert.min.js" />
     <None Include="wwwroot\scripts\timeago.js" />
     <None Include="wwwroot\scripts\toastr.min.js" />
-    <None Include="wwwroot\stylesheets\awesome-bootstrap-checkbox.scss" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.min.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.rtl.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-grid.rtl.min.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.min.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.rtl.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-reboot.rtl.min.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.min.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.rtl.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap-utilities.rtl.min.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.min.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.rtl.css.map" />
-    <None Include="wwwroot\stylesheets\bootstrap\css\bootstrap.rtl.min.css.map" />
     <None Include="wwwroot\scripts\bootstrap.bundle.js" />
     <None Include="wwwroot\scripts\bootstrap.bundle.js.map" />
     <None Include="wwwroot\scripts\bootstrap.bundle.min.js" />
@@ -299,7 +284,48 @@
     <None Include="wwwroot\scripts\bootstrap.js.map" />
     <None Include="wwwroot\scripts\bootstrap.min.js" />
     <None Include="wwwroot\scripts\bootstrap.min.js.map" />
-    <None Include="wwwroot\stylesheets\bootstrap.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_floating-labels.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_form-check.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_form-control.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_form-range.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_form-select.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_form-text.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_input-group.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_labels.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\forms\_validation.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\helpers\_clearfix.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\helpers\_colored-links.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\helpers\_position.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\helpers\_ratio.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\helpers\_stretched-link.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\helpers\_text-truncation.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\helpers\_visually-hidden.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_alert.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_border-radius.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_box-shadow.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_breakpoints.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_buttons.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_caret.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_clearfix.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_color-scheme.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_container.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_deprecate.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_forms.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_gradients.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_grid.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_image.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_list-group.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_lists.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_pagination.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_reset-text.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_resize.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_table-variants.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_text-truncate.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_transition.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_utilities.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\mixins\_visually-hidden.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\utilities\_api.scss" />
+    <None Include="wwwroot\stylesheets\bootstrap\vendor\_rfs.scss" />
     <None Include="wwwroot\stylesheets\bs-wizard.scss" />
     <None Include="wwwroot\stylesheets\cover.scss" />
     <None Include="wwwroot\stylesheets\homer.scss" />
@@ -359,20 +385,19 @@
     <None Include="wwwroot\stylesheets\searchelem.scss" />
     <None Include="wwwroot\stylesheets\stylesheet.scss" />
     <None Include="wwwroot\stylesheets\sweet-alert.scss" />
-    <None Include="wwwroot\stylesheets\_bootstrap-compass.scss" />
-    <None Include="wwwroot\stylesheets\_bootstrap-mincer.scss" />
-    <None Include="wwwroot\stylesheets\_bootstrap-sprockets.scss" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="TKW.ApplicationCore" Version="1.2.3-ratelist" />
     <PackageReference Include="TKW.Infrastructure" Version="1.2.2-ratelist" />
-    <PackageReference Include="TKW.Queries" Version="1.0.4-ratelist" />
+    <PackageReference Include="TKW.ApplicationCore" Version="1.2.3" />
+    <PackageReference Include="TKW.Queries" Version="1.0.5-ap-fixes" />
     <PackageReference Include="TKW.SharedKernel" Version="1.0.0" />
   </ItemGroup>
 

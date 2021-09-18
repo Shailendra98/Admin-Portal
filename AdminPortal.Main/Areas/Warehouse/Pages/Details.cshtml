@@ -5,7 +5,7 @@
     ViewBag.Title = Model.Warehouse.Name + " | Warehouse";
 }
 <pagetitle title="Warehouse Detail " description="Details of the warehouse">
-    <a data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/AddSegregation",new { Model.Warehouse.Id })" data-bs-target="#ModalId" class="btn btn-primary btn-outline btn-sm"><i class="fa fa-plus"></i> Add Segregation</a>
+    <a data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/AddSegregation/Step1",new { WarehouseId = Model.Warehouse.Id })" data-bs-target="#ActionModal" class="btn btn-primary btn-outline btn-sm"><i class="fa fa-plus"></i> Add Segregation</a>
 </pagetitle>
 <div class="content">
     <div class="row">
@@ -67,7 +67,7 @@
             background: #dff0d8 !important;
         }*/
 
-      /*  .nav-pills .nav-link.active{
+        /*  .nav-pills .nav-link.active{
             color: #34495e !important;
             background-color: #dff0d8 !important;
 
@@ -133,6 +133,7 @@
     </script>
 }
 @section Footer{
+    <modal content-id="ActionModalContent" loader="true" id="ActionModal"></modal>
     <modal id="ModalId" content-id="ModalContent" loader="true"></modal>
     <div id="blueimp-gallery" class="blueimp-gallery">
         <div class="slides"></div>
