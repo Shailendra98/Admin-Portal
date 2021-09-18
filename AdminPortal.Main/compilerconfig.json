@@ -16,7 +16,8 @@
     "inputFile": "wwwroot/stylesheets/shimmer.scss"
   },
   {
-    "outputFile": "wwwroot/stylesheets/bootstrap/bootstrap.css",
-    "inputFile": "wwwroot/stylesheets/bootstrap/bootstrap.scss"
+    "outputFile": "wwwroot/stylesheets/native.css",
+    "inputFile": "wwwroot/stylesheets/native.scss"
+
   }
 ]

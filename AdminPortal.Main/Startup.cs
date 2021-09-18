@@ -51,6 +51,7 @@ namespace AdminPortal
             services.AddQueries(Configuration);
             services.AddDistributedMemoryCache();
             services.AddSession();
+
             services
                 .AddAuthorization(options =>
                      {
@@ -104,7 +105,7 @@ namespace AdminPortal
                     options.Conventions.AuthorizeAreaFolder("Expense", "/");
                 }).AddMvcOptions(options=> {
                     options.ModelBinderProviders.RemoveType<DateTimeModelBinderProvider>();
-                });
+                }).AddRazorRuntimeCompilation(); ;
             
             services.AddControllers(options=> {
                 options.ModelBinderProviders.RemoveType<DateTimeModelBinderProvider>();

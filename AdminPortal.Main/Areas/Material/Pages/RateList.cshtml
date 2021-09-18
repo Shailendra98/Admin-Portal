@@ -1,4 +1,5 @@
 ﻿@page
+@using TKW.AdminPortal.Areas.Material.ViewModels
 @model TKW.AdminPortal.Areas.Material.Pages.RateListModel
 @{
     ViewBag.Title = "Rate list";
@@ -11,147 +12,206 @@
     }
     else
     {
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="hpanel">
-                    <div class="panel-body">
-                        <div class="table-responsible">
-                            <div id="search_container">
-                                <div class="searchElem border-bottom">
-                                    <input style="width:100%; padding:15px 7px; font-size:14px;" type="text" placeholder="Search Materials" id="searchMaterials" />
-                                </div>
-                            </div>
-                            <table class="table" id="ratelist_table">
-                                @foreach (var material in Model.Materials)
-                                {
-                                    var rate = Model.MaterialRates.FirstOrDefault(m => m.Id == material.Id);
-                                    <tr class="ratelist_tr">
-                                        <td class="align-middle">
-                                            <div class="h6 mb-0 py-2">@material.Name</div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-end">
-                                                <form data-ajax="true"
-                                                       data-ajax-url="@Url.Action("UpdateRateOfFranchise","Rate")"
-                                                       data-ajax-method="post"
-                                                       data-ajax-begin="$('#@(material.Id)_btn').data('state','1'); $('#@(material.Id)_btn').html('Updating').attr('disabled','');"
-                                                       data-ajax-success="$('#@(material.Id)_btn').html('Updated').removeClass('btn-default').addClass('btn-success');"
-                                                       data-ajax-error="$('#@(material.Id)_btn').html('Failed').removeClass('btn-default').addClass('btn-danger');">
-                                                    <input name="PurchaseMaterialId" value="@material.Id" type="hidden" />
-                                                    <div class="text-left checkbox checkbox-circle checkbox-success d-inline-block pe-5 pb-2">
-                                                        <input class="visibility-checkbox" type="checkbox" @(rate?.IncludeInRateList == true ? "checked" : "") name="IncludeInRateList" value="true" id="@(material.Id)_includeCheckbox" />
-                                                        <label for="@(material.Id)_includeCheckbox">Visible to user</label>
-                                                    </div>
-                                                    <div class="rate-input-minmax rate-input">
-                                                        <span class="p-r-sm"><small class="font-trans">Min Rate</small></span> <br />
-                                                        <span class="suffix">₹</span>
-                                                        <input class="min" type="number" step="0.01" name="MinRate" data-materialid="@material.Id" id="@(material.Id)_inputIdmin" value="@(rate == null ? "" :rate.MinRate.ToString("0.00"))" placeholder="Rate" />
-                                                    </div>
-                                                    <div class="rate-input-default rate-input">
-                                                        <span class="suffix">₹</span>
-                                                        <input class="defaultvalue" type="number" step="0.01" name="Rate" data-materialid="@material.Id" id="@(material.Id)_inputId" value="@(rate==null ?"":rate.Rate.ToString("0.00"))" placeholder="Rate" />
-                                                    </div>
-                                                    <div class="rate-input-minmax rate-input">
-                                                        <span class="p-r-sm"><small class="font-trans">Max Rate</small></span> <br />
-                                                        <span class="suffix">₹</span>
-                                                        <input class="max" type="number" step="0.01" name="MaxRate" data-materialid="@material.Id" id="@(material.Id)_inputIdmax" value="@(rate==null ? "" :rate.MaxRate.ToString("0.00"))" placeholder="Rate" />
-                                                    </div>
-                                                    <div class="btn-container m-l-md">
-                                                        <button type="submit" data-state="0" id="@(material.Id)_btn" class="btn btn-sm btn-default updatebtn" data-materialid="@material.Id" style="margin-top:-10px">Update</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                          
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        </div>
+        <div class="hpanel ">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col">
+                        <span class="input-group">
+                            <input class="form-control" type="text" placeholder="Search Materials" id="searchMaterials" />
+                            <button class="btn btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
                     </div>
+                    <div class="col">
+                        <div class="d-flex justify-content-end">                       
+                            <label class="pe-3 align-self-center fw-bold" for="All">Rate List Filter:</label>
+                            <div class="btn-group btn-group-sm mt-1" role="group" aria-label="Basic radio toggle button group"> 
+                              <input type="radio" class="btn-check " name="btnradio" id="All" autocomplete="off" checked>
+                              <label class="btn btn-outline-primary" for="All">All</label>
+
+                              <input type="radio" class="btn-check SellerRateList" name="btnradio" id="SellerRateList" autocomplete="off">
+                              <label class="btn btn-outline-primary" for="SellerRateList">Seller</label>
+
+                              <input type="radio" class="btn-check PickupExecutiveRateList" name="btnradio" id="PickupExecutiveRateList" autocomplete="off">
+                              <label class="btn btn-outline-primary" for="PickupExecutiveRateList">Pickup executive</label>
+                            </div>            
+                        </div>                        
+                    </div>  
                 </div>
+            </div>
+        </div>
+        <div id="searchbox">
+            <div class="d-flex flex-wrap justify-content-start mx-n2">
+                @foreach (var material in Model.Materials)
+                {
+                    var rate = Model.MaterialRates.FirstOrDefault(m => m.Id == material.Id);
+                    var materialInfo = new PurchaseMaterialUpdateModel
+                    {
+                        PurchaseMaterialId = material.Id,
+                        PurchaseMaterialName = material.Name,
+                        Rate = rate?.Rate,
+                        MinRate = rate?.MinRate,
+                        MaxRate = rate?.MaxRate,
+                        IncludeInPickupExecutiveRateList = rate?.IncludeInPickupExecutiveRateList ?? false,
+                        IncludeInSellerRateList = rate?.IncludeInSellerRateList ?? false,
+                        Unit = material.UnitName
+                    };
+               <a class="text-decoration-none text-dark item card m-2 flex-fill @(rate==null?"no-rate":"")" id="@(material.Id)-card"
+               style="max-width: calc(33.33% - 1rem); min-width: 25rem;"
+               data-bs-toggle="modal" data-bs-target="#ActionModal" data-seller-ratelist="@materialInfo.IncludeInSellerRateList" 
+               data-pickup-executive-ratelist="@materialInfo.IncludeInPickupExecutiveRateList"
+               data-url="@Url.Page("Ajax/Modal/UpdateRateList", materialInfo)">
+                        <div class="card-body">
+                            <h6>
+                                <strong class="title-text">@material.Name</strong>
+                            </h6>
+                            @if (rate == null)
+                            {
+                                <div class="text-center py-3">
+                                    <em>There is no rate for this material.</em>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row pt-1">
+                                    <div class="col-6">
+                                        Rates:
+                                        <span class="ps-1">₹</span>
+                                        <span class="fs-6 "><strong class="default-rate">@rate.Rate.ToString("G29")</strong></span>
+                                        <small>/@material.UnitName</small>
+                                        <div class="card-text">
+                                            Range:
+                                            <span>₹</span>
+                                            <span><strong class="min-rate">@rate.MinRate.ToString("G29")</strong></span>
+                                            <strong>-</strong>
+                                            <span><strong class="max-rate">@rate.MaxRate.ToString("G29")</strong></span>
+                                            <small>/@material.UnitName</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 pe-0">
+                                        <div class="seller-visibility">
+                                            <i class="fa @(rate.IncludeInSellerRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
+                                            <span class="ps-1">Seller rate list</span>
+                                        </div>
+                                        <div class="pickup-executive-visibility pt-1">
+                                            <i class="fa @(rate.IncludeInPickupExecutiveRateList == true ? "fa-check text-success" : "fa-close text-danger" ) "></i>
+                                            <span class="ps-1">Pickup executive rate list</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </a>
+                }
             </div>
         </div>
     }
 </div>
 @section Styles{
-    <link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
-    <style>
-        .rate-input-default {
-            display: inline-block;
-            margin-right: 30px;
-            margin-left: 30px;
-            border-bottom: 1px solid #e4e5e7;
-        }
-
-        .rate-input-minmax {
-            display: inline-block;
-            border-bottom: 1px solid #e4e5e7;
-        }
-
-        .rate-input-default span.suffix {
-            font-size: 14px;
-        }
-
-        .rate-input-minmax span.suffix {
-            font-size: 10px;
-        }
-
-        .rate-input-default input {
-            border: none;
-            font-size: 17px;
-            font-weight: 600;
-            width: 75px;
-            padding-right: 5px;
-            text-align: right;
-            outline: none;
-        }
-
-        .rate-input-minmax input {
-            border: none;
-            font-size: 12px;
-            font-weight: 600;
-            width: 55px;
-            padding-right: 5px;
-            text-align: right;
-            outline: none;
-        }
-
-        .btn-container {
-            display: inline-block;
-        }
-    </style>
+<link href="~/css/bootstrap-checkbox.min.css" asp-append-version="true" rel="stylesheet" />
 }
 @section Scripts{
-    <script src="~/js/searchelem.min.js"></script>
-    <script>
-        $(function () {
-            $('.visibility-checkbox').on('change', function () {
-                var form = $(this).closest('form');
-                var button = form.find("button");
-                button.removeAttr('disabled');
-                if (button.data('state') == "1") {
-                    $(this).parents('tr').find('.updatebtn').html('Update').removeClass('btn-success').removeClass('btn-danger').addClass('btn-default').removeAttr('disabled');
-                    $(this).data('state', '0');
-                }
+<script src="~/js/searchelem.min.js"></script>
+<script>
+       $(function () {
+           $("#searchMaterials").SearchElem("#searchbox .item", [{ elem: "h6", type: "text" }], { numberOfResult: 0 });
+
+           $(".item").click(function(){
+
+               $("#ActionModal").find(".modal-content")
+               .html("<div class='modal-body'><div class='text-center'><img src='/images/ripple.gif' alt='Loading..'/></div></div>")
+               .load($(this).attr("data-url"));
+
+               });
+
+           $("#ActionModal").on("action.done",function(event, id, name, rate, minrate, maxrate, sellervisibility, pickupexecutivevisibility, unit){
+          var card = $("#"+id+"-card");
+               card.attr("data-url","/Material/Ajax/Modal/UpdateRateList?@nameof(PurchaseMaterialUpdateModel.PurchaseMaterialId)="+id+"&@nameof(PurchaseMaterialUpdateModel.PurchaseMaterialName)="+name+"&@nameof(PurchaseMaterialUpdateModel.Rate)="+rate+"&@nameof(PurchaseMaterialUpdateModel.MinRate)="+minrate+"&@nameof(PurchaseMaterialUpdateModel.MaxRate)="+maxrate+"&@nameof(PurchaseMaterialUpdateModel.IncludeInSellerRateList)="+sellervisibility+"&@nameof(PurchaseMaterialUpdateModel.IncludeInPickupExecutiveRateList)="+pickupexecutivevisibility+"&@nameof(PurchaseMaterialUpdateModel.Unit)="+unit);
+
+               if(card.hasClass("no-rate")){
+                   var sellerIconClasses = sellervisibility ? "fa-check text-success":"fa-close text-danger";
+
+                   var pickupExecutiveIconClasses = pickupexecutivevisibility ? "fa-check text-success":"fa-close text-danger";
+
+                   card.html(`<div class="card-body">
+                                       <h6>
+                                           <strong class="title-text">${name}</strong>
+                                       </h6>
+                                       <div class="row pt-1">
+                                              <div class="col-6">
+                                                   Rates:
+                                                   <span class="ps-1">₹</span>
+                                                   <span class="fs-6 "><strong class="default-rate">${rate}</strong></span>
+                                                   <small>/${unit}</small>
+                                                   <div class="card-text">
+                                                       Range:
+                                                       <span>₹</span>
+                                                       <span><strong class="min-rate">${minrate}</strong></span>
+                                                       <strong>-</strong>
+                                                       <span><strong class="max-rate">${maxrate}</strong></span>
+                                                       <small>/${unit}</small>
+                                                   </div>
+                                               </div>
+                                               <div class="col-6 pe-0">
+                                                   <div class="seller-visibility">
+                                                           <i class="fa ${sellerIconClasses}"></i>
+                                                       <span class="ps-1">Seller rate list</span>
+                                                   </div>
+                                                   <div class="pickup-executive-visibility pt-1">
+                                                       <i class="fa ${pickupExecutiveIconClasses} "></i>
+                                                       <span class="ps-1">Pickup executive rate list</span>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           </div>`).removeClass("no-rate");
+               }else{
+               card.find(".default-rate").html(rate);
+               card.find(".min-rate").html(minrate);
+               card.find(".max-rate").html(maxrate);
+               if(sellervisibility){
+                   card.find(".seller-visibility i").removeClass("fa-close text-danger").addClass("fa-check text-success");
+               }else{
+                       card.find(".seller-visibility i").addClass("fa-close text-danger").removeClass("fa-check text-success");
+               }
+               if(pickupexecutivevisibility){
+                   card.find(".pickup-executive-visibility i").removeClass("fa-close text-danger").addClass("fa-check text-success");
+               }else{
+                       card.find(".pickup-executive-visibility i").addClass("fa-close text-danger").removeClass("fa-check text-success");
+               }
+       }
+    });
+       });
+
+            const SELLER_FILTER =  document.getElementById("SellerRateList");
+            const PICKUP_EXECUTIVE_FILTER =  document.getElementById("PickupExecutiveRateList");
+            const All = document.getElementById("All");
+            const SEARCH = document.getElementById('searchMaterials');
+            
+            SELLER_FILTER.addEventListener("change", filter);
+            PICKUP_EXECUTIVE_FILTER.addEventListener("change", filter);
+            All.addEventListener("change", filter);
+
+           function filter(){              
+               SEARCH.value="";
+               if(SELLER_FILTER.checked){
+                   console.log("seller");
+                   $(".item").hide();
+                   $('.item[data-seller-ratelist="True"]').show();
+               }
+               else if(PICKUP_EXECUTIVE_FILTER.checked){                   
+                   $(".item").hide();
+                   $('.item[data-pickup-executive-ratelist="True"]').show();
+               }
+               else{                     
+                   $('.item').show();
+               }
+           }
+
+            SEARCH.addEventListener('keyup', function(){
+                SELLER_FILTER.checked=false;
+                PICKUP_EXECUTIVE_FILTER.checked=false;
             });
-            $('.rate-input input').on('keyup', function () {
-                var form = $(this).closest('form');
-                var min = parseFloat(form.find("input.min").val());
-                var defaultvalue = parseFloat(form.find("input.defaultvalue").val());
-                var max = parseFloat(form.find("input.max").val());
-                var button = form.find("button");
-                if (isNaN(min) || isNaN(max) || isNaN(defaultvalue) || min > defaultvalue || defaultvalue > max) {
-                    button.attr('disabled', '');
-                }
-                else {
-                    button.removeAttr('disabled');
-                }
-                if (button.data('state') == "1") {
-                    $(this).parents('tr').find('.updatebtn').html('Update').removeClass('btn-success').removeClass('btn-danger').addClass('btn-default').removeAttr('disabled');
-                    $(this).data('state', '0');
-                }
-            });
-            $("#searchMaterials").SearchElem("#ratelist_table tr.ratelist_tr", [{ elem: "td", type: "text" }], { numberOfResult: 0 });
-        });
-    </script>
+</script>
 }
+<modal id="ActionModal" content-id="ActionModalContent" loader="true"></modal>

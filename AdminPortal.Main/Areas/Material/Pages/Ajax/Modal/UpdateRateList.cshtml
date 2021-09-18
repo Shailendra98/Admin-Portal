@@ -1,0 +1,86 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Material.Pages.Ajax.Modal.UpdateRateListModel
+@{
+    Layout = null;
+}
+
+<modal-header title="Edit Material Rate" close-button="true"></modal-header>
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <h4>Material rate has been updated.</h4>
+            <br/>            
+        </div>
+    </modal-body>
+    <script>
+        $("#ActionModal").trigger("action.done",[@Model.Material.PurchaseMaterialId, "@Model.Material.PurchaseMaterialName", "@Model.Material.Rate!.Value.ToString("G29")", "@Model.Material.MinRate!.Value.ToString("G29")", "@Model.Material.MaxRate!.Value.ToString("G29")", @Model.Material.IncludeInSellerRateList.ToString().ToLower(), @Model.Material.IncludeInPickupExecutiveRateList.ToString().ToLower(), "@Model.Material.Unit"]);
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+      data-ajax="true"
+      data-ajax-url="@Url.Page("UpdateRateList")"
+      data-ajax-method="POST"
+      data-ajax-update="#ActionModalContent"
+      data-ajax-begin="$('#editMaterialRateFieldset').attr('disabled','');"
+      data-ajax-complete="$('#editMaterialRateFieldset').removeAttr('disabled');">
+        <fieldset id="editMaterialRateFieldset">
+            <modal-body>
+                    <div class="mb-3">
+                        <input asp-for="Material.PurchaseMaterialId" type="hidden" />
+                        <label class="fw-bold" for="MaterialName">Material Name </label>
+                        <input class="form-control-plaintext fs-5" asp-for="Material.PurchaseMaterialName" type="text" readonly />
+                    </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" asp-for="Material.Rate">Rate</label>
+                            <input asp-for="Material.Unit" type="hidden" />
+                            <div class="input-group">                                
+                                <input class="form-control" type="number" step="0.01" asp-for="Material.Rate" placeholder="Rate" />
+                                <span class="input-group-text">/@Model.Material.Unit</span>
+                            </div>
+                            <span asp-validation-for="Material.Rate" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" asp-for="Material.MinRate">Rate Range</label>
+                            <div class="input-group">
+                                <input class="form-control" type="number" step="0.01" asp-for="Material.MinRate" placeholder="Min" />
+                                <span class="input-group-text">-</span>
+                                <input class="form-control" type="number" step="0.01" asp-for="Material.MaxRate" placeholder="Max" />
+                            </div>
+                            <span asp-validation-for="Material.MinRate" class="text-danger small d-block"></span>
+                            <span asp-validation-for="Material.MaxRate" class="text-danger small d-block"></span>                          
+                        </div>
+                    </div>
+                    <div class="col-6 ">
+                        <div class="mb-3">
+                            <label for="includeCheckbox" class="fw-bold form-label ps-3">Visibility in Rate List </label> <br />
+                            <div class="text-left checkbox checkbox-circle checkbox-success">
+                                <input  type="checkbox" asp-for="Material.IncludeInSellerRateList" id="includeCheckbox" />
+                                <label for="includeCheckbox" class="form-label">Seller</label>
+                            </div>
+                            <div class="text-left checkbox checkbox-circle checkbox-success">
+                                <input type="checkbox" asp-for="Material.IncludeInPickupExecutiveRateList"
+                                   id="includeCheckbox_2" />
+                                <label for="includeCheckbox_2" class="form-label">Pickup executive</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </modal-body>
+            <modal-footer>
+                <button class="btn btn-success" type="submit">Update</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+
+}
