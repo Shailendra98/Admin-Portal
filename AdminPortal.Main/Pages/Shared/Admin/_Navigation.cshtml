@@ -66,5 +66,8 @@
         <li class="@Html.IsSelected(area: "Report")">
             <a href="@Url.Page("/Index", new { area = "Report" })" class="text-decoration-none d-block"><span class="nav-label">Data Report</span></a>
         </li>
+        <li class="@Html.IsSelected(area: "Report")">
+            <a href="@Url.Page("/Index", new { area = "Payment" })" class="text-decoration-none d-block"><span class="nav-label">Payments</span></a>
+        </li>
     </ul>
 </div>
