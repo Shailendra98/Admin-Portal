@@ -48,12 +48,11 @@ namespace TKW.AdminPortal.Areas.Payment.Pages
         {
             FranchiseMode = _appUser.Current?.FranchiseId != null;
 
-            if (!FranchiseMode)
+            if (!FranchiseMode) 
             {
-
+                Franchises = new MultiSelectList(await _franchiseQueries.AllFranchisesAsync(cancellationToken), "Id", "Name"/*, Filter?.Franchises*/);
             }
-
-                Statuses = Enumeration.GetAll<PaymentTransactionStatus>().ToList();
+            Statuses = Enumeration.GetAll<PaymentTransactionStatus>().ToList();
             Methods = Enumeration.GetAll<PaymentMethod>().ToList();
         }
     }

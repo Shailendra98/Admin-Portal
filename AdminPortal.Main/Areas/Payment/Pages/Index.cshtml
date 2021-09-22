@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Filter.StatusIds" class="fw-bold col-form-label"></label>
+                            <label asp-for="Filter.StatusIds" class="fw-bold col-form-label">Status</label>
                             <div>
                                 @{ var ischecked = false;
                                     var checkname = Html.NameFor(m => m.Filter.StatusIds);
@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Filter.MethodIds" class="fw-bold col-form-label"></label>
+                            <label asp-for="Filter.MethodIds" class="fw-bold col-form-label">Method</label>
                             <div>
                                 @{ var isbool = false;
                                     var checknames = Html.NameFor(m => m.Filter.MethodIds);
@@ -126,7 +126,7 @@
         </div>
     </div>
 </div>
-
+<form id="paymentform_ajax" method="post"></form>
 @section Styles{
     <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
 }
@@ -149,8 +149,12 @@
              var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
              $.ajax({
                 url: '@(Url.Page("Ajax/PaymentList"))',
-                data: model,
-                method: 'GET',
+                 data: model,
+                 beforeSend: function (xhr) {
+                     xhr.setRequestHeader("RequestVerificationToken",
+                         $("#paymentform_ajax input").val());
+                 },
+                method: 'POST',
                 success: function (data) { $('#paymentlist').html(data); }
              });
 
@@ -174,7 +178,7 @@
     </script>
 }
 @section Footer{
-    <modal content-id="ExpenseModalContent" loader="true" id="ExpenseModal"></modal>
+    <modal content-id="PaymentModalContent" loader="true" id="PaymentModal"></modal>
     <div id="blueimp-gallery" class="blueimp-gallery">
         <div class="slides"></div>
         <h3 class="title"></h3>
