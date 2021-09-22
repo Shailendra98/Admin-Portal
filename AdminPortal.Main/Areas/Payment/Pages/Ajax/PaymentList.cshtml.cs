@@ -12,12 +12,12 @@ namespace TKW.AdminPortal.Areas.Payment.Pages.Ajax
     public class PaymentListModel : PageModel
     {
         private IPaymentQueries _paymentQueries;
-        private IAppUserService _appUser;
+       
 
-        public PaymentListModel(IPaymentQueries paymentQueries, IAppUserService appUser)
+        public PaymentListModel(IPaymentQueries paymentQueries)
         {
             _paymentQueries = paymentQueries;
-            _appUser = appUser;
+           
         }
 
         [BindProperty(SupportsGet = true)]
@@ -28,17 +28,13 @@ namespace TKW.AdminPortal.Areas.Payment.Pages.Ajax
         public async Task OnGetAsync(int? pageNo, int? pageSize, CancellationToken cancellationToken)
         {
             int size = pageSize == null ? 20 : (pageSize < 5) ? 5 : (pageSize > 200) ? 200 : pageSize.Value;
-            if (_appUser.Current.FranchiseId.HasValue)
-
-                Payments = await _paymentQueries.FilteredPaymentTransactionsAsync(Filter, pageNo ?? 1, size, cancellationToken);
+            Payments = await _paymentQueries.FilteredPaymentTransactionsAsync(Filter, pageNo ?? 1, size, cancellationToken);
         }
 
         public async Task OnPostAsync(int? pageNo, int? pageSize, CancellationToken cancellationToken)
         {
             int size = pageSize == null ? 20 : (pageSize < 5) ? 5 : (pageSize > 200) ? 200 : pageSize.Value;
-            if (_appUser.Current.FranchiseId.HasValue)
-
-                Payments = await _paymentQueries.FilteredPaymentTransactionsAsync(Filter, pageNo ?? 1, size, cancellationToken);
+            Payments = await _paymentQueries.FilteredPaymentTransactionsAsync(Filter, pageNo ?? 1, size, cancellationToken);
         }
     }
 }

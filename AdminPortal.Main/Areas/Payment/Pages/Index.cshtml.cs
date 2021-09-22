@@ -40,13 +40,9 @@ namespace TKW.AdminPortal.Areas.Payment.Pages
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             FranchiseMode = _appUser.Current?.FranchiseId != null;
-
-            if (!FranchiseMode)
-            {
-
-            }
             Statuses = Enumeration.GetAll<PaymentTransactionStatus>().ToList();
             Methods = Enumeration.GetAll<PaymentMethod>().ToList();
-        }
+            if (!FranchiseMode){}
+           }
     }
 }

@@ -28,6 +28,7 @@
         }
     }
 
+    //var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Payments.PageNumber + "&pageSize=" + Model.Payments.PageSize;
     var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Payments.PageNumber + "&pageSize=" + Model.Payments.PageSize;
     string returnUrl = Url.Page("../Index") + "?" + querystring;
 }
