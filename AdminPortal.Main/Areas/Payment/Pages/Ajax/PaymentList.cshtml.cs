@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Identity;
 using TKW.Queries.DTOs.Payment;
 using TKW.Queries.Interfaces;

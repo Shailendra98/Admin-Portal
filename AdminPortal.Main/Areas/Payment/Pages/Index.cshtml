@@ -5,11 +5,10 @@
 @{
     ViewBag.Title = "Payments";
 }
-
 <pagetitle title="Payment" description="List of Payments.">
     @if (Model.FranchiseMode)
     {
-    <a href="#" data-bs-toggle="modal" data-bs-target="#PaymentModal" data-load-url="@Url.Page("Ajax/Modal/Add/")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Payment</a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#PaymentModal" data-load-url="@Url.Page("Ajax/Modal/Add/")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Payment</a>
     }
 </pagetitle>
 <div class="content">
@@ -75,10 +74,10 @@
                                 @foreach (var a in Model.Statuses)
                                 {
                                     ischecked = (Model?.Filter?.StatusIds != null && Model.Filter.StatusIds.Contains(a.Id));
-                                <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
-                                    <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
-                                    <label for="check_@a.Id">@a.Name</label>
-                                </div>
+                                    <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                        <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
+                                        <label for="check_@a.Id">@a.Name</label>
+                                    </div>
                                 }
                             </div>
                         </div>
@@ -92,10 +91,10 @@
                                 @foreach (var a in Model.Methods)
                                 {
                                     isbool = (Model?.Filter?.MethodIds != null && Model.Filter.MethodIds.Contains(a.Id));
-                                <div class="checkbox w-xs p-r-sm @(isbool?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
-                                    <input type="checkbox" name="@checknames" value="@a.Id" id="checks_@a.Id" @(isbool ? "checked" : "") />
-                                    <label for="checks_@a.Id">@a.Name</label>
-                                </div>
+                                    <div class="checkbox w-xs p-r-sm @(isbool?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                        <input type="checkbox" name="@checknames" value="@a.Id" id="checks_@a.Id" @(isbool ? "checked" : "") />
+                                        <label for="checks_@a.Id">@a.Name</label>
+                                    </div>
                                 }
                             </div>
                         </div>

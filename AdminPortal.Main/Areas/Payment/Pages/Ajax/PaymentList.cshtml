@@ -120,17 +120,6 @@ else
             </tbody>
         </table>
     </div>
-    @*@if (Model.Payments.PageCount > 1)
-         {
-             @Html.PagedListPager(Model.Payments, pageNo => Url.Page("PaymentList", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Payments.PageSize }))), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
-        {
-            HttpMethod = "GET",
-            UpdateTargetId = "paymentlist",
-            OnBegin = "window.location.hash='paymentlist'; $('#paymentlist').html('<div class=\\'text-center\\'><img src=\\'/images/ripple.gif\\' alt=\\'Loading..\\' /></div>')",
-            InsertionMode = InsertionMode.Replace
-        }))
-         }*@
-
     <div class="d-flex justify-content-center mt-3">
         <pager data-ajax="true"
                data-ajax-method="get"
