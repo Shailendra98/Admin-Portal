@@ -1,6 +1,6 @@
 ﻿@page
 @using Microsoft.AspNetCore.Routing
-@using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates.PaymentTransactionAggregate
+@using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates
 @model TKW.AdminPortal.Areas.Payment.Pages.Ajax.PaymentListModel
 
 @{
@@ -28,7 +28,6 @@
         }
     }
 
-    //var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Payments.PageNumber + "&pageSize=" + Model.Payments.PageSize;
     var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Payments.PageNumber + "&pageSize=" + Model.Payments.PageSize;
     string returnUrl = Url.Page("../Index") + "?" + querystring;
 }
@@ -55,7 +54,7 @@ else
                                   class="form-inline">
 
                                 <div class="row">
-                                    <div class="col-auto">
+                                    <div>
                                         <label for="pagesize" class="col-form-label fw-bold">Payments per page:</label>
                                     </div>
                                     <div class="col-auto">
@@ -78,7 +77,6 @@ else
                     <th>Status</th>
                     <th>Transaction By</th>
                     <th>Time</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -89,25 +87,17 @@ else
                         <td>@s.Id</td>
 
                         <td>
-                            ₹ @s.Amount.ToString("0.00")
+                            @s.Amount.ToString("G29")
                         </td>
                         <td>
                             @s.Method.Name
                         </td>
-                        <td>
-                            @if (@s.Status.Name == "Successful")
-                            {
-                                <span class="badge badge-success rounded-1"> @s.Status.Name</span>
-                            }
-                            else if (@s.Status.Name == "Failed")
-                            {
-                                <span class="badge badge-danger rounded-1"> @s.Status.Name</span>
-                            }
 
-                            else
-                            {
-                                <span class="badge badge-primary rounded-1"> @s.Status.Name</span>
+                        <td>
+                            @{
+                                var badgeClassName = s.Status.Id == PaymentTransactionStatus.Successful.Id ? "badge-success" : s.Status.Id == PaymentTransactionStatus.Failed.Id ? "badge-danger" : "badge-primary";
                             }
+                            <span class="badge @badgeClassName ">@s.Status.Name</span>
                         </td>
                         <td>
                             @s.Transactioner.Name

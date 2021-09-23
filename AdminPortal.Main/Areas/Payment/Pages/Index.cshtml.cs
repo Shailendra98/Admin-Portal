@@ -15,21 +15,16 @@ namespace TKW.AdminPortal.Areas.Payment.Pages
     public class IndexModel : PageModel
     {
         private IPaymentQueries _paymentQueries;
-        private IAppUserService _appUser;
-
-        public IndexModel(IPaymentQueries paymentService, IAppUserService appUser)
+         public IndexModel(IPaymentQueries paymentService, IAppUserService appUser)
         {
             _paymentQueries = paymentService;
-            _appUser = appUser;
-
         }
-        public bool FranchiseMode { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public int? pageNo { get; set; }
+        public int? PageNo { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public int? pageSize { get; set; }
+        public int? PageSize { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public PaymentTransactionsFilterModel Filter { get; set; }
@@ -39,10 +34,10 @@ namespace TKW.AdminPortal.Areas.Payment.Pages
 
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
-            FranchiseMode = _appUser.Current?.FranchiseId != null;
+            
             Statuses = Enumeration.GetAll<PaymentTransactionStatus>().ToList();
             Methods = Enumeration.GetAll<PaymentMethod>().ToList();
-            if (!FranchiseMode){}
-           }
+            
+        }
     }
 }

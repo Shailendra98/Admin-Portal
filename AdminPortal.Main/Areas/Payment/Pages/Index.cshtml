@@ -6,10 +6,6 @@
     ViewBag.Title = "Payments";
 }
 <pagetitle title="Payment" description="List of Payments.">
-    @if (Model.FranchiseMode)
-    {
-        <a href="#" data-bs-toggle="modal" data-bs-target="#PaymentModal" data-load-url="@Url.Page("Ajax/Modal/Add/")" class="btn btn-primary btn-outline btn-sm"><span class="fa fa-plus"></span> Add Payment</a>
-    }
 </pagetitle>
 <div class="content">
     <div class="row">
@@ -145,7 +141,7 @@
                 readonly: 'readonly'
             }).datetimepicker(options);
 
-             var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, pageNo = Model.pageNo, pageSize = Model.pageSize }));
+             var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, PageNo = Model.PageNo, PageSize = Model.PageSize }));
              $.ajax({
                 url: '@(Url.Page("Ajax/PaymentList"))',
                  data: model,
@@ -175,18 +171,5 @@
             $("select .select2").select2();
         });
     </script>
-}
-@section Footer{
-    <modal content-id="PaymentModalContent" loader="true" id="PaymentModal"></modal>
-    <div id="blueimp-gallery" class="blueimp-gallery">
-        <div class="slides"></div>
-        <h3 class="title"></h3>
-        <a class="prev">‹</a>
-        <a class="next">›</a>
-        <a class="close">×</a>
-        <a class="play-pause"></a>
-        <ol class="indicator"></ol>
-    </div>
-
 }
 
