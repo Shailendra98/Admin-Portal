@@ -1,0 +1,175 @@
+﻿@page
+@model TKW.AdminPortal.Areas.Payment.Pages.IndexModel
+@using Newtonsoft.Json
+@inject TKW.AdminPortal.Utils.UrlGenerator urlGenerator
+@{
+    ViewBag.Title = "Payments";
+}
+<pagetitle title="Payment" description="List of Payments.">
+</pagetitle>
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="hpanel">
+                <div class="panel-body">
+                    <div class="m-b-md">
+                        <h5>
+                            Filter
+                        </h5>
+                        <small>
+                            Filter the list of Payment
+                        </small>
+                    </div>
+                    <form data-ajax="true"
+                          data-ajax-method="get"
+                          data-ajax-url="@Url.Page("Ajax/PaymentList")"
+                          data-ajax-update="#paymentlist"
+                          data-ajax-begin="$('#paymentlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+                          id="filtersortform">
+
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">
+                                Date
+                            </label>
+                            <div class="mb-3">
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.StartDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.StartDate))" placeholder="Start date" data-dtpicker="true">
+                                </div>
+                                <div class="text-center text-muted d-inline-block" style="width:5%;">
+                                    <i class="bi bi-dash"></i>
+                                </div>
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.EndDate" class="form-control form-control-sm" value="@(String.Format("{0:dd/MM/yyyy}",Model?.Filter?.EndDate))" placeholder="End date" data-dtpicker="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">
+                                Amount
+                            </label>
+                            <div class="mb-3">
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.MinAmount" class="form-control form-control-sm" placeholder="Min Amount">
+                                </div>
+                                <div class="text-center text-muted d-inline-block" style="width:5%;">
+                                    <i class="bi bi-dash"></i>
+                                </div>
+                                <div class="d-inline-block" style="width:45%;">
+                                    <input type="text" asp-for="Filter.MaxAmount" class="form-control form-control-sm" placeholder="Max Amount">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Filter.StatusIds" class="fw-bold col-form-label">Status</label>
+                            <div>
+                                @{ var ischecked = false;
+                                    var checkname = Html.NameFor(m => m.Filter.StatusIds);
+                                }
+                                @foreach (var a in Model.Statuses)
+                                {
+                                    ischecked = (Model?.Filter?.StatusIds != null && Model.Filter.StatusIds.Contains(a.Id));
+                                    <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                        <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
+                                        <label for="check_@a.Id">@a.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Filter.MethodIds" class="fw-bold col-form-label">Method</label>
+                            <div>
+                                @{ var isbool = false;
+                                    var checknames = Html.NameFor(m => m.Filter.MethodIds);
+                                }
+                                @foreach (var a in Model.Methods)
+                                {
+                                    isbool = (Model?.Filter?.MethodIds != null && Model.Filter.MethodIds.Contains(a.Id));
+                                    <div class="checkbox w-xs p-r-sm @(isbool?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                        <input type="checkbox" name="@checknames" value="@a.Id" id="checks_@a.Id" @(isbool ? "checked" : "") />
+                                        <label for="checks_@a.Id">@a.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="d-grid gap-1">
+                            <button class="btn btn-success btn-block btn-sm" type="submit" id="filtersubmitbtn">Apply</button>
+                            <button class="btn btn-default btn-block btn-sm" type="reset" id="filterresetbtn">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="hpanel">
+                        <div class="panel-body">
+                            <div id="paymentlist">
+                                <div class="text-center">
+                                    <div>
+                                        <img src="~/images/ripple.gif" alt="Loading.." />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="paymentform_ajax" method="post"></form>
+@section Styles{
+    <link href="~/css/datetimepicker.min.css" asp-append-version="true" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/js/datetimepicker.min.js" asp-append-version="true" type="text/javascript"></script>
+
+    <script>
+        $(function () {
+                var options = {
+                useStrict: true,
+                ignoreReadonly: true,
+                format: "DD-MM-YYYY",
+                showClear: true
+            };
+            $("[data-dtpicker]").attr({
+                style: "background-color:#fff",
+                readonly: 'readonly'
+            }).datetimepicker(options);
+
+             var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, PageNo = Model.PageNo, PageSize = Model.PageSize }));
+             $.ajax({
+                url: '@(Url.Page("Ajax/PaymentList"))',
+                 data: model,
+                 beforeSend: function (xhr) {
+                     xhr.setRequestHeader("RequestVerificationToken",
+                         $("#paymentform_ajax input").val());
+                 },
+                method: 'POST',
+                success: function (data) { $('#paymentlist').html(data); }
+             });
+
+            var startDate = $("[id='@Html.IdFor(m=>m.Filter.StartDate)']");
+            var endDate = $("[id='@Html.IdFor(m=>m.Filter.EndDate)']");
+
+            startDate.on("dp.change", function (e) {
+                endDate.data("DateTimePicker").minDate(e.date);
+            });
+            endDate.on("dp.change", function (e) {
+                startDate.data("DateTimePicker").maxDate(e.date);
+            });
+
+
+            $("#filterresetbtn").click(function (e) {
+                $(".select2-field").val('').trigger('change');
+            });
+
+            $("select .select2").select2();
+        });
+    </script>
+}
+
