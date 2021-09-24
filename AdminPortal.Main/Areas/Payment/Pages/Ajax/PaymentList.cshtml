@@ -51,18 +51,15 @@ else
                                   data-ajax-url="@Url.Page("PaymentList", route)" ,
                                   data-ajax-begin="$('#paymentlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
                                   data-ajax-update="#paymentlist"
-                                  class="form-inline">
-
-                                <div>
-                                    <div>
-                                        <label for="pagesize" class="col-form-label fw-bold">Payments per page:</label>
-                                    </div>
-                                    <div>
-                                        <div class="input-group input-group-sm">
-                                            <input type="text" class="form-control" name="pageSize" id="pagesize" style="max-width:50px;" value="@Model.Payments.PageSize" />
-                                            <div class="input-group-btn">
-                                                <button type="submit" class="btn btn-default btn-sm">Go</button>
-                                            </div>
+                                  class="row">
+                                <div class="col-auto">
+                                    <label for="pagesize" class="col-form-label fw-bold">Payments per page:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" name="pageSize" id="pagesize" style="max-width:50px;" value="@Model.Payments.PageSize" />
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-default btn-sm">Go</button>
                                         </div>
                                     </div>
                                 </div>
