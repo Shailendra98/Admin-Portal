@@ -74,7 +74,6 @@
     <Content Remove="Areas\Sell\Pages\Invoice.cshtml" />
     <Content Remove="Areas\Sell\Pages\Shared\_BuyerInput.cshtml" />
     <Content Remove="Areas\Warehouse\Pages\Ajax\Modal\AddSegregation.cshtml" />
-    <Content Remove="compilerconfig.json" />
     <Content Remove="Pages\Ajax\Request\OTP.cshtml" />
   </ItemGroup>
 
@@ -151,7 +150,6 @@
     <Content Include="Areas\Request\Pages\Shared\_Payment.cshtml" />
     <Content Include="Areas\Request\Pages\Shared\_EditPending.cshtml" />
     <Content Include="Areas\Request\Pages\Shared\_Store.cshtml" />
-    <None Include="compilerconfig.json" />
     <None Include="Pages\Ajax\Address\Modal\Edit.cshtml" />
     <None Include="Pages\Ajax\Address\Modal\List.cshtml" />
     <None Include="Pages\Ajax\Address\Modal\New.cshtml" />
