@@ -39,7 +39,7 @@
         $("#@Html.IdFor(m=>m.WarehouseId)").select2AutoParent({ placeholder: "Warehouse" });
         $("#@Html.IdFor(m=>m.BuyerId)").select2AutoParent({ placeholder: "Buyer" });
           $("#@Html.IdFor(m=>m.MaterialIds)").select2AutoParent({placeholder:"Select Materials"});
-        $("#@Html.IdFor(m=>m.PickupSessionId)").select2({
+        $("#@Html.IdFor(m=>m.PickupSessionId)").select2AutoParent({
             placeholder: "PickupSession",
             data: pickupSessionOptions,
             escapeMarkup: function (markup) {
