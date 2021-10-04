@@ -3,19 +3,46 @@
 @model TKW.AdminPortal.Areas.User.Pages.Ajax.UserListModel
 @{
     Layout = null;
+    var filter = Model.Filter;
     var route = new RouteValueDictionary();
+    //route["Filter.Search"] = filter.Search;
+    //route["Filter.DateType"] = filter.DateType;
+    //route["Filter.SortBy"] = filter.SortBy;
+    route["Filter.StartDate"] = String.Format("{0:dd/MM/yyyy}", filter.StartDate);
+    route["Filter.EndDate"] = String.Format("{0:dd/MM/yyyy}", filter.EndDate);
+    route["Filter.MinAmount"] = filter.MinAmount;
+    route["Filter.MaxAmount"] = filter.MaxAmount;
+    var i = 0;
+    if (filter.StatusIds != null)
+    {
+        foreach (var a in filter.StatusIds)
+        {
+            route["Filter.StatusIds[" + i++ + "]"] = a;
+        }
+    }
+
+
+    var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Payments.PageNumber + "&pageSize=" + Model.Payments.PageSize;
+    string returnUrl = Url.Page("../Index") + "?" + querystring;
 }
+
+@if (Model.Payments == null || Model.Payments.Count == 0)
+{
+    <div class="text-center p-t-sm"><h4>No Payments !</h4><div>There is no Payment.</div></div>
+}
+else
+{
 <div>
 
     @*<div class="font-bold text-end p-b-xs">
             @Model.Payments.FirstItemOnPage - @Model.Payments.LastItemOnPage of @Model.Payments.TotalItemCount
-        </div>
-        <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn table-sm">
-            <thead>
-                <tr>
-                    <td colspan="8">
-                        <div class="float-end">
-                            <form data-ajax="true"
+            </div>
+            <table class="table table-condensed table-hover table-responsive vertical-mid-table animated fadeIn table-sm">
+                <thead>
+                    <tr>
+                        <td colspan="8">
+                            <div class="float-end">
+                                <form data-ajax="true"
                                   data-ajax-method="GET"
                                   data-ajax-begin="$('#userlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
                                   data-ajax-update="#userlist"
@@ -105,13 +132,18 @@
 
 
     <div class="card mb-2">
-        <div class="font-bold text-end p-b-xs mt-3 mx-3">
-            @Model.Payments.FirstItemOnPage - @Model.Payments.LastItemOnPage of @Model.Payments.TotalItemCount
-        </div>
-        <table class=" table-condensed table-hover table-responsive vertical-mid-table animated fadeIn table-sm mx-4">
+        <div class="row mt-3 mb-1">
+            <div class="col-md-3 mt-3">
+                <div class="btn-group btn-group-sm ms-3">
+                    <button class="btn btn-default" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span>  Refresh</button>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="font-bold text-end mx-3">
+                    @Model.Payments.FirstItemOnPage - @Model.Payments.LastItemOnPage of @Model.Payments.TotalItemCount
+                </div>
 
-            <tr>
-                <td colspan="8">
+                <div class="mt-3 mx-3 mb-2">
                     <div class="float-end">
                         <form data-ajax="true"
                               data-ajax-method="GET"
@@ -134,10 +166,9 @@
                             </div>
                         </form>
                     </div>
-                </td>
-            </tr>
-
-        </table>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -376,12 +407,29 @@
 
 </div>
 
-<div class="d-flex justify-content-center mt-3">
-    <pager data-ajax="true"
-           data-ajax-method="get"
-           data-ajax-begin="window.location.hash='paymentlist'; $('#paymentlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
-           data-ajax-update="#paymentlist"
-           list="Model.Payments"
-           url='pageNo=>Url.Page("paymentlist", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Payments.PageSize })))'>
-    </pager>
-</div>
+    <div class="d-flex justify-content-center mt-3">
+        <pager data-ajax="true"
+               data-ajax-method="get"
+               data-ajax-begin="window.location.hash='paymentlist'; $('#paymentlist').html('<div class=\'text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div>');"
+               data-ajax-update="#paymentlist"
+               list="Model.Payments"
+               url='pageNo=>Url.Page("paymentlist", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Payments.PageSize })))'>
+        </pager>
+    </div>
+
+    route["pageSize"] = Model.Payments.PageSize;
+    route["pageNo"] = Model.Payments.PageNumber;
+
+    <script>
+    $(function () {
+        if (history.pushState) {
+            var newUrl = "@Html.Raw(Url.Page("../Index", route))";
+            window.history.pushState({ path: newUrl },'', newUrl);
+        }
+        $('#PaymentModal').find('.modal-content').on('Payment.done', function (e, data) {
+            $('#paymentlist').load('@Url.Page("paymentlist", route)');
+        });
+       });
+    </script>
+
+}
