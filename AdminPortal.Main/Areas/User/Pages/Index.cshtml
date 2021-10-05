@@ -100,26 +100,27 @@
                             <label @*asp-for="Filter.StatusIds"*@ class="fw-bold col-form-label">Address types</label>
                             <div>
 
-                                <div class="d-inline-block" style="width:45%;">
-                                    <input type="checkbox" id="1" name="Bhopal">
-                                    <label for="1">Bhopal</label><br>
+                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
+                                    <input type="checkbox" id="1" name="Office">
+                                    <label for="1">Office</label><br>
                                 </div>
-                                <div class="d-inline-block" style="width:45%;">
-                                    <input type="checkbox" id="2" name="Indore">
-                                    <label for="2">Indore</label><br>
+                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
+                                    <input type="checkbox" id="2" name="Home">
+                                    <label for="2">Home</label><br>
                                 </div>
-                                <div class="d-inline-block" style="width:45%;">
-                                    <input type="checkbox" id="3" name="Gwalior">
-                                    <label for="3">Gwalior</label><br>
+                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
+                                    <input type="checkbox" id="3" name="Bhopal">
+                                    <label for="3">Bhopal</label><br>
                                 </div>
-                                <div class="d-inline-block" style="width:45%;">
-                                    <input type="checkbox" id="3" name="Gwalior">
-                                    <label for="3">Bhind</label><br>
+                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
+                                    <input type="checkbox" id="4" name="Indore">
+                                    <label for="4">Indore</label><br>
                                 </div>
-                                <div class="d-inline-block" style="width:45%;">
-                                    <input type="checkbox" id="3" name="Gwalior">
-                                    <label for="3">Morena</label><br>
+                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
+                                    <input type="checkbox" id="5" name="Gwalior">
+                                    <label for="5">Gwalior</label><br>
                                 </div>
+
                             </div>
                         </div>
 
@@ -170,6 +171,8 @@
     <script>
         $(function () {
 
+            
+
             var options = {
                 useStrict: true,
                 ignoreReadonly: true,
@@ -205,12 +208,12 @@
 
             $('#refreshreqbtn').click(function (e) {
                 e.preventDefault();
-                $('#requestlist').html('<div class="text-center"><img src="/images/ripple.gif" alt="Loading.." /></div>');
-                $('#requestlist').load("@Url.Page("Ajax/RequestList")" + window.location.search);
+                $('#userlist').html('<div class="text-center"><img src="/images/ripple.gif" alt="Loading.." /></div>');
+                $('#userlist').load("@Url.Page("Ajax/UserList")" + window.location.search);
             });
             $("#printbtn").click(function (e) {
                 e.preventDefault();
-                window.open("/Request/list/print" + window.location.search, "", "width=1000,height=600");
+                window.open("/User/list/print" + window.location.search, "", "width=1000,height=600");
             });
 
             $("#filterresetbtn").click(function (e) {
