@@ -420,7 +420,7 @@ else
     route["pageSize"] = Model.Payments.PageSize;
     route["pageNo"] = Model.Payments.PageNumber;
 
-    <script>
+<script>
     $(function () {
         if (history.pushState) {
             var newUrl = "@Html.Raw(Url.Page("../Index", route))";
@@ -429,7 +429,15 @@ else
         $('#PaymentModal').find('.modal-content').on('Payment.done', function (e, data) {
             $('#paymentlist').load('@Url.Page("paymentlist", route)');
         });
+
+         $('#refreshreqbtn').click(function (e) {
+                e.preventDefault();
+                $('#userlist').html('<div class="text-center"><img src="/images/ripple.gif" alt="Loading.." /></div>');
+                $('#userlist').load("@Url.Page("UserList")" + window.location.search);
+            });
+
+
        });
-    </script>
+</script>
 
 }
