@@ -27,8 +27,8 @@
                           id="filtersortform">
 
                         <div class="mb-3">
-                            <label class="fw-bold col-form-label" @*asp-for="Filter.Search"*@>Search</label>
-                            <input type="text" @*asp-for="Filter.Search"*@ class="form-control form-control-sm" placeholder="Search Requests" />
+                            <label class="fw-bold col-form-label" asp-for="Filter.Search">Search</label>
+                            <input type="text" asp-for="Filter.Search" class="form-control form-control-sm" placeholder="Search Requests" />
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label fw-bold">
@@ -52,93 +52,44 @@
                             </label>
                             <div class="mb-3">
                                 <div class="d-inline-block" style="width:46%;">
-                                    <input type="text" @*asp-for="Filter.MinAmount"*@ class="form-control form-control-sm" placeholder="Start interval">
+                                    <input type="text" asp-for="Filter.StartRequestInterval" class="form-control form-control-sm" placeholder="Start interval">
                                 </div>
                                 <div class="text-center text-muted d-inline-block" style="width:5%;">
                                     <i class="bi bi-dash"></i>
                                 </div>
                                 <div class="d-inline-block" style="width:46%;">
-                                    <input type="text" @*asp-for="Filter.MaxAmount"*@ class="form-control form-control-sm" placeholder="End intervalccc">
+                                    <input type="text" asp-for="Filter.EndRequestInterval" class="form-control form-control-sm" placeholder="End interval">
                                 </div>
                             </div>
                         </div>
 
-                        @*<div class="mb-3">
-            <label class="col-form-label fw-bold" asp-for="Filter.Types">Date types</label>
-            <select asp-for="Filter.Types" asp-items="Model.Types" class=" form-select form-select-sm" multiple>
-                <option></option>
-            </select>
-        </div>*@
-
                         <div class="mb-3">
-                            <label class="col-form-label fw-bold" @*asp-for="Filter.Types"*@>Date type</label>
-                            <select @*asp-for="Filter.Types" asp-items="Model.Types"*@ class=" form-select form-select-sm">
-                                <option>Joining date</option>
-                                <option>Last Request Submit date</option>
-                                <option>Last Request Handle date</option>
-                            </select>
+                            <label class="col-form-label fw-bold" asp-for="Filter.DateType">Date type</label>
+                            <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<IndexModel.DateTypeOption>()" class="form-select form-select-sm"></select>
                         </div>
 
-                        @*<div class="mb-3">
-            <label asp-for="Filter.StatusIds" class="fw-bold col-form-label">Status</label>
-            <div>
-                @{ var ischecked = false;
-                    var checkname = Html.NameFor(m => m.Filter.StatusIds);
-                }
-                @foreach (var a in Model.Statuses)
-                {
-                    ischecked = (Model?.Filter?.StatusIds != null && Model.Filter.StatusIds.Contains(a.Id));
-                    <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
-                        <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
-                        <label for="check_@a.Id">@a.Name</label>
-                    </div>
-                }
-            </div>
-        </div>*@
-
                         <div class="mb-3">
-                            <label @*asp-for="Filter.StatusIds"*@ class="fw-bold col-form-label">Address types</label>
+                            <label asp-for="Filter.AddressTypeIds" class="fw-bold col-form-label">Address Types</label>
                             <div>
-
-                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
-                                    <input type="checkbox" id="1" name="Office">
-                                    <label for="1">Office</label><br>
-                                </div>
-                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
-                                    <input type="checkbox" id="2" name="Home">
-                                    <label for="2">Home</label><br>
-                                </div>
-                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
-                                    <input type="checkbox" id="3" name="Bhopal">
-                                    <label for="3">Bhopal</label><br>
-                                </div>
-                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
-                                    <input type="checkbox" id="4" name="Indore">
-                                    <label for="4">Indore</label><br>
-                                </div>
-                                <div class="checkbox w-xs p-r-sm p-1" style="display:inline-block">
-                                    <input type="checkbox" id="5" name="Gwalior">
-                                    <label for="5">Gwalior</label><br>
-                                </div>
-
+                                @{ var ischecked = false;
+                                    var checkname = Html.NameFor(m => m.Filter.AddressTypeIds);
+                                }
+                                @foreach (var a in Model.AddressTypes)
+                                {
+                                    ischecked = (Model?.Filter?.AddressTypeIds != null && Model.Filter.AddressTypeIds.Contains(a.Id));
+                                    <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                        <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
+                                        <label for="check_@a.Id">@a.Name</label>
+                                    </div>
+                                }
                             </div>
                         </div>
-
-                        @*<div class="mb-3">
-            <label class="  fw-bold col-form-label" for="@Html.NameFor(m=>m.Filter.SortBy)">Sort by</label>
-            <select asp-for="Filter.SortBy" asp-items="Html.GetEnumSelectList<IndexModel.SortBy>()" class="form-select form-select-sm"></select>
-        </div>*@
-
+                        
                         <div class="mb-3">
-                            <label class="col-form-label fw-bold" @*asp-for="Filter.Types"*@>Sort by</label>
-                            <select @*asp-for="Filter.Types" asp-items="Model.Types"*@ class=" form-select form-select-sm">
-                                <option>Name</option>
-                                <option>Joining date</option>
-                                <option>Request Frequency</option>
-                                <option>Request Count</option>
-                                <option>Last Request date</option>
-                            </select>
+                            <label class="col-form-label fw-bold" asp-for="Filter.SortBy">Sort by</label>
+                            <select asp-for="Filter.SortBy" asp-items="Html.GetEnumSelectList<IndexModel.SortByOption>()" class="form-select form-select-sm"></select>
                         </div>
+                        
                         <div class="d-grid gap-1">
                             <button class="btn btn-success btn-block btn-sm" type="submit" id="filtersubmitbtn">Apply</button>
                             <button class="btn btn-default btn-block btn-sm" type="reset" id="filterresetbtn">Reset</button>
@@ -170,8 +121,8 @@
 
     <script>
         $(function () {
+           
 
-            
 
             var options = {
                 useStrict: true,
