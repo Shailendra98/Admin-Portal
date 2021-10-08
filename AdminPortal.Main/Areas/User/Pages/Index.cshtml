@@ -46,6 +46,11 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="mb-3">
+                            <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<IndexModel.DateTypeOption>()" class="form-select form-select-sm"></select>
+                        </div>
+
                         <div class="mb-3">
                             <label class="col-form-label fw-bold">
                                 Request Interval range
@@ -62,12 +67,7 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="col-form-label fw-bold" asp-for="Filter.DateType">Date type</label>
-                            <select asp-for="Filter.DateType" asp-items="Html.GetEnumSelectList<IndexModel.DateTypeOption>()" class="form-select form-select-sm"></select>
-                        </div>
-
+                        
                         <div class="mb-3">
                             <label asp-for="Filter.AddressTypeIds" class="fw-bold col-form-label">Address Types</label>
                             <div>
@@ -77,19 +77,19 @@
                                 @foreach (var a in Model.AddressTypes)
                                 {
                                     ischecked = (Model?.Filter?.AddressTypeIds != null && Model.Filter.AddressTypeIds.Contains(a.Id));
-                                    <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
-                                        <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
-                                        <label for="check_@a.Id">@a.Name</label>
-                                    </div>
+                                <div class="checkbox w-xs p-r-sm @(ischecked?"checkbox-primary":"checkbox-success") p-1" style="display:inline-block">
+                                    <input type="checkbox" name="@checkname" value="@a.Id" id="check_@a.Id" @(ischecked ? "checked" : "") />
+                                    <label for="check_@a.Id">@a.Name</label>
+                                </div>
                                 }
                             </div>
                         </div>
-                        
+
                         <div class="mb-3">
                             <label class="col-form-label fw-bold" asp-for="Filter.SortBy">Sort by</label>
                             <select asp-for="Filter.SortBy" asp-items="Html.GetEnumSelectList<IndexModel.SortByOption>()" class="form-select form-select-sm"></select>
                         </div>
-                        
+
                         <div class="d-grid gap-1">
                             <button class="btn btn-success btn-block btn-sm" type="submit" id="filtersubmitbtn">Apply</button>
                             <button class="btn btn-default btn-block btn-sm" type="reset" id="filterresetbtn">Reset</button>
