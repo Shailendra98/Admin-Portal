@@ -28,116 +28,118 @@
 
 @if (Model.Users == null || Model.Users.Count == 0)
 {
-    <div class="text-center p-t-sm"><h4>No Users !</h4><div>There is no User.</div></div>
+   <div class="card "><div class="card-body text-center p-t-sm"><h4>No Users !</h4><div>There is no User.</div></div></div>
 }
 else
 {
-    <div>
-        <div class="card mb-2">
-            <div class="row mt-3 mb-1">
-                <div class="col-md-3 mt-3">
-                    <div class=" btn-group-sm ms-3">
-                        <button class="btn btn-default" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span>  Refresh</button>
-                    </div>
+<div>
+    <div class="card mb-2">
+        <div class="row mt-3 mb-1">
+            <div class="col-md-3 mt-3">
+                <div class=" btn-group-sm ms-3">
+                    <button class="btn btn-default" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span>  Refresh</button>
                 </div>
-                <div class="col-md-9">
-                    <div class="font-bold text-end mx-3">
-                        @Model.Users.FirstItemOnPage - @Model.Users.LastItemOnPage of @Model.Users.TotalItemCount
-                    </div>
+            </div>
+            <div class="col-md-9">
+                <div class="font-bold text-end mx-3">
+                    @Model.Users.FirstItemOnPage - @Model.Users.LastItemOnPage of @Model.Users.TotalItemCount
+                </div>
 
-                    <div class="mt-3 mx-3 mb-2">
-                        <div class="float-end">
-                            <form data-ajax="true"
-                                  data-ajax-method="GET"
-                                  data-ajax-url="@Url.Page("UserList", route)" ,
-                                  data-ajax-begin="$('#userlist').html('<div class=\'card\'><div class=\'card-body text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div></div>');"
-                                  data-ajax-update="#userlist"
-                                  class="form-inline">
+                <div class="mt-3 mx-3 mb-2">
+                    <div class="float-end">
+                        <form data-ajax="true"
+                              data-ajax-method="GET"
+                              data-ajax-url="@Url.Page("UserList", route)" ,
+                              data-ajax-begin="$('#userlist').html('<div class=\'card\'><div class=\'card-body text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div></div>');"
+                              data-ajax-update="#userlist"
+                              class="form-inline">
 
-                                <div class="row">
-                                    <div class="col-auto">
-                                        <label for="pagesize" class="col-form-label fw-bold">Users per page:</label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="input-group input-group-sm">
-                                            <input type="text" class="form-control" name="pageSize" id="pagesize" style="max-width:50px;" value="@Model.Users.PageSize" />
-                                            <div class="input-group-btn">
-                                                <button type="submit" class="btn btn-default btn-sm">Go</button>
-                                            </div>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <label for="pagesize" class="col-form-label fw-bold">Users per page:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" name="pageSize" id="pagesize" style="max-width:50px;" value="@Model.Users.PageSize" />
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-default btn-sm">Go</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        @foreach (var item in Model.Users)
-        {
+    @foreach (var item in Model.Users)
+    {
+        <a href="../User/Details" style="text-decoration:none">
             <div class="card mb-2">
-                <a href="../User/Details" style="text-decoration:none">
-                    <div class="card-body pb-0">
-                        <div class="row">
-                            <div class="col-md-3 ps-2">
-                                <div class="d-flex mb-2">
-                                    <div class="pe-3">
-                                        <img src="/images/default/profilex124.png" class="rounded-circle" alt="logo" height="38" width="38">
-                                    </div>
-                                    <div>
-                                        <div class="fw-bold d-inline">@item.Name</div>
-                                        <div class="fw-lighter d-inline ms-1">(#@item.Id)</div>
-                                        <div><small class="fw-light">(@item.MobileNumber)</small></div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-2 ps-2">
-                                <div class="py-1 text-center">
-                                    @if (item?.AverageRequestInterval != null)
-                                    {
-                                        <div class="font-bold">@item.AverageRequestInterval</div>
-                                    }
-                                    else
-                                    {
-                                        <em>NA</em>
-                                    }
-                                    <div class="small font-trans ms-1"><small>REQUEST INTERVAL</small></div>
+                <div class="card-body py-2">
+                    <div class="row">
+                        <div class="col-md-3 ps-2 pt-1">
+                            <div class="d-flex">
+                                <div class="pe-3">
+                                    <img src="/images/default/profilex124.png" class="rounded-circle" alt="logo" height="38" width="38">
                                 </div>
-                            </div>
-
-                            <div class="col-md-2 ps-2">
-                                <div class="py-1 text-center">
-                                    <div class="font-bold">@item.TotalHandledRequest</div>
-                                    <div class="small font-trans"><small>REQUEST</small></div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 ps-2">
-                                <div class="py-1">
-                                    <div class="text-center">
-                                        <small class="font-bold">@Generate.Time(Convert.ToDateTime(item.LastRequestHandledDate), 's')</small>
-                                        <div class="small font-trans d-inline"><small>AGO</small></div>
-                                    </div>
-                                    <div class="small font-trans text-center"><small>LAST REQUEST SUBMITTED</small></div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 ps-2">
-                                <div class="text-center py-1">
-                                    <div class="font-bold"> @String.Format("{0:dd MMM, yyyy hh:mm tt}", item.JoiningDate)</div>
-                                    <div class="small font-trans"><small>JOINING DATE</small></div>
+                                <div>
+                                    <div class="fw-bold d-inline">@item.Name</div>
+                                    <div class="d-inline"><small class="fw-lighter d-inline ms-1">(#@item.Id)</small></div>
+                                    <div><small class="fw-light">(@item.MobileNumber)</small></div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-2 ps-2">
+                            <div class="py-1 text-center">
+                                @if (item?.AverageRequestInterval != null)
+                                {
+                                    <div class="font-bold">@item.AverageRequestInterval DAYS</div>
+                                }
+                                else
+                                {
+                                    <div class="font-bold">N/A</div>
+                                }
+                                <div class="small font-trans ms-1"><small>REQUEST INTERVAL</small></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 ps-2">
+                            <div class="py-1 text-center">
+                                <div class="font-bold">@item.TotalHandledRequest</div>
+                                <div class="small font-trans"><small>HANDLED REQUEST</small></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 ps-2">
+                            <div class="py-1">
+                                <div class="text-center">
+                                    <div class="font-bold d-inline">@Generate.Time(Convert.ToDateTime(item.LastRequestHandledDate), 's')</div>
+                                    <div class="small font-trans d-inline"><small>AGO</small></div>
+                                </div>
+                                <div class="small font-trans text-center"><small>LAST REQUEST SUBMITTED</small></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 ps-2">
+                            <div class="text-center py-1">
+                                <div class="font-bold"> @String.Format("{0:dd MMM, yyyy hh:mm tt}", item.JoiningDate)</div>
+                                <div class="small font-trans"><small>JOINING DATE</small></div>
+                            </div>
+                        </div>
                     </div>
-                </a>
+                </div>
+
             </div>
-        }
+        </a>
+    }
 
 
-    </div>
+</div>
 
     <div class="d-flex justify-content-center mt-3">
         <pager data-ajax="true"
