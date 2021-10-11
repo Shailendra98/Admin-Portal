@@ -5,21 +5,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TKW.AdminPortal.Areas.User.Pages.Ajax;
 using TKW.ApplicationCore.Contexts.AccountContext.Aggregates;
 using TKW.ApplicationCore.SeedWorks;
 using TKW.Queries.DTOs.Account;
-using TKW.Queries.Interfaces;
 
 
 namespace TKW.AdminPortal.Areas.User.Pages
 {
     public class IndexModel : PageModel
     {
-        private IUserQueries _userQueries;
-        public IndexModel(IUserQueries userService)
+
+        public IndexModel()
         {
-            _userQueries = userService;
+
         }
 
         [BindProperty(SupportsGet = true)]

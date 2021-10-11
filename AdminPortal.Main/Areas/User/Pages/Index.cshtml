@@ -121,8 +121,6 @@
 
     <script>
         $(function () {
-           
-
 
             var options = {
                 useStrict: true,
@@ -155,16 +153,6 @@
             });
             endDate.on("dp.change", function (e) {
                 startDate.data("DateTimePicker").maxDate(e.date);
-            });
-
-            $('#refreshreqbtn').click(function (e) {
-                e.preventDefault();
-                $('#userlist').html('<div class="text-center"><img src="/images/ripple.gif" alt="Loading.." /></div>');
-                $('#userlist').load("@Url.Page("Ajax/UserList")" + window.location.search);
-            });
-            $("#printbtn").click(function (e) {
-                e.preventDefault();
-                window.open("/User/list/print" + window.location.search, "", "width=1000,height=600");
             });
 
             $("#filterresetbtn").click(function (e) {
