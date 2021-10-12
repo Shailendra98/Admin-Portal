@@ -53,6 +53,7 @@
     <Compile Remove="Areas\Sell\Pages\Buyers.cshtml.cs" />
     <Compile Remove="Areas\Warehouse\Pages\Ajax\Modal\AddSegregation.cshtml.cs" />
     <Compile Remove="Pages\Ajax\Request\OTP.cshtml.cs" />
+    <Compile Remove="Pages\DashboardOld.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +76,7 @@
     <Content Remove="Areas\Sell\Pages\Shared\_BuyerInput.cshtml" />
     <Content Remove="Areas\Warehouse\Pages\Ajax\Modal\AddSegregation.cshtml" />
     <Content Remove="Pages\Ajax\Request\OTP.cshtml" />
+    <Content Remove="Pages\DashboardOld.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -395,7 +397,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="TKW.Infrastructure" Version="1.2.3" />
     <PackageReference Include="TKW.ApplicationCore" Version="1.2.5" />
-    <PackageReference Include="TKW.Queries" Version="1.0.5" />
+    <PackageReference Include="TKW.Queries" Version="1.1.0-user-queries-1" />
     <PackageReference Include="TKW.SharedKernel" Version="1.0.0" />
   </ItemGroup>
 
