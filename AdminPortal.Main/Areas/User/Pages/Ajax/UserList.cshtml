@@ -44,7 +44,7 @@ else
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <div class="font-bold text-end mx-3">
+                    <div class="fw-bold text-end mx-3">
                         @Model.Users.FirstItemOnPage - @Model.Users.LastItemOnPage of @Model.Users.TotalItemCount
                     </div>
 
@@ -90,7 +90,7 @@ else
                                     <img src="/images/default/profilex124.png" class="rounded-circle" alt="logo" height="38" width="38">
                                 </div>
                                 <div>
-                                    <div class="fw-bold d-inline">@item.Name</div>
+                                    <span class="fw-bold">@item.Name</span>
                                     <span><small class="fw-lighter ms-1">(#@item.Id)</small></span>
                                     <div><small class="fw-light">(@item.MobileNumber)</small></div>
                                 </div>
@@ -101,12 +101,12 @@ else
                             <div class="py-1 text-center">
                                 @if (item?.AverageRequestInterval != null)
                                 {
-                                    <div class="font-bold d-inline">@item.AverageRequestInterval</div>
-                                    <span class="small font-trans d-inline"><small>DAYS</small></span>
+                                    <span class="fw-bold">@item.AverageRequestInterval</span>
+                                    <span class="small font-trans"><small>DAYS</small></span>
                                 }
                                 else
                                 {
-                                    <div class="font-bold">N/A</div>
+                                    <div class="fw-bold">N/A</div>
                                 }
                                 <div class="small font-trans ms-1"><small>REQUEST INTERVAL</small></div>
                             </div>
@@ -114,7 +114,7 @@ else
 
                         <div class="col-md-2 ps-2">
                             <div class="py-1 text-center">
-                                <div class="font-bold">@item.TotalHandledRequest</div>
+                                <div class="fw-bold">@item.TotalHandledRequest</div>
                                 <div class="small font-trans"><small>HANDLED REQUEST</small></div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@ else
                         <div class="col-md-2 ps-2">
                             <div class="py-1">
                                 <div class="text-center">
-                                    <div class="font-bold d-inline">@Generate.Time(Convert.ToDateTime(item.LastRequestHandledDate), 's')</div>
+                                    <span class="fw-bold">@Generate.Time(Convert.ToDateTime(item.LastRequestHandledDate), 's')</span>
                                     <span class="small font-trans"><small>AGO</small></span>
                                 </div>
                                 <div class="small font-trans text-center"><small>LAST REQUEST SUBMITTED</small></div>
@@ -131,7 +131,7 @@ else
 
                         <div class="col-md-3 ps-2">
                             <div class="text-center py-1">
-                                <div class="font-bold"> @String.Format("{0:dd MMM, yyyy hh:mm tt}", item.JoiningDate)</div>
+                                <div class="fw-bold"> @String.Format("{0:dd MMM, yyyy hh:mm tt}", item.JoiningDate)</div>
                                 <div class="small font-trans"><small>JOINING DATE</small></div>
                             </div>
                         </div>
