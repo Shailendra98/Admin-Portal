@@ -20,25 +20,27 @@
             route["Filter.AddressTypeIds[" + i++ + "]"] = a;
         }
     }
-
-
     var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Users.PageNumber + "&pageSize=" + Model.Users.PageSize;
     string returnUrl = Url.Page("../Index") + "?" + querystring;
 }
 
 @if (Model.Users == null || Model.Users.Count == 0)
 {
-   <div class="card "><div class="card-body text-center"><h4>No Users !</h4><div>There is no User.</div></div></div>
+    <div class="card ">
+        <div class="card-body text-center">
+            <h4>No Users !</h4>
+            <div>There is no User.</div>
+        </div>
+    </div>
 }
 else
 {
-<div>
     <div class="card mb-2">
         <div class="card-body py-0">
             <div class="row mt-3 mb-1">
                 <div class="col-md-3 mt-3">
-                    <div class=" btn-group-sm ms-3">
-                        <button class="btn btn-default" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span>  Refresh</button>
+                    <div class="ms-3">
+                        <button class="btn btn-default btn-sm" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span>  Refresh</button>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -140,9 +142,6 @@ else
         </a>
     }
 
-
-</div>
-
     <div class="d-flex justify-content-center mt-3">
         <pager data-ajax="true"
                data-ajax-method="get"
@@ -168,10 +167,7 @@ else
              $('#userlist').html('<div class="card "><div class="card-body text-center"><img src="/images/ripple.gif" alt="Loading.." /></div></div>');
                 $('#userlist').load("@Url.Page("UserList")" + window.location.search);
             });
-
-
-    });
+      });
     </script>
-
 }
 

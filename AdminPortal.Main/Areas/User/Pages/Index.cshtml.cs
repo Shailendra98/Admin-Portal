@@ -14,12 +14,6 @@ namespace TKW.AdminPortal.Areas.User.Pages
 {
     public class IndexModel : PageModel
     {
-
-        public IndexModel()
-        {
-
-        }
-
         [BindProperty(SupportsGet = true)]
         public int? PageNo { get; set; }
 
@@ -29,13 +23,10 @@ namespace TKW.AdminPortal.Areas.User.Pages
         [BindProperty(SupportsGet = true)]
         public UserFilterSortModel Filter { get; set; }
         public List<AddressType> AddressTypes { get; set; }
-
-
         public async Task OnGetAsync(CancellationToken cancellationToken)
         {
             AddressTypes = Enumeration.GetAll<AddressType>().ToList();
         }
-
 
         public enum DateTypeOption
         {
@@ -44,7 +35,6 @@ namespace TKW.AdminPortal.Areas.User.Pages
             [Display(Name = "Last Request Handle Date")]
             LastRequestHandledDate,
         }
-
         public enum SortByOption
         {
             [Display(Name = "Joining Date")]
