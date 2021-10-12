@@ -33,6 +33,16 @@ else
             <fieldset id="paymentFieldSet">
                 <modal-body>
                     <partial name="_Payment" for="Model" />
+                    @if (Model.ShowOTPField) { 
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="OTP" class="form-label fw-bold">OTP</label>
+                                <input asp-for="OTP" class="form-control" placeholder="Enter OTP"/>
+                            </div>
+                        </div>
+                    </div>
+                    }
                 </modal-body>
                 <modal-footer>
                         @*<div class="pull-left">

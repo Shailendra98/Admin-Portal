@@ -33,7 +33,7 @@ namespace TKW.AdminPortal.Areas.Sell.ViewModels
         /// </summary>
         [BindProperty]
         [Required(ErrorMessage = "PickupSession are required.")]
-        [Display(Name = "PickupSession")]
+        [Display(Name = "Pickup Session")]
         public int? PickupSessionId { get; set; }
 
 

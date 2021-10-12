@@ -24,7 +24,7 @@ namespace TKW.AdminPortal.Extensions
             wb.SaveAs(stream);
             return new FileContentResult(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {
-                FileDownloadName = FileName + ".Xslx",
+                FileDownloadName = FileName + ".xlsx",
             };
         }
     }
