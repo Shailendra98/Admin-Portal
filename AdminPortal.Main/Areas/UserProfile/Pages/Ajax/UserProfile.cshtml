@@ -1,0 +1,299 @@
+﻿@page
+@model TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.UserProfileModel
+@{
+    Layout = null;
+}
+
+<div class="card mb-2">
+    <div class="card-body ">
+        <div class="row">
+            <div class="col-md-3 ps-2 border-end">
+                <div class="text-center py-1">
+                    <div class="fw-bold">8 nov 2021</div>
+                    <div class="small font-trans"><small>JOINING DATE</small></div>
+                </div>
+                <div><hr /></div>
+                <div class="py-1 mt-4">
+                    <div class="text-center">
+                        <span class="fw-bold">22d</span>
+                        <span class="small font-trans"><small>AGO</small></span>
+                    </div>
+                    <div class="small font-trans text-center"><small>LAST REQUEST SUBMITTED</small></div>
+                </div>
+               
+                
+            </div>
+
+            <div class="col-md-3 ps-2 border-end">
+                <div class="text-center py-1">
+                    <div class="fw-bold">20%</div>
+                    <div class="small font-trans"><small>REQUEST CANCELATION</small></div>
+                </div>
+                <div><hr /></div>
+                <div class="text-center py-1 mt-4">
+                    <div class="fw-bold">80%</div>
+                    <div class="small font-trans"><small>REQUEST COMPLETION</small></div>
+                </div>
+                
+                
+            </div>
+
+            <div class="col-md-3 ps-2 border-end">
+                <div class="py-1 text-center">
+                    <span class="fw-bold">5</span>
+                    <span class="small font-trans"><small>DAYS</small></span>
+                    <div class="small font-trans ms-1"><small>REQUEST INTERVAL</small></div>
+                </div>
+                <div><hr /></div>
+                <div class="text-center py-1 mt-4">
+                    <div class="fw-bold">20DAYS</div>
+                    <div class="small font-trans"><small>AVERAGE HANDLE TIME</small></div>
+                </div>
+                
+            </div>
+            <div class="col-md-3 ps-2">
+
+                <div class="text-center py-1">
+                    <div class="fw-bold">1000</div>
+                    <div class="small font-trans"><small>MONEY EARNED</small></div>
+                </div>
+                <div><hr /></div>
+                <div class="text-center py-1">
+                    <div class="fw-bold">AVERAGE</div>
+                    <div class="small font-trans"><small>MATERIAL INSIGHTS</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-timeline-tab" data-bs-toggle="pill" href="#current-month" role="tab" aria-controls="pills-timeline" aria-selected="true">Request List</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">Payment Methods</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#last-month" role="tab" aria-controls="pills-profile" aria-selected="false">Address Management</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Tottal Request(10)</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-setting-tab" data-bs-toggle="pill" href="#previous-month" role="tab" aria-controls="pills-setting" aria-selected="false">Contribution</a>
+        </li>
+
+
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="current-month" role="tabpanel" aria-labelledby="pills-timeline-tab">
+            <div class="card-body">
+                <form class="form-horizontal form-material">
+                    <div class="mb-3">
+                        <label class="col-md-12">Full Name</label>
+                        <div class="col-md-12">
+                            <input type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="example-email" class="col-md-12">Email</label>
+                        <div class="col-md-12">
+                            <input type="email" placeholder="johnathan@admin.com" class="form-control form-control-line" name="example-email" id="example-email">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-md-12">Password</label>
+                        <div class="col-md-12">
+                            <input type="password" value="password" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-md-12">Phone No</label>
+                        <div class="col-md-12">
+                            <input type="text" placeholder="123 456 7890" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-md-12">Message</label>
+                        <div class="col-md-12">
+                            <textarea rows="5" class="form-control form-control-line"></textarea>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-sm-12">Select Country</label>
+                        <div class="col-sm-12">
+                            <select class="form-control form-control-line">
+                                <option>London</option>
+                                <option>India</option>
+                                <option>Usa</option>
+                                <option>Canada</option>
+                                <option>Thailand</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="col-sm-12">
+                            <button class="btn btn-success">
+                                Update Profile
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="last-month" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <div class="card-body">
+               
+                <div class="card  shadow-sm d-flex flex-column align-items-start">
+                    <div class="card-header p-3 border-bottom-0">
+                        <div class="row align-items-center gx-3">
+                            <div class="col-auto">
+                                <h6 class="app-card-title">Primary payment method is used by default</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-4 w-100">
+
+                        <div class="item border-bottom py-3">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-auto">
+                                    <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/creditcard/visa.svg" alt="" class="me-3">
+                                    <strong>Credit/Debit Card</strong>
+                                    <div class="item-data">1234*******5678</div>
+                                </div>
+
+                                <div class="col text-right text-end">
+                                    <span class="badge bg-success me-4">Primary</span>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-secondary btn-outline btn-xs " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Change
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item" href="#">Remove</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item border-bottom py-3">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-auto">
+                                    <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/creditcard/paypal.svg" alt="" class="me-3">
+                                    <strong>PayPal</strong>
+                                    <div class="item-data">Not connected</div>
+                                </div>
+                                <div class="col text-right text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary btn-outline btn-xs " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Change
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item" href="#">Remove</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item border-bottom py-3">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-auto">
+                                    <img src="https://codescandy.com/geeks-bootstrap-5/assets/images/creditcard/americanexpress.svg" alt="" class="me-3">
+                                    <strong>American Express ending in 1234</strong>
+                                    <div class="item-data">Not connected</div>
+                                </div>
+                                <div class="col text-right text-end">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary btn-outline btn-xs " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Change
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                                            <li><a class="dropdown-item" href="#">Remove</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-card-footer p-4 mt-auto">
+                        <a class="btn btn-outline btn-secondary" href="#">Add Manage Payment</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
+            <div class="card-body">
+                <form class="form-horizontal form-material">
+                    <div class="mb-3">
+                        <label class="col-md-12">Full Name</label>
+                        <div class="col-md-12">
+                            <input type="text" placeholder="Johnathan Doe" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="example-email" class="col-md-12">Email</label>
+                        <div class="col-md-12">
+                            <input type="email" placeholder="johnathan@admin.com" class="form-control form-control-line" name="example-email" id="example-email">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-md-12">Password</label>
+                        <div class="col-md-12">
+                            <input type="password" value="password" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-md-12">Phone No</label>
+                        <div class="col-md-12">
+                            <input type="text" placeholder="123 456 7890" class="form-control form-control-line">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-md-12">Message</label>
+                        <div class="col-md-12">
+                            <textarea rows="5" class="form-control form-control-line"></textarea>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-sm-12">Select Country</label>
+                        <div class="col-sm-12">
+                            <select class="form-control form-control-line">
+                                <option>London</option>
+                                <option>India</option>
+                                <option>Usa</option>
+                                <option>Canada</option>
+                                <option>Thailand</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="col-sm-12">
+                            <button class="btn btn-success">
+                                Update Profile
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 ﻿@page
 @model TKW.AdminPortal.Areas.UserProfile.Pages.IndexModel
+@using Newtonsoft.Json
 @{
     ViewBag.Title = "UserProfile";
 }
@@ -7,128 +8,111 @@
 </pagetitle>
 <div class="content">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="hpanel">
                 <div class="panel-body p-0">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="d-flex mb-2">
-                                <div class="pe-3">
-                                    <img src="/images/default/profilex124.png" class="rounded-circle" alt="logo" height="38" width="38">
-                                </div>
-                                <div>
-                                    <div class="fw-bold d-inline">Shailendra</div>
-                                    <div class="fw-bolder d-inline ms-1">(M)</div>
-                                    <div class="fw-light">(9669724508)</div>
-                                </div>
+                    <div class="card shadow-sm">
+                        <div class="card-header p-3 border-bottom-0">
+                            <div class="row align-items-center gx-3 ">
+                                <div class="col-auto ">
+                                    <div class="app-icon-holder">
+                                        <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"></path>
+                                        </svg>
+                                    </div>
 
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex mb-2">
-                                <div>
-                                    <div class="fw-bold">Email</div>
-                                    <div class="mt-1"><small class="font-light">ssinghlodhi08@gmail.com</small></div>
                                 </div>
-                                <div class="ms-auto me-3">
-                                    <div class="fw-bold">Date Of Birth</div>
-                                    <div class="mt-2"><span class="h6">8 October 1998</span></div>
+                                <div class="col-auto ">
+                                    <h4 class="app-card-title">Profile</h4>
+                                </div>
+                                <div class="col-auto text-end ms-auto">
+                                    <a class="btn btn-outline btn-xs btn-primary d-inline" href="#">Edit Profile</a>
                                 </div>
                             </div>
                         </div>
+                        <div class="card-body px-4 w-100 pb-0">
+                            <div class="item border-bottom py-3">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-auto">
+                                        <div class="item-label mb-2 text-center"><strong>Photo</strong></div>
+                                        <div class="item-data"><img class="profile-image rounded-circle" src="/images/default/profilex124.png" alt=""></div>
+                                    </div>
+                                    <div class="col ms-5 ">
+                                        <div>
+                                            <span class="item-label"><strong>Name:</strong></span>
+                                            <span class="item-data">  Shailendra Singh</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="item-label"><strong>Gender:</strong></span>
+                                            <span class="item-data">  Male</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="item-label"><strong>Email</strong></span>
+                                            <span class="item-data">ssinghlodhi08@gmail.com</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="item-label"><strong>Date Of Birth:</strong></span>
+                                            <span class="item-data">  8 Nov 1998</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="item-label"><strong>Mobile Number:</strong></span>
+                                            <span class="item-data">9669724508</span>
+                                        </div>
 
-                        <div class="list-group-item">
-                            <div class="mb-2">
-                                <div class="fw-bold">Default Payment Address</div>
-                                <div class="mt-2 ms-5"><span class="h6">UPI</span></div>
-                            </div>
-                            <div class="mt-4">
-                                <div class="d-inline ms-5"><a href="#" class="btn btn-outline btn-xs btn-primary">Add</a></div>
-                                <div class="d-inline ms-5"><a href="#" class="btn btn-outline btn-xs btn-primary">Edit</a></div>
-                                <div class="d-inline ms-5"><a href="#" class="btn btn-outline btn-xs btn-primary">Remove</a></div>
-                            </div>
-                        </div>
-
-                        <div class="list-group-item">
-
-                            <div class="mb-2">
-                                <div class="fw-bold">Address</div>
-                                <div class="mt-1"><small class="font-light">Bank Nagar Ashoka Garden madhya pradesh-477001 </small></div>
-                            </div>
-                            <div class="mt-4">
-                                <div class="d-inline ms-5"><a href="#" class="btn btn-outline btn-xs btn-primary">Add</a></div>
-                                <div class="d-inline ms-5"><a href="#" class="btn btn-outline btn-xs btn-primary">Edit</a></div>
-                                <div class="d-inline ms-5"><a href="#" class="btn btn-outline btn-xs btn-primary">Remove</a></div>
+                                    </div>
+                                </div>
                             </div>
 
-                        </div>
-                        <div class="list-group-item text-center">
-                            <button class="btn btn-success btn-block btn-sm ">Edit Profile</button>
+                            <div class="item border-bottom py-3">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-auto">
+                                        <div class="item-label"><strong>Date Of Birth</strong></div>
+                                        <div class="item-data">8 Nov 1998</div>
+                                    </div>
+                                    <div class="col text-right text-end">
+                                        <a class="btn btn-outline btn-xs btn-primary" href="#">Change</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item border-bottom py-3">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-auto">
+                                        <div class="item-label"><strong>Payment Method</strong></div>
+                                        <div class="item-data">UPI</div>
+                                    </div>
+                                    <div class="col text-right text-end">
+                                        <a class="btn btn-outline btn-xs btn-primary" href="#">Change</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item border-bottom py-3">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-auto">
+                                        <div class="item-label"><strong>Email</strong></div>
+                                        <div class="item-data">ssinghlodhi08@gmail.com</div>
+                                    </div>
+                                    <div class="col text-right text-end">
+                                        <a class="btn btn-outline btn-xs btn-primary" href="#">Change</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-            <div class="hpanel">
-                <div class="panel-body p-0">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <div class="d-flex mb-2">
-                                <div>
-                                    <div class="fw-bold">User Joining Date</div>
-                                    <div class="mt-2"><span class="h6">8 October 2000</span></div>
-                                </div>
-                                <div class="ms-auto me-5">
-                                    <div class="fw-bold">Ageing</div>
-                                    <div class="mt-2"><span class="h6">20d</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex mb-2">
-                                <div>
-                                    <div class="fw-bold">Request Complition</div>
-                                    <div class="mt-2 text-center"><span class="h6">90%</span></div>
-                                </div>
-                                <div class="ms-auto me-2">
-                                    <div class="fw-bold">Request Cancellation</div>
-                                    <div class="mt-2 text-center"><span class="h6">20%</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex mb-2">
-                                <div>
-                                    <div class="fw-bold">Money Earned</div>
-                                    <div class="mt-2 text-center"><span class="h6">1000</span></div>
-                                </div>
-                                <div class="ms-auto me-4">
-                                    <div class="fw-bold">Request Frequency</div>
-                                    <div class="mt-2 text-center"><span class="h6">20</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex mb-2">
-                                <div>
-                                    <div class="fw-bold">Average Handle Time</div>
-                                    <div class="mt-2 text-center"><span class="h6">20d</span></div>
-                                </div>
-                                <div class="ms-auto me-4">
-                                    <div class="fw-bold">Materia Insights</div>
-                                    <div class="mt-2 text-center"><span class="h6">Good</span></div>
-                                </div>
-                            </div>
-                        </div>
 
+            <div class="hpanel m-b-sm">
+                <div class="panel-heading">Address</div>
+                <div class="panel-body p-sm">
+                    <div>
+                        <address class="m-b-none" type="Shop" addressline="dasfefa, Gautam Nagar Jhuggies Area" city="Bhopal" locality="Madhya Pradesh" pincode="6748978" state="Madhya Pradesh"></address>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-9">
-            <div class="card mb-2">
-                <div class="card-body">
-                    <div class="fw-bold">Rating</div>
+
+            <div class="hpanel m-b-sm">
+                <div class="panel-heading">Rating and Feedback</div>
+                <div class="panel-body p-sm">
                     <span>
                         <i class="fa fa-star-o"></i>
                         <i class="fa fa-star-o"></i>
@@ -138,42 +122,23 @@
                     </span>
                 </div>
             </div>
-            <ul class="nav nav-pills flex-row mb-4" id="nav_pills_pickup">
-                <li class="nav-item dropdown flex-fill">
-                    <button class="nav-link dropdown-toggle px-4 py-3 bg-white" id="Request_button" data-bs-toggle="dropdown" data-bs-target="#pills-home-Request" href="#" data-loaded="false">Request</button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="UserProfile/Ajax/Requests/cancelled">Cancelled</a></li>
-                        <li><a class="dropdown-item" href="#">Handled</a></li>
-                        <li><a class="dropdown-item" href="#">Submitted</a></li>
 
-                    </ul>
-                </li>
-
-                <li class="nav-item flex-fill">
-                    <button class="nav-link px-4 py-3 bg-white" id="contribution_button" data-bs-target="#pills-home-contribution" data-bs-toggle="tab" data-loaded="false" aria-current="page" @*data-load-url="@Url.Page("/Ajax/Requests",new { Model.Tab, Model.PickupSession.Id, EndedSession = hasEnded})"*@>Contribution</button>
-                </li>
-                <li class="nav-item flex-fill">
-                    <button class="nav-link px-4 py-3 bg-white" id="transaction_button" data-bs-target="#pills-home-transaction" data-bs-toggle="tab" data-loaded="false" aria-current="page" data-load-url="@Url.Page("/Ajax/Modal/Transaction")">Transaction Details</button>
-                </li>
-                <li class="nav-item flex-fill">
-                    <button class="nav-link px-4 py-3 bg-white" id="transaction_button" data-bs-target="#pills-home-transaction" data-bs-toggle="tab" data-loaded="false" aria-current="page" @*data-load-url="@Url.Page("/Ajax/Requests",new { Model.Tab, Model.PickupSession.Id, EndedSession = hasEnded})"*@>Request List</button>
-                </li>
-            </ul>
-            <div class="tab-content" id="tab_content">
-                <div class="tab-pane fade" id="pills-home-request" role="tabpanel" aria-labelledby="pills-home-tab">
-
-                </div>
-                <div class="tab-pane fade" id="pills-home-contribution" role="tabpanel" aria-labelledby="pills-home-tab">
-
-                </div>
-                <div class="tab-pane fade" id="pills-home-transaction" role="tabpanel" aria-labelledby="pills-home-tab">
-
+            
+        </div>
+        <div class="col-md-8">
+            <div id="userprofilelist">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img alt="Loading.." src="/images/ripple.gif" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<form id="userprofileform_ajax" method="post"></form>
 @section Styles{
     <link href="~/css/peicon7stroke.min.css" rel="stylesheet" />
 
@@ -184,22 +149,21 @@
 
     <script>
         $(function () {
-            
 
-            $("#nav_pills_pickup button").click(function () {
-                $("#nav_pills_pickup button").addClass("bg-white");
-                $(this).removeClass("bg-white");
-            });
-
+            var model =@Html.Raw(JsonConvert.SerializeObject(new { Filter = Model.Filter, PageNo = Model.PageNo, PageSize = Model.PageSize }));
+             $.ajax({
+                url: '@(Url.Page("Ajax/UserProfile"))',
+                 data: model,
+                 beforeSend: function (xhr) {
+                     xhr.setRequestHeader("RequestVerificationToken",
+                         $("#userprofileform_ajax input").val());
+                 },
+                method: 'POST',
+                 success: function (data) { $('#userprofilelist').html(data); }
+             });
 
 
         });
     </script>
-
-    
-
-
-
-
 }
 
