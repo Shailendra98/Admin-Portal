@@ -1,7 +1,9 @@
-﻿@page
+﻿@page 
+@using Microsoft.AspNetCore.Routing
 @model TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.UserProfileModel
 @{
     Layout = null;
+   
 }
 
 
@@ -60,6 +62,7 @@
             </div>
         </div>
 
+
         <div class="card mb-3">
             <div class="d-flex align-items-center">
                 <div class="flex-fill">
@@ -79,7 +82,7 @@
                             <address class="m-b-none d-inline" type="Shop" addressline="dasfefa, Gautam Nagar Jhuggies Area" city="Bhopal" pincode="6748978" state="Madhya Pradesh"></address>
                         </div>
                         <div>
-                            <button class="btn btn-outline btn-xs me-3 float-end" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-outline btn-xs me-3 float-end" data-bs-target="#EditModal" data-bs-toggle="modal" type="button" @*data-url="@Url.Page("Pages/Ajax/Address/Modal/Edit", new { })*@>
                                 <i class="bi bi-pencil-square fs-6"></i>
                             </button>
                         </div>
@@ -88,40 +91,45 @@
 
                 <hr />
 
-                <div class="ps-3">
-                    <div class="small font-trans text-muted mb-2"><strong>OTHER ADDRESS</strong></div>
-                    <div class="d-flex align-items-center">
-                        <div class="flex-fill">
-                            <address class="m-b-none d-inline" type="Shop" addressline="dasfefa, Gautam Nagar Jhuggies Area" city="Bhopal" pincode="6748978" state="Madhya Pradesh"></address>
-                        </div>
-                        <div class="dropdown me-3 float-end">
-                            <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical fs-6"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
-                                <li><a class="dropdown-item" href="#">Set as Default</a></li>
-                            </ul>
-                        </div>
-                    </div>
+               
 
-                    <div class="mt-3 d-flex align-items-center">
-                        <div class="flex-fill">
-                            <address class="m-b-none d-inline" type="Shop" addressline="dasfefa, Gautam Nagar Jhuggies Area" city="Bhopal" pincode="6748978" state="Madhya Pradesh"></address>
-                        </div>
-                        <div class="dropdown me-3 float-end">
-                            <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-three-dots-vertical fs-6"></i>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
-                                <li><a class="dropdown-item" href="#">Set as Default</a></li>
-                            </ul>
-                        </div>
+            <div class="ps-3">
+                <div class="small font-trans text-muted mb-2"><strong>OTHER ADDRESS</strong></div>
+                <div class="d-flex align-items-center">
+                    <div class="flex-fill">
+                        <address class="m-b-none d-inline" type="Shop" addressline="dasfefa, Gautam Nagar Jhuggies Area" city="Bhopal" pincode="6748978" state="Madhya Pradesh"></address>
+                    </div>
+                    <div class="dropdown me-3 float-end">
+                        <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical fs-6"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            @*<li> <a href="#DeleteAddressModal" class="btn btn-xs btn-outline btn-danger mt-2" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/RemovePickupBoy", new {Model.PickupSession.Id ,HandlerId  =  pickupboy.Id})"> Remove</a></li>*@
+                            <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal"  aria-hidden="true"  data-load-url="@Url.Page("Modal/DeleteAddress",new { })">Delete</a></li>
+                            <li><a class="dropdown-item" href="Modal/DeleteAddress">Set as Default</a></li>
+                        </ul>
                     </div>
                 </div>
+
+                }
+
+                <div class="mt-3 d-flex align-items-center">
+                    <div class="flex-fill">
+                        <address class="m-b-none d-inline" type="Shop" addressline="dasfefa, Gautam Nagar Jhuggies Area" city="Bhopal" pincode="6748978" state="Madhya Pradesh"></address>
+                    </div>
+                    <div class="dropdown me-3 float-end">
+                        <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-three-dots-vertical fs-6"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Edit</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                            <li><a class="dropdown-item" href="#">Set as Default</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
 
@@ -136,7 +144,7 @@
                                 <div class="mb-0"><span class="h5 fw-bold text-muted">0</span></div>
                                 <div class="small font-trans text-muted mt-2"><strong>TREES SAVED</strong> </div>
                             </td>
-                            <td> 
+                            <td>
                                 <div class="mb-0"><span class="h5 fw-bold text-muted">0</span><small> kW hr </small></div>
                                 <div class="small font-trans text-muted mt-2"><strong>ENERGY SAVED</strong> </div>
                             </td>
@@ -157,7 +165,7 @@
                     <div class="mb-0"><span class="h5 fw-bold text-muted">0</span><small> sq ft </small></div>
                     <div class="small font-trans text-muted mt-2"><strong>LANDFILL SAVED</strong> </div>
                 </div>
-                
+
             </div>
         </div>
 
@@ -526,7 +534,7 @@
                                             <small class=""> Total Bill Amount :  </small>
                                             <b class="text-success"><span class="">₹ </span><span class=" fw-bold">20</span></b>
                                         </td>
-                                        
+
                                         <td>
                                             <div class="btn-group-vertical">
                                                 <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
@@ -580,7 +588,7 @@
 
                                             </small>
                                         </td>
-                                        
+
                                         <td>
                                             <div class="btn-group-vertical">
                                                 <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
@@ -633,7 +641,7 @@
                                             <small class=""> Cash Received :  </small>
                                             <b class="text-success"><span class="">₹ </span><span class=" fw-bold">20</span></b>
                                         </td>
-                                        
+
                                         <td>
                                             <div class="btn-group-vertical">
                                                 <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
@@ -687,7 +695,7 @@
                                                 Reason : <b class="text-info">Cancelled by customer</b>
                                             </small>
                                         </td>
-                                        
+
                                         <td>
                                             <div class="btn-group-vertical">
                                                 <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
@@ -735,8 +743,7 @@
 </div>
 
 
-
-
-
-
-
+@section Footer{
+    <modal content-id="DeleteAddressModalContent" loader="true" id="DeleteAddressModal"></modal>
+   
+}
