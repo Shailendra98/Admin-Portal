@@ -80,7 +80,7 @@ else
 
     @foreach (var item in Model.Users)
     {
-        <a asp-page="../Details" style="text-decoration:none">
+        <div data-href="@Url.Page("/Details", new { item.Id })" style="cursor:pointer;">
             <div class="card mb-2">
                 <div class="card-body py-2">
                     <div class="row">
@@ -139,7 +139,7 @@ else
                 </div>
 
             </div>
-        </a>
+        </div>
     }
 
     <div class="d-flex justify-content-center mt-3">
