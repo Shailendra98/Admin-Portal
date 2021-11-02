@@ -160,8 +160,8 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li><a class="dropdown-item" href="#">Edit</a></li>
-                                            @*<li> <a href="#DeleteAddressModal" class="btn btn-xs btn-outline btn-danger mt-2" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/RemovePickupBoy", new {Model.PickupSession.Id ,HandlerId  =  pickupboy.Id})"> Remove</a></li>*@
-                                            <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal" aria-hidden="true" data-load-url="@Url.Page("Modal/DeleteAddress",new { })">Delete</a></li>
+                                            @*<a href="#RemovePickupBoyModal" class="btn btn-xs btn-outline btn-danger mt-2" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/RemovePickupBoy", new {Model.PickupSession.Id ,HandlerId  =  pickupboy.Id})"> Remove</a>*@
+                                            <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/DeleteAddress",new { })">Delete</a></li>
                                             <li><a class="dropdown-item" href="Modal/DeleteAddress">Set as Default</a></li>
                                         </ul>
                                     </div>
@@ -808,4 +808,9 @@
 }
 @section Scripts{
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYTvgY5DS7ipPNzOgxYmJYeZBe4r03qS4"></script>
+}
+
+
+@section Footer{
+    <modal content-id="RemovePickupBoyModalContent" loader="true" id="DeleteAddressModal"></modal>
 }
