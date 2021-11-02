@@ -1,0 +1,174 @@
+﻿@page
+@using Microsoft.AspNetCore.Routing
+@model TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.UserListModel
+@{
+    Layout = null;
+    var filter = Model.Filter;
+    var route = new RouteValueDictionary();
+    route["Filter.Search"] = filter.Search;
+    route["Filter.DateType"] = filter.DateType;
+    route["Filter.SortBy"] = filter.SortBy;
+    route["Filter.StartDate"] = String.Format("{0:dd/MM/yyyy}", filter.StartDate);
+    route["Filter.EndDate"] = String.Format("{0:dd/MM/yyyy}", filter.EndDate);
+    route["Filter.StartRequestInterval"] = filter.StartRequestInterval;
+    route["Filter.EndRequestInterval"] = filter.EndRequestInterval;
+    var i = 0;
+    if (filter.AddressTypeIds != null)
+    {
+        foreach (var a in filter.AddressTypeIds)
+        {
+            route["Filter.AddressTypeIds[" + i++ + "]"] = a;
+        }
+    }
+    var querystring = string.Join("&", route.Select(m => String.Format("{0}={1}", m.Key, m.Value))) + "&pageNo=" + Model.Users.PageNumber + "&pageSize=" + Model.Users.PageSize;
+    string returnUrl = Url.Page("../Index") + "?" + querystring;
+}
+
+@if (Model.Users == null || Model.Users.Count == 0)
+{
+    <div class="card ">
+        <div class="card-body text-center">
+            <h4>No Users !</h4>
+            <div>There is no User.</div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card mb-2">
+        <div class="card-body py-0">
+            <div class="row mt-3 mb-1">
+                <div class="col-md-3 mt-3">
+                    <div class="ms-3">
+                        <button class="btn btn-default btn-sm" type="button" id="refreshreqbtn"><span class="fa fa-refresh"></span>  Refresh</button>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="fw-bold text-end mx-3">
+                        @Model.Users.FirstItemOnPage - @Model.Users.LastItemOnPage of @Model.Users.TotalItemCount
+                    </div>
+
+                    <div class="mt-3 mx-3 mb-2">
+                        <div class="float-end">
+                            <form data-ajax="true"
+                                  data-ajax-method="GET"
+                                  data-ajax-url="@Url.Page("UserList", route)" ,
+                                  data-ajax-begin="$('#userlist').html('<div class=\'card\'><div class=\'card-body text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div></div>');"
+                                  data-ajax-update="#userlist"
+                                  class="form-inline">
+
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <label for="pagesize" class="col-form-label fw-bold">Users per page:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" name="pageSize" id="pagesize" style="max-width:50px;" value="@Model.Users.PageSize" />
+                                            <div class="input-group-btn">
+                                                <button type="submit" class="btn btn-default btn-sm">Go</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var item in Model.Users)
+    {
+        <a asp-page="../Details" style="text-decoration:none">
+            <div class="card mb-2">
+                <div class="card-body py-2">
+                    <div class="row">
+                        <div class="col-md-3 ps-2 pt-1">
+                            <div class="d-flex">
+                                <div class="pe-3">
+                                    <img src="/images/default/profilex124.png" class="rounded-circle" alt="logo" height="38" width="38">
+                                </div>
+                                <div>
+                                    <span class="fw-bold">@item.Name</span>
+                                    <span><small class="fw-lighter ms-1">(#@item.Id)</small></span>
+                                    <div><small class="fw-light">(@item.MobileNumber)</small></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 ps-2">
+                            <div class="py-1 text-center">
+                                @if (item?.AverageRequestInterval != null)
+                                {
+                                    <span class="fw-bold">@item.AverageRequestInterval</span>
+                                    <span class="small font-trans"><small>DAYS</small></span>
+                                }
+                                else
+                                {
+                                    <div class="fw-bold">N/A</div>
+                                }
+                                <div class="small font-trans ms-1"><small>REQUEST INTERVAL</small></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 ps-2">
+                            <div class="py-1 text-center">
+                                <div class="fw-bold">@item.TotalHandledRequest</div>
+                                <div class="small font-trans"><small>HANDLED REQUEST</small></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 ps-2">
+                            <div class="py-1">
+                                <div class="text-center">
+                                    <span class="fw-bold">@Generate.Time(Convert.ToDateTime(item.LastRequestHandledDate), 's')</span>
+                                    <span class="small font-trans"><small>AGO</small></span>
+                                </div>
+                                <div class="small font-trans text-center"><small>LAST REQUEST SUBMITTED</small></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 ps-2">
+                            <div class="text-center py-1">
+                                <div class="fw-bold"> @String.Format("{0:dd MMM, yyyy hh:mm tt}", item.JoiningDate)</div>
+                                <div class="small font-trans"><small>JOINING DATE</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </a>
+    }
+
+    <div class="d-flex justify-content-center mt-3">
+        <pager data-ajax="true"
+               data-ajax-method="get"
+               data-ajax-begin="window.location.hash='userlist'; $('#userlist').html('<div class=\'card\'><div class=\'card-body text-center\'><img src=\'/images/ripple.gif\' alt=\'Loading..\' /></div></div>');"
+               data-ajax-update="#userlist"
+               list="Model.Users"
+               url='pageNo=>Url.Page("userlist", route.Union(new RouteValueDictionary(new { pageNo, pageSize = Model.Users.PageSize })))'>
+        </pager>
+    </div>
+
+    <script>
+    $(function () {
+        if (history.pushState) {
+            var newUrl = "@Html.Raw(Url.Page("../Index", route))";
+            window.history.pushState({ path: newUrl },'', newUrl);
+        }
+        $('#UserModal').find('.modal-content').on('User.done', function (e, data) {
+            $('#userlist').load('@Url.Page("userlist", route)');
+        });
+
+         $('#refreshreqbtn').click(function (e) {
+                e.preventDefault();
+             $('#userlist').html('<div class="card "><div class="card-body text-center"><img src="/images/ripple.gif" alt="Loading.." /></div></div>');
+                $('#userlist').load("@Url.Page("UserList")" + window.location.search);
+            });
+      });
+    </script>
+}
+
+
