@@ -1,0 +1,46 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal.EditDefaultPaymentModel
+@{
+}
+
+<modal-header title="Edit Default Payment" close-button="true"></modal-header>
+
+
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Default Payment updated.</div>
+        </div>
+    </modal-body>
+}
+
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("EditDefaultPayment", new { Id = Model.Id })"
+          data-ajax-begin="$('#editDefaultPaymentFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#editDefaultPaymentFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#EditDefaultPaymentModalContent">
+        <fieldset id="editDefaultPaymentFieldSet">
+            <modal-body>
+                <label class="col-form-label fw-bold" asp-for="DefaultPayment"></label><br />
+                <input class="form-control" asp-for="DefaultPayment" placeholder="Payment Method Name" />
+                <span asp-validation-for="DefaultPayment" class="text-danger small"></span>
+            </modal-body>
+            <modal-footer>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="close">Cancel</button>
+                <button class="btn btn-success" type="submit">Edit Payment</button>
+            </modal-footer>
+
+
+        </fieldset>
+    </form>
+}

@@ -19,7 +19,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages
             _userAddressQueries = userAddressQueries;
         }
 
-
+        
         public UserModel? User { get; set; }
         public List<UserAddressModel> Addresses {get; set;}
 
