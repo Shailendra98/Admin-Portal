@@ -39,8 +39,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
             IsDone = false;
             MobileNumber = User!.PaytmWalletNumber;
 
-            // PaymentMethod = new SelectList(Enumeration.GetAll<EditDefaultPaymentModel>().ToList(), "Id", "Name", User.DefaultPaymentMethodId);
-
         }
 
 
@@ -61,8 +59,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                 }
                 ErrorMessage = result.Error.Message;
             }
-            // PaymentMethod = new SelectList(Enumeration.GetAll<EditDefaultPaymentModel>().ToList(), "Id", "Name", PaymentMethodId);
-
+           
             return Page();
         }
     }

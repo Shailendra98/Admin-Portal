@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
 using TKW.Queries.Interfaces;
 
@@ -45,8 +42,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
             AccountNumber = User!.BankAccountNumber;
             Ifsc = User!.BankIFSC;
 
-            // PaymentMethod = new SelectList(Enumeration.GetAll<EditDefaultPaymentModel>().ToList(), "Id", "Name", User.DefaultPaymentMethodId);
-
         }
 
 
@@ -68,7 +63,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                 }
                 ErrorMessage = result.Error.Message;
             }
-            // PaymentMethod = new SelectList(Enumeration.GetAll<EditDefaultPaymentModel>().ToList(), "Id", "Name", PaymentMethodId);
 
             return Page();
         }

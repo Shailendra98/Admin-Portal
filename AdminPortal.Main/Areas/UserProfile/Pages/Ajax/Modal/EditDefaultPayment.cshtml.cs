@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
 using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates;
 using TKW.ApplicationCore.SeedWorks;
@@ -40,7 +38,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
 
         public bool IsDone { get; set; }
         public string ErrorMessage { get; set; }
-       
+
 
         public async Task OnGetAsync(int Id, CancellationToken cancellationToken)
         {
@@ -49,19 +47,19 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
             IsDone = false;
             PaymentMethodId = User.DefaultPaymentMethodId;
 
-           PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().ToList(), "Id", "Name", User.DefaultPaymentMethodId);
+            PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().ToList(), "Id", "Name", User.DefaultPaymentMethodId);
 
         }
 
 
 
-        public async Task<IActionResult> OnPostAsync( CancellationToken cancellationToken)
+        public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
                 var result = await _userService.SetDefaultPaymentMethodAsync(
-                    Id, 
-                    PaymentMethodId!.Value, 
+                    Id,
+                    PaymentMethodId!.Value,
                     cancellationToken);
 
                 if (result.IsSuccess)
@@ -71,7 +69,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                 }
                 ErrorMessage = result.Error.Message;
             }
-           PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().ToList(), "Id", "Name", PaymentMethodId);
+            PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().ToList(), "Id", "Name", PaymentMethodId);
 
             return Page();
         }
