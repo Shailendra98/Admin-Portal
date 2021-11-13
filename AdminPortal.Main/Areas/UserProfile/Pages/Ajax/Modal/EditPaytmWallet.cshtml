@@ -30,8 +30,9 @@ else
           data-ajax-update="#EditPaytmWalletModalContent">
         <fieldset id="editPaytmWalletFieldSet">
             <modal-body>
-                <label class="col-form-label fw-bold">Paytm Wallet Nomber</label><br />
-                <input class="form-control" placeholder="Paytm Wallet No." />
+                <label class="col-form-label fw-bold" asp-for="MobileNumber"></label><br />
+                <input class="form-control" placeholder="Paytm Wallet Number" asp-for="MobileNumber" />
+                <span asp-validation-for="MobileNumber" class="text-danger small"></span>
             </modal-body>
             <modal-footer>
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="close">Cancel</button>

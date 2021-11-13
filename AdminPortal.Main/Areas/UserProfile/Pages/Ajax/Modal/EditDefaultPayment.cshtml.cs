@@ -6,7 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
+using TKW.ApplicationCore.Contexts.PaymentContext.Aggregates;
+using TKW.ApplicationCore.SeedWorks;
 using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
@@ -28,30 +31,39 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
         [Required]
         public int Id { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public int HandlerId { get; set; }
+        [BindProperty]
+        [Required(ErrorMessage = "Default Payment is required.")]
+        [Display(Name = "Default Payment ")]
+        public int? PaymentMethodId { get; set; }
+
+        public SelectList PaymentMethods { get; set; }
+
         public bool IsDone { get; set; }
-        public int? DefaultPayment { get; private set; }
         public string ErrorMessage { get; set; }
+       
 
-
-        public async Task OnGetAsync(int id, CancellationToken cancellationToken)
+        public async Task OnGetAsync(int Id, CancellationToken cancellationToken)
         {
-            var User = await _userQueries.UserByIdAsync(id, cancellationToken);
+            var User = await _userQueries.UserByIdAsync(Id, cancellationToken);
 
             IsDone = false;
-            DefaultPayment = User.DefaultPaymentMethodId;
-           
-           
+            PaymentMethodId = User.DefaultPaymentMethodId;
+
+           PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().ToList(), "Id", "Name", User.DefaultPaymentMethodId);
+
         }
 
 
 
-        public async Task<IActionResult> OnPostAsync(int Id, int HandlerId, CancellationToken cancellationToken)
+        public async Task<IActionResult> OnPostAsync( CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.SetDefaultPaymentMethodAsync(Id, HandlerId, cancellationToken);
+                var result = await _userService.SetDefaultPaymentMethodAsync(
+                    Id, 
+                    PaymentMethodId!.Value, 
+                    cancellationToken);
+
                 if (result.IsSuccess)
                 {
                     IsDone = true;
@@ -59,6 +71,8 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                 }
                 ErrorMessage = result.Error.Message;
             }
+           PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().ToList(), "Id", "Name", PaymentMethodId);
+
             return Page();
         }
     }

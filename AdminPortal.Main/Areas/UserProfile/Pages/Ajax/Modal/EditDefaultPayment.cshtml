@@ -1,6 +1,7 @@
-﻿@page "{Id:int}"
+﻿@page
 @model TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal.EditDefaultPaymentModel
 @{
+    Layout = null;
 }
 
 <modal-header title="Edit Default Payment" close-button="true"></modal-header>
@@ -31,9 +32,11 @@ else
           data-ajax-update="#EditDefaultPaymentModalContent">
         <fieldset id="editDefaultPaymentFieldSet">
             <modal-body>
-                <label class="col-form-label fw-bold" asp-for="DefaultPayment"></label><br />
-                <input class="form-control" asp-for="DefaultPayment" placeholder="Payment Method Name" />
-                <span asp-validation-for="DefaultPayment" class="text-danger small"></span>
+                <label class="col-form-label fw-bold" asp-for="PaymentMethodId"></label><br />
+                <select asp-for="PaymentMethodId" asp-items="Model.PaymentMethods" class="form-control">
+                </select>
+                <span asp-validation-for="PaymentMethodId" class="text-danger small"></span>
+
             </modal-body>
             <modal-footer>
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="close">Cancel</button>
@@ -43,4 +46,10 @@ else
 
         </fieldset>
     </form>
+    @*<script>
+            $(function () {
+                $("#@Html.IdFor(m=>m.PaymentMethodId)").select2AutoParent();
+            });
+        </script>*@
+
 }

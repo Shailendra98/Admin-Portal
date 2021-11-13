@@ -28,19 +28,39 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
         [Required]
         public int Id { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public int HandlerId { get; set; }
+        [BindProperty]
+        [Display(Name = "Account Number")]
+        public string? AccountNumber { get; set; }
+
+        [BindProperty]
+        [Display(Name = "Ifsc")]
+        public string? Ifsc { get; set; }
         public bool IsDone { get; set; }
         public string ErrorMessage { get; set; }
-        public void OnGet()
+        public async Task OnGetAsync(int Id, CancellationToken cancellationToken)
         {
+            var User = await _userQueries.UserByIdAsync(Id, cancellationToken);
+
+            IsDone = false;
+            AccountNumber = User!.BankAccountNumber;
+            Ifsc = User!.BankIFSC;
+
+            // PaymentMethod = new SelectList(Enumeration.GetAll<EditDefaultPaymentModel>().ToList(), "Id", "Name", User.DefaultPaymentMethodId);
+
         }
 
-        public async Task<IActionResult> OnPostAsync(int Id, int HandlerId, CancellationToken cancellationToken)
+
+
+        public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.DeleteUserAddressAsync(Id, HandlerId, cancellationToken);
+                var result = await _userService.AddBankAccountAsync(
+                    Id,
+                    AccountNumber,
+                    Ifsc,
+                    cancellationToken);
+
                 if (result.IsSuccess)
                 {
                     IsDone = true;
@@ -48,6 +68,8 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                 }
                 ErrorMessage = result.Error.Message;
             }
+            // PaymentMethod = new SelectList(Enumeration.GetAll<EditDefaultPaymentModel>().ToList(), "Id", "Name", PaymentMethodId);
+
             return Page();
         }
     }

@@ -31,12 +31,14 @@ else
         <fieldset id="editBankAccountDetailsFieldSet">
             <modal-body>
                 <div class="mb-3">
-                    <label class="col-form-label fw-bold">Bank Account Number</label><br />
-                    <input class="form-control" placeholder="Account Number" />
+                    <label class="col-form-label fw-bold" asp-for="AccountNumber"></label><br />
+                    <input class="form-control" placeholder="Bank Account Number" asp-for="AccountNumber" />
+                    <span asp-validation-for="AccountNumber" class="text-danger small"></span>
                 </div>
                 <div class="mb-3">
-                    <label class="col-form-label fw-bold">Bank IFSC</label><br />
-                    <input class="form-control" placeholder="IFSC Cose" />
+                    <label class="col-form-label fw-bold" asp-for="Ifsc"></label><br />
+                    <input class="form-control" placeholder="Ifsc Code" asp-for="Ifsc" />
+                    <span asp-validation-for="Ifsc" class="text-danger small"></span>
                 </div>
             </modal-body>
             <modal-footer>
