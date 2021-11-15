@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="me-3">
-                            <button type="button" class="btn btn-primary btn-outline btn-sm">
+                            <button class="btn btn-primary btn-outline btn-sm" data-bs-target="#EditProfileModal" data-bs-toggle="modal" type="button" data-load-url="@Url.Page("Ajax/Modal/EditProfile",new {Model.User.Id})">
                                 Edit Profile
                             </button>
                         </div>
@@ -881,6 +881,7 @@
 
 
 @section Footer{
+    <modal content-id="EditProfileModalContent" loader="true" id="EditProfileModal"></modal>
     <modal content-id="EditDefaultPaymentModalContent" loader="true" id="EditDefaultPaymentModal"></modal>
     <modal content-id="EditUpiAddressModalContent" loader="true" id="EditUpiAddressModal"></modal>
     <modal content-id="EditBankAccountDetailsModalContent" loader="true" id="EditBankAccountDetailsModal"></modal>

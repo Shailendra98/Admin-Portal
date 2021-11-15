@@ -1,0 +1,22 @@
+﻿@page "{Id:int}"
+@model TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal.ProfilePictureModel
+@{
+}
+
+<modal-header title="Upload Photo" close-button="true"></modal-header>
+
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i>
+            <br />
+            <div class="h5 mt-3">Profile picture uploaded.</div>
+            <br />
+            <button type="button" data-modal-href="@Url.Page("Details",new { Id=Model.Id })" class="btn btn-default">Go to details</button>
+        </div>
+    </modal-body>
+    <script>
+        $("#DetailModalContent").trigger({ type: "action.done", roleId:@Model.Id});
+    </script>
+}
