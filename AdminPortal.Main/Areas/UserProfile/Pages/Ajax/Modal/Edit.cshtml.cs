@@ -11,14 +11,14 @@ using TKW.Queries.Interfaces;
 
 namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
 {
-    public class EditProfileModel : PageModel
+    public class EditModel : PageModel
     {
         private IUserService _userService;
         private IUserQueries _userQueries;
-     
-       
 
-        public EditProfileModel(IUserService userService, IUserQueries userQueries)
+
+
+        public EditModel(IUserService userService, IUserQueries userQueries)
         {
             _userQueries = userQueries;
             _userService = userService;
@@ -76,13 +76,13 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                     if (result2.IsSuccess)
                     {
                         var result3 = await _userService.UpdateEmailAsync(Id, Email, cancellationToken);
-                        if (result3.IsSuccess) 
+                        if (result3.IsSuccess)
                         {
                             var result4 = await _userService.UploadProfilePictureAsync(Id, PictureBytes, cancellationToken);
-                            
+
                             if (result4.IsSuccess)
-                            { 
-                              
+                            {
+
                                 IsDone = true;
                                 return Page();
                             }
@@ -90,7 +90,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                     }
                 }
                 ErrorMessage = result1.Error.Message;
-              
+
             }
 
             return Page();

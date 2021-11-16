@@ -13,10 +13,62 @@
             <br />
             <div class="h5 mt-3">Profile picture uploaded.</div>
             <br />
-            <button type="button" data-modal-href="@Url.Page("Details",new { Id=Model.Id })" class="btn btn-default">Go to details</button>
+            <button type="button" data-modal-href="@Url.Page("EditProfile",new { Id=Model.Id })" class="btn btn-default">Go to Edit Profile</button>
         </div>
     </modal-body>
+   
+
+}
+
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <fieldset id="addFieldSet">
+        <modal-body>
+            <fieldset id="pictureFieldset">
+                <imginput preview="true" preview-width="200" name="@Html.NameFor(m=>m.Photo)" id="@Html.IdFor(m=>m.Photo)" button-class="btn btn-default">
+                </imginput>
+            </fieldset>
+        </modal-body>
+        <modal-footer class="modal-footer d-flex justify-content-between">
+            <button type="button" data-modal-href="@Url.Page("EditProfile",new { Id=Model.Id })" class="btn btn-default">Go back</button>
+            <button class="btn btn-success" type="submit" id="uploadbtn">
+                Upload
+            </button>
+        </modal-footer>
+    </fieldset>
+    <form id="listform_ajax" method="post"></form>
     <script>
-        $("#DetailModalContent").trigger({ type: "action.done", roleId:@Model.Id});
+                 $(function () {
+        $("#uploadbtn").click(function (e) {
+            e.preventDefault();
+            var fieldset = $("#pictureFieldset");
+            fieldset.attr("disabled", "");
+            var picture = $("#@Html.IdFor(m=>m.Photo)").prop("files")[0];
+            var formData = new FormData();
+            formData.append('@Html.NameFor(m=>m.Photo)', picture);
+            $.ajax({
+                url: "@Url.Page("ProfilePicture",new { Id=Model.Id })",
+                method: "POST",
+                data: formData,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("RequestVerificationToken",
+                        $("#listform_ajax input").val());
+                },
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $('#DetailModalContent').html(data);
+                },
+                complete: function () {
+                    fieldset.removeAttr("disabled");
+                }
+            });
+        });
+    });
     </script>
+
 }
