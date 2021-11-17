@@ -39,47 +39,51 @@ else
                         </div>
                     </div>
 
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="Name"></label><br />
+                            <input class="form-control" placeholder="Name" asp-for="Name" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
 
-                        <table class="table">
-                            <tr>
-                                <td><b>Name</b></td>
-                                <td class="text-end">@Model.Name</td>
-                            </tr>
-                            <tr>
-                                <td class="text-nowrap"><b>Mobile number</b></td>
-                                <td class="text-end">@Model.MobileNo</td>
-                            </tr>
-                            <tr>
-                                <td class="text-nowrap"><b>Email</b></td>
-                                <td class="text-end">@Model.Email</td>
-                            </tr>
-                            <tr>
-                                <td><b>D.O.B.</b></td>
-                                <td class="text-end">8/12/1990</td>
-                            </tr>
-                            <tr>
-                                <td><b>Gender</b></td>
-                                <td class="text-end">Male</td>
-                            </tr>
-                            <tr>
-                                <td><b>Joining Date</b></td>
-                                <td class="text-end">27 oct, 2021</td>
-                            </tr>
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="MobileNo"></label><br />
+                            <input class="form-control" placeholder="MobileNumber" asp-for="MobileNo" />
+                            <span asp-validation-for="MobileNo" class="text-danger small"></span>
+                        </div>
 
-                        </table>
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold" asp-for="Email"></label><br />
+                            <input class="form-control" placeholder="Email Address" asp-for="Email" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">Date Of Birth</label><br />
+                            <input class="form-control" placeholder="Date Of Birth" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">Gender</label><br />
+                            <input class="form-control" placeholder="Gender" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="col-form-label fw-bold">Joining Date</label><br />
+                            <input class="form-control" placeholder="Joining Date" />
+                        </div>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="d-flex justify-content-around">
-                        <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="close">Cancel</button>
-                        <button class="btn btn-sm btn-default" data-modal-href="@Url.Page("ProfilePicture",new {Model.Id})" type="button">@(string.IsNullOrEmpty(Model.Picture) ? "Upload" : "Change") Picture</button>
-                        <button class="btn btn-sm btn-default" data-modal-href="@Url.Page("Edit",new {Id=Model.Id })" type="button">Edit Details</button>
-                    </div>
-                </div>
-
             </modal-body>
+
+            <modal-footer class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="close">Cancel</button>
+                <button class="btn btn-success" data-modal-href="@Url.Page("ProfilePicture",new {Model.Id})" type="button">@(string.IsNullOrEmpty(Model.Picture) ? "Upload" : "Change") Picture</button>
+                <button class="btn btn-success" type="submit">Update</button>
+            </modal-footer>
+
         </fieldset>
     </form>
 }

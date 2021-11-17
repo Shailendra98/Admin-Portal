@@ -1,9 +1,10 @@
 ﻿@page
 @model TKW.AdminPortal.Areas.UserProfile.Pages.DetailsModel
 @using Newtonsoft.Json
+@using System.Linq;
+@using System.Collections;
 @{
     ViewBag.Title = "UserProfile";
-
 }
 
 <pagetitle title="User Details" description="All details of the User.">
@@ -81,6 +82,7 @@
                                     @if (Model.User.DefaultPaymentMethodId != null)
                                     {
                                         <span>@Model.User.DefaultPaymentMethodId</span>
+
                                     }
                                     else
                                     {
@@ -168,7 +170,7 @@
                                 <h6 class="header-title ms-3 mt-3">Addresses</h6>
                             </div>
                             <div>
-                                <button class="btn btn-circle in btn-default me-3 float-end" type="button" data-bs-toggle="modal" data-bs-target="#AddAddressModal">
+                                <button class="btn btn-circle in btn-default me-3 float-end" data-bs-target="#AddAddressModal" data-bs-toggle="modal" type="button" data-load-url="@Url.Page("..Pages/Ajax/Address/Modal/New", new {Model.User.Id })">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -176,6 +178,7 @@
                         <div class="card-body px-0 ">
                             <div class="ps-3">
                                 <div class="small font-trans text-muted mb-2"><strong>DEFAULT ADDRESS</strong></div>
+
                                 @foreach (var s in Model.Addresses)
                                 {
                                     <div class="d-flex align-items-center">
@@ -190,7 +193,7 @@
                                             }
                                         </div>
                                         <div>
-                                            <button class="btn btn-outline btn-xs me-3 float-end" type="button" data-bs-toggle="modal" data-bs-target="#EditModal" data-load-url="@Url.Page("../Pages/Ajax/Address/Modal/Edit", new {s.Id})">
+                                            <button class="btn btn-outline btn-xs me-3 float-end" type="button" data-bs-toggle="modal" data-bs-target="#EditModal" data-load-url="@Url.Page("../Pages/Ajax/Address/Modal/Edit", new { s.UserId })">
                                                 <i class="bi bi-pencil-square fs-6"></i>
                                             </button>
                                         </div>
@@ -265,28 +268,28 @@
                                 <tbody>
                                     <tr class="text-center">
                                         <td>
-                                            <div class="mb-0"><span class="h5 fw-bold text-muted">0</span></div>
+                                            <div class="mb-0"><span class="h5 fw-bold text-muted">@Model.Impact.TreesSaved</span></div>
                                             <div class="small font-trans text-muted mt-2"><strong>TREES SAVED</strong> </div>
                                         </td>
                                         <td>
-                                            <div class="mb-0"><span class="h5 fw-bold text-muted">0</span><small> kW hr </small></div>
+                                            <div class="mb-0"><span class="h5 fw-bold text-muted">@Model.Impact.EnergySaved</span><small> kW hr </small></div>
                                             <div class="small font-trans text-muted mt-2"><strong>ENERGY SAVED</strong> </div>
                                         </td>
                                     </tr>
                                     <tr class="text-center" style="border:hidden;">
                                         <td>
-                                            <div class="mb-0"><span class="h5 fw-bold text-muted">0</span><small> Litre </small></div>
+                                            <div class="mb-0"><span class="h5 fw-bold text-muted">@Model.Impact.OilSaved</span><small> Litre </small></div>
                                             <div class="small font-trans text-muted mt-2"><strong>OIL SAVED</strong> </div>
                                         </td>
                                         <td>
-                                            <div class="mb-0"><span class="h5 fw-bold text-muted">0</span><small> Litre </small></div>
+                                            <div class="mb-0"><span class="h5 fw-bold text-muted">@Model.Impact.WaterSaved</span><small> Litre </small></div>
                                             <div class="small font-trans text-muted mt-2"><strong>WATER SAVED</strong> </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="text-center">
-                                <div class="mb-0"><span class="h5 fw-bold text-muted">0</span><small> sq ft </small></div>
+                            <div class="text-center mt-2">
+                                <div class="mb-0"><span class="h5 fw-bold text-muted">@Model.Impact.LandspaceSaved</span><small> sq ft </small></div>
                                 <div class="small font-trans text-muted mt-2"><strong>LANDFILL SAVED</strong> </div>
                             </div>
 

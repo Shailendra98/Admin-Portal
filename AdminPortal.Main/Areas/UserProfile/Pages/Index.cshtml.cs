@@ -43,7 +43,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages
             Name,
             [Display(Name = "Request Count")]
             RequestCount,
-            [Display(Name = "LastRequestHandleDate")]
+            [Display(Name = "LastRequest HandleDate")]
             LastRequestHandleDate,
         }
     }
