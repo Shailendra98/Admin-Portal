@@ -83,7 +83,7 @@
                                     <div class="small font-trans text-muted mb-2"><strong>DEFAULT PAYMENT METHOD</strong></div>
                                     @if (Model.User.DefaultPaymentMethodId != null)
                                     {
-                                <span>@(Enumeration.TryFromValue<TKW.ApplicationCore.Contexts.PaymentContext.Aggregates.PaymentMethod>(Model.User.DefaultPaymentMethodId.Value)?.Name) </span>
+                                        <span>@(Enumeration.TryFromValue<TKW.ApplicationCore.Contexts.PaymentContext.Aggregates.PaymentMethod>(Model.User.DefaultPaymentMethodId.Value)?.Name) </span>
 
                                     }
                                     else
@@ -191,34 +191,33 @@
                                     </div>
                                 </div>
                             }
-                            @if(Model.Addresses.Any(m=>m.Id != Model.User.DefaultAddressId))
+                            @if (Model.Addresses.Any(m => m.Id != Model.User.DefaultAddressId))
                             {
 
                                 if (defaultAddress != null)
-                                {<hr/>}
-                            <div class="ps-3">
-                                <div class="small font-trans text-muted mb-2"><strong>OTHER ADDRESS</strong></div>
-                                @foreach (var s in Model.Addresses.Where(m => m.Id != Model.User.DefaultAddressId))
-                                {
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-fill">
+                                {<hr />}
+                                <div class="ps-3">
+                                    <div class="small font-trans text-muted mb-2"><strong>OTHER ADDRESS</strong></div>
+                                    @foreach (var s in Model.Addresses.Where(m => m.Id != Model.User.DefaultAddressId))
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-fill">
                                                 <address class="m-b-none d-inline" type="Shop" name="@s.Name" mobile-no="@s.MobileNo" addressline="@s.AddressLine" locality="@s.LocalityName" state="@s.StateName" city="@s.CityName" pincode="@s.Pincode"></address>
-                                        </div>
-                                        <div class="dropdown me-3 float-end">
-                                            <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical fs-6"></i>
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditAddressModal" data-load-url="@Url.Page("/Ajax/Address/Modal/Edit", new { AddressId = s.Id})">Edit</a></li>
-                                                <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/DeleteAddress",new {s.Id, UserId  = Model.User.Id})">Delete</a></li>
-                                                <li><a href="#SetDefaultAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/SetDefault",new {s.Id, UserId  = Model.User.Id})">Set as Default</a></li>
+                                            </div>
+                                            <div class="dropdown me-3 float-end">
+                                                <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical fs-6"></i>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditAddressModal" data-load-url="@Url.Page("/Ajax/Address/Modal/Edit", new { AddressId = s.Id})">Edit</a></li>
+                                                    <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/DeleteAddress",new {s.Id, UserId  = Model.User.Id})">Delete</a></li>
+                                                    <li><a href="#SetDefaultAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/SetDefault",new {s.Id, UserId  = Model.User.Id})">Set as Default</a></li>
 
-                                            </ul>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                }
-                            </div>
+                                    }
+                                </div>
                             }
                         </div>
                     </div>
