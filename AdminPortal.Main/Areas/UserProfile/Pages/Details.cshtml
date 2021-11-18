@@ -1,8 +1,10 @@
 ﻿@page
 @model TKW.AdminPortal.Areas.UserProfile.Pages.DetailsModel
+@using TKW.ApplicationCore.SeedWorks 
 @using Newtonsoft.Json
 @{
     ViewBag.Title = "UserProfile";
+    
 }
 
 <pagetitle title="User Details" description="All details of the User.">
@@ -16,9 +18,11 @@
                         <div class="flex-fill">
                             <div class="row align-items-center">
                                 <div class="col-auto">
-                                    <div>
-                                        <img src="@Model.User.PictureName" alt="" class="rounded-circle img-thumbnail" style="height:6rem; width:6rem;">
-                                    </div>
+                                    <a data-bs-target="#EditProfilePictureModal" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/ProfilePicture",new {Model.User.Id})">
+                                        <div>
+                                            <img src="@Model.User.PictureName" alt="" class="rounded-circle img-thumbnail" style="height:6rem; width:6rem;">
+                                        </div>
+                                    </a>
                                 </div>
                                 <div class="col ms-1">
                                     <div>
@@ -79,7 +83,7 @@
                                     <div class="small font-trans text-muted mb-2"><strong>DEFAULT PAYMENT METHOD</strong></div>
                                     @if (Model.User.DefaultPaymentMethodId != null)
                                     {
-                                        <span>@Model.User.DefaultPaymentMethodId</span>
+                                <span>@(Enumeration.TryFromValue<TKW.ApplicationCore.Contexts.PaymentContext.Aggregates.PaymentMethod>(Model.User.DefaultPaymentMethodId.Value)?.Name) </span>
 
                                     }
                                     else
@@ -115,17 +119,9 @@
                                 <div class="flex-fill">
                                     <div class="small font-trans text-muted mb-2"><strong>BANK ACCOUNT DETAILS</strong></div>
                                     <div>
-                                        @if (Model.User.BankAccountNumber != null)
+                                        @if (Model.User.BankAccountNumber != null && Model.User.BankIFSC != null)
                                         {
                                             <span>@Model.User.BankAccountNumber</span>
-                                        }
-                                        else
-                                        {
-                                            <span>N/A</span>
-                                        }
-
-                                        @if (Model.User.BankIFSC != null)
-                                        {
                                             <span class="small text-muted mt-2 mb-2 ms-1">(IFSC:<span class="ms-1">@Model.User.BankIFSC)</span></span>
                                         }
                                         else
@@ -168,93 +164,62 @@
                                 <h6 class="header-title ms-3 mt-3">Addresses</h6>
                             </div>
                             <div>
-                                <button class="btn btn-circle in btn-default me-3 float-end" data-bs-target="#AddAddressModal" data-bs-toggle="modal" type="button" data-load-url="@Url.Page("..Pages/Ajax/Address/Modal/New", new { Area = "null" , Model.User.Id })">
+                                <button class="btn btn-circle in btn-default me-3 float-end" data-bs-target="#AddAddressModal" data-bs-toggle="modal" type="button" data-load-url="@Url.Page("/Ajax/Address/Modal/New", new { UserId = Model.User.Id })">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="card-body px-0 ">
-                            <div class="ps-3">
-                                <div class="small font-trans text-muted mb-2"><strong>DEFAULT ADDRESS</strong></div>
+                            @{
+                                var defaultAddress = Model.Addresses.FirstOrDefault(m => m.Id == Model.User.DefaultAddressId);
 
-                                @foreach (var s in Model.Addresses)
-                                {
+                            }
+                            @if (defaultAddress != null)
+                            {
+                                <div class="ps-3">
+                                    <div class="small font-trans text-muted mb-2"><strong>DEFAULT ADDRESS</strong></div>
+
                                     <div class="d-flex align-items-center">
                                         <div class="flex-fill">
-                                            @if (s.AddressLine != null)
-                                            {
-                                                <address class="m-b-none d-inline" type="Shop" name="@s.Name" mobile-no="@s.MobileNo" addressline="@s.AddressLine" locality="@s.LocalityName" state="@s.StateName" city="@s.CityName" pincode="@s.Pincode"></address>
-                                            }
-                                            else
-                                            {
-                                                <em>Address not found..!</em>
-                                            }
+                                            <address class="m-b-none d-inline" type="@defaultAddress.Type.Name" name="@defaultAddress.Name" mobile-no="@defaultAddress.MobileNo" addressline="@defaultAddress.AddressLine" locality="@defaultAddress.LocalityName" state="@defaultAddress.StateName" city="@defaultAddress.CityName" pincode="@defaultAddress.Pincode"></address>
                                         </div>
                                         <div>
-                                            <button class="btn btn-outline btn-xs me-3 float-end" type="button" data-bs-toggle="modal" data-bs-target="#EditAddressModal" data-load-url="@Url.Page("../Pages/Ajax/Address/Modal/Edit", new { ModalId  = Model.Id, s.Id })">
+                                            <button class="btn btn-outline btn-xs me-3 float-end" type="button" data-bs-toggle="modal" data-bs-target="#EditAddressModal" data-load-url="@Url.Page("/Ajax/Address/Modal/Edit", new { AddressId = Model.User.DefaultAddressId})">
                                                 <i class="bi bi-pencil-square fs-6"></i>
                                             </button>
                                         </div>
                                     </div>
-                                }
-                            </div>
+                                </div>
+                            }
+                            @if(Model.Addresses.Any(m=>m.Id != Model.User.DefaultAddressId))
+                            {
 
-                            <hr />
-
+                                if (defaultAddress != null)
+                                {<hr/>}
                             <div class="ps-3">
                                 <div class="small font-trans text-muted mb-2"><strong>OTHER ADDRESS</strong></div>
-                                @foreach (var s in Model.Addresses)
+                                @foreach (var s in Model.Addresses.Where(m => m.Id != Model.User.DefaultAddressId))
                                 {
                                     <div class="d-flex align-items-center">
                                         <div class="flex-fill">
-                                            @if (s.AddressLine != null)
-                                            {
                                                 <address class="m-b-none d-inline" type="Shop" name="@s.Name" mobile-no="@s.MobileNo" addressline="@s.AddressLine" locality="@s.LocalityName" state="@s.StateName" city="@s.CityName" pincode="@s.Pincode"></address>
-                                            }
-                                            else
-                                            {
-                                                <em>Address not found..!</em>
-                                            }
                                         </div>
                                         <div class="dropdown me-3 float-end">
                                             <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical fs-6"></i>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                                @*<a href="#RemovePickupBoyModal" class="btn btn-xs btn-outline btn-danger mt-2" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/RemovePickupBoy", new {Model.PickupSession.Id ,HandlerId  =  pickupboy.Id})"> Remove</a>*@
-                                                <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/DeleteAddress",new {s.Id, HandlerId  = Model.User.Id})">Delete</a></li>
-                                                <li><a class="dropdown-item" href="../Pages/Ajax/Address/Modal/Edit">Set as Default</a></li>
+                                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#EditAddressModal" data-load-url="@Url.Page("/Ajax/Address/Modal/Edit", new { AddressId = s.Id})">Edit</a></li>
+                                                <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/DeleteAddress",new {s.Id, UserId  = Model.User.Id})">Delete</a></li>
+                                                <li><a href="#SetDefaultAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/SetDefault",new {s.Id, UserId  = Model.User.Id})">Set as Default</a></li>
+
                                             </ul>
                                         </div>
                                     </div>
 
-
-                                    <div class="mt-3 d-flex align-items-center">
-                                        <div class="flex-fill">
-                                            @if (s.AddressLine != null)
-                                            {
-                                                <address class="m-b-none d-inline" type="Shop" name="@s.Name" mobile-no="@s.MobileNo" addressline="@s.AddressLine" locality="@s.LocalityName" state="@s.StateName" city="@s.CityName" pincode="@s.Pincode"></address>
-                                            }
-                                            else
-                                            {
-                                                <em>Address not found..!</em>
-                                            }
-                                        </div>
-                                        <div class="dropdown me-3 float-end">
-                                            <button class="btn btn-outline btn-xs" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-three-dots-vertical fs-6"></i>
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                                <li><a href="#DeleteAddressModal" class="dropdown-item" data-bs-toggle="modal" data-load-url="@Url.Page("Ajax/Modal/DeleteAddress",new {s.Id, HandlerId  = Model.User.Id})">Delete</a></li>
-                                                <li><a class="dropdown-item" href="#">Set as Default</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                 }
                             </div>
-
+                            }
                         </div>
                     </div>
 
@@ -865,7 +830,10 @@
     <modal content-id="EditBankAccountDetailsModalContent" loader="true" id="EditBankAccountDetailsModal"></modal>
     <modal content-id="EditPaytmWalletModalContent" loader="true" id="EditPaytmWalletModal"></modal>
     <modal content-id="DeleteAddressModalContent" loader="true" id="DeleteAddressModal"></modal>
+    <modal content-id="SetDefaultAddressModalContent" loader="true" id="SetDefaultAddressModal"></modal>
+    <modal content-id="EditProfilePictureModalContent" loader="true" id="EditProfilePictureModal"></modal>
     <modal content-id="AddAddressModalContent" loader="true" id="AddAddressModal"></modal>
     <modal content-id="EditAddressModalContent" loader="true" id="EditAddressModal"></modal>
+    <modal id="AddressModal" loader="true"></modal>
 }
 

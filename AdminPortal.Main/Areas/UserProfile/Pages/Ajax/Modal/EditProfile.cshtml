@@ -33,12 +33,7 @@ else
         <fieldset id="editProfileFieldSet">
             <modal-body>
                 <div class="row">
-                    <div class="col-sm-12 mb-4">
-                        <div class="text-center p-b-xs">
-                            <img src="@Model.Picture" height="200" class="img-responsive img-thumbnail" alt="No Image" />
-                        </div>
-                    </div>
-
+                   
                     <div class="col-sm-6">
                         <div class="mb-3">
                             <label class="col-form-label fw-bold" asp-for="Name"></label><br />
@@ -66,21 +61,28 @@ else
                         </div>
 
                         <div class="mb-3">
-                            <label class="col-form-label fw-bold">Gender</label><br />
-                            <input class="form-control" placeholder="Gender" />
+                            <label class="col-form-label fw-bold">Gender</label>
+                            <div>
+                                <div class="radio radio-primary" style="display:inline-block">
+                                    <input id="Male" value="1" type="radio" class="form-control" />
+                                    <label for="Male">Male</label>
+                                </div>
+                                <div class="radio radio-primary" style="display:inline-block">
+                                    <input  id="Female" value="2" type="radio" class="form-control"/>
+                                    <label for="Female">Female</label>
+                                </div>
+                                <div class="radio radio-primary" style="display:inline-block">
+                                    <input  id="Other" value="3" type="radio" class="form-control"/>
+                                    <label for="Other">Other</label>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="col-form-label fw-bold">Joining Date</label><br />
-                            <input class="form-control" placeholder="Joining Date" />
-                        </div>
                     </div>
                 </div>
             </modal-body>
 
             <modal-footer class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="close">Cancel</button>
-                <button class="btn btn-success" data-modal-href="@Url.Page("ProfilePicture",new {Model.Id})" type="button">@(string.IsNullOrEmpty(Model.Picture) ? "Upload" : "Change") Picture</button>
                 <button class="btn btn-success" type="submit">Update</button>
             </modal-footer>
 

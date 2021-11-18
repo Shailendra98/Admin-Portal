@@ -13,7 +13,7 @@
             <br />
             <div class="h5 mt-3">Profile picture uploaded.</div>
             <br />
-            <button type="button" data-modal-href="@Url.Page("EditProfile",new { Id=Model.Id })" class="btn btn-default">Go to Edit Profile</button>
+            <button type="button" data-modal-href="@Url.Page("Details",new { Id=Model.Id })" class="btn btn-default">Go to Edit Profile</button>
         </div>
     </modal-body>
 }
@@ -32,7 +32,6 @@ else
             </fieldset>
         </modal-body>
         <modal-footer class="modal-footer d-flex justify-content-between">
-            <button type="button" data-modal-href="@Url.Page("EditProfile",new { Id=Model.Id })" class="btn btn-default">Go back</button>
             <button class="btn btn-success" type="submit" id="uploadbtn">
                 Upload
             </button>

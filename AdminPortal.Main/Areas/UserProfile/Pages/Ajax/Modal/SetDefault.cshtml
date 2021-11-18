@@ -1,0 +1,43 @@
+﻿@page
+@model TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal.SetDefaultModel
+@{
+}
+
+<modal-header title="Set Default" close-button="true"></modal-header>
+
+@if (Model.IsDone)
+{
+    <modal-body>
+        <div class="text-center">
+            <i class="fa fa-4x fa-check-circle text-success"></i><br />
+            <div class="h5 mt-3">Address has been set default.</div>
+        </div>
+    </modal-body>
+    <script>
+        $("#SetDefaultAddressModalContent").trigger("action.done");
+    </script>
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+    <form method="post"
+          data-ajax="true"
+          data-ajax-url="@Url.Page("SetDefault",new { Model.Id, Model.UserId})"
+          data-ajax-begin="$('#SetDefaultFieldSet').attr('disabled','');"
+          data-ajax-complete="$('#SetDefaultFieldSet').removeAttr('disabled');"
+          data-ajax-method="post"
+          data-ajax-update="#SetDefaultAddressModalContent">
+        <fieldset id="SetDefaultFieldSet">
+            <modal-body>
+                <div>Are you sure you want to Set Default Address?</div>
+            </modal-body>
+            <modal-footer>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="close">Cancel</button>
+                <button class="btn btn-danger" type="submit">Set</button>
+            </modal-footer>
+        </fieldset>
+    </form>
+}

@@ -30,6 +30,8 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages
         public ContributionModel Impact { get; private set; }
         public long Id { get; set; }
 
+        public string InputName { get; set; }
+
         public async Task OnGetAsync(int id, CancellationToken cancellationToken)
         {
             User = await _userQueries.UserByIdAsync(id, cancellationToken);

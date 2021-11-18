@@ -7,11 +7,11 @@ using TKW.ApplicationCore.Contexts.AccountContext.Services;
 
 namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
 {
-    public class DeleteAddressModel : PageModel
+    public class SetDefaultModel : PageModel
     {
         private IUserService _userService;
 
-        public DeleteAddressModel(IUserService userService)
+        public SetDefaultModel(IUserService userService)
         {
             _userService = userService;
         }
@@ -35,7 +35,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
         {
             if (ModelState.IsValid)
             {
-                var result = await _userService.DeleteUserAddressAsync(
+                var result = await _userService.SetDefaultAddressOfUserAsync(
                     Id,
                     UserId,
                     cancellationToken);
