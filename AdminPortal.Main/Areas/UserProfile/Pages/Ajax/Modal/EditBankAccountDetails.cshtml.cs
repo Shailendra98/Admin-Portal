@@ -12,15 +12,13 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
     {
         private IUserService _userService;
         private IUserQueries _userQueries;
-        private IUserAddressQueries _userAddressQueries;
 
-        public EditBankAccountDetailsModel(IUserService userService, IUserQueries userQueries, IUserAddressQueries userAddressQueries)
+        public EditBankAccountDetailsModel(IUserService userService, IUserQueries userQueries)
         {
             _userQueries = userQueries;
-            _userAddressQueries = userAddressQueries;
             _userService = userService;
-
         }
+
         [BindProperty(SupportsGet = true)]
         [Required]
         public int Id { get; set; }
@@ -32,8 +30,11 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
         [BindProperty]
         [Display(Name = "Ifsc")]
         public string? Ifsc { get; set; }
+
         public bool IsDone { get; set; }
+
         public string ErrorMessage { get; set; }
+
         public async Task OnGetAsync(int Id, CancellationToken cancellationToken)
         {
             var User = await _userQueries.UserByIdAsync(Id, cancellationToken);
@@ -41,7 +42,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
             IsDone = false;
             AccountNumber = User!.BankAccountNumber;
             Ifsc = User!.BankIFSC;
-
         }
 
 
@@ -63,7 +63,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                 }
                 ErrorMessage = result.Error.Message;
             }
-
             return Page();
         }
     }

@@ -12,30 +12,30 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
     {
         private IUserService _userService;
         private IUserQueries _userQueries;
-        private IUserAddressQueries _userAddressQueries;
 
-        public EditUpiAddressModel(IUserService userService, IUserQueries userQueries, IUserAddressQueries userAddressQueries)
+        public EditUpiAddressModel(IUserService userService, IUserQueries userQueries)
         {
             _userQueries = userQueries;
-            _userAddressQueries = userAddressQueries;
             _userService = userService;
-
         }
+
         [BindProperty(SupportsGet = true)]
         [Required]
         public int Id { get; set; }
+
         [BindProperty]
         [Display(Name = "Upi Address")]
         public string? UpiAddress { get; set; }
+
         public bool IsDone { get; set; }
+
         public string ErrorMessage { get; set; }
+
         public async Task OnGetAsync(int Id, CancellationToken cancellationToken)
         {
             var User = await _userQueries.UserByIdAsync(Id, cancellationToken);
-
             IsDone = false;
             UpiAddress = User!.UPIAddress;
-           
         }
 
 
@@ -56,7 +56,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                 }
                 ErrorMessage = result.Error.Message;
             }
-           
             return Page();
         }
     }

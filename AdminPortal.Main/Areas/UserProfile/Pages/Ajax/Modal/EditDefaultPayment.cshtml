@@ -36,14 +36,11 @@ else
                 <select asp-for="PaymentMethodId" asp-items="Model.PaymentMethods" class="form-control">
                 </select>
                 <span asp-validation-for="PaymentMethodId" class="text-danger small"></span>
-
             </modal-body>
             <modal-footer>
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal" aria-label="close">Cancel</button>
                 <button class="btn btn-success" type="submit">Edit Payment</button>
             </modal-footer>
-
-
         </fieldset>
     </form>
     <script>
@@ -51,5 +48,4 @@ else
                 $("#@Html.IdFor(m=>m.PaymentMethods)");
             });
     </script>
-
 }

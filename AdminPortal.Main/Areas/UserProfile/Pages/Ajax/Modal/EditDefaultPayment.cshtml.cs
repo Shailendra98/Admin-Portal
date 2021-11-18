@@ -16,12 +16,10 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
     {
         private IUserService _userService;
         private IUserQueries _userQueries;
-        private IUserAddressQueries _userAddressQueries;
 
-        public EditDefaultPaymentModel(IUserService userService, IUserQueries userQueries, IUserAddressQueries userAddressQueries)
+        public EditDefaultPaymentModel(IUserService userService, IUserQueries userQueries)
         {
             _userQueries = userQueries;
-            _userAddressQueries = userAddressQueries;
             _userService = userService;
 
         }
@@ -37,6 +35,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
         public SelectList PaymentMethods { get; set; }
 
         public bool IsDone { get; set; }
+
         public string ErrorMessage { get; set; }
 
 
@@ -46,12 +45,8 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
 
             IsDone = false;
             PaymentMethodId = User.DefaultPaymentMethodId;
-
             PaymentMethods = new SelectList(Enumeration.GetAll<PaymentMethod>().ToList(), "Id", "Name", User.DefaultPaymentMethodId);
-
         }
-
-
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {

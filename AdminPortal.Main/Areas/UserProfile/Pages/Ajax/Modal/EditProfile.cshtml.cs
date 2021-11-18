@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
 using TKW.Queries.Interfaces;
 
@@ -15,8 +12,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
     {
         private IUserService _userService;
         private IUserQueries _userQueries;
-     
-       
 
         public EditProfileModel(IUserService userService, IUserQueries userQueries)
         {
@@ -61,8 +56,6 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
 
         }
 
-
-
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
             if (ModelState.IsValid)
@@ -76,13 +69,13 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                     if (result2.IsSuccess)
                     {
                         var result3 = await _userService.UpdateEmailAsync(Id, Email, cancellationToken);
-                        if (result3.IsSuccess) 
+                        if (result3.IsSuccess)
                         {
                             var result4 = await _userService.UploadProfilePictureAsync(Id, PictureBytes, cancellationToken);
-                            
+
                             if (result4.IsSuccess)
-                            { 
-                              
+                            {
+
                                 IsDone = true;
                                 return Page();
                             }
@@ -90,9 +83,7 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
                     }
                 }
                 ErrorMessage = result1.Error.Message;
-              
             }
-
             return Page();
         }
     }

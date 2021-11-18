@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using TKW.AdminPortal.Utils;
 using TKW.ApplicationCore.Contexts.AccountContext.Services;
 using TKW.ApplicationCore.Identity;
 using TKW.Queries.Interfaces;
@@ -17,14 +16,10 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
         private IUserService _userService;
         private IUserQueries _userQueries;
 
-
-
         public ProfilePictureModel(IUserService userService, IUserQueries userQueries)
         {
-          
             _userQueries = userQueries;
             _userService = userService;
-
         }
         public string ErrorMessage { get; set; }
 
@@ -37,13 +32,10 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
         [BindProperty]
         public IFormFile Photo { get; set; }
 
-
-
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)
         {
             var User = await _userQueries.UserByIdAsync(Id, cancellationToken);
             return Page();
-
         }
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
@@ -51,13 +43,12 @@ namespace TKW.AdminPortal.Areas.UserProfile.Pages.Ajax.Modal
             if (ModelState.IsValid)
             {
                 var User = await _userQueries.UserByIdAsync(Id, cancellationToken);
-               
+
                 using var ms = new MemoryStream();
                 Photo.CopyTo(ms);
                 var result = await _userService.UploadProfilePictureAsync(Id, ms.ToArray(), cancellationToken);
                 if (result.IsSuccess)
                 {
-
                     IsDone = true;
                 }
                 else

@@ -1,8 +1,6 @@
 ﻿@page
 @model TKW.AdminPortal.Areas.UserProfile.Pages.DetailsModel
 @using Newtonsoft.Json
-@using System.Linq;
-@using System.Collections;
 @{
     ViewBag.Title = "UserProfile";
 }
@@ -170,7 +168,7 @@
                                 <h6 class="header-title ms-3 mt-3">Addresses</h6>
                             </div>
                             <div>
-                                <button class="btn btn-circle in btn-default me-3 float-end" data-bs-target="#AddAddressModal" data-bs-toggle="modal" type="button" data-load-url="@Url.Page("..Pages/Ajax/Address/Modal/New", new {Model.User.Id })">
+                                <button class="btn btn-circle in btn-default me-3 float-end" data-bs-target="#AddAddressModal" data-bs-toggle="modal" type="button" data-load-url="@Url.Page("..Pages/Ajax/Address/Modal/New", new { Area = "null" , Model.User.Id })">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -193,7 +191,7 @@
                                             }
                                         </div>
                                         <div>
-                                            <button class="btn btn-outline btn-xs me-3 float-end" type="button" data-bs-toggle="modal" data-bs-target="#EditModal" data-load-url="@Url.Page("../Pages/Ajax/Address/Modal/Edit", new { s.UserId })">
+                                            <button class="btn btn-outline btn-xs me-3 float-end" type="button" data-bs-toggle="modal" data-bs-target="#EditAddressModal" data-load-url="@Url.Page("../Pages/Ajax/Address/Modal/Edit", new { ModalId  = Model.Id, s.Id })">
                                                 <i class="bi bi-pencil-square fs-6"></i>
                                             </button>
                                         </div>
@@ -427,7 +425,6 @@
                                                     <td>123</td>
                                                     <td>News Paper</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -444,7 +441,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -453,20 +450,19 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
-                                                                    </li>
-
-
-                                                                    <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditCompleted",new { area = "#"})">Edit Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})">Assign to Pickup Session</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "#"})">Reschedule Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})">Cancel Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="#"})">Assign to Pickup Session</a>
+                                                                    </li>
+
+                                                                    <li class="dropdown-item">
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="#"})">Cancel Request</a>
                                                                     </li>
                                                                 </ul>
 
@@ -479,7 +475,6 @@
                                                     <td>124</td>
                                                     <td>Plastic</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -497,7 +492,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -506,20 +501,19 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
-                                                                    </li>
-
-
-                                                                    <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area ="#"})">Edit Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})">Assign to Pickup Session</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area ="#"})">Reschedule Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})">Cancel Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="#"})">Assign to Pickup Session</a>
+                                                                    </li>
+
+                                                                    <li class="dropdown-item">
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="#"})">Cancel Request</a>
                                                                     </li>
                                                                 </ul>
 
@@ -532,7 +526,6 @@
                                                     <td>125</td>
                                                     <td>Rubber</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -549,7 +542,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -558,20 +551,19 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
-                                                                    </li>
-
-
-                                                                    <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditHandled",new { area = "#"})">Edit Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})">Assign to Pickup Session</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "#"})">Reschedule Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})">Cancel Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="#"})">Assign to Pickup Session</a>
+                                                                    </li>
+
+                                                                    <li class="dropdown-item">
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="#"})">Cancel Request</a>
                                                                     </li>
                                                                 </ul>
 
@@ -580,10 +572,9 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="cancelled">
-                                                    <td>125</td>
+                                                    <td>126</td>
                                                     <td>Magazines</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -602,7 +593,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -611,9 +602,8 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditCancelled",new { area = "Request"})">Edit Request</a>
                                                                     </li>
-
 
                                                                     <li class="dropdown-item">
                                                                         <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
@@ -646,7 +636,6 @@
                                                     <td>123</td>
                                                     <td>News Paper</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -664,7 +653,7 @@
 
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -673,20 +662,19 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
-                                                                    </li>
-
-
-                                                                    <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditCompleted",new { area = "#"})">Edit Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})">Assign to Pickup Session</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "#"})">Reschedule Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})">Cancel Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="#"})">Assign to Pickup Session</a>
+                                                                    </li>
+
+                                                                    <li class="dropdown-item">
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="#"})">Cancel Request</a>
                                                                     </li>
                                                                 </ul>
 
@@ -699,7 +687,6 @@
                                                     <td>124</td>
                                                     <td>Plastic</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -718,7 +705,7 @@
 
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -727,20 +714,19 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
-                                                                    </li>
-
-
-                                                                    <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "#"})">Edit Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})">Assign to Pickup Session</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "#"})">Reschedule Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})">Cancel Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="#"})">Assign to Pickup Session</a>
+                                                                    </li>
+
+                                                                    <li class="dropdown-item">
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="#"})">Cancel Request</a>
                                                                     </li>
                                                                 </ul>
 
@@ -753,7 +739,6 @@
                                                     <td>125</td>
                                                     <td>Rubber</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -771,7 +756,7 @@
 
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -780,20 +765,19 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
-                                                                    </li>
-
-
-                                                                    <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "#"})">Edit Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})">Assign to Pickup Session</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "#"})">Reschedule Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})">Cancel Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="#"})">Assign to Pickup Session</a>
+                                                                    </li>
+
+                                                                    <li class="dropdown-item">
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="#"})">Cancel Request</a>
                                                                     </li>
                                                                 </ul>
 
@@ -802,10 +786,9 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="cancelled">
-                                                    <td>125</td>
+                                                    <td>126</td>
                                                     <td>Magazines</td>
                                                     <td class="px-0 w-25">
-
                                                         <div class=" small">
                                                             Home  mp nager, MP Nagar
                                                         </div>
@@ -825,7 +808,7 @@
 
                                                     <td>
                                                         <div class="btn-group-vertical">
-                                                            <a data-load-url="@Url.Page("../Details", new { area ="Request"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
+                                                            <a data-load-url="@Url.Page("../Details", new { area ="#"})" data-bs-toggle="modal" href="#ActionModal" class="btn btn-default btn-xs reqdetailbtn">Details</a>
 
                                                             <div class="dropdown">
                                                                 <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="actiondropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -834,20 +817,19 @@
                                                                 <ul class="dropdown-menu  dropdown-menu-right" aria-labelledby="actiondropdown" style="font-size:small;">
 
                                                                     <li class=" dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "Request"})">Edit Request</a>
-                                                                    </li>
-
-
-                                                                    <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "Request"})">Reschedule Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/EditPending",new { area = "#"})">Edit Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="Request"})">Assign to Pickup Session</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Reschedule", new { area = "#"})">Reschedule Request</a>
                                                                     </li>
 
                                                                     <li class="dropdown-item">
-                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="Request"})">Cancel Request</a>
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Assign", new {area ="#"})">Assign to Pickup Session</a>
+                                                                    </li>
+
+                                                                    <li class="dropdown-item">
+                                                                        <a href="#" class="actionlink text-decoration-none d-block" data-bs-toggle="modal" data-bs-target="#ActionModal" data-url="@Url.Page("/Ajax/Modal/Cancel",new { area="#"})">Cancel Request</a>
                                                                     </li>
                                                                 </ul>
 
@@ -857,31 +839,24 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </div>
-
 </div>
 
 @section Styles{
     <link href="~/css/peicon7stroke.min.css" rel="stylesheet" />
-
 }
+
 @section Scripts{
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYTvgY5DS7ipPNzOgxYmJYeZBe4r03qS4"></script>
 }
-
 
 @section Footer{
     <modal content-id="EditProfileModalContent" loader="true" id="EditProfileModal"></modal>
@@ -891,8 +866,6 @@
     <modal content-id="EditPaytmWalletModalContent" loader="true" id="EditPaytmWalletModal"></modal>
     <modal content-id="DeleteAddressModalContent" loader="true" id="DeleteAddressModal"></modal>
     <modal content-id="AddAddressModalContent" loader="true" id="AddAddressModal"></modal>
-    <modal content-id="EditAddressModalContent" loader="true" id="EditModal"></modal>
-    <modal content-id="ActionModalContent" loader="true" id="ActionModal"></modal>
-    <modal id="AddressModal" loader="true"></modal>
+    <modal content-id="EditAddressModalContent" loader="true" id="EditAddressModal"></modal>
 }
 
